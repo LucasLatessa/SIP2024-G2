@@ -34,7 +34,6 @@ def callback(request):
 
 def logout(request):
     request.session.clear()
-    print("56465")
     return redirect(
         f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
         + urlencode(
