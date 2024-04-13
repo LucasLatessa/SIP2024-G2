@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
-from pathlib import Path
 from decouple import config
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ym63+1t3^ps&vo!j8p#i76(v6jbeg49#dw%7a@9wliifaf1ld$'
+SECRET_KEY = 'django-insecure-r83nx9v8=@(%v8^*t_tu8#g7rw4zq0@_f!n%hy$ri%u&cb=4+y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -37,29 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'mysite',
-
-    'social_django'
 ]
-
-SOCIAL_AUTH_TRAILING_SLASH= False
-SOCIAL_AUTH_AUTH0_DOMAIN=config("AUTH0_DOMAIN")
-SOCIAL_AUTH_AUTH0_KEY=config("AUTH0_CLIENT_ID")
-SOCIAL_AUTH_AUTH0_SECRET=config("AUTH0_CLIENT_SECRET")
-
-SOCIAL_AUTH_AUTH0_SCOPE=[
-    'openid',
-    'profile',
-    'email'
-
-]
-
-AUTHENTICATION_BACKENDS={
-    'social_core.backends.auth0.Auth0OAuth2',
-    'django.contrib.auth.backends.ModelBackend'
-}
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,10 +53,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'webappexample.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR, "webappexample", "templates")
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -144,6 +126,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL='login/auth0'
-LOGIN_REDIRECT_URL='/'
-LOGOUT_REDIRECT_URL='/'
+AUTH0_DOMAIN = config("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = config("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = config("AUTH0_CLIENT_SECRET")
