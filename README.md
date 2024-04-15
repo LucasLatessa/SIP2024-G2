@@ -5,4 +5,3 @@ Enzo Bianchi
 Josue Gatica Odato
 Lucas Latessa
 Mateo Asenzo
-Axel Hoffmann
