@@ -52,9 +52,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'webappexample.urls'
+ROOT_URLCONF = 'ByPass.urls'
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, "webappexample", "templates")
+TEMPLATE_DIR = os.path.join(BASE_DIR, "ByPass", "templates")
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'webappexample.wsgi.application'
+WSGI_APPLICATION = 'ByPass.wsgi.application'
 
 
 # Database

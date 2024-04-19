@@ -55,7 +55,3 @@ def index(request):
             "pretty": json.dumps(request.session.get("user"), indent=4),
         },
     )
-
-def nose(request):
-    response = HttpResponse("¡Hola, mundo!")
-    return response
