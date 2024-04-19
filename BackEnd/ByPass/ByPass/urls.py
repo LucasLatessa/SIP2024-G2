@@ -24,6 +24,12 @@ urlpatterns = [
     path("login", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("callback", views.callback, name="callback"),
+    path("public", views.public, name="public"),
+    path("private", views.private, name="private"),
+    path("private_scoped", views.private_scoped, name="private_scoped"),
+
+
     path("", include("evento.urls"))
+
   
 ]
