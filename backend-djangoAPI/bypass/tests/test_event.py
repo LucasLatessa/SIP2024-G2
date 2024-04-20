@@ -13,8 +13,7 @@ def test_event_creation():
     estado = EstadoEvento.objects.create(
         estado="Estado de prueba"
     )
-
-
+    
     evento = Evento.objects.create(
         nombre="Evento de prueba",
         fecha=timezone.now(),
