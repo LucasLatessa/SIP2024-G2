@@ -22,4 +22,6 @@ def test_event_creation():
 
     )
 
-    assert evento.nombre == 'Evento de prueba'
+    assert evento.nombre == 'Evento de prueba' #Compruebo creacion
+    assert evento.lugar.nombre == 'Lugar de prueba' #Relacion entre entidades
+    assert evento.estado.estado == 'Estado de prueba'
