@@ -23,14 +23,6 @@ class Evento(models.Model):
     fecha= models.DateTimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
     estado= models.ForeignKey(EstadoEvento, models.DO_NOTHING, db_column='estadoEvento',blank=True, null=True)
-    
-    """
-    def __init__(self, nombre, fecha, lugar, estado, *args, **kwargs):
-        super(Evento, self).__init__(*args, **kwargs)
-        self.nombre = nombre
-        self.fecha = fecha
-        self.lugar = lugar
-        self.estado = estado"""
 
     def __str__(self):
         return self.nombre

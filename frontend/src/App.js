@@ -11,9 +11,6 @@ function App() {
         <LogoutButton/>
         <SignupButton/>
         <Profile/>
-        <Switch>
-          
-        </Switch>
     </div>
   );
 }
