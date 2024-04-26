@@ -32,6 +32,9 @@ class Publicacion(models.Model):
     ticket = models.ForeignKey(Ticket, models.DO_NOTHING, db_column='ticket', blank=True, null=True)
     def __str__(self):
         return "Publicacion " + str(self.id_Publicacion)
+    
+#class TipoEntrada(models.Model):
+
 
 #Trigger para vincular precio con el ticket una vez que se crea
 @receiver(post_save, sender=Ticket)
