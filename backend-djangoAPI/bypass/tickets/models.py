@@ -1,4 +1,8 @@
+import datetime
 from django.db import models
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -29,4 +33,12 @@ class Publicacion(models.Model):
     def __str__(self):
         return "Publicacion " + str(self.id_Publicacion)
 
-
+#Trigger para vincular precio con el ticket una vez que se crea
+@receiver(post_save, sender=Ticket)
+def crear_precio(sender, instance, created, **kwargs):
+    if created:
+        Precio.objects.create(
+                precio=instance.precioInicial,
+                ticket=instance,
+                fechaInicial = datetime.datetime.now()
+        )
