@@ -6,7 +6,7 @@ export const LoginButton = () => {
   
   return (
     <button className="login" onClick={() => loginWithRedirect()}>
-      Iniciar Sesion
+      Login
     </button>
   );
 };

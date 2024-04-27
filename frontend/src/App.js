@@ -11,6 +11,7 @@ function App() {
 
   return (
     <div className="App">
+      <img class="imgLogo"src="/LogoByPass.png" alt="Logo" />
       {/* muestra el botón de inicio de sesion y registro si no esta autenticado */}
       {!isAuthenticated && (
         <>

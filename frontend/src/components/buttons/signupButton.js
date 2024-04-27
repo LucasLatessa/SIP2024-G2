@@ -18,7 +18,7 @@ export const SignupButton = () => {
 
   return (
     <button onClick={handleSignUp}>
-      Registrarse
+      Sign up
     </button>
   );
 };
