@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
+import { LogoutButton } from "./buttons/logoutButton";
 
 export const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -38,6 +39,7 @@ export const Profile = () => {
         />
         <UpdateProfileButton onClick={handleUpdateProfile} />
         <button onClick={handleHome}>Volver</button>
+        <LogoutButton/>
       </div>
     )
   );

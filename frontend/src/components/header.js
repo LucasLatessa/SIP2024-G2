@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import './header.css';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
     const { isAuthenticated } = useAuth0();
@@ -20,12 +21,9 @@ export const Header = () => {
             <img src="../../LogoSinFondoBlanco.png" alt="ByPass" class="logo" />
         </a>
         </h1>
-        <a href="#"
-        >Eventos</a>
-        <a href="#"
-        >Marketplace</a>
-        <a href="#"
-        >Beneficios</a>
+        <Link to="/eventos">Eventos</Link>
+        <Link to="/mercado">Mercado</Link>
+        <Link to="/beneficios">Beneficios</Link>
         {!isAuthenticated && (
         <>
             <div className="login" onClick={handleLoginClick}>
