@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'eventos',
     'tickets',
-    'usuarios'
+    'usuarios',
+    'Transferencia'
 ]
 
 MIDDLEWARE = [

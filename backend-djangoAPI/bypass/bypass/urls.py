@@ -16,5 +16,6 @@ urlpatterns: list[URLPattern] = [
     path('admin/', admin.site.urls),
     path('eventos/',include('eventos.urls')),
     path('tickets/',include('tickets.urls')),
-    path('usuarios/',include('usuarios.urls'))
+    path('usuarios/',include('usuarios.urls')),
+    path('transferencia/',include('Transferencia.urls'))
 ]
