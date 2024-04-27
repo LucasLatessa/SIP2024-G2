@@ -1,43 +1,43 @@
-//import { useHistory } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import './header.css';
-import { useAuth0 } from "@auth0/auth0-react";
 
 export const Header = () => {
     const { isAuthenticated } = useAuth0();
     const { loginWithRedirect } = useAuth0();
-    //const history = useHistory(); // Obtén el objeto history
+    const navigate = useNavigate();
     const handleLoginClick = () => {
         loginWithRedirect();
       };
-    /* const handleProfileClick = () => {
-        history.push('/profile'); // Redirige al usuario a la ruta '/profile'
-    }; */
+    const handleProfileClick = () => {
+        navigate('/profile'); 
+    };
     return (
         <header class="header-principal">
         <h1>
-        <a href="">
-            <img src="/LogoSinFondoBlanco.png" alt="ByPass" class="logo" />
+        <a href="#">
+            <img src="../../LogoSinFondoBlanco.png" alt="ByPass" class="logo" />
         </a>
         </h1>
-        <a href=""
+        <a href="#"
         >Eventos</a>
-        <a href=""
+        <a href="#"
         >Marketplace</a>
-        <a href=""
+        <a href="#"
         >Beneficios</a>
         {!isAuthenticated && (
         <>
             <div className="login" onClick={handleLoginClick}>
-                <img src="/user.png" alt="Usuario" className="icono-usuario" />
+                <img src="../../user.png" alt="Usuario" className="icono-usuario" />
             </div>
         </>
         )}
         {isAuthenticated && (
                 <>
-                    {/* <div className="profile" onClick={handleProfileClick}>
+                     <div className="profile" onClick={handleProfileClick}>
                         <img src="/user.png" alt="Usuario" className="icono-usuario" />
-                    </div> */}
+                    </div> 
                 </>
             )}
     </header>
