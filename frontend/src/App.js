@@ -3,15 +3,18 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './components/home';
 import { Profile } from './components/profile';
-
+import { Events } from './components/events';
+import { Marketplace } from './components/marketplace';
+import { Benefits } from './components/benefits';
 function App() {
-  const { isAuthenticated } = useAuth0();
-
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} /> 
+        <Route path="/perfil" element={<Profile />} /> 
+        <Route path="/eventos" element={<Events />} /> 
+        <Route path="/mercado" element={<Marketplace />} /> 
+        <Route path="/beneficios" element={<Benefits />} /> 
       </Routes>
     </Router>
   );
