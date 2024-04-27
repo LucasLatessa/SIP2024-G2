@@ -1,0 +1,24 @@
+.header-principal {
+    background-color: #000000;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Ubicacion del logo*/
+.header-principal > h1 {
+    flex-basis: 80%;
+    text-align: center;
+}
+
+.logo {
+    width: 5rem;
+}
+
+.icono-usuario {
+    flex-basis: 5%;
+    padding: 0rem 1rem;
+    width: 2.2rem;
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react'; // Importa el hook de autenticaci
 import { LoginButton } from './components/buttons/loginButton';
 import { LogoutButton } from './components/buttons/logoutButton';
 import { SignupButton } from './components/buttons/signupButton';
+import { Header } from './components/header';
 import { Profile } from './components/profile';
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
 
   return (
     <div className="App">
-      <img class="imgLogo"src="/LogoByPass.png" alt="Logo" />
+      <Header />
       {/* muestra el botón de inicio de sesion y registro si no esta autenticado */}
       {!isAuthenticated && (
         <>
