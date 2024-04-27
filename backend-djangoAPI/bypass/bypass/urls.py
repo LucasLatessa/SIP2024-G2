@@ -14,5 +14,8 @@ urlpatterns: list[URLPattern] = [
     path(route="api/private", view=views.private, name="private"),
     path(route="api/private-scoped", view=views.privateScoped, name="private_scoped"),
     path('admin/', admin.site.urls),
-    path('eventos/',include('eventos.urls'))
+    path('eventos/',include('eventos.urls')),
+    path('tickets/',include('tickets.urls')),
+    path('usuarios/',include('usuarios.urls')),
+    path('transferencia/',include('Transferencia.urls'))
 ]
