@@ -8,5 +8,6 @@ router.register(r"EstadoEvento",views.EstadoEventoView)
 router.register(r"Lugar",views.LugarView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('all/', views.get_all_events, name='get_all_events')
 ]
