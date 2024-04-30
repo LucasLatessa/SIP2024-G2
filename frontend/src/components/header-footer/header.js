@@ -12,7 +12,7 @@ export const Header = () => {
     loginWithRedirect();
   };
   const handleProfileClick = () => {
-    navigate("/profile");
+    navigate("/perfil");
   };
 
   return (
