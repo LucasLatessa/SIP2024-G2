@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Users = () => {
+  const { user, isAuthenticated } = useAuth0();
   const [responseMessage, setResponseMessage] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const data = { informacion: { name: "minombre" } };
+  const validar = () => {
+    const data = { informacion: { name: user.email } };
 
     axios.post('http://localhost:8000/usuarios/clientes/crear/', data)
       .then((response) => {
         setResponseMessage(`Dato enviado con éxito: ${JSON.stringify(response.data)}`);
-        // Redirigir después de un pequeño retraso para evitar re-montajes
-        setTimeout(() => navigate('/'), 500); // Esto puede prevenir re-montajes
+        navigate('/');
       })
       .catch((error) => {
         setResponseMessage(`Error al enviar el dato: ${error.message}`);
       });
-  }, []); // Solo ejecuta una vez cuando el componente se monta
+  };
+  useEffect(() => {
+    if (isAuthenticated) {
+      validar();
+    }
+  }, [isAuthenticated]); // Ejecutar cuando isAuthenticated cambie
 
-  return <h1>{responseMessage}</h1>;
+  return (
+    <div>
+      <p>{responseMessage}</p>
+    </div>
+  );
 };
