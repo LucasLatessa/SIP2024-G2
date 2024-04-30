@@ -20,7 +20,7 @@ export const Login = () => {
       }
     };
 
-    axios.post('http://localhost:8000/usuarios/clientes/crear/', data)
+    axios.post('http://localhost:8000/usuarios/clientes/create/', data)
       .then((response) => {
         setResponseMessage(`Dato enviado con éxito: ${JSON.stringify(response.data)}`);
         navigate('/perfil');

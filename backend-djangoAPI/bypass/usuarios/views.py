@@ -95,3 +95,41 @@ def cliente_create(request):
             return JsonResponse({'error': str(e)}, status=400) 
     else:
         return JsonResponse({'mensaje': 'Cliente logueado'}, status=201)
+@csrf_exempt
+@api_view(['PUT'])
+def update_cliente(request, cliente_id):
+    # Obtener el cliente existente por su ID
+    try:
+        cliente = Cliente.objects.get(user_id=cliente_id)
+    except Cliente.DoesNotExist:
+        return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
+    
+    # Obtener los datos actualizados del cliente del cuerpo de la solicitud
+    my_data = request.data.get("informacion", {})
+    nickname = my_data.get("nickname", cliente.nickname)
+    nombre = my_data.get("nombre", cliente.nombre)
+    apellido = my_data.get("apellido", cliente.apellido)
+    correo = my_data.get("correo", cliente.correo)
+    dni = my_data.get("dni", cliente.dni)
+
+    # Actualizar los campos del cliente con los nuevos datos
+    cliente.nickname = nickname
+    cliente.nombre = nombre
+    cliente.apellido = apellido
+    cliente.correo = correo
+    cliente.dni = dni
+
+    # Guardar los cambios en la base de datos
+    cliente.save()
+
+    # Devolver la respuesta con el cliente actualizado
+    cliente_data = {
+        'id': cliente.user_id,
+        'nickname': cliente.nickname,
+        'nombre': cliente.nombre,
+        'apellido': cliente.apellido,
+        'correo': cliente.correo,
+        'rol': cliente.rol,
+        'dni': cliente.dni
+    }
+    return JsonResponse({'cliente': cliente_data})

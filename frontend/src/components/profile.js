@@ -3,17 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
 import { LogoutButton } from "./buttons/logoutButton";
+import axios from 'axios';
 
 export const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
   const [clienteData, setClienteData] = useState(null); // Estado para almacenar los datos del cliente
   const [loadingCliente, setLoadingCliente] = useState(true); // Estado para controlar el estado de carga de la solicitud
-
   const handleUpdateProfile = () => {
-    // Aquí irían las actualizaciones en la base de datos cuando se actualiza el perfil del cliente
+    // Realizar la solicitud de actualización al backend utilizando Axios
+    axios.put(`http://localhost:8000/usuarios/clientes/update/${clienteData.user_id}/`, clienteData)
+      .then(response => {
+        // Verificar si la respuesta es exitosa
+        if (response.status === 200) {
+          // Actualizar el estado de clienteData con los datos actualizados del backend
+          setClienteData(response.data.cliente);
+          console.log('Perfil del cliente actualizado:', response.data.cliente);
+        } else {
+          throw new Error('Error al actualizar el perfil del cliente');
+        }
+      })
+      .catch(error => {
+        console.error('Error al actualizar el perfil del cliente:', error);
+      });
   };
-
   const handleHome = () => {
     navigate('/');
   };
