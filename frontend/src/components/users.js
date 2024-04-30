@@ -8,12 +8,22 @@ export const Users = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const navigate = useNavigate();
   const validar = () => {
-    const data = { informacion: { name: user.email } };
+    const data = {
+      informacion: {
+        //user_id: null, // No se puede obtener de Auth0 directamente
+        nickname: user.nickname, // Proporcionado por Auth0
+        nombre: user.given_name, // Proporcionado por Auth0
+        apellido: user.family_name, // Proporcionado por Auth0
+        correo: user.email, // Proporcionado por Auth0
+        //creacion: null, // No se puede obtener de Auth0 directamente
+        //rol: null, // No se puede obtener de Auth0 directamente
+      }
+    };
 
     axios.post('http://localhost:8000/usuarios/clientes/crear/', data)
       .then((response) => {
         setResponseMessage(`Dato enviado con éxito: ${JSON.stringify(response.data)}`);
-        navigate('/');
+        navigate('/perfil');
       })
       .catch((error) => {
         setResponseMessage(`Error al enviar el dato: ${error.message}`);
