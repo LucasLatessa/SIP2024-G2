@@ -15,12 +15,6 @@
   font-size: 16px;
 }
 
-/*Hay que hacerlo manual porque queda muy pixeleado*/
-main{
-  background-image: url("../../images/fondo2.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-repeat: center;
+article.evento {
+    background-color: #ffffff;
 }
-
-
