@@ -6,6 +6,7 @@ from .models import Usuario,Cliente,Administrador,Productora
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -87,6 +88,7 @@ def cliente_create(request):
                 nombre=nombre,
                 apellido=apellido,
                 correo=correo,
+                creacion = datetime.now(),
                 rol='',
                 dni=''
             )
@@ -95,6 +97,7 @@ def cliente_create(request):
             return JsonResponse({'error': str(e)}, status=400) 
     else:
         return JsonResponse({'mensaje': 'Cliente logueado'}, status=201)
+
 @csrf_exempt
 @api_view(['PUT'])
 def update_cliente(request, cliente_id):
@@ -112,7 +115,11 @@ def update_cliente(request, cliente_id):
     correo = my_data.get("correo", cliente.correo)
     dni = my_data.get("dni", cliente.dni)
 
+    print(dni)
+    print(apellido)
+    print("fesaf")
     # Actualizar los campos del cliente con los nuevos datos
+    cliente.user_id = cliente_id
     cliente.nickname = nickname
     cliente.nombre = nombre
     cliente.apellido = apellido
@@ -121,10 +128,9 @@ def update_cliente(request, cliente_id):
 
     # Guardar los cambios en la base de datos
     cliente.save()
-
     # Devolver la respuesta con el cliente actualizado
     cliente_data = {
-        'id': cliente.user_id,
+        'id': cliente_id,
         'nickname': cliente.nickname,
         'nombre': cliente.nombre,
         'apellido': cliente.apellido,

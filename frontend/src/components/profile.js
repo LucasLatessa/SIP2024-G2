@@ -12,6 +12,8 @@ export const Profile = () => {
   const [loadingCliente, setLoadingCliente] = useState(true); // Estado para controlar el estado de carga de la solicitud
   const handleUpdateProfile = () => {
     // Realizar la solicitud de actualización al backend utilizando Axios
+    //clienteData.dni = 5;
+    //clienteData.apellido = "sjdaklfjsadkfld;sajafkl;dsajf";
     axios.put(`http://localhost:8000/usuarios/clientes/update/${clienteData.user_id}/`, clienteData)
       .then(response => {
         // Verificar si la respuesta es exitosa
@@ -67,7 +69,7 @@ export const Profile = () => {
             <p>ID: {clienteData.user_id}</p>
             <p>DNI:
             <input
-              type="text"
+              type="number"
               value={clienteData.dni}
               onChange={(e) => setClienteData({ ...clienteData, dni: e.target.value })}
             /></p>

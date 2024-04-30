@@ -140,7 +140,9 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:4040"]
 CORS_ALLOW_METHODS = [
     "GET",
     "OPTIONS",
-    "POST"
+    "POST",
+    "PUT",
+    "DELETE"
 ]
 
 CORS_ALLOW_HEADERS = [
