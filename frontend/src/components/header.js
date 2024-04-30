@@ -12,7 +12,7 @@ export const Header = () => {
         loginWithRedirect();
       };
     const handleProfileClick = () => {
-        navigate('/profile'); 
+        navigate('/perfil'); 
     };
     return (
         <header class="header-principal">
@@ -33,7 +33,7 @@ export const Header = () => {
         )}
         {isAuthenticated && (
                 <>
-                     <div className="profile" onClick={handleProfileClick}>
+                     <div className="perfil" onClick={handleProfileClick}>
                         <img src="/user.png" alt="Usuario" className="icono-usuario" />
                     </div> 
                 </>

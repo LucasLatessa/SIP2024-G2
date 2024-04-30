@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializer import UsuarioSerializer,ClienteSerializer,AdministradorSerializer,ProductoraSerializer
 from .models import Usuario,Cliente,Administrador,Productora
+from rest_framework.decorators import api_view
 
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -48,3 +49,8 @@ def get_cliente_by_dni(request, dni):
         return JsonResponse({'cliente': cliente_data})
     except Cliente.DoesNotExist:
         return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
+
+
+def cliente_create(request):
+    my_data = request.data.get('data', None)
+    print(my_data)

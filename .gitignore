@@ -25,3 +25,4 @@ yarn-error.log*
 
 #PyCache
 __pycache__/
+entorno_bypass
