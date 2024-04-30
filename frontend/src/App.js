@@ -7,6 +7,7 @@ import { Events } from './components/events';
 import { Marketplace } from './components/marketplace';
 import { Beneficios } from './components/beneficios';
 import { PruebaDb } from './components/pruebadb';
+import { Users } from './components/users';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/mercado" element={<Marketplace />} /> 
         <Route path="/beneficios" element={<Beneficios />} /> 
         <Route path="/prueba" element={<PruebaDb />} /> 
+        <Route path="/validarusuario" element={<Users />} /> 
+
       </Routes>
     </Router>
   );

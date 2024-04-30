@@ -5,11 +5,11 @@ from django.db import models
 class Usuario(models.Model):
     user_id = models.AutoField(primary_key=True) #Provee AUTH0
     nickname = models.TextField() #Provee AUTH0
-    nombre = models.TextField()
+    nombre = models.TextField() #Provee AUTH0
     apellido = models.TextField()
     correo = models.TextField() #Provee AUTH0
-    creacion = models.DateTimeField(blank=True, null=True) #Provee AUTH0
-    rol = models.TextField() #Provee AUTH0
+    creacion = models.DateTimeField(blank=True, null=True)
+    rol = models.TextField()
     
     def __str__(self):
         return self.nombre + " " + self.apellido
