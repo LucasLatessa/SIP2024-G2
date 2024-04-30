@@ -8,12 +8,12 @@ export const ProximosEventos = () => {
         <section>
             <header className="proximosEventos">
                 <h2>Proximos eventos</h2>
-                <Link to="/eventos"> Todos los eventos </Link>
+                <Link className="allEventos" to="/eventos"> Todos los eventos </Link>
             </header>
             <div className="listaEventos">
-                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
-                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
-                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
+                <EventosBox nombre={"Tan Bionica"} foto={"./assets/TanBionica.jpg"} precioMin={"500"} precioMax={"700"}fecha={"20/02/2002"}/>
+                <EventosBox nombre={"Tan Bionica"} foto={"./assets/TanBionica.jpg"} precioMin={"500"} precioMax={"700"}fecha={"20/02/2002"}/>
+                <EventosBox nombre={"Tan Bionica"} foto={"./assets/TanBionica.jpg"} precioMin={"500"} precioMax={"700"}fecha={"20/02/2002"}/>
             </div>
             
         </section>    

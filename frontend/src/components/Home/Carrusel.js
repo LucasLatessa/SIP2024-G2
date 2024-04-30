@@ -1,5 +1,5 @@
 export const Carrusel = () => {
     return(
-        <p>Carussel</p>
+        <p style={{margin: 0, padding: 0}}>Carussel</p>
     );
 }

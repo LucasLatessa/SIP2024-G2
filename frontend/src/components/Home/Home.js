@@ -5,22 +5,16 @@ import { Footer } from "../header-footer/footer";
 import { Carrusel } from "./Carrusel";
 import "../styles/home.css";
 import { ProximosEventos } from "./ProximosEventos";
+import { ViviLaExperiencia } from "./ViviLaExperiencia";
 
 export const Home = () => {
-  const { isAuthenticated } = useAuth0();
-
   return (
     <>
       <Header />
       <main className="App">
-        {isAuthenticated && (
-          <>
-            Usted se logeo correctamente (para ver su perfil haga click arriba a
-            la derecha)
-          </>
-        )}
         <Carrusel />
         <ProximosEventos />
+        <ViviLaExperiencia />
       </main>
       <Footer />
     </>

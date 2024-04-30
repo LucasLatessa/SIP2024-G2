@@ -9,12 +9,66 @@
   --color-letras-primario: #000;
   --color-letras-secundario: #ffffff;
   --color-letras-terceario: red;
+  --color-letras-cuaternario: #01A198;
 
   /*Fuentes*/
   font-family: "Black regular";
   font-size: 16px;
 }
 
+
 article.evento {
-    background-color: #ffffff;
+  display: grid;
+  grid-template-areas:
+    "imagen imagen"
+    "nombre nombre"
+    "fecha fecha"
+    "precio comprar";
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: auto 5% 10% auto;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--color-letras-secundario);
+  border-radius: 10px;
+}
+
+article.evento h2 {
+  grid-area: nombre;
+  width: 100%;
+  height: auto;
+  text-transform: uppercase;
+}
+
+article.evento img {
+  grid-area: imagen;
+  width: 95%;
+  height: 90%;
+  border-radius: 5px;
+}
+
+article.evento .precio {
+  grid-area: precio;
+}
+
+article.evento .fecha {
+  grid-area: fecha;
+  width: 100%;
+  height: auto;
+}
+
+article.evento a {
+  grid-area: comprar;
+  padding: 0.5rem;
+  text-decoration: none;
+  border-radius: 30px;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+  width: 7rem;
+}
+
+article.evento a:hover{
+  background-color: var(--color-letras-secundario);
+  color: var(--color-letras-terceario);
+  border: 1px solid var(--color-letras-terceario);
 }

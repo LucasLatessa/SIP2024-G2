@@ -1,0 +1,55 @@
+/* Estilo basico del sitio en raiz */
+:root {
+    /*Colores a utilizar*/
+    --color-principal: #000;
+    --color-principal-claro: #fddf8a;
+    --color-secundario: #231f20;
+  
+    /*Letras*/
+    --color-letras-primario: #000;
+    --color-letras-secundario: #ffffff;
+    --color-letras-terceario: red;
+  
+    /*Fuentes*/
+    font-family: "Black regular";
+    font-size: 16px;
+  }
+  
+.viviLaExperiencia{
+    background-image: url("../../images/ViviLaExperiencia.jpg");
+    background-repeat: no-repeat;
+    width: auto;
+    height: 30%;
+}
+
+.viviLaExperiencia .titulo{
+    padding: 1rem 0rem 0rem 0rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 2rem;
+    color: var(--color-letras-secundario);
+    text-shadow: 2px 2px 4px var(--color-letras-primario);
+}
+
+.experiencias{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+figure {
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: rgba(11, 39, 57, 0.64);
+}
+
+figure img{
+    width: 20%;
+    padding: 0.5rem;
+}
+
+figure figcaption{
+    text-transform: uppercase;
+    color: var(--color-letras-secundario);
+    font-weight: bold;
+}
