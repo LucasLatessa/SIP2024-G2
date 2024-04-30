@@ -1,0 +1,64 @@
+/* Estilo basico del sitio en raiz */
+:root {
+  /*Colores a utilizar*/
+  --color-principal: #000;
+  --color-principal-claro: #fddf8a;
+  --color-secundario: #231f20;
+
+  /*Letras*/
+  --color-letras-primario: #000;
+  --color-letras-secundario: #ffffff;
+  --color-letras-terceario: red;
+
+  /*Fuentes*/
+  font-family: "Black regular";
+  font-size: 16px;
+}
+
+/* Para que el footer no quede flotando */
+main {
+  min-height: 60vh;
+}
+
+.header-principal {
+  background-color: var(--color-principal);
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/*Ubicacion del logo
+.header-principal > h1 {
+  flex-basis: 80%;
+  text-align: center;
+}*/
+
+.navegacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navegacion li{
+    list-style: none;
+    padding: 0rem 1.2rem;
+}
+
+.navegacion li a{
+    text-decoration: none;
+    color: var(--color-letras-secundario);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.logo {
+  width: 5rem;
+}
+
+.icono-usuario {
+  padding: 0rem 1rem;
+  width: 2.2rem;
+  cursor: pointer;
+}

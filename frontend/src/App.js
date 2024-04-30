@@ -5,7 +5,7 @@ import { Home } from './components/home';
 import { Profile } from './components/profile';
 import { Events } from './components/events';
 import { Marketplace } from './components/marketplace';
-import { Benefits } from './components/benefits';
+import { Beneficios } from './components/beneficios';
 import { PruebaDb } from './components/pruebadb';
 import { Users } from './components/users';
 
@@ -17,7 +17,7 @@ function App() {
         <Route path="/perfil" element={<Profile />} /> 
         <Route path="/eventos" element={<Events />} /> 
         <Route path="/mercado" element={<Marketplace />} /> 
-        <Route path="/beneficios" element={<Benefits />} /> 
+        <Route path="/beneficios" element={<Beneficios />} /> 
         <Route path="/prueba" element={<PruebaDb />} /> 
         <Route path="/validarusuario" element={<Users />} /> 
 
