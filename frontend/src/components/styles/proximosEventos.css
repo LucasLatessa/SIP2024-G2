@@ -14,4 +14,16 @@
     font-family: "Black regular";
     font-size: 16px;
   }
+
+header.proximosEventos{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.proximosEventos h2{
+  text-transform: uppercase;
+  color: var(--color-letras-secundario);
+
+}
   
