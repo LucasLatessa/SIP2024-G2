@@ -24,6 +24,10 @@ header.proximosEventos{
 .proximosEventos h2{
   text-transform: uppercase;
   color: var(--color-letras-secundario);
-
 }
   
+.listaEventos{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

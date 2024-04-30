@@ -10,7 +10,12 @@ export const ProximosEventos = () => {
                 <h2>Proximos eventos</h2>
                 <Link to="/eventos"> Todos los eventos </Link>
             </header>
-            <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
+            <div className="listaEventos">
+                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
+                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
+                <EventosBox nombre={"test"} precio={"test"} fecha={"test"}/>
+            </div>
+            
         </section>    
     );
 }
