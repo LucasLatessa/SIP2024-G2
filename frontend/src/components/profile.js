@@ -39,7 +39,8 @@ export const Profile = () => {
   }, [isAuthenticated]);
 
   if (isLoading || loadingCliente) {
-    return <div>Usted no esta logueado ...</div>;
+    return (<div>Usted no esta logueado...
+    <button onClick={handleHome}>Volver</button></div>);
   }
 
   return (
@@ -49,7 +50,7 @@ export const Profile = () => {
         {/* Mostrar la información del cliente si está disponible */}
         {clienteData && (
           <div>
-            <h2>Cliente Information</h2>
+            <h2>Informacion del cliente </h2>
             <p>ID: {clienteData.user_id}</p>
             <p>DNI:
             <input

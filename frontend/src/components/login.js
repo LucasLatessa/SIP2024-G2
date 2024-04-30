@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 
-export const Users = () => {
+export const Login = () => {
   const { user, isAuthenticated } = useAuth0();
   const [responseMessage, setResponseMessage] = useState('');
   const navigate = useNavigate();
