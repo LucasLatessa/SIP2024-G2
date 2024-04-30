@@ -6,6 +6,8 @@ import { Profile } from './components/profile';
 import { Events } from './components/events';
 import { Marketplace } from './components/marketplace';
 import { Benefits } from './components/benefits';
+import { PruebaDb } from './components/pruebadb';
+
 function App() {
   return (
     <Router>
@@ -15,6 +17,7 @@ function App() {
         <Route path="/eventos" element={<Events />} /> 
         <Route path="/mercado" element={<Marketplace />} /> 
         <Route path="/beneficios" element={<Benefits />} /> 
+        <Route path="/prueba" element={<PruebaDb />} /> 
       </Routes>
     </Router>
   );
