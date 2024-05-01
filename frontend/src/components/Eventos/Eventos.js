@@ -2,11 +2,11 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { EventosBox } from "../EventosBox";
 import "../styles/Eventos.css";
-import { useFetch } from "../useFetch";
+import { FetchGET } from "../../services/service";
 
 
 export const Eventos = () => {
-  const {data, loading, error} = useFetch("http://127.0.0.1:8000/eventos/Eventos")
+  const {data, loading, error} = FetchGET("http://127.0.0.1:8000/eventos/Eventos")
 
   return (
     <>

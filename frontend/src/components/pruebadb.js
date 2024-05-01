@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getDataFromAPI } from './service';
+import { getDataFromAPI } from '../services/service';
 
 const PruebaDb = () => {
   const [data, setData] = useState(null);

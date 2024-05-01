@@ -1,12 +1,12 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
-import { useFetch } from "../useFetch";
+import { FetchGET } from "../../services/service";
 import "../styles/EventoPage.css"
 
 export const EventoPage = () => {
   const { id } = useParams(); //Obtengo el id del evento
-  const { data, loading, error } = useFetch(
+  const { data , loading, error } = FetchGET(
     `http://127.0.0.1:8000/eventos/Eventos/${id}`
   );
 
@@ -29,7 +29,9 @@ export const EventoPage = () => {
           <p>No existe el evento</p>
         )}
         <section className="comprarEntradas">
-          <p>Proximamente xd</p>
+          <form>
+            
+          </form>
         </section>
       </main>
       <Footer />

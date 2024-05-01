@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import "../styles/proximosEventos.css";
 import "../EventosBox";
 import { EventosBox } from "../EventosBox";
-import { useFetch } from "../useFetch";
+import { FetchGET } from "../../services/service";
 
 export const ProximosEventos = () => {
-  const { data, loading, error } = useFetch(
+  const { data, loading, error } = FetchGET(
     "http://127.0.0.1:8000/eventos/Eventos"
   );
 
