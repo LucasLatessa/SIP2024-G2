@@ -3,7 +3,7 @@ import { Home } from "./components/Home/Home";
 import { Profile } from "./components/profile";
 import { Logup } from "./components/Logup";
 import { Eventos } from "./components/Eventos/Eventos";
-import { Marketplace } from "./components/marketplace";
+import { Marketplace } from "./components/Eventos/marketplace";
 import { Beneficios } from "./components/beneficios";
 import { PruebaDb } from "./components/pruebadb";
 import { EventoPage } from "./components/Eventos/EventoPage";
