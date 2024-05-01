@@ -29,7 +29,7 @@ class Precio(models.Model):
 class Publicacion(models.Model):
     id_Publicacion = models.AutoField(primary_key=True)
     precio = models.FloatField()
-    fecha= models.DateTimeField(blank=True, null=True)
+    fecha= models.DateField(blank=True, null=True)
     publica = models.BooleanField(default=True)
     ticket = models.ForeignKey(Ticket, models.DO_NOTHING, db_column='ticket', blank=True, null=True)
     def __str__(self):
