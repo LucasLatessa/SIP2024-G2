@@ -33,5 +33,13 @@ def get_all_publication(request):
     # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({'publicaciones': publication_data})
 
-def comprarTicket(request):
-    request
+def comprarTicket(request, evento_id):
+    tickets_evento = Ticket.objects.filter(evento = evento_id)
+
+    for ticket in tickets_evento:
+        if not ticket.propietario:
+            ticket_id = ticket.id_Ticket
+            break
+
+    return JsonResponse({'ticket_id': ticket_id})
+
