@@ -16,6 +16,7 @@ class EstadoEventoView(viewsets.ModelViewSet):
 class LugarView(viewsets.ModelViewSet):
     serializer_class = LugarSerializer
     queryset = Lugar.objects.all()
+    
 def get_all_events(request):
     # Recupera todos los usuarios de la base de datos
     events = Evento.objects.all()
