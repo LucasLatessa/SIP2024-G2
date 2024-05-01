@@ -1,20 +1,32 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useForm } from "react-hook-form";
-import { AxiosPOST, FetchGET } from "../../services/service";
-import axios from 'axios';
+import { crearEvento } from "../../services/eventos.service";
+import { useEffect, useState } from "react";
+import { getAllLugares } from "../../services/lugar.service";
 
+//Encarga de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [lugar, setLugar] = useState([]);
 
-  const {register,formState: {errors}, handleSubmit} = useForm();
+  //Realizo la peticion para cargar los lugares disponibles donde se puede realizar el evento
+  useEffect(() => {
+    async function cargarLugar() {
+      const res = await getAllLugares();
+      setLugar(res.data);
+    }
+    cargarLugar();
+  }, []);
 
-  const { data , loading, error } = FetchGET(
-    `http://127.0.0.1:8000/eventos/Lugar`
-  );
-
-  const onSubmit = handleSubmit(async data => {
-    const res = await axios.post('http://127.0.0.1:8000/eventos/Eventos/',data)
-    console.log(res)
+  //Realizo la peticion para crear el evento
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await crearEvento(data);
+    console.log(res);
   });
 
   return (
@@ -26,30 +38,10 @@ export const ProgramarEvento = () => {
         </header>
         <section>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <label> Nombre del evento
-              <input type="text" {...register('nombre', {
-                required: true
-              })}/>
-              {errors.nombre?.type === 'required' && <p> El campo nombre es requerido</p>}
-            </label>
-            <label> Lugar
-              <select {...register("lugar")}>
-              {data ?.map((lugar) => (
-                <option key={lugar.id_Lugar} value={lugar.id_Lugar}> {lugar.nombre}</option>
-              ))}
-              </select>
-            </label>
-            <label> Cantidad de entradas
-              <input type="number" {...register("cantidadEntradas")}/>
-            </label>
-            <label> Fecha
-              <input type="date" {...register("fecha")}/>
-            </label>
-            <label> Hora
-              <input type="time" {...register("hora")}/>
-            </label>
-            <label htmlFor="imagen"> Imagen
-              <input type="file" accept=".jpg, .png" {...register("imagen")}/>
+            <label>
+              {" "}
+              Nombre del evento
+              <input type="text" {...register("nombre")} />
             </label>
             <input type="submit" value="Enviar" />
           </form>

@@ -2,11 +2,21 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { EventosBox } from "../EventosBox";
 import "../styles/Eventos.css";
-import { FetchGET } from "../../services/service";
+import { getAllEventos } from "../../services/eventos.service";
+import { useEffect, useState } from "react";
 
 
 export const Eventos = () => {
-  const {data, loading, error} = FetchGET("http://127.0.0.1:8000/eventos/Eventos")
+  const [eventos, setEventos] = useState([]);
+
+  //Realizo la peticion
+  useEffect(() => {
+    async function cargarEventos(){
+      const res = await getAllEventos();
+      setEventos(res.data);
+    }
+    cargarEventos();
+  }, [])
 
   return (
     <>
@@ -17,17 +27,15 @@ export const Eventos = () => {
         </header>
         
         <section className="allListaEventosa">
-          {error && <h2>Error: {error}</h2>}
-          {loading && <h2>Cargando eventos...</h2>}
-          {data?.map((evento) => (
+          {eventos?.map((eventos) => (
             <EventosBox
-            id={evento.id_Evento}
-            nombre={evento.nombre}
-            foto={evento.imagen}
+            id={eventos.id_Evento}
+            nombre={eventos.nombre}
+            foto={eventos.imagen}
             precioMin={"500"}
             precioMax={"700"}
-            fecha={evento.fecha}
-            hora={evento.hora}
+            fecha={eventos.fecha}
+            hora={eventos.hora}
           />)
           )}
         </section>
