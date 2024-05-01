@@ -20,9 +20,11 @@ class Lugar(models.Model):
 class Evento(models.Model):
     id_Evento = models.AutoField(primary_key=True)
     nombre = models.TextField()
-    fecha= models.DateTimeField(blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    hora = models.TimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
     estado= models.ForeignKey(EstadoEvento, models.DO_NOTHING, db_column='estadoEvento',blank=True, null=True)
+    imagen = models.ImageField(upload_to="eventos",null=True)
 
     def __str__(self):
         return self.nombre
