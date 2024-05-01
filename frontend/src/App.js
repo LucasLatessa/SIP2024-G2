@@ -7,6 +7,8 @@ import { Marketplace } from "./components/Publicaciones/marketplace";
 import { Beneficios } from "./components/beneficios";
 import { EventoPage } from "./components/Eventos/EventoPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
+import { Mercadopago } from "./components/mercadopago";
+
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/logup" element={<Logup />} />
         <Route path="/evento/:id" element={<EventoPage />} />
         <Route path="/programarEvento" element={<ProgramarEvento />} />
+        <Route path="/mercadopago" element={<Mercadopago />} />
+
       </Routes>
     </Router>
   );
