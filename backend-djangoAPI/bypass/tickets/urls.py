@@ -8,5 +8,6 @@ router.register(r"Publicacion",views.PublicacionView)
 router.register(r"Precio",views.PrecioView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('comprarticket/', views.comprarTicket, name='comprarTicket'),
 ]
