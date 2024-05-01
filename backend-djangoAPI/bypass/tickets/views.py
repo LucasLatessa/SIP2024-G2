@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from .serializer import TicketSerializer, PublicacionSerializer, PrecioSerializer
 from .models import Ticket, Publicacion, Precio
+import mercadopago
+
 
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
@@ -30,3 +32,6 @@ def get_all_publication(request):
 
     # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({'publicaciones': publication_data})
+
+def comprarTicket(request):
+    request
