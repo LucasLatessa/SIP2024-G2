@@ -2,9 +2,19 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { EventosBox } from "../EventosBox";
 import "../styles/Eventos.css";
-import { FetchGET } from "../../services/service";
+import { getAllPublicacion } from "../../services/publicacion.service";
+import { useEffect, useState } from "react";
+
 export const Marketplace = () => {
-    const {data, loading, error} = FetchGET("http://127.0.0.1:8000/tickets/Publicacion/")
+    const [publicaciones, setPublicaciones] = useState([]);
+
+    useEffect(() => {
+      async function cargarPublicaciones(){
+        const res = await getAllPublicacion();
+        setPublicaciones(res.data);
+      }
+      cargarPublicaciones();
+    }, [])
 
     return (
       <>
@@ -15,9 +25,7 @@ export const Marketplace = () => {
           </header>
           
           <section className="allListaEventosa">
-            {error && <h2>Error: {error}</h2>}
-            {loading && <h2>Cargando publicaciones...</h2>}
-            {data?.map((publicacion) => (
+            {publicaciones?.map((publicacion) => (
               <EventosBox
               id={publicacion.id_Publicacion}
               nombre={publicacion.precio}

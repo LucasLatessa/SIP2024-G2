@@ -2,12 +2,20 @@ import { Link } from "react-router-dom";
 import "../styles/proximosEventos.css";
 import "../EventosBox";
 import { EventosBox } from "../EventosBox";
-import { FetchGET } from "../../services/service";
+import { getAllEventos } from "../../services/eventos.service";
+import { useEffect, useState } from "react";
 
 export const ProximosEventos = () => {
-  const { data, loading, error } = FetchGET(
-    "http://127.0.0.1:8000/eventos/Eventos"
-  );
+  const [eventos, setEventos] = useState([]);
+
+  //Realizo la peticion
+  useEffect(() => {
+    async function cargarEventos(){
+      const res = await getAllEventos();
+      setEventos(res.data);
+    }
+    cargarEventos();
+  }, [])
 
   return (
     <section>
@@ -18,17 +26,15 @@ export const ProximosEventos = () => {
         </Link>
       </header>
       <div className="listaEventos">
-        {error && <h2>Error: {error}</h2>}
-        {loading && <h2>Cargando eventos...</h2>}
-        {data?.slice(0, 3).map((evento) => ( //Traigo solo los primeros 3
+        {eventos?.slice(0, 3).map((eventos) => ( //Traigo solo los primeros 3
           <EventosBox
-            nombre={evento.nombre}
-            foto={evento.imagen}
+            nombre={eventos.nombre}
+            foto={eventos.imagen}
             precioMin={"500"}
             precioMax={"700"}
-            fecha={evento.fecha}
-            hora={evento.hora}
-            id={evento.id_Evento}
+            fecha={eventos.fecha}
+            hora={eventos.hora}
+            id={eventos.id_Evento}
           />
         ))}
       </div>
