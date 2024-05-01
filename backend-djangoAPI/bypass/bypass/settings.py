@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'eventos',
     'tickets',
     'usuarios',
-    'Transferencia'
+    'Transferencia',
+    'coreapi'
 ]
 
 MIDDLEWARE = [
@@ -124,7 +125,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -152,3 +152,7 @@ CORS_ALLOW_HEADERS = [
     "authorization",
     "content-type",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}

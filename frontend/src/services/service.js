@@ -1,5 +1,6 @@
 //import { callExternalApi } from "./external-api.service";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 
@@ -57,6 +58,19 @@ export function FetchGET(url) {
 }
 
 /*
+export async function AxiosPOST(url,data){
+  try {
+    const response = await axios({
+      url: url,
+      method: 'POST',
+      data: data
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+
 export const getAdminResource = async (accessToken) => {
   const config = {
     url: `${apiServerUrl}/api/private-scoped`,
