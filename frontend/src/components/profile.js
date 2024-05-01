@@ -3,39 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
 import { LogoutButton } from "./buttons/logoutButton";
-import axios from 'axios';
-
 export const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const [clienteData, setClienteData] = useState(null); // Estado para almacenar los datos del cliente
-  const [loadingCliente, setLoadingCliente] = useState(true); // Estado para controlar el estado de carga de la solicitud
-  const handleUpdateProfile = () => {
-    // Realizar la solicitud de actualización al backend utilizando Axios
-    //clienteData.dni = 5;
-    //clienteData.apellido = "sjdaklfjsadkfld;sajafkl;dsajf";
-    axios.put(`http://localhost:8000/usuarios/clientes/update/${clienteData.user_id}/`, clienteData)
-      .then(response => {
-        // Verificar si la respuesta es exitosa
-        if (response.status === 200) {
-          // Actualizar el estado de clienteData con los datos actualizados del backend
-          setClienteData(response.data.cliente);
-          console.log('Perfil del cliente actualizado:', response.data.cliente);
-        } else {
-          throw new Error('Error al actualizar el perfil del cliente');
-        }
-      })
-      .catch(error => {
-        console.error('Error al actualizar el perfil del cliente:', error);
-      });
-  };
+  const [clienteData, setClienteData] = useState(null); 
+  const [loadingCliente, setLoadingCliente] = useState(true); 
+  
   const handleHome = () => {
     navigate('/');
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Realizar la solicitud para obtener la información del cliente por su nickname
       fetch(`http://localhost:8000/usuarios/clientes/${user.nickname}/`)
         .then(response => {
           if (!response.ok) {
@@ -62,7 +41,6 @@ export const Profile = () => {
     isAuthenticated && (
       <div>
         <img src={user.picture} alt={user.name} />
-        {/* Mostrar la información del cliente si está disponible */}
         {clienteData && (
           <div>
             <h2>Informacion del cliente </h2>
@@ -101,7 +79,7 @@ export const Profile = () => {
             
           </div>
         )}
-        <UpdateProfileButton onClick={handleUpdateProfile} />
+        <UpdateProfileButton/>
         <button onClick={handleHome}>Volver</button>
         <LogoutButton />
       </div>
