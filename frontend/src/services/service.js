@@ -3,24 +3,7 @@ import { useEffect, useState } from "react";
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 
-export const getAdminResource = async (accessToken) => {
-  const config = {
-    url: `${apiServerUrl}/api/private-scoped`,
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  //const { data, error } = await callExternalApi({ config });
-
-  /*return {
-    data: data || null,
-    error,
-  };*/
-};
-
+//Traer todos los clientes de la BD
 export const getDataFromAPI = () => {
   return fetch("http://localhost:8000/usuarios/clientes/all/")
     .then((response) => {
@@ -72,3 +55,22 @@ export function FetchGET(url) {
 
   return { data, loading, error };
 }
+
+/*
+export const getAdminResource = async (accessToken) => {
+  const config = {
+    url: `${apiServerUrl}/api/private-scoped`,
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  //const { data, error } = await callExternalApi({ config });
+
+  /*return {
+    data: data || null,
+    error,
+  };
+};*/
