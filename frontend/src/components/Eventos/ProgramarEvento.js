@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form";
 import { crearEvento } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { getAllLugares } from "../../services/lugar.service";
+import { useNavigate } from "react-router";
+import "../styles/programarEvento.css";
 
-//Encarga de realizar la creacion de eventos dentro de la pagina
+//Encargado de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento = () => {
+  const navegate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -26,9 +29,10 @@ export const ProgramarEvento = () => {
   //Realizo la peticion para crear el evento
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
-    console.log(data)
+    //console.log(data)
     const res = await crearEvento(data);
-    console.log(res);
+    //console.log(res);
+    navegate("/eventos");
   });
 
   return (
@@ -38,35 +42,136 @@ export const ProgramarEvento = () => {
         <header className="tituloEventos">
           <h1>Programar Evento</h1>
         </header>
-        <section>
-          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-            <label> Nombre del evento
-              <input type="text" {...register("nombre",{
-                required: true
-              })} />
-            </label>
-            <label> Lugar
-              <select {...register("lugar")}>
-                {lugar ?.map((lugar) => (
-                  <option key={lugar.id_Lugar} value={lugar.id_Lugar}> {lugar.nombre} </option>
-                ))}
-              </select>
-            </label>
-            <label> Cantidad de entradas
-              <input type="number" {...register("cantidadEntradas",{
-                required: true
-              })} />
-            </label>
-            <label> Fecha
-              <input type="date" {...register("fecha")}/>
-            </label>
-            <label> Hora
-              <input type="time" {...register("hora")}/>
-            </label>
-            <label> Imagen
-              <input type="file" {...register("imagen")}/>
-            </label>
-            <input type="submit" value="Enviar" />
+        <section className="crearEvento">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            encType="multipart/form-data"
+            className="formularioEvento"
+          >
+            <div className="datosEvento">
+              <label>
+                Nombre del evento
+                <input
+                  type="text"
+                  {...register("nombre", {
+                    required: true,
+                  })}
+                />
+              </label>
+              <label>
+                Lugar
+                <select
+                  {...register("lugar", {
+                    required: true,
+                  })}
+                >
+                  {lugar?.map((lugar) => (
+                    <option key={lugar.id_Lugar} value={lugar.id_Lugar}>
+                      {lugar.nombre}{" "}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Cantidad de entradas
+                <input
+                  type="number"
+                  {...register("cantidadEntradas", {
+                    required: true,
+                  })}
+                />
+              </label>
+              <label>
+                Fecha
+                <input
+                  type="date"
+                  {...register("fecha", {
+                    required: true,
+                  })}
+                />
+              </label>
+              <label>
+                Hora
+                <input
+                  type="time"
+                  {...register("hora", {
+                    required: true,
+                  })}
+                />
+              </label>
+              <label>
+                Imagen
+                <input
+                  type="file"
+                  {...register("imagen", {
+                    required: true,
+                  })}
+                />
+              </label>
+            </div>
+            <div className="datosEntradas">
+              <div className="tipoEntrada">
+                <label>
+                  Entradas VIP
+                  <input
+                    type="number"
+                    {...register("cantidadEntradasVIP", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Precio
+                  <input
+                    type="number"
+                    {...register("precioVIP", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+              <div className="tipoEntrada">
+                <label>
+                  Entradas Platinium
+                  <input
+                    type="number"
+                    {...register("cantidadEntradasPlatinium", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Precio
+                  <input
+                    type="number"
+                    {...register("precioPlatinium", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+              <div className="tipoEntrada">
+                <label>
+                  Entradas Standard
+                  <input
+                    type="number"
+                    {...register("cantidadEntradasStandard", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Precio
+                  <input
+                    type="number"
+                    {...register("precioStandard", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+            </div>
+            <input className="buttonCrearEvento" type="submit" value="Enviar" />
           </form>
         </section>
       </main>
