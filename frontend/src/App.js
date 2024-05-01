@@ -6,6 +6,7 @@ import { Eventos } from "./components/Eventos/Eventos";
 import { Marketplace } from "./components/Publicaciones/marketplace";
 import { Beneficios } from "./components/beneficios";
 import { EventoPage } from "./components/Eventos/EventoPage";
+import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/beneficios" element={<Beneficios />} />
         <Route path="/logup" element={<Logup />} />
         <Route path="/evento/:id" element={<EventoPage />} />
+        <Route path="/publicacion/:id" element={<PublicacionPage />} />
         <Route path="/programarEvento" element={<ProgramarEvento />} />
       </Routes>
     </Router>
