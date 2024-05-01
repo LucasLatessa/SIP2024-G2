@@ -4,13 +4,14 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from eventos.models import Evento
+from usuarios.models import Cliente
 # Create your models here.
 
 class Ticket(models.Model):
     id_Ticket = models.AutoField(primary_key=True)
     precioInicial = models.FloatField()
     evento = models.ForeignKey(Evento, models.DO_NOTHING, db_column='evento', blank=True, null=True)
-    propietario = models.BooleanField(default=False)
+    propietario = models.ForeignKey(Cliente, on_delete=models.CASCADE, blank=True, null=True, default=None)# Relación con Cliente
 #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
 #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
 #PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
