@@ -17,7 +17,7 @@ export const Header = () => {
 
   return (
     <header className="header-principal">
-      <h1>
+      <h1 className="logoHeader">
         <Link to="/"><img src="assets/LogoSinFondoBlanco.png" alt="ByPass" className="logo"/></Link>
       </h1>
       <nav className="navegacion">

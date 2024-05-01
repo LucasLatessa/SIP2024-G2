@@ -22,10 +22,19 @@ main {
 
 .header-principal {
   background-color: var(--color-principal);
-  padding: 0.5rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+  height: auto;
+}
+
+.logoHeader{
+  margin: 0.7rem;
 }
 
 /*Ubicacion del logo
