@@ -19,7 +19,7 @@ function App() {
         <Route path="/beneficios" element={<Beneficios />} /> 
         <Route path="/prueba" element={<PruebaDb />} /> 
         <Route path="/login" element={<Login />} /> 
-        <Route path="/pruebaEvento" element={<EventoPage />} /> 
+        <Route path="/evento/:id" element={<EventoPage/>} /> 
 
       </Routes>
     </Router>

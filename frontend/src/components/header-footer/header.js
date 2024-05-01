@@ -18,7 +18,7 @@ export const Header = () => {
   return (
     <header className="header-principal">
       <h1 className="logoHeader">
-        <Link to="/"><img src="assets/LogoSinFondoBlanco.png" alt="ByPass" className="logo"/></Link>
+        <Link to="/"><img src="/assets/LogoSinFondoBlanco.png" alt="ByPass" className="logo"/></Link>
       </h1>
       <nav className="navegacion">
         <li><Link to="/eventos">Eventos</Link></li>
@@ -27,7 +27,7 @@ export const Header = () => {
         <li>{!isAuthenticated && (
             <div className="login" onClick={handleLoginClick}>
               <img
-                src="assets/user.png"
+                src="/assets/user.png"
                 alt="Usuario"
                 className="icono-usuario"
               />
@@ -35,7 +35,7 @@ export const Header = () => {
         )}
         {isAuthenticated && (
             <div className="profile" onClick={handleProfileClick}>
-              <img src="assets/user.png" alt="Usuario" className="icono-usuario" />
+              <img src="/assets/user.png" alt="Usuario" className="icono-usuario" />
             </div>
         )}</li>
         

@@ -37,7 +37,7 @@
     align-items: center;
 }
 
-figure {
+.experiencias figure {
     padding: 1rem;
     border-radius: 5px;
     background-color: rgba(11, 39, 57, 0.64);
@@ -47,12 +47,12 @@ figure {
     text-align: center; /* Alinear contenido de figcaption al centro */
 }
 
-figure img{
+.experiencias figure img{
     width: 20%;
     padding: 0.5rem;
 }
 
-figure figcaption{
+.experiencias figure figcaption{
     text-transform: uppercase;
     color: var(--color-letras-secundario);
     font-weight: bold;

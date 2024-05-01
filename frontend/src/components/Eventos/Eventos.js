@@ -15,11 +15,13 @@ export const Eventos = () => {
         <header className="tituloEventos">
           <h1>Eventos</h1>
         </header>
+        
         <section className="allListaEventosa">
           {error && <h2>Error: {error}</h2>}
-          {loading && <h2>Loading...</h2>}
+          {loading && <h2>Cargando eventos...</h2>}
           {data?.map((evento) => (
             <EventosBox
+            id={evento.id_Evento}
             nombre={evento.nombre}
             foto={evento.imagen}
             precioMin={"500"}

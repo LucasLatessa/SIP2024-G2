@@ -18,7 +18,9 @@ export const ProximosEventos = () => {
         </Link>
       </header>
       <div className="listaEventos">
-        {data?.slice(0, 3).map((evento) => (
+        {error && <h2>Error: {error}</h2>}
+        {loading && <h2>Cargando eventos...</h2>}
+        {data?.slice(0, 3).map((evento) => ( //Traigo solo los primeros 3
           <EventosBox
             nombre={evento.nombre}
             foto={evento.imagen}
@@ -26,6 +28,7 @@ export const ProximosEventos = () => {
             precioMax={"700"}
             fecha={evento.fecha}
             hora={evento.hora}
+            id={evento.id_Evento}
           />
         ))}
       </div>
