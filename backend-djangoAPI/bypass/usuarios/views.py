@@ -77,7 +77,8 @@ def cliente_create(request):
     nombre = my_data.get("nombre", "")
     apellido = my_data.get("apellido", "")
     correo = my_data.get("correo", "")
-    
+    dni = my_data.get("dni", "")
+
     # Verificar si ya existe un cliente con el correo electrónico
     cliente_existente = Cliente.objects.filter(correo=correo).first()
     if not(cliente_existente):    
@@ -90,7 +91,7 @@ def cliente_create(request):
                 correo=correo,
                 creacion = datetime.now(),
                 rol='',
-                dni=''
+                dni=dni
             )
             return JsonResponse({'mensaje': 'Cliente creado con éxito'}, status=201)
         except ValidationError as e:
@@ -117,7 +118,6 @@ def update_cliente(request, cliente_id):
 
     print(dni)
     print(apellido)
-    print("fesaf")
     # Actualizar los campos del cliente con los nuevos datos
     cliente.user_id = cliente_id
     cliente.nickname = nickname
