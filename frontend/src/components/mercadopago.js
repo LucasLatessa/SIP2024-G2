@@ -10,7 +10,8 @@ const Mercadopago = () => {
     
     const createPreference = async () => {
         try {
-            const response = await axios.post("http//localhost:8000/tickets/comprarticket/1")
+            const evento = "1"
+            const response = await axios.get(`http//localhost:8000/tickets/comprarticket/${evento}/`);
             const {ticket_id} = response.data;
             return ticket_id;
 
@@ -31,6 +32,5 @@ const Mercadopago = () => {
         {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts:{ valueProp: 'smart_option'}}} /> }       
         
     </div>
-
 
 }

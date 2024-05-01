@@ -9,8 +9,7 @@ router.register(r"Precio",views.PrecioView)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('comprarticket/', views.comprarTicket, name='comprarTicket'),
-
+    path('comprarticket/<int:evento_id>/', views.comprarTicket, name='comprarTicket'),
     path('publicacion/all/', views.get_all_publication, name='get_all_publication'),
 
 ]
