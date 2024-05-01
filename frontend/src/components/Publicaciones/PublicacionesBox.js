@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import "../styles/eventosBox.css";
 
-export const PublicacionesBox = ({ id,nombre, foto, precio, fecha}) => {
+export const PublicacionesBox = ({ id, foto, precio,eventoNombre,eventoFecha,eventoHora}) => {
     return(
         <article className="evento">
-            <h2>{nombre}</h2>
+            <h2>{eventoNombre}</h2>
             <img src={foto} alt="Imagen del evento" />
             <p className="precio"> ${precio}</p>
-            <p  className="fecha">Fecha publicada: {fecha} </p>
+            <p className="fecha">{eventoFecha} - {eventoHora}</p>
             <Link to={`/publicacion/${id}`}>Comprar</Link>
         </article>
     );
