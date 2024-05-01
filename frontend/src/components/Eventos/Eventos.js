@@ -11,7 +11,7 @@ export const Eventos = () => {
         <header className="tituloEventos">
           <h1>Eventos</h1>
         </header>
-        <section className="listaEventos">
+        <section className="allListaEventosa">
           <EventosBox
             nombre={"Tan Bionica"}
             foto={"./assets/TanBionica.jpg"}

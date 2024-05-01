@@ -9,6 +9,7 @@
   --color-letras-primario: #000;
   --color-letras-secundario: #ffffff;
   --color-letras-terceario: red;
+  --color-letras-cuaternario: #01A198;
 
   /*Fuentes*/
   font-family: "Black regular";
@@ -60,6 +61,11 @@ main {
     color: var(--color-letras-secundario);
     font-size: 1.2rem;
     text-transform: uppercase;
+}
+
+.navegacion li a:hover, .icono-usuario:hover{
+  color: var(--color-letras-cuaternario);
+  border-bottom: 5px solid var(--color-letras-cuaternario);
 }
 
 .logo {

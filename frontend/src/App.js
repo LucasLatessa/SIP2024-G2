@@ -8,6 +8,7 @@ import { Marketplace } from './components/marketplace';
 import { Beneficios } from './components/beneficios';
 import { PruebaDb } from './components/pruebadb';
 import { Login } from './components/login';
+import { EventoPage } from "./components/Eventos/EventoPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/beneficios" element={<Beneficios />} /> 
         <Route path="/prueba" element={<PruebaDb />} /> 
         <Route path="/login" element={<Login />} /> 
+        <Route path="/pruebaEvento" element={<EventoPage />} /> 
 
       </Routes>
     </Router>
