@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import "./styles/eventosBox.css";
 
-export const EventosBox = ({nombre, foto, precioMin, precioMax, fecha}) => {
+export const EventosBox = ({nombre, foto, precioMin, precioMax, fecha,hora}) => {
     return(
         <article className="evento">
             <h2>{nombre}</h2>
             <img src={foto} alt="Imagen del evento" />
             <p className="precio"> ${precioMin} a ${precioMax}</p>
-            <p className="fecha">{fecha}</p>
+            <p className="fecha">{fecha} - {hora}</p>
             <Link to="/pruebaEvento">Comprar</Link>
         </article>
     );

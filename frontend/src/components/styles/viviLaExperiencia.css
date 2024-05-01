@@ -41,6 +41,10 @@ figure {
     padding: 1rem;
     border-radius: 5px;
     background-color: rgba(11, 39, 57, 0.64);
+    display: flex;
+    flex-direction: column; /* Alinear elementos uno debajo del otro */
+    align-items: center; /* Alinear elementos horizontalmente al centro */
+    text-align: center; /* Alinear contenido de figcaption al centro */
 }
 
 figure img{

@@ -18,7 +18,7 @@
 
 .tituloEventos {
   margin: 0;
-  padding: 10rem;
+  padding: 8rem;
   background-image: url(../../images/show-familiar.jpeg);
   background-repeat: no-repeat;
   background-size: auto;
@@ -28,7 +28,7 @@
 
 .tituloEventos h1 {
   text-align: center;
-  font-size: 3rem;
+  font-size: 5rem;
   color: var(--color-letras-secundario);
   text-shadow: 2px 2px 4px var(--color-letras-primario);
 }
