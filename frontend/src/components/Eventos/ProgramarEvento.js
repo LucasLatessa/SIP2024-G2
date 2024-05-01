@@ -25,6 +25,8 @@ export const ProgramarEvento = () => {
 
   //Realizo la peticion para crear el evento
   const onSubmit = handleSubmit(async (data) => {
+    data.imagen = data.imagen[0]; //Para guardar la imagen
+    console.log(data)
     const res = await crearEvento(data);
     console.log(res);
   });
@@ -37,11 +39,32 @@ export const ProgramarEvento = () => {
           <h1>Programar Evento</h1>
         </header>
         <section>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>
-              {" "}
-              Nombre del evento
-              <input type="text" {...register("nombre")} />
+          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+            <label> Nombre del evento
+              <input type="text" {...register("nombre",{
+                required: true
+              })} />
+            </label>
+            <label> Lugar
+              <select {...register("lugar")}>
+                {lugar ?.map((lugar) => (
+                  <option key={lugar.id_Lugar} value={lugar.id_Lugar}> {lugar.nombre} </option>
+                ))}
+              </select>
+            </label>
+            <label> Cantidad de entradas
+              <input type="number" {...register("cantidadEntradas",{
+                required: true
+              })} />
+            </label>
+            <label> Fecha
+              <input type="date" {...register("fecha")}/>
+            </label>
+            <label> Hora
+              <input type="time" {...register("hora")}/>
+            </label>
+            <label> Imagen
+              <input type="file" {...register("imagen")}/>
             </label>
             <input type="submit" value="Enviar" />
           </form>

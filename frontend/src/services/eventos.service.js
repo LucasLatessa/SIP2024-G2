@@ -10,7 +10,10 @@ export const getAllEventos = () => eventosAPI.get('/');
 
 export const getEvento = (id) => eventosAPI.get(`/${id}`);
 
-export const crearEvento = (evento) => eventosAPI.post('/',evento);
+export const crearEvento = (evento) => eventosAPI.post('/',evento,{
+  headers: {
+    'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
+  }});
 
 
 
