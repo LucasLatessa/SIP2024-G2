@@ -4,30 +4,47 @@ import { useParams } from "react-router";
 import "../styles/EventoPage.css"
 import { useEffect, useState } from "react";
 import { getPublicacion } from "../../services/publicacion.service";
+import { getEvento } from "../../services/eventos.service";
+import { getTicket } from "../../services/tickets.service";
 export const PublicacionPage = () => {
   const { id } = useParams(); //Obtengo el id del evento
-  const [publicaciones, setPublicaciones] = useState([]);
+  const [publicacion, setPublicacion] = useState(null);
 
-  //Realizo la peticion
   useEffect(() => {
-    async function cargarPublicaciones(){
-      const res = await getPublicacion(id);
-      setPublicaciones(res.data);
+    async function cargarPublicacion() {
+      try {
+        const res = await getPublicacion(id);
+        const publicacionConInfoCompleta = res.data;
+        const ticketRes = await getTicket(publicacionConInfoCompleta.ticket);
+        const eventoRes = await getEvento(ticketRes.data.evento);
+        const publicacionCompleta = {
+          id: publicacionConInfoCompleta.id_Publicacion,
+          precio: publicacionConInfoCompleta.precio,
+          fecha: publicacionConInfoCompleta.fecha,
+          foto: eventoRes.data.imagen,
+          eventoNombre: eventoRes.data.nombre,
+          eventoFecha: eventoRes.data.fecha,
+          eventoHora: eventoRes.data.hora
+        };
+        setPublicacion(publicacionCompleta);
+      } catch (error) {
+        console.error("Error al cargar la publicación:", error);
+      }
     }
-    cargarPublicaciones();
-  }, [])
+    cargarPublicacion();
+  }, [id]);
 
   return (
     <>
       <Header />
       <main className="App">
-        {publicaciones ? (
+        {publicacion ? (
         <section className="informacionEvento">
-              <h2 className="titulo">{publicaciones.nombre}</h2>
+              <h2 className="titulo">{publicacion.eventoNombre}</h2>
               <figure className="figuraEvento">
-                <img className="imagen" src={publicaciones.imagen} alt={"Imagen " + publicaciones.nombre}/>
+                <img className="imagen" src={publicacion.foto} alt={"Imagen " + publicacion.eventoNombre}/>
                 <figcaption className="descripcion"> Lorem </figcaption>
-                <figcaption className="fechas"> Fecha del evento:  {publicaciones.fecha} - {publicaciones.hora} </figcaption>
+                <figcaption className="fechas"> Fecha del evento:  {publicacion.eventoFecha} - {publicacion.eventoHora} </figcaption>
               </figure>
         </section>
         ) : (

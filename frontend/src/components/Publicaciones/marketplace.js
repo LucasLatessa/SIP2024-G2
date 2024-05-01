@@ -18,7 +18,7 @@ export const Marketplace = () => {
       const ticketRes = await getTicket(publicacion.ticket);
       const eventoRes = await getEvento(ticketRes.data.evento);
       return {
-        id: publicacion.id,
+        id: publicacion.id_Publicacion,
         precio: publicacion.precio,
         fecha: publicacion.fecha,
         foto: eventoRes.data.imagen,
