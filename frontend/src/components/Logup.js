@@ -70,7 +70,7 @@ export const Logup = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label style={{ color: 'black' }}>
           Nickname:
           <input
             type="text"
@@ -78,8 +78,8 @@ export const Logup = () => {
             onChange={(e) => setNickname(e.target.value)}
             disabled={Boolean(nickname)}
           />
-        </label>
-        <label>
+        </label >
+        <label style={{ color: 'black' }}>
           Nombre:
           <input
             type="text"
@@ -87,7 +87,7 @@ export const Logup = () => {
             onChange={(e) => setNombre(e.target.value)}
           />
         </label>
-        <label>
+        <label style={{ color: 'black' }}>
           Apellido:
           <input
             type="text"
@@ -95,7 +95,7 @@ export const Logup = () => {
             onChange={(e) => setApellido(e.target.value)}
           />
         </label>
-        <label>
+        <label style={{ color: 'black' }}>
           Correo:
           <input
             type="email"
@@ -103,7 +103,7 @@ export const Logup = () => {
             onChange={(e) => setCorreo(e.target.value)}
           />
         </label>
-        <label>
+        <label style={{ color: 'black' }}>
           DNI:
           <input
             type="text"
