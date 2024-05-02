@@ -3,7 +3,9 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializer import EventoSerializer, EstadoEventoSerializer, LugarSerializer
 from .models import Evento, EstadoEvento, Lugar
-
+from tickets.models import Ticket
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 class EventoView(viewsets.ModelViewSet):
     serializer_class = EventoSerializer
@@ -26,3 +28,25 @@ def get_all_events(request):
 
     # Devuelve los usuarios como una respuesta JSON
     return JsonResponse({'eventos': event_data})
+
+@csrf_exempt
+@api_view(['POST'])
+def crear_evento(request):
+    try:
+        #Serializo el evento con los datos del POST
+        serializer = EventoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save() #Creo el evento
+
+            cantTickets = request.data.get("cantTickets","")
+            precio = request.data.get("precio","")
+            
+            #Creado el evento, creo los tickets
+            for _ in range(cantTickets):
+                Ticket.objects.create(
+                    evento=serializer.instance,
+                    precioInicial = precio
+                    )
+        return JsonResponse({'mensaje':'Evento creado'},status=201)
+    except Exception as e:
+        return JsonResponse({'error':str(e)},status=400)
