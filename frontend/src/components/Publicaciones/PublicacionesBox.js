@@ -6,7 +6,7 @@ export const PublicacionesBox = ({ id, foto, precio,eventoNombre,eventoFecha,eve
         <article className="evento">
             <h2>{eventoNombre}</h2>
             <img src={foto} alt="Imagen del evento" />
-            <p className="precio"> ${precio} id: {id}</p>
+            <p className="precio"> ${precio}</p>
             <p className="fecha">{eventoFecha} - {eventoHora}</p>
             <Link to={`/publicacion/${id}`}>Comprar</Link>
         </article>

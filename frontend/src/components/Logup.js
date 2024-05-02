@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import "./styles/Logup.css";
 export const Logup = () => {
   const { user, isAuthenticated } = useAuth0();
   const [responseMessage, setResponseMessage] = useState('');
@@ -67,53 +67,55 @@ export const Logup = () => {
     }
   }, [isAuthenticated]);
 
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nickname:
-          <input
-            type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            disabled={Boolean(nickname)}
-          />
-        </label>
-        <label>
-          Nombre:
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
-        </label>
-        <label>
-          Apellido:
-          <input
-            type="text"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-          />
-        </label>
-        <label>
-          Correo:
-          <input
-            type="email"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-          />
-        </label>
-        <label>
-          DNI:
-          <input
-            type="text"
-            value={dni}
-            onChange={(e) => setDni(e.target.value)}
-          />
-        </label>
-        <button type="submit">Crear Cliente</button>
-      </form>
-      <p>{responseMessage}</p>
-    </div>
+  return (<>
+    <main>
+      <div class="datosRegistro">
+        <h1>REGISTRARSE EN BYPASS</h1>
+        <form class="formulario" onSubmit={handleSubmit}>
+          <label>
+            Nickname 
+            <input
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              disabled={Boolean(nickname)} />
+          </label>
+          <label>
+            Nombre 
+            <input
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)} />
+          </label>
+          <label>
+            Apellido 
+            <input
+              type="text"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)} />
+          </label>
+          <label>
+            Correo 
+            <input
+              type="email"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)} 
+              disabled={Boolean(correo)}/>
+          </label>
+          <label>
+            DNI 
+            <input
+              type="text"
+              value={dni}
+              onChange={(e) => setDni(e.target.value)} />
+          </label>
+          <button type="submit">Crear Cliente</button>
+
+        </form>
+        <p>{responseMessage}</p>
+      </div>
+      </main>
+    </>
+
   );
 };
