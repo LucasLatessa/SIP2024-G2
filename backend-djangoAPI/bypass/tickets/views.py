@@ -3,7 +3,10 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from .serializer import TicketSerializer, PublicacionSerializer, PrecioSerializer
 from .models import Ticket, Publicacion, Precio
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 import mercadopago
+import json
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -41,5 +44,34 @@ def obtener_ticket_evento(request, evento_id):
             ticket_id = ticket.id_Ticket
             break
 
+    if ticket_id is None:  # Si no se encontró un ticket sin propietario
+        return None
+
     return JsonResponse({'ticket_id': ticket_id})
+
+
+@csrf_exempt
+@api_view(['POST'])
+def prueba_mercadopago(request):
+    sdk = mercadopago.SDK("TEST-8330452423484899-050122-ab41a07d97f2d8db7adf6bad86701c2d-326308326")
+
+    body = json.loads(request.body) 
+    data_quantity = body.get("quantity") 
+    data_ticket_id = body.get("ticket_id")
+    data_unit_price = body.get("unit_price")
+
+    preference_data = {
+    "items": [
+        {
+            "title": "Mi producto",
+            "quantity": data_quantity,
+            "ticket_id": data_ticket_id,
+            "unit_price": data_unit_price,
+            }
+        ]
+    }
+    preference_response = sdk.preference().create(preference_data)
+    preference = preference_response["response"]
+
+    return JsonResponse({'id': preference["id"]})
 
