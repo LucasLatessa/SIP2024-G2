@@ -10,7 +10,7 @@ from usuarios.models import Cliente
 class Ticket(models.Model):
     id_Ticket = models.AutoField(primary_key=True)
     precioInicial = models.FloatField()
-    evento = models.ForeignKey(Evento, models.DO_NOTHING, db_column='evento', on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, models.DO_NOTHING, db_column='evento', null=True)
     propietario = models.ForeignKey(Cliente, on_delete=models.CASCADE, blank=True, null=True, default=None)# Relación con Cliente
 #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
 #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)

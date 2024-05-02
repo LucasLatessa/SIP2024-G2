@@ -40,7 +40,7 @@ def obtener_ticket_evento(request, evento_id):
     tickets_evento = Ticket.objects.filter(evento = evento_id)
 
     for ticket in tickets_evento:
-        if not ticket.propietario:
+        if ticket.propietario is None:
             ticket_id = ticket.id_Ticket
             break
 
