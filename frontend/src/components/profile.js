@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
 import { LogoutButton } from "./buttons/logoutButton";
+import "./styles/Profile.css"
 export const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export const Profile = () => {
   }, [isAuthenticated]);
 
   if (isLoading || loadingCliente) {
-    return (<div>Usted no esta logueado...
+    return (<div><p>Usted no esta logueado...</p>
     <button onClick={handleHome}>Volver</button></div>);
   }
 
