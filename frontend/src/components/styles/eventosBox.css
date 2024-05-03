@@ -19,6 +19,7 @@ article.evento h2 {
   grid-area: nombre;
   height: auto;
   text-transform: uppercase;
+  color: var(--color-letras-primario)
 }
 
 article.evento img {

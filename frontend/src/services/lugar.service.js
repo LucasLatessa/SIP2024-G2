@@ -1,5 +1,6 @@
-//import { callExternalApi } from "./external-api.service";
 import axios from "axios";
+
+/* PETICIONES A LOS LUGARES DONDE SE LLEVAR A CABO EL EVENTO */
 
 const apiServerUrl = "http://127.0.0.1:8000"
 
