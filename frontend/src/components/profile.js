@@ -45,7 +45,7 @@ export const Profile = () => {
         {clienteData && (
           <div>
             <h2>Informacion del cliente </h2>
-            <p>ID: {clienteData.user_id}</p>
+            <p className="datos">ID: {clienteData.user_id}</p>
             <p>DNI:
             <input
               type="number"
