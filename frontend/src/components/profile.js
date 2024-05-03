@@ -34,56 +34,62 @@ export const Profile = () => {
   }, [isAuthenticated]);
 
   if (isLoading || loadingCliente) {
-    return (<div><p>Usted no esta logueado...</p>
+    return (<div><p className="datos">Usted no esta logueado...</p>
     <button onClick={handleHome}>Volver</button></div>);
   }
 
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        {clienteData && (
-          <div>
-            <h2>Informacion del cliente </h2>
-            <p className="datos">ID: {clienteData.user_id}</p>
-            <p>DNI:
+      <div className="datosContainer">
+      <img src={user.picture} alt={user.name} />
+      {clienteData && (
+        <div>
+          <h2>Informacion del cliente </h2>
+          <p className="datos">ID: {clienteData.user_id}</p>
+          <p className="datos">DNI:
             <input
               type="number"
               value={clienteData.dni}
               onChange={(e) => setClienteData({ ...clienteData, dni: e.target.value })}
-            /></p>
-            <p>Nickname:
+            />
+          </p>
+          <p className="datos">Nickname:
             <input
               type="text"
               value={clienteData.nickname}
               onChange={(e) => setClienteData({ ...clienteData, nickname: e.target.value })}
-            /></p>
-            <p>Nombre:
+            />
+          </p>
+          <p className="datos">Nombre:
             <input
               type="text"
               value={clienteData.nombre}
               onChange={(e) => setClienteData({ ...clienteData, nombre: e.target.value })}
-            /></p>
-            <p>Apellido: 
+            />
+          </p>
+          <p className="datos">Apellido: 
             <input
               type="text"
               value={clienteData.apellido}
               onChange={(e) => setClienteData({ ...clienteData, apellido: e.target.value })}
-            /></p>
-            <p>Correo: 
+            />
+          </p>
+          <p className="datos">Correo: 
             <input
               type="text"
               value={clienteData.correo}
               onChange={(e) => setClienteData({ ...clienteData, correo: e.target.value })}
-            /></p>
-            <p>Rol: {clienteData.rol}</p>
-            
-          </div>
-        )}
-        <UpdateProfileButton/>
+            />
+          </p>
+          <p className="datos">Rol: {clienteData.rol}</p>
+        </div>
+      )}
+      <div className="botones-container">
+        <UpdateProfileButton />
         <button onClick={handleHome}>Volver</button>
         <LogoutButton />
       </div>
+    </div>
     )
   );
 };
