@@ -23,8 +23,11 @@ article.evento h2 {
 
 article.evento img {
   grid-area: imagen;
+  /*365 × 210 px*/
+  /*width: 95%;
+  height: 90%;*/
   width: 95%;
-  height: 90%;
+  height: 210px;
   border-radius: 5px;
 }
 

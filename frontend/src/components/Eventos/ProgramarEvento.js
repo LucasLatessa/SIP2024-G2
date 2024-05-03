@@ -10,11 +10,7 @@ import "../styles/programarEvento.css";
 //Encargado de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento = () => {
   const navegate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const {register, formState: { errors }, handleSubmit} = useForm();
   const [lugar, setLugar] = useState([]);
 
   //Realizo la peticion para cargar los lugares disponibles donde se puede realizar el evento
@@ -31,7 +27,8 @@ export const ProgramarEvento = () => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
     //console.log(data)
     const res = await crearEvento(data);
-    //console.log(res);
+    //console.log(res);.
+    //Vuelvo a la pagina de eventos
     navegate("/eventos");
   });
 
