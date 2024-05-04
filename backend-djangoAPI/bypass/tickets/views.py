@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 import mercadopago
 import json
+from dotenv import load_dotenv
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -54,6 +55,7 @@ def obtener_ticket_evento(request, evento_id):
 @api_view(['POST'])
 def prueba_mercadopago(request):
     sdk = mercadopago.SDK("TEST-8330452423484899-050122-ab41a07d97f2d8db7adf6bad86701c2d-326308326")
+    #os.environ.get("AUTH0_DOMAIN") probar si funciona
 
     body = json.loads(request.body) 
     data_quantity = body.get("quantity") 

@@ -6,7 +6,10 @@ import { useState } from "react";
 
 export const Mercadopago = () => {
     const [preferenceId, setPreferenceId] = useState(null);
+    //const domain = process.env.TEST_MERCADOPAGO; probar
+
     initMercadoPago('TEST-9d712392-de07-4f92-b9de-6af037688169', {locale: "es-AR"});
+    
     
     const obtenerTicket = async () => {
         try {
