@@ -50,16 +50,17 @@ def crear_evento(request):
             cantTickets = request.data.get("cantTickets", "")
             precio = request.data.get("precio", "")
 
-            # Creado el evento, creo los tickets
-            tipo_ticket_vip = get_object_or_404(TipoTickets, id_tipo_ticket=1)
-            print(tipo_ticket_vip)
-            cantEntradas = request.data.get("cantidadEntradasVIP", "")
-            precioEntrada = request.data.get("precioVIP", "")
-            #print(cantEntradas)
-            #print(precioEntrada)
+            # Creado el evento, creo los tickets por tipo
+            for tipo_ticket in TipoTickets.objects.all():
+                print(tipo_ticket)
+                cantEntradas = request.data.get("cantidadEntradas" + tipo_ticket.tipo, "")
+                precioEntrada = request.data.get("precio" + tipo_ticket.tipo, "")
 
-            #Creacio de las entradas del evento, segun el tipo
-            crearTicketConTipo(int(cantEntradas), tipo_ticket_vip, serializer.instance,precioEntrada)
+                print(cantEntradas)
+                print(precioEntrada)
+
+                #Creacio de las entradas del evento, segun el tipo
+                crearTicketConTipo(int(cantEntradas), tipo_ticket, serializer.instance,precioEntrada)
 
         return JsonResponse({"mensaje": "Evento creado"}, status=201)
     except Exception as e:

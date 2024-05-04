@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework import viewsets
@@ -56,8 +57,8 @@ def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que tod
 @csrf_exempt
 @api_view(['POST'])
 def prueba_mercadopago(request): #por el momento asumimos que todo va a funcionar como debe 
-    sdk = mercadopago.SDK("TEST-8330452423484899-050122-ab41a07d97f2d8db7adf6bad86701c2d-326308326")
-    #os.environ.get("AUTH0_DOMAIN") probar si funciona
+    sdk = mercadopago.SDK(os.environ.get("PROD_ACCESS_TOKEN"))
+    #print(sdk)
 
     body = json.loads(request.body) 
     data_quantity = body.get("quantity") 
