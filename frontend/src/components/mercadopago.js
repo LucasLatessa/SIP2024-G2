@@ -8,7 +8,7 @@ export const Mercadopago = () => {
     const [preferenceId, setPreferenceId] = useState(null);
     const dominioMP = process.env.REACT_APP_TEST_MERCADOPAGO;
 
-    initMercadoPago(dominioMP, {locale: "es-AR"});
+    initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", {locale: "es-AR"});
     
     
     const obtenerTicket = async () => { //datos hardcodeados
