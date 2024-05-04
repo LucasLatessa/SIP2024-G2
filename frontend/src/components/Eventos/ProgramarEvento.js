@@ -121,47 +121,8 @@ export const ProgramarEvento = () => {
                   Precio
                   <input
                     type="number"
+                    step="0.01" // Incremento 0.01 para permitir decimales
                     {...register("precioVIP", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Platinium
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasPlatinium", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioPlatinium", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Standard
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasStandard", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioStandard", {
                       required: true,
                     })}
                   />

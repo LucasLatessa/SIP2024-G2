@@ -5,14 +5,14 @@ import axios from "axios";
 const apiServerUrl = "http://127.0.0.1:8000"
 
 const eventosAPI = axios.create({
-  baseURL: `${apiServerUrl}/eventos/Eventos`
+  baseURL: `${apiServerUrl}/eventos`
 })
 
-export const getAllEventos = () => eventosAPI.get('/');
+export const getAllEventos = () => eventosAPI.get('/Eventos/');
 
-export const getEvento = (id) => eventosAPI.get(`/${id}`);
+export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}`);
 
-export const crearEvento = (evento) => eventosAPI.post('/',evento,{
+export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
   headers: {
     'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
   }});
