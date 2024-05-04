@@ -57,7 +57,7 @@ def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que tod
 @csrf_exempt
 @api_view(['POST'])
 def prueba_mercadopago(request): #por el momento asumimos que todo va a funcionar como debe 
-    sdk = mercadopago.SDK(os.environ.get("PROD_ACCESS_TOKEN"))
+    sdk = mercadopago.SDK("TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899")
     #print(sdk)
 
     body = json.loads(request.body) 
@@ -72,11 +72,19 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "quantity": data_quantity,
             "ticket_id": data_ticket_id,
             "unit_price": data_unit_price,
-            }
-        ]
+            },
+        ],
+    "back_urls":{
+            "success": "https://youtube.com",
+            "failure": "https://youtube.com",
+            "pending": "https://youtube.com",
+        },
+    "auto_return": "approved",
+    "notification_url": "https://3393-181-99-247-176.ngrok-free.app/usuarios/clientes/entregar",
     }
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
+    print(preference)
 
     return JsonResponse({'id': preference["id"]})
 
