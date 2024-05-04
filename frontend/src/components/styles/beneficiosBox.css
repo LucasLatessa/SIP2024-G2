@@ -1,70 +1,51 @@
-/* Estilo basico del sitio en raiz */
-:root {
-    /*Colores a utilizar*/
-    --color-principal: #000;
-    --color-principal-claro: #fddf8a;
-    --color-secundario: #231f20;
-  
-    /*Letras*/
-    --color-letras-primario: #000;
-    --color-letras-secundario: #ffffff;
-    --color-letras-terceario: red;
-    --color-letras-cuaternario: #01A198;
-  
-    /*Fuentes*/
-    font-family: "Black regular";
-    font-size: 16px;
-  }
-  
-  
-  article.beneficio {
-    max-width: 400px;
-    max-height: 400px;
-    display: grid;
-    grid-template-areas:
-      "imagen imagen"
-      "nombre nombre"
-      "descripcion descripcion"
-      "codigo porcentaje";
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
-    grid-template-rows: auto 15% 10% auto;
-    grid-template-columns: 1fr 1fr;
-    background-color: var(--color-letras-secundario);
-    border-radius: 10px;
-    margin: 1rem;
-    white-space: normal;
-  }
-  
-  article.beneficio h2 {
-    grid-area: nombre;
-    height: auto;
-    text-transform: uppercase;
-    overflow: hidden;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+article.beneficio {
+  max-width: 400px;
+  max-height: 400px;
+  display: grid;
+  grid-template-areas:
+    "imagen imagen"
+    "nombre nombre"
+    "descripcion descripcion"
+    "codigo porcentaje";
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: auto 15% 10% auto;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--color-letras-secundario);
+  border-radius: 10px;
+  margin: 1rem;
+  white-space: normal;
+}
 
-  article.beneficio .descripcion {
-    padding: 15px;
-    grid-area: descripcion;
-    height: auto;
-    text-transform: uppercase;
-    
-  }
-  
-  article.beneficio img {
-    grid-area: imagen;
-    width: 95%;
-    height: 210px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
+article.beneficio h2 {
+  grid-area: nombre;
+  height: auto;
+  text-transform: uppercase;
+  overflow: hidden;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
-  article.beneficio .descuento, .codigo {
-    background-color: #660080;
-    border-radius: 8px;
-    padding: 10px;
-    color: white;
-  }
+article.beneficio .descripcion {
+  padding: 15px;
+  grid-area: descripcion;
+  height: auto;
+  text-transform: uppercase;
+}
+
+article.beneficio img {
+  grid-area: imagen;
+  width: 95%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+article.beneficio .descuento,
+.codigo {
+  background-color: #660080;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+}
