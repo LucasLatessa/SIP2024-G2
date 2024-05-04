@@ -4,11 +4,12 @@ import { Profile } from "./components/profile";
 import { Logup } from "./components/Logup";
 import { Eventos } from "./components/Eventos/Eventos";
 import { Marketplace } from "./components/Publicaciones/marketplace";
-import { Beneficios } from "./components/beneficios";
+import { Beneficios } from "./components/Beneficios/Beneficios";
 import { EventoPage } from "./components/Eventos/EventoPage";
 import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 import { Mercadopago } from "./components/mercadopago";
+import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <Route path="/publicacion/:id" element={<PublicacionPage />} />
         <Route path="/programarEvento" element={<ProgramarEvento />} />
         <Route path="/mercadopago" element={<Mercadopago />} />
-
+        <Route path="/crearBeneficio" element={<CrearBeneficio />} />
       </Routes>
     </Router>
   );

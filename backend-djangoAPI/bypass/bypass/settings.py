@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'tickets',
     'usuarios',
     'Transferencia',
-    'coreapi'
+    'coreapi',
+    'beneficios'
 ]
 
 MIDDLEWARE = [

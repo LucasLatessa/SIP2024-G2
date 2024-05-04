@@ -1,0 +1,34 @@
+.formularioBeneficio {
+  justify-items: center;
+  height: 50vh;
+}
+
+.datosBeneficio {
+  width: 100%;
+  height: auto;
+  grid-area: beneficio;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttonCrearBeneficio {
+  grid-area: enviar;
+}
+
+/*--*/
+label {
+  color: var(--color-letras-secundario);
+  width: 80%;
+  padding: 0.5rem 0;
+}
+
+/*Datos del Beneficio*/
+
+.datosBeneficio label > input,
+.datosBeneficio label > select {
+  display: block; /*Label arriba del input*/
+  width: 100%;
+}

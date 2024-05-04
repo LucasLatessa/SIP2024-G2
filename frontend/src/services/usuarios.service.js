@@ -1,5 +1,7 @@
 import axios from "axios";
 
+/* PETICIONES A LOS USUARIOS DEL SISTEMA */
+
 const apiServerUrl = "http://127.0.0.1:8000"
 
 const usersAPI = axios.create({

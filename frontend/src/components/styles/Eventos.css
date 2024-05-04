@@ -1,25 +1,7 @@
-/* Estilo basico del sitio en raiz */
-:root {
-  /*Colores a utilizar*/
-  --color-principal: #000;
-  --color-principal-claro: #fddf8a;
-  --color-secundario: #231f20;
-
-  /*Letras*/
-  --color-letras-primario: #000;
-  --color-letras-secundario: #ffffff;
-  --color-letras-terceario: red;
-  --color-letras-cuaternario: #01a198;
-
-  /*Fuentes*/
-  font-family: "Black regular";
-  font-size: 16px;
-}
-
 .tituloEventos {
   margin: 0;
   padding: 8rem;
-  background-image: url(../../images/show-familiar.jpeg);
+  background-image: url(../../images/ViviLaExperiencia.jpg);
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;

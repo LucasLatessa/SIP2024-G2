@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework import viewsets
-from .serializer import TicketSerializer, PublicacionSerializer, PrecioSerializer
-from .models import Ticket, Publicacion, Precio
+from .serializer import TicketSerializer, PublicacionSerializer, PrecioSerializer, TipoTicketSerializer
+from .models import Ticket, Publicacion, Precio, TipoTickets
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 import mercadopago
@@ -21,6 +21,10 @@ class PublicacionView(viewsets.ModelViewSet):
 class PrecioView(viewsets.ModelViewSet):
     serializer_class = PrecioSerializer
     queryset = Precio.objects.all()
+
+class TipoTicketView(viewsets.ModelViewSet):
+    serializer_class = TipoTicketSerializer
+    queryset = TipoTickets.objects.all()
 
 def get_all_publication(request):
     # Filtra las publicaciones que estén marcadas como publicas

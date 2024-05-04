@@ -19,7 +19,8 @@ urlpatterns: list[URLPattern] = [
     path('eventos/',include('eventos.urls')),
     path('tickets/',include('tickets.urls')),
     path('usuarios/',include('usuarios.urls')),
-    path('transferencia/',include('Transferencia.urls'))
+    path('transferencia/',include('Transferencia.urls')),
+    path('beneficios/',include('beneficios.urls')),
 ]
 
 #SOLO CUANDO ESTAMOS EN DEBUG-DESARROLLO, NO EN PRODUCCION

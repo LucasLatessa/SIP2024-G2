@@ -1,0 +1,22 @@
+.datosContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+.datosContainer .datos input {
+margin-left: 10px; /* Agrega un espacio inferior entre el <p> y el <input> */
+}
+.datos{
+    color:aliceblue;
+}
+h2{
+    color:#01A198;
+}
+.botones-container {
+    display: flex;
+    justify-content: center; 
+  }
+  
+.botones-container > * {
+margin: 0 5px; 
+}

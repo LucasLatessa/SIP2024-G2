@@ -1,5 +1,7 @@
 import axios from "axios";
 
+/* PETICIONES A LOS TICKETS */
+
 const apiServerUrl = "http://127.0.0.1:8000"
 
 const ticketsAPI = axios.create({
