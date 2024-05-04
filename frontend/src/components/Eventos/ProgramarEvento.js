@@ -10,7 +10,11 @@ import "../styles/programarEvento.css";
 //Encargado de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento = () => {
   const navegate = useNavigate();
-  const {register, formState: { errors }, handleSubmit} = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const [lugar, setLugar] = useState([]);
 
   //Realizo la peticion para cargar los lugares disponibles donde se puede realizar el evento
@@ -123,6 +127,46 @@ export const ProgramarEvento = () => {
                     type="number"
                     step="0.01" // Incremento 0.01 para permitir decimales
                     {...register("precioVIP", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+              <div className="tipoEntrada">
+                <label>
+                  Entradas Platinium
+                  <input
+                    type="number"
+                    {...register("cantidadEntradasPLATINIUM", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Precio
+                  <input
+                    type="number"
+                    {...register("precioPLATINIUM", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+              <div className="tipoEntrada">
+                <label>
+                  Entradas Standard
+                  <input
+                    type="number"
+                    {...register("cantidadEntradasSTANDARD", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Precio
+                  <input
+                    type="number"
+                    {...register("precioSTANDARD", {
                       required: true,
                     })}
                   />
