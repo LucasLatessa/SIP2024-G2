@@ -4,14 +4,16 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
-import { updateUsuario,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
-
+import { updateCliente,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
+import { Header } from "./header-footer/header";
+import { Footer } from "./header-footer/footer";
 export const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
   const [clienteData, setClienteData] = useState(null); 
   const [loadingCliente, setLoadingCliente] = useState(true);
-  const [editingUserData, setEditingUserData] = useState(null); // Nuevo estado para los datos en edición
+  const [editingUserData, setEditingUserData] = useState(null);
+  const [error, setError] = useState(null);
   
   const handleHome = () => {
     navigate('/');
@@ -60,11 +62,12 @@ export const Profile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      await updateUsuario(editingUserData);
+      await updateCliente(editingUserData);
       setClienteData(editingUserData);
       setEditingUserData(null); 
+      setError(null);
     } catch (error) {
-      console.error('Error updating user data:', error);
+      setError('Error al actualizar el perfil. El DNI que intenta ingresar ya existe.'); 
     }
   };
 
@@ -83,8 +86,12 @@ export const Profile = () => {
   }
 
   return (
+    
     isAuthenticated && (
+      <main>
+      <Header />
       <div className="datosContainer">
+        
         <img src={user.picture} alt={user.name} />
         {clienteData && (
           <div>
@@ -98,7 +105,7 @@ export const Profile = () => {
           </div>
         )}
         {editingUserData && (
-          <div>
+          <div className="formulario-edicion">
             <h2>Editar perfil</h2>
             <label>
               DNI:
@@ -127,24 +134,19 @@ export const Profile = () => {
                 onChange={handleInputChange}
               />
             </label>
-            <label>
-              Correo:
-              <input
-                type="email"
-                name="correo"
-                value={editingUserData.correo || ''}
-                onChange={handleInputChange}
-              />
-            </label>
             <button onClick={handleUpdateProfile}>Guardar cambios</button>
           </div>
         )}
         {!editingUserData && (
           <UpdateProfileButton onClick={() => setEditingUserData(clienteData)} />
         )}
-        <button onClick={handleHome}>Volver</button>
-        <LogoutButton />
+        {error && <p className="error-message">{error}</p>}
+        <div className="botones-container">
+          <button class="back" onClick={handleHome}>Volver</button>
+          <LogoutButton />
+        </div>
       </div>
-    )
-  );
+      <Footer />
+      </main>
+    ));
 };
