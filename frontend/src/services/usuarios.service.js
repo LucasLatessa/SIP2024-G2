@@ -12,5 +12,4 @@ export const getAllUsers = () => usersAPI.get('/');
 
 export const getUser = (id) => usersAPI.get(`/${id}`);
 
-export const crearTicket = (user) => usersAPI.post('/',user);
-
+export const crearUsuario = (user) => usersAPI.post('/',user);
