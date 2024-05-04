@@ -12,4 +12,5 @@ urlpatterns = [
     path('clientes/update/<str:cliente_id>/', views.update_cliente, name='update_cliente'),
     path('clientes/<str:nickname>/', views.get_cliente_by_nickname, name='get_cliente_by_nickname'),
     path('<str:dni>/', views.get_cliente_by_dni, name='get_cliente_by_dni'),
+    path('clientes/entregar', views.entregarToken, name='entregarToken'),
 ]

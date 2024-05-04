@@ -29,7 +29,9 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',  # Incluye estas entradas básicas
     'localhost:4040',
+    '3393-181-99-247-176.ngrok-free.app',
     ]
+    # agregar host de ngrok cada vez que es levantado
 
 
 # Application definition
@@ -152,6 +154,14 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOW_HEADERS = [
     "authorization",
     "content-type",
+]
+
+CSRF_COOKIE_SECURE = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://3393-181-99-247-176.ngrok-free.app",  # Añade tu dominio de Ngrok
+    "http://localhost:8000",  # Añade el host local si lo necesitas
+    # Agrega otros dominios confiables si es necesario
 ]
 
 REST_FRAMEWORK = {

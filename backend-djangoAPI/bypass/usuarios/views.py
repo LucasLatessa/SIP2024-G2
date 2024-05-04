@@ -139,3 +139,9 @@ def update_cliente(request, cliente_id):
         'dni': cliente.dni
     }
     return JsonResponse({'cliente': cliente_data})
+
+@csrf_exempt
+@api_view(['POST'])
+def entregarToken(request):
+    print(request)
+    return JsonResponse({'cliente': "request"})
