@@ -5,11 +5,11 @@ import "../styles/Eventos.css";
 import { getAllEventos } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 
-
+//Pagina donde se mostraran todos los eventos posibles
 export const Eventos = () => {
   const [eventos, setEventos] = useState([]);
 
-  //Realizo la peticion
+  //Realizo la peticion para obtener todos los eventos
   useEffect(() => {
     async function cargarEventos(){
       const res = await getAllEventos();
@@ -27,7 +27,7 @@ export const Eventos = () => {
         </header>
         
         <section className="allListaEventosa">
-          {eventos?.map((eventos) => (
+          {eventos?.map((eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
             <EventosBox
             id={eventos.id_Evento}
             nombre={eventos.nombre}
