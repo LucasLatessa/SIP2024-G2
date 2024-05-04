@@ -9,16 +9,16 @@ class Usuario(models.Model):
     apellido = models.TextField()
     correo = models.TextField() #Provee AUTH0
     creacion = models.DateTimeField(blank=True, null=True)
-    rol = models.TextField()
+    rol = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return self.nombre + " " + self.apellido
 
 class Cliente(Usuario):#especializacion
-    dni = models.CharField(max_length=10)
+    dni = models.CharField(max_length=10,blank=True, null=True)
 
 class Administrador(Usuario):#especializacion
-    dni = models.CharField(max_length=10)
+    dni = models.CharField(max_length=10,blank=True, null=True)
 
 class Productora(Usuario):#especializacion
     pass  
