@@ -41,23 +41,21 @@ def get_all_publication(request):
     # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({'publicaciones': publication_data})
 
-def obtener_ticket_evento(request, evento_id):
+def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que todo va a funcionar como debe 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
+
 
     for ticket in tickets_evento:
         if ticket.propietario is None:
             ticket_id = ticket.id_Ticket
             break
 
-    if ticket_id is None:  # Si no se encontró un ticket sin propietario
-        return None
-
     return JsonResponse({'ticket_id': ticket_id})
 
 
 @csrf_exempt
 @api_view(['POST'])
-def prueba_mercadopago(request):
+def prueba_mercadopago(request): #por el momento asumimos que todo va a funcionar como debe 
     sdk = mercadopago.SDK("TEST-8330452423484899-050122-ab41a07d97f2d8db7adf6bad86701c2d-326308326")
     #os.environ.get("AUTH0_DOMAIN") probar si funciona
 

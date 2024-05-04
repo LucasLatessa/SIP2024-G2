@@ -11,7 +11,7 @@ export const Mercadopago = () => {
     initMercadoPago('TEST-9d712392-de07-4f92-b9de-6af037688169', {locale: "es-AR"});
     
     
-    const obtenerTicket = async () => {
+    const obtenerTicket = async () => { //datos hardcodeados
         try {
             const evento = "1"
             const response = await axios.get("http://localhost:8000/tickets/obtener_ticket_evento/1/");
