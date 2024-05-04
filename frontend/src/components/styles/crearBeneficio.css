@@ -1,0 +1,52 @@
+/* Estilo basico del sitio en raiz */
+:root {
+    /*Colores a utilizar*/
+    --color-principal: #000;
+    --color-principal-claro: #fddf8a;
+    --color-secundario: #231f20;
+  
+    /*Letras*/
+    --color-letras-primario: #000;
+    --color-letras-secundario: #ffffff;
+    --color-letras-terceario: red;
+    --color-letras-cuaternario: #01a198;
+  
+    /*Fuentes*/
+    font-family: "Black regular";
+    font-size: 16px;
+  }
+  
+  .formularioBeneficio{
+      justify-items: center;
+      height: 50vh;
+  }
+  
+  .datosBeneficio{
+      width: 100%;
+      height: auto;
+      grid-area: beneficio;
+      display: flex;
+      align-content: center;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+  }
+  
+  .buttonCrearBeneficio{
+      grid-area: enviar;
+  }
+  
+  /*--*/
+  label {
+      color: var(--color-letras-secundario);
+      width: 80%;
+      padding: 0.5rem 0;
+  }
+  
+  /*Datos del Beneficio*/
+  
+  .datosBeneficio label > input, .datosBeneficio label > select {
+      display: block; /*Label arriba del input*/
+      width: 100%;
+  }
+  
