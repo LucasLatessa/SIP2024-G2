@@ -8,13 +8,16 @@ import { updateCliente,getUser,crearCliente,getUserNick } from '../services/usua
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
 export const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const [clienteData, setClienteData] = useState(null); 
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
-  
+
+  const handleLoginClick = () => {
+    loginWithRedirect();
+  };
   const handleHome = () => {
     navigate('/');
   };
@@ -22,24 +25,19 @@ export const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Obtener los datos del usuario
         const response = await getUserNick(user.nickname);
         setClienteData(response.data.cliente);
         setLoadingCliente(false);
       } catch (error) {
-        // Si el usuario no existe, crearlo
         if (error.response && error.response.status === 404) {
           try {
             const userData = {
-              // Aquí puedes establecer los datos iniciales del usuario
               nickname: user.nickname,
               nombre: user.given_name || '',
               apellido: user.family_name || '',
               correo: user.email || ''
-              // Agrega más campos según sea necesario
             };
             await crearCliente(userData);
-            // Volver a intentar obtener los datos del usuario
             const response = await getUserNick(user.nickname);
             setClienteData(response.data.cliente);
             setLoadingCliente(false);
@@ -78,10 +76,10 @@ export const Profile = () => {
 
   if (isLoading || loadingCliente) {
     return (
-      <div>
-        <p className="datos">Usted no esta logueado...</p>
-        <button onClick={handleHome}>Volver</button>
-      </div>
+      <div className="loading-container">
+        <p className="noLogin">Usted no está logueado...</p>
+        <button onClick={handleLoginClick}>Login</button>
+    </div>
     );
   }
 
@@ -134,13 +132,16 @@ export const Profile = () => {
                 onChange={handleInputChange}
               />
             </label>
+            {error && <p className="error-message">{error}</p>}
             <button onClick={handleUpdateProfile}>Guardar cambios</button>
+          
           </div>
+          
         )}
         {!editingUserData && (
           <UpdateProfileButton onClick={() => setEditingUserData(clienteData)} />
         )}
-        {error && <p className="error-message">{error}</p>}
+       
         <div className="botones-container">
           <button class="back" onClick={handleHome}>Volver</button>
           <LogoutButton />

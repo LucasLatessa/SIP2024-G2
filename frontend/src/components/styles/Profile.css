@@ -16,9 +16,11 @@ h2 {
   margin-left: 10px;
 }
 
-.datos,
-.error-message {
+.datos, .noLogin {
   color: aliceblue;
+}
+.error-message {
+  color: black;
 }
 
 h2 {
@@ -32,6 +34,7 @@ h2 {
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  width: 300px;
 }
 
 .formulario-edicion label {
@@ -79,4 +82,28 @@ button {
 
 .botones-container > * {
   margin: 0 5px;
+}
+
+
+
+.loading-container {
+  text-align: center; /* Alinear el texto al centro */
+}
+
+.loading-container .noLogin {
+  color: var(--color-letras-terceario);
+}
+
+.loading-container button {
+  background-color: var(--color-letras-cuaternario);;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loading-container button:hover {
+  background-color: #016868;
 }
