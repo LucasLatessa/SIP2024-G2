@@ -16,26 +16,13 @@ class ClienteView(viewsets.ModelViewSet):
     serializer_class = ClienteSerializer
     queryset = Cliente.objects.all()
 
-class Administradoriew(viewsets.ModelViewSet):
+class AdministradorView(viewsets.ModelViewSet):
     serializer_class = AdministradorSerializer
     queryset = Administrador.objects.all()
 
 class ProductoraView(viewsets.ModelViewSet):
     serializer_class = ProductoraSerializer
     queryset = Productora.objects.all()
-
-def get_all_clientes(request):
-    clientes = Cliente.objects.all()
-    clientes_data = [{
-        'id': cliente.user_id,
-        'nickname': cliente.nickname,
-        'nombre': cliente.nombre,
-        'apellido': cliente.apellido,
-        'correo': cliente.correo,
-        'rol': cliente.rol,
-        'dni': cliente.dni
-    } for cliente in clientes]
-    return JsonResponse({'clientes': clientes_data})
 
 def get_cliente_by_dni(request, dni):
     try:
@@ -139,9 +126,3 @@ def update_cliente(request, cliente_id):
         'dni': cliente.dni
     }
     return JsonResponse({'cliente': cliente_data})
-
-@csrf_exempt
-@api_view(['POST'])
-def entregarToken(request):
-    print(request)
-    return JsonResponse({'cliente': "request"})

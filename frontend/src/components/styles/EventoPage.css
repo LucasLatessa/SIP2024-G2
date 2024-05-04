@@ -1,4 +1,13 @@
+.headerEvento img{
+    width: 100%;
+    height: 50vh;
+}
+
 .informacionEvento{
+    background-color: red;
+}
+
+/* .informacionEvento{
     padding-top: 2rem;
     width: 100%;
 }
@@ -44,4 +53,4 @@
 }
 p{
     color:#3b3737
-}
+} */

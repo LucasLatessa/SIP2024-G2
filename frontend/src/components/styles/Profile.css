@@ -1,22 +1,82 @@
+body {
+  background-color: var(--color-secundario);
+}
+h2 {
+  text-align: center;
+
+}
 .datosContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
 .datosContainer .datos input {
-margin-left: 10px; /* Agrega un espacio inferior entre el <p> y el <input> */
+  margin-left: 10px;
 }
-.datos{
-    color:aliceblue;
+
+.datos,
+.error-message {
+  color: aliceblue;
 }
-h2{
-    color:#01A198;
+
+h2 {
+  color: #01a198;
+  margin: 0 auto;
 }
+
+.formulario-edicion {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.formulario-edicion label {
+  display: block;
+  margin-bottom: 5px;
+  color:black
+}
+
+.formulario-edicion input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+}
+.formulario-edicion button {
+  display: block;
+  margin: 0 auto; 
+}
+.formulario-edicion button:hover {
+  color: var(--color-secundario);
+  border: 1px solid black;
+}
+button {
+  background-color: var(--color-letras-cuaternario);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin:5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.logout{
+  background-color: var(--color-letras-terceario);
+}
+.back{
+  background-color: var(--color-letras-secundario);
+  color:black
+}
+
 .botones-container {
-    display: flex;
-    justify-content: center; 
-  }
-  
+  display: flex;
+  justify-content: center;
+}
+
 .botones-container > * {
-margin: 0 5px; 
+  margin: 0 5px;
 }
