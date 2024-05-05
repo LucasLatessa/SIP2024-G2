@@ -80,11 +80,10 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "pending": "https://youtube.com",
         },
     "auto_return": "approved",
-    "notification_url": "https://3393-181-99-247-176.ngrok-free.app/usuarios/clientes/entregar",
+    "notification_url": "https://b21c-181-99-247-176.ngrok-free.app/usuarios/clientes/entregar",
     }
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
-    print(preference)
 
     return JsonResponse({'id': preference["id"]})
 
