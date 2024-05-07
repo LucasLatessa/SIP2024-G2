@@ -5,8 +5,12 @@ import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
 import { updateCliente,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
+import { getAllTicketsByCli } from '../services/tickets.service';
+import { getEvento } from '../services/eventos.service';
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
+import { TicketBox } from "./TicketBox";
+
 export const Profile = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
@@ -14,6 +18,7 @@ export const Profile = () => {
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [tickets, setTickets] = useState([]);
 
   const handleLoginClick = () => {
     loginWithRedirect();
@@ -21,7 +26,6 @@ export const Profile = () => {
   const handleHome = () => {
     navigate('/');
   };
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -42,21 +46,46 @@ export const Profile = () => {
             setClienteData(response.data.cliente);
             setLoadingCliente(false);
           } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error creando usuario:', error);
             setLoadingCliente(false);
           }
         } else {
-          console.error('Error fetching user data:', error);
+          console.error('Error al recuperar los datos del usuario:', error);
           setLoadingCliente(false);
         }
       }
     };
-
+  
     if (isAuthenticated) {
       fetchUserData();
     }
   }, [isAuthenticated, user?.nickname]);
+  
+  useEffect(() => {
+    const cargarTickets = async () => {
+      if (clienteData && isAuthenticated) {
+        try {
+          const res = await getAllTicketsByCli(clienteData.user_id);
+          const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
+            const eventoRes = await getEvento(ticket.evento);
+            return {
+              precio: ticket.precioInicial,
+              tipo_ticket: ticket.tipo_ticket,
+              foto: eventoRes.data.imagen,
+              eventoNombre: eventoRes.data.nombre,
+              eventoFecha: eventoRes.data.fecha,
+              eventoHora: eventoRes.data.hora
+            };
+          }));
+          setTickets(ticketsConInfoCompleta);
+        } catch (error) {
+          console.error("Error al cargar los tickets:", error);
+        }
+      }
+    };
 
+    cargarTickets();
+  }, [clienteData, isAuthenticated]);
 
   const handleUpdateProfile = async () => {
     try {
@@ -147,7 +176,21 @@ export const Profile = () => {
           <LogoutButton />
         </div>
       </div>
+      <h2>Tus tickets</h2>
+      <section className="allListaEventosa">
+          {tickets?.map((ticket) => (
+            <TicketBox
+            nombre={ticket.eventoNombre}
+            foto={ticket.foto}
+            tipo_ticket={ticket.tipo_ticket}
+            precio={ticket.precio}
+            fecha={ticket.eventoFecha}
+            hora={ticket.eventoHora}
+          />)
+          )}
+        </section>
       <Footer />
       </main>
     ));
 };
+

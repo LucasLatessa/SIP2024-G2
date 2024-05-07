@@ -43,6 +43,20 @@ def get_all_publication(request):
     # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({'publicaciones': publication_data})
 
+def get_tickets_by_cliente(request, cliente_id):
+    # Filtra los tickets pertenecientes al cliente especificado
+    tickets = Ticket.objects.filter(propietario_id=cliente_id)
+
+    # Convierte los tickets a un formato JSON
+    ticket_data = [{'id_Ticket': ticket.id_Ticket,
+                    'precioInicial': ticket.precioInicial,
+                    'evento': ticket.evento.id_Evento if ticket.evento else None,
+                    'tipo_ticket': ticket.tipo_ticket.tipo if ticket.tipo_ticket else None}
+                   for ticket in tickets]
+
+    # Devuelve los tickets como una respuesta JSON
+    return JsonResponse({'tickets': ticket_data})
+
 def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que todo va a funcionar como debe 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
 

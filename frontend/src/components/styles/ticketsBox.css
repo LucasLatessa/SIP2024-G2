@@ -1,0 +1,68 @@
+article.ticket {
+    display: grid;
+    grid-template-areas:
+      "imagen imagen"
+      "nombre nombre"
+      
+      "fecha fecha"
+      "tipo precio"
+      "ver ver";
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: auto 5% auto auto auto;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--color-letras-secundario);
+    border-radius: 10px;
+    margin: 1rem;
+    width: 399px; 
+    height: 370px; 
+  }
+  
+  article.ticket h2 {
+    grid-area: nombre;
+    height: 10px;
+    text-transform: uppercase;
+    color: var(--color-letras-primario);
+  }
+  
+  article.ticket img {
+    grid-area: imagen;
+    width: 95%;
+    height: 210px;
+    padding: 6px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  
+  article.ticket .tipo {
+    grid-area: tipo;
+    height: 5px;
+  }
+  
+  article.ticket .precio {
+    grid-area: precio;
+    height: 5px;
+  }
+  
+  article.ticket .fecha {
+    grid-area: fecha;
+    height: 5px;
+  }
+  
+  article.ticket a {
+    grid-area: ver;
+    padding: 0.5rem;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 30px;
+    background-color: var(--color-letras-terceario);
+    color: var(--color-letras-secundario);
+    width: 7rem;
+  }
+  
+  article.ticket a:hover {
+    background-color: var(--color-letras-secundario);
+    color: var(--color-letras-terceario);
+    border: 1px solid var(--color-letras-terceario);
+  }
