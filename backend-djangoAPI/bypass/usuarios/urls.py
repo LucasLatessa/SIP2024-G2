@@ -11,5 +11,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('Usuario/nick/<str:nickname>/', views.get_cliente_by_nickname, name='get_cliente_by_nickname'),
     path('<str:dni>/', views.get_cliente_by_dni, name='get_cliente_by_dni'),
-    path('clientes/entregar', views.entregarToken, name='entregarToken'),
 ]

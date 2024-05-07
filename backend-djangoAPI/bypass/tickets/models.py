@@ -23,6 +23,15 @@ class Ticket(models.Model):
 #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
 #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
 #PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
+
+    
+    def modificarPropietario(ticket_id, propietario):
+        ticket = Ticket.objects.get(id_Ticket = ticket_id)
+        nuevo_propietario = Cliente.objects.get(user_id=propietario)
+
+        ticket.propietario = nuevo_propietario
+        ticket.save()
+
     def __str__(self):
         return f"TicketID: {self.id_Ticket}"
     
@@ -32,6 +41,11 @@ class Precio(models.Model):
     precio = models.FloatField()
     fechaInicial= models.DateTimeField(blank=True, null=True)
     ticket = models.ForeignKey(Ticket, models.DO_NOTHING, db_column='ticket', blank=True, null=True)
+
+
+
+
+
     def __str__(self):
         return "Precio: " + str(self.precio)
 
@@ -57,3 +71,7 @@ class Publicacion(models.Model):
 #                 ticket=instance,
 #                 fechaInicial = datetime.datetime.now()
 #         )
+
+
+def modificarPropietario(ticket_id, propietario):
+    print(propietario)

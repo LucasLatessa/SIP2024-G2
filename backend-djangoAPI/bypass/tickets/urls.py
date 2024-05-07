@@ -13,5 +13,6 @@ urlpatterns = [
     path('obtener_ticket_evento/<int:evento_id>/', views.obtener_ticket_evento, name='comprarTicket'),
     path('publicacion/all/', views.get_all_publication, name='get_all_publication'),
     path('prueba_mercadopago/', views.prueba_mercadopago, name='prueba_mercadopago'),
+    path('entregar', views.entregarToken, name='entregarToken'),
 
 ]

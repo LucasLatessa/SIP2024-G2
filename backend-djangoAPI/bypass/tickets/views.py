@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 import mercadopago
 import json
 from dotenv import load_dotenv
+import requests
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -70,7 +71,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
         {
             "title": "Mi producto",
             "quantity": data_quantity,
-            "ticket_id": data_ticket_id,
+            "id": data_ticket_id,
             "unit_price": data_unit_price,
             },
         ],
@@ -80,10 +81,36 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "pending": "https://youtube.com",
         },
     "auto_return": "approved",
-    "notification_url": "https://b21c-181-99-247-176.ngrok-free.app/usuarios/clientes/entregar",
+    "notification_url": "https://e15d-181-99-247-176.ngrok-free.app/tickets/entregar",
     }
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
 
     return JsonResponse({'id': preference["id"]})
+
+
+
+
+@csrf_exempt
+@api_view(['POST'])
+def entregarToken(request):
+    payment_id = request.query_params.get('data.id')
+    solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"	
+    merchant_order= request.query_params.get('topic')
+
+    headers = {
+        "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
+    }
+
+    response = requests.get(solicitud, headers= headers)
+    data = response.json()
+
+    if(merchant_order != "merchant_order"):
+        ticket_id= data["additional_info"]["items"][0]["id"]
+        print(ticket_id)
+        Ticket.modificarPropietario(ticket_id, 4)
+    
+
+
+    return JsonResponse({'cliente': "cliente_data"})
 

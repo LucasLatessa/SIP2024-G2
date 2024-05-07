@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from datetime import datetime
-import json
-import requests
+
+
 
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -129,23 +129,3 @@ def update_cliente(request, cliente_id):
     }
     return JsonResponse({'cliente': cliente_data})
 
-
-@csrf_exempt
-@api_view(['POST'])
-def entregarToken(request):
-    payment_id = request.query_params.get('data.id')
-
-    solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"	
-
-
-    headers = {
-        "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
-    }
-
-
-    response = requests.get(solicitud, params=headers)
-    data = response.json
-
-    print(data)
-
-    return JsonResponse({'cliente': "cliente_data"})
