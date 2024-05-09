@@ -59,7 +59,7 @@ def get_tickets_by_cliente(request, cliente_id):
 
 def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que todo va a funcionar como debe 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
-
+    ticket_id = None
 
     for ticket in tickets_evento:
         if ticket.propietario is None:
@@ -90,12 +90,12 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             },
         ],
     "back_urls":{
-            "success": "https://youtube.com",
-            "failure": "https://youtube.com",
-            "pending": "https://youtube.com",
+            "success": "http://localhost:4040/mercadopago/",
+            "failure": "http://localhost:4040/mercadopago/",
+            "pending": "http://localhost:4040/mercadopago/",
         },
     "auto_return": "approved",
-    "notification_url": "https://e15d-181-99-247-176.ngrok-free.app/tickets/entregar",
+    "notification_url": "https://380e-181-99-247-176.ngrok-free.app/tickets/entregar",
     }
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]

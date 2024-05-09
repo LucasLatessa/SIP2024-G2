@@ -71,7 +71,3 @@ class Publicacion(models.Model):
 #                 ticket=instance,
 #                 fechaInicial = datetime.datetime.now()
 #         )
-
-
-def modificarPropietario(ticket_id, propietario):
-    print(propietario)
