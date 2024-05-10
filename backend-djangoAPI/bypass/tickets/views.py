@@ -123,23 +123,26 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
 @csrf_exempt
 @api_view(['POST'])
 def entregarToken(request):
-    payment_id = request.query_params.get('data.id')
-    solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"	
-    merchant_order= request.query_params.get('topic')
+    try:
+        payment_id = request.query_params.get('data.id')
+        solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"	
+        merchant_order= request.query_params.get('topic')
 
-    headers = {
-        "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
-    }
+        headers = {
+            "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
+        }
 
-    response = requests.get(solicitud, headers= headers)
-    data = response.json()
+        response = requests.get(solicitud, headers= headers)
+        data = response.json()
 
-    if(merchant_order != "merchant_order"):
-        ticket_id= data["additional_info"]["items"][0]["id"]
-        print(ticket_id)
-        Ticket.modificarPropietario(ticket_id, 4)
-    
+        if(merchant_order != "merchant_order"):
+            ticket_id= data["additional_info"]["items"][0]["id"]
+            print(ticket_id)
+            Ticket.modificarPropietario(ticket_id, 4)
+        
 
 
-    return JsonResponse({'cliente': "cliente_data"})
+        return JsonResponse({'cliente': "cliente_data"})
+    except:
+        print("Error con el pago")
 
