@@ -9,7 +9,7 @@ export const Mercadopago = () => {
     
     initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
     let evento_id = 1;
-    let quantity = 2;
+    let quantity = 1;
     let unit_price = 1;
 
     const obtenerTicket = async () => {

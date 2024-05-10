@@ -25,12 +25,19 @@ class Ticket(models.Model):
 #PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
 
     
-    def modificarPropietario(ticket_id, propietario):
-        ticket = Ticket.objects.get(id_Ticket = ticket_id)
-        nuevo_propietario = Cliente.objects.get(user_id=propietario)
+    def modificarPropietario(ticket_id_str, propietario):
+        try:
+            ticket_id_list = ticket_id_str.split(",")
+            for ticket_id in ticket_id_list:
+                
+                ticket = Ticket.objects.get(id_Ticket = ticket_id, propietario = None)
+                nuevo_propietario = Cliente.objects.get(user_id=propietario)
 
-        ticket.propietario = nuevo_propietario
-        ticket.save()
+                ticket.propietario = nuevo_propietario
+                ticket.save()
+        except:
+            print("No se pudo cargar el ticket")
+
 
     def __str__(self):
         return f"TicketID: {self.id_Ticket}"
