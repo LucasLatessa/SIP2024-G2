@@ -23,12 +23,13 @@ export const EventoPage = () => {
     
   initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
 
-  const obtenerTicket = async (quantity, id) => {
+  const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
         const response = await axios.get("http://localhost:8000/tickets/obtener_ticket_evento/",{
             params: {
                 evento_id:id,
-                quantity:quantity
+                quantity:quantity,
+                tipo_ticket: tipo_ticket
             }
         });
         console.log(response.data.ticket_id_list);
@@ -78,9 +79,10 @@ export const EventoPage = () => {
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
+    const tipo_ticket = getValues("tipoEntrada")
     const quantity = parseInt(getValues("cantidadEntradas"));
 
-    const ticket_id_list = await obtenerTicket(quantity, id);
+    const ticket_id_list = await obtenerTicket(quantity, id, tipo_ticket);
     if (ticket_id_list.length === quantity) {
         const id = await createPreference(ticket_id_list, quantity);
         if (id) {

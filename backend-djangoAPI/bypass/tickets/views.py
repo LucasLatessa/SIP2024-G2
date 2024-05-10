@@ -75,14 +75,15 @@ def get_tickets_by_evento(request, evento_id):
 def obtener_ticket_evento(request):
     evento_id = request.GET.get('evento_id') 
     quantity = request.GET.get('quantity') 
+    tipo_ticket = request.GET.get('tipo_ticket') 
 
     contador = 0
     ticket_id_list = [] 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
     ticket_id = None
 
-    for ticket in tickets_evento:
-        if ticket.propietario is None:
+    for ticket in tickets_evento:      
+        if ((ticket.propietario is None) and (ticket.tipo_ticket.tipo == tipo_ticket)):
             ticket_id = ticket.id_Ticket
             if (contador < int(quantity)):
                 contador += 1
