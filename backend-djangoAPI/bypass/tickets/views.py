@@ -57,16 +57,23 @@ def get_tickets_by_cliente(request, cliente_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({'tickets': ticket_data})
 
-def obtener_ticket_evento(request, evento_id):  #por el momento asumimos que todo va a funcionar como debe 
+def obtener_ticket_evento(request):
+    evento_id = request.GET.get('evento_id') 
+    quantity = request.GET.get('quantity') 
+
+    contador = 0
+    ticket_id_list = [] 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
     ticket_id = None
 
     for ticket in tickets_evento:
         if ticket.propietario is None:
             ticket_id = ticket.id_Ticket
-            break
+            if (contador < int(quantity)):
+                contador += 1
+                ticket_id_list.append(ticket_id)
 
-    return JsonResponse({'ticket_id': ticket_id})
+    return JsonResponse({'ticket_id_list': ticket_id_list})
 
 
 @csrf_exempt
@@ -77,15 +84,17 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
 
     body = json.loads(request.body) 
     data_quantity = body.get("quantity") 
-    data_ticket_id = body.get("ticket_id")
+    data_ticket_id_list = body.get("ticket_id")
     data_unit_price = body.get("unit_price")
+
+    ticket_id_list_str = ",".join(map(str, data_ticket_id_list)) #paso la lista a string porque no le gusta a mercado libre sino
 
     preference_data = {
     "items": [
         {
             "title": "Mi producto",
             "quantity": data_quantity,
-            "id": data_ticket_id,
+            "id": ticket_id_list_str,
             "unit_price": data_unit_price,
             },
         ],
@@ -95,12 +104,18 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "pending": "http://localhost:4040/mercadopago/",
         },
     "auto_return": "approved",
-    "notification_url": "https://380e-181-99-247-176.ngrok-free.app/tickets/entregar",
+    "notification_url": "https://288a-181-99-247-176.ngrok-free.app/tickets/entregar",
     }
-    preference_response = sdk.preference().create(preference_data)
-    preference = preference_response["response"]
+    try:
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
+        return JsonResponse({'id': preference["id"]})
+    except:
+        print("No se pudo crear la preferencia")
+        return JsonResponse({'id': None})
 
-    return JsonResponse({'id': preference["id"]})
+
+    
 
 
 
