@@ -1,0 +1,13 @@
+/* carousel.css */
+
+/* Estilos para el contenedor del carrusel */
+.carousel-container {
+    width: 80%; /* Ancho del carrusel */
+    margin: auto; /* Centrar el carrusel horizontalmente */
+  }
+  
+  /* Estilos para las imágenes dentro del carrusel */
+  .carousel-image {
+    width: 100%; /* Ancho completo de la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+  }
