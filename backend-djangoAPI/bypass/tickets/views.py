@@ -100,6 +100,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
     data_quantity = body.get("quantity") 
     data_ticket_id_list = body.get("ticket_id")
     data_unit_price = body.get("unit_price")
+    data_unit_description = body.get("description")
 
     ticket_id_list_str = ",".join(map(str, data_ticket_id_list)) #paso la lista a string porque no le gusta a mercado libre sino
 
@@ -110,6 +111,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "quantity": data_quantity,
             "id": ticket_id_list_str,
             "unit_price": data_unit_price,
+            "description": data_unit_description,
             },
         ],
     "back_urls":{
@@ -148,8 +150,9 @@ def entregarToken(request):
         
         if(merchant_order != "merchant_order"):
             ticket_id_list= data["additional_info"]["items"][0]["id"]
+            nick_name = data["additional_info"]["items"][0]["description"]
             print(ticket_id_list)
-            Ticket.modificarPropietario(ticket_id_list, 2)
+            Ticket.modificarPropietario(ticket_id_list, nick_name)
         
         return JsonResponse({'cliente': "cliente_data"})
     except:

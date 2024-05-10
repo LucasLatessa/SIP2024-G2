@@ -11,12 +11,14 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
 export const EventoPage = () => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const { user } = useAuth0();
   
     
   initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
@@ -44,6 +46,7 @@ export const EventoPage = () => {
             quantity: quantity,
             ticket_id: ticket_id_list,
             unit_price: 1,
+            description: user.nickname
         });
         return response.data.id;
     } catch (error) {

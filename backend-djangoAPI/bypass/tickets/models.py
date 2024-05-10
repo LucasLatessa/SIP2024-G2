@@ -31,7 +31,7 @@ class Ticket(models.Model):
             for ticket_id in ticket_id_list:
                 
                 ticket = Ticket.objects.get(id_Ticket = ticket_id, propietario = None)
-                nuevo_propietario = Cliente.objects.get(user_id=propietario)
+                nuevo_propietario = Cliente.objects.get(nickname = propietario)
 
                 ticket.propietario = nuevo_propietario
                 ticket.save()
