@@ -15,5 +15,6 @@ urlpatterns = [
     path('prueba_mercadopago/', views.prueba_mercadopago, name='prueba_mercadopago'),
     path('entregar', views.entregarToken, name='entregarToken'),
     path('byCliente/<int:cliente_id>/', views.get_tickets_by_cliente, name='get_tickets_by_cliente'),
+    path('byEvento/<int:evento_id>/', views.get_tickets_by_evento, name='get_tickets_by_evento'),
 
 ]

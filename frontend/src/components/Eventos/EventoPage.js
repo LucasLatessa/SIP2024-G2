@@ -14,13 +14,20 @@ import { useEffect, useState } from "react";
 export const EventoPage = () => {
   const { id } = useParams(); //Obtengo el id del evento
   const [eventos, setEventos] = useState([]);
+  const [tickets, setTickets] = useState([]);
 
-  //Realizo la peticion para obtener el evento
+  //Realizo la peticion para obtener el evento y los tickets disponibles
   useEffect(() => {
     async function cargarEventos() {
-      const res = await getEvento(id); //Solo eventos validos, si no existe hay que arreglarlo
-      setEventos(res.data);
+      const resEvento = await getEvento(id); //Solo eventos validos, si no existe hay que arreglarlo
+      setEventos(resEvento.data);
     }
+    
+    async function cargarTicketsDelEvento(){
+      const resTicket = await getTicketByEvent(id);
+      setTickets(resTicket.data)
+    }
+
     cargarEventos();
   }, []);
 
