@@ -113,12 +113,12 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             },
         ],
     "back_urls":{
-            "success": "http://localhost:4040/mercadopago/",
-            "failure": "http://localhost:4040/mercadopago/",
-            "pending": "http://localhost:4040/mercadopago/",
+            "success": "http://localhost:4040",
+            "failure": "http://localhost:4040",
+            "pending": "http://localhost:4040",
         },
     "auto_return": "approved",
-    "notification_url": "https://288a-181-99-247-176.ngrok-free.app/tickets/entregar",
+    "notification_url": "https://a011-181-99-247-176.ngrok-free.app/tickets/entregar",
     }
     try:
         preference_response = sdk.preference().create(preference_data)

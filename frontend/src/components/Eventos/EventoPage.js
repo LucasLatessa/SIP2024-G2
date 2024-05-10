@@ -9,11 +9,52 @@ import {
 import "../styles/EventoPage.css";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import axios from 'axios';
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
 export const EventoPage = () => {
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  
+    
+  initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
+
+  const obtenerTicket = async (quantity, id) => {
+    try {
+        const response = await axios.get("http://localhost:8000/tickets/obtener_ticket_evento/",{
+            params: {
+                evento_id:id,
+                quantity:quantity
+            }
+        });
+        console.log(response.data.ticket_id_list);
+        return response.data.ticket_id_list;
+
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+  };
+
+  const createPreference = async (ticket_id_list, quantity) => {
+    try {
+        const response = await axios.post("http://localhost:8000/tickets/prueba_mercadopago/", {
+            quantity: quantity,
+            ticket_id: ticket_id_list,
+            unit_price: 1,
+        });
+        return response.data.id;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+  };
+
   const { id } = useParams(); //Obtengo el id del evento
   const {
+    getValues,
     register,
     formState: { errors },
     handleSubmit,
@@ -31,9 +72,20 @@ export const EventoPage = () => {
   }, []);
 
   /*Compra de tickets*/
-  const onSubmit = handleSubmit(async (data) => {
-    //const res = await comprarTicket(data);
-  });
+  const handleBuy = async () => {
+    setButtonClicked(true);
+    setLoading(true);
+    const quantity = parseInt(getValues("cantidadEntradas"));
+
+    const ticket_id_list = await obtenerTicket(quantity, id);
+    if (ticket_id_list.length === quantity) {
+        const id = await createPreference(ticket_id_list, quantity);
+        if (id) {
+            setPreferenceId(id);
+        }
+    }
+    setLoading(false); // Indicar que la carga ha terminado    
+  }
 
   return (
     <>
@@ -58,7 +110,7 @@ export const EventoPage = () => {
 
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
-                <form className="formComprarEntrada">
+                <div className="formComprarEntrada">
                   {/* COMPRAR ENTRADA FORM */}
                   <label htmlFor=""> Tipo de entrada
                     <select
@@ -81,11 +133,23 @@ export const EventoPage = () => {
                       })}
                     />
                   </label>
-                  <div className="comprarTicketSubmit">
-                    <input type="submit" value="Comprar" />
-                  </div>
-                  
-                </form>
+                  <div className='test'>
+                    <button onClick={handleBuy}>Comprar</button>
+                      {buttonClicked && (
+                          loading ? (
+                              <div>Cargando...</div>
+                          ) : (
+                              preferenceId ? (
+                                  <div>
+                                      <Wallet initialization={{ preferenceId: preferenceId }} />
+                                  </div>
+                              ) : (
+                                  <div>No se pudo cargar la billetera porque el ID de preferencia es nulo</div>
+                              )
+                          )
+                      )}
+                 </div>
+                </div>
               </section>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>

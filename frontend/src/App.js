@@ -7,7 +7,7 @@ import { Beneficios } from "./components/Beneficios/Beneficios";
 import { EventoPage } from "./components/Eventos/EventoPage";
 import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
-import { Mercadopago } from "./components/mercadopago";
+import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 
 
