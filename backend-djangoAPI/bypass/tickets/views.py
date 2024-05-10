@@ -57,6 +57,21 @@ def get_tickets_by_cliente(request, cliente_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({'tickets': ticket_data})
 
+#Funcion para obtener todos los tickets de un evento
+def get_tickets_by_evento(request, evento_id):
+    #Obtengo todos los tickets de ese evento
+    tickets = Ticket.objects.filter(evento_id = evento_id)
+
+    # Convierte los tickets a un formato JSON
+    ticket_data = [{'id_Ticket': ticket.id_Ticket,
+                    'precioInicial': ticket.precioInicial,
+                    'evento': ticket.evento.id_Evento if ticket.evento else None,
+                    'tipo_ticket': ticket.tipo_ticket.tipo if ticket.tipo_ticket else None}
+                   for ticket in tickets]
+
+    # Devuelve los tickets como una respuesta JSON
+    return JsonResponse({'tickets': ticket_data})
+
 def obtener_ticket_evento(request):
     evento_id = request.GET.get('evento_id') 
     quantity = request.GET.get('quantity') 
