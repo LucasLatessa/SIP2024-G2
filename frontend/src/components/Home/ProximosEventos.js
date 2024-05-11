@@ -2,21 +2,9 @@ import { Link } from "react-router-dom";
 import "../styles/proximosEventos.css";
 import "../EventosBox";
 import { EventosBox } from "../EventosBox";
-import { getAllEventos } from "../../services/eventos.service";
-import { useEffect, useState } from "react";
 
-export const ProximosEventos = () => {
-  const [eventos, setEventos] = useState([]);
 
-  //Realizo la peticion
-  useEffect(() => {
-    async function cargarEventos(){
-      const res = await getAllEventos();
-      setEventos(res.data);
-    }
-    cargarEventos();
-  }, [])
-
+export const ProximosEventos = ({eventos}) => {
   return (
     <section>
       <header className="proximosEventos">
