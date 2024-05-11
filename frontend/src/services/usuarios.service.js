@@ -20,3 +20,8 @@ export const getUserNick = (nickname) => usersAPI.get(`/nick/${nickname}/`);
 export const crearCliente = (user) => clientAPI.post('/',user);
 
 export const updateCliente = (user) => clientAPI.put(`/${user.user_id}/`,user);
+
+export const updateRole = (userId, newRole) => usersAPI.put(`/${userId}/update-role/`, { rol: newRole });
+/* export const cliente_a_admin = (user_id) => clientAPI.put(`/cliente_a_admin/${user_id}/`);
+
+export const cliente_a_produ = (user_id) => clientAPI.put(`/cliente_a_produ/${user_id}/`); */

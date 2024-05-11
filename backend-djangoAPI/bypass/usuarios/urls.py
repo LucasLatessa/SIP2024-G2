@@ -10,5 +10,5 @@ router.register(r"Productora",views.ProductoraView)
 urlpatterns = [
     path('', include(router.urls)),
     path('Usuario/nick/<str:nickname>/', views.get_usuario_by_nickname, name='get_usuario_by_nickname'),
-    path('cliente_a_admin/<int:cliente_id>/', views.cliente_a_admin, name='cliente_a_admin'),
+    path('Usuario/<int:pk>/update-role/', views.update_user_role, name='update_user_role'),
 ]

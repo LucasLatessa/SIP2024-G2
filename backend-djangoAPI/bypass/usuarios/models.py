@@ -9,7 +9,7 @@ class Usuario(models.Model):
     apellido = models.TextField()
     correo = models.TextField() #Provee AUTH0
     creacion = models.DateTimeField(blank=True, null=True,auto_now_add=True) 
-    rol = models.TextField(blank=True, null=True)
+    #rol = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return self.nombre + " " + self.apellido

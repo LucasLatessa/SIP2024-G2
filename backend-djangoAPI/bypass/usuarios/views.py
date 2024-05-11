@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from datetime import datetime
-
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -50,7 +50,6 @@ def get_usuario_by_nickname(request, nickname):
             'nombre': usuario.nombre,
             'apellido': usuario.apellido,
             'correo': usuario.correo,
-            'rol': usuario.rol,
             'dni': dni
         }
         return JsonResponse({'usuario': usuario_data})
@@ -93,76 +92,44 @@ def update_cliente(request, cliente_id):
         'nombre': cliente.nombre,
         'apellido': cliente.apellido,
         'correo': cliente.correo,
-        'rol': cliente.rol,
         'dni': cliente.dni
     }
     return JsonResponse({'cliente': cliente_data})
 
-@csrf_exempt
-@api_view(['POST'])
-def cliente_a_admin(request, cliente_id):
-    """ESTA FUNCION SOLO LA VA A PODER EJECUTAR ALGUIEN CON ROL DE ADMIN
-    Convierte un usuario Cliente en un Administrador.
-    Parametros:
-    - cliente_id: El ID del cliente a convertir en administrador.
-    Respuestas:
-    - 201: Si se crea el administrador correctamente.
-    - 400: Si hay errores de validación al crear el administrador.
-    - 404: Si no se encuentra el cliente con el ID proporcionado.
-    """
+@api_view(['PUT'])
+#@permission_classes([IsAuthenticated])
+def update_user_role(request, pk):
     try:
-        # Obtener el cliente existente por su ID
-        cliente = Cliente.objects.get(user_id=cliente_id)
-    except Cliente.DoesNotExist:
-        return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
-
-    try:
+        user = Usuario.objects.get(pk=pk)
+        # Verifica si el usuario autenticado tiene permisos de Administrador
+        """ try:
+            administrador = Administrador.objects.get(user_id=request.user.user_id)
+        except Administrador.DoesNotExist:
+            return JsonResponse({'error': 'No tienes permisos de administrador'}, status=403)
+ """
+        # Obtiene el nuevo rol del cuerpo de la solicitud
+        new_role = request.data.get('rol')
         # Eliminar el cliente existente
-        cliente.delete()
-        # Crear un nuevo administrador con los datos del cliente
-        nuevo_admin = Administrador.objects.create(
-            nickname=cliente.nickname,
-            nombre=cliente.nombre,
-            apellido=cliente.apellido,
-            correo=cliente.correo,
-            creacion=datetime.now(),
-            rol='',
-            dni=cliente.dni
-        )
-        return JsonResponse({'mensaje': 'Usuario de Cliente a Administrador actualizado con éxito'}, status=201)
-    except ValidationError as e:
-        return JsonResponse({'error': str(e)}, status=400)
-@csrf_exempt
-@api_view(['POST'])
-def cliente_a_produ(request, cliente_id):
-    """ESTA FUNCION SOLO LA VA A PODER EJECUTAR ALGUIEN CON ROL DE ADMIN
-    Convierte un usuario Cliente en un usuario de tipo Productora.
-    Parametros:
-    - cliente_id: El ID del cliente a convertir en productora.
-    Respuestas:
-    - 201: Si se crea la productora correctamente.
-    - 400: Si hay errores de validación al crear la productora.
-    - 404: Si no se encuentra el cliente con el ID proporcionado.
-    """
-    try:
-        # Obtener el cliente existente por su ID
-        cliente = Cliente.objects.get(user_id=cliente_id)
-    except Cliente.DoesNotExist:
-        return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
-
-    try:
-        # Eliminar el cliente existente
-        cliente.delete()
-        # Crear una nueva productora con los datos del cliente
-        nueva_productora = Productora.objects.create(
-            nickname=cliente.nickname,
-            nombre=cliente.nombre,
-            apellido=cliente.apellido,
-            correo=cliente.correo,
-            creacion=datetime.now(),
-            rol='',
-            dni=cliente.dni
-        )
-        return JsonResponse({'mensaje': 'Usuario de Cliente a Productora actualizado con éxito'}, status=201)
-    except ValidationError as e:
-        return JsonResponse({'error': str(e)}, status=400)
+        user.delete()
+        if new_role=="Administrador":
+            # Crear un nuevo administrador con los datos del cliente
+            nuevo_admin = Administrador.objects.create(
+                nickname=user.nickname,
+                nombre=user.nombre,
+                apellido=user.apellido,
+                correo=user.correo,
+                creacion=datetime.now(),
+                #dni=user.dni
+            )
+        elif new_role=="Productora":
+            # Crear un nuevo administrador con los datos del cliente
+            nuevo_produ = Productora.objects.create(
+                nickname=user.nickname,
+                nombre=user.nombre,
+                apellido=user.apellido,
+                correo=user.correo,
+                creacion=datetime.now(),
+            )
+        return JsonResponse({'mensaje': 'Rol de usuario actualizado con éxito'}, status=200)
+    except Usuario.DoesNotExist:
+        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)

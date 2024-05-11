@@ -26,6 +26,23 @@ export const Profile = () => {
   const handleHome = () => {
     navigate('/');
   };
+  /* // Función para actualizar el rol de un usuario
+  const handleUpdateRole = async (userId, newRole) => {
+    try {
+      // Llama al servicio para actualizar el rol del usuario
+      await updateRole(userId, newRole);
+      // Actualiza la lista de usuarios despues de modificar el rol
+      const updatedUsers = users.map(user => {
+        if (user.user_id === userId) {
+          return { ...user, rol: newRole };
+        }
+        return user;
+      });
+      setUsers(updatedUsers);
+    } catch (error) {
+      console.error('Error al actualizar el rol del usuario:', error);
+    }
+  }; */
   useEffect(() => {
     const fetchUserData = async () => {
       try {
