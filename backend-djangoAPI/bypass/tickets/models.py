@@ -42,9 +42,9 @@ class Ticket(models.Model):
     def obtener_ticket_precio(tipo_ticket, evento):
         print(tipo_ticket)
         print(evento)
-        tipo_ticket = TipoTickets.objects.filter(tipo = tipo_ticket).first()
+        tipo_ticket = TipoTickets.objects.get(tipo = tipo_ticket)
 
-        ticket = Ticket.objects.filter(tipo_ticket = tipo_ticket, evento = evento).first()
+        ticket = Ticket.objects.filter(tipo_ticket = tipo_ticket, evento = evento).last()
         precio = ticket.precioInicial
 
         return precio
