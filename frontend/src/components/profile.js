@@ -14,7 +14,7 @@ import { TicketBox } from "./TicketBox";
 export const Profile = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
-  const [clienteData, setClienteData] = useState(null); 
+  const [usuarioData, setusuarioData] = useState(null); 
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
@@ -30,7 +30,7 @@ export const Profile = () => {
     const fetchUserData = async () => {
       try {
         const response = await getUserNick(user.nickname);
-        setClienteData(response.data.cliente);
+        setusuarioData(response.data.usuario);
         setLoadingCliente(false);
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -43,7 +43,7 @@ export const Profile = () => {
             };
             await crearCliente(userData);
             const response = await getUserNick(user.nickname);
-            setClienteData(response.data.cliente);
+            setusuarioData(response.data.cliente);
             setLoadingCliente(false);
           } catch (error) {
             console.error('Error creando usuario:', error);
@@ -59,13 +59,13 @@ export const Profile = () => {
     if (isAuthenticated) {
       fetchUserData();
     }
-  }, [isAuthenticated, user?.nickname]);
+  }, [ user?.nickname]);
   
   useEffect(() => {
     const cargarTickets = async () => {
-      if (clienteData && isAuthenticated) {
+      if (usuarioData && isAuthenticated) {
         try {
-          const res = await getAllTicketsByCli(clienteData.user_id);
+          const res = await getAllTicketsByCli(usuarioData.user_id);
           const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
             const eventoRes = await getEvento(ticket.evento);
             return {
@@ -85,12 +85,12 @@ export const Profile = () => {
     };
 
     cargarTickets();
-  }, [clienteData, isAuthenticated]);
+  }, [ usuarioData]);
 
   const handleUpdateProfile = async () => {
     try {
       await updateCliente(editingUserData);
-      setClienteData(editingUserData);
+      setusuarioData(editingUserData);
       setEditingUserData(null); 
       setError(null);
     } catch (error) {
@@ -120,15 +120,15 @@ export const Profile = () => {
       <div className="datosContainer">
         
         <img src={user.picture} alt={user.name} />
-        {clienteData && (
+        {usuarioData && (
           <div>
             <h2>Información del cliente </h2>
-            <p className="datos">ID: {clienteData.user_id}</p>
-            <p className="datos">DNI: {clienteData.dni}</p>
-            <p className="datos">Nombre: {clienteData.nombre}</p>
-            <p className="datos">Apellido: {clienteData.apellido}</p>
-            <p className="datos">Nickname: {clienteData.nickname}</p>
-            <p className="datos">Correo: {clienteData.correo}</p>
+            <p className="datos">ID: {usuarioData.user_id}</p>
+            <p className="datos">DNI: {usuarioData.dni}</p>
+            <p className="datos">Nombre: {usuarioData.nombre}</p>
+            <p className="datos">Apellido: {usuarioData.apellido}</p>
+            <p className="datos">Nickname: {usuarioData.nickname}</p>
+            <p className="datos">Correo: {usuarioData.correo}</p>
           </div>
         )}
         {editingUserData && (
@@ -168,7 +168,7 @@ export const Profile = () => {
           
         )}
         {!editingUserData && (
-          <UpdateProfileButton onClick={() => setEditingUserData(clienteData)} />
+          <UpdateProfileButton onClick={() => setEditingUserData(usuarioData)} />
         )}
        
         <div className="botones-container">
