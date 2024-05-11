@@ -18,6 +18,8 @@ export const EventoPage = () => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [tipoTicket, setTipoTicket] = useState(null);
+  const [precioEntrada, setPrecioEntrada] = useState(null);
   const { user } = useAuth0();
   
     
@@ -29,7 +31,7 @@ export const EventoPage = () => {
             params: {
                 evento_id:id,
                 quantity:quantity,
-                tipo_ticket: tipo_ticket
+                tipo_ticket: tipoTicket
             }
         });
         console.log(response.data.ticket_id_list);
@@ -46,7 +48,7 @@ export const EventoPage = () => {
         const response = await axios.post("http://localhost:8000/tickets/prueba_mercadopago/", {
             quantity: quantity,
             ticket_id: ticket_id_list,
-            unit_price: 1,
+            unit_price: precioEntrada,
             description: user.nickname
         });
         return response.data.id;
@@ -79,10 +81,9 @@ export const EventoPage = () => {
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
-    const tipo_ticket = getValues("tipoEntrada")
     const quantity = parseInt(getValues("cantidadEntradas"));
 
-    const ticket_id_list = await obtenerTicket(quantity, id, tipo_ticket);
+    const ticket_id_list = await obtenerTicket(quantity, id);
     if (ticket_id_list.length === quantity) {
         const id = await createPreference(ticket_id_list, quantity);
         if (id) {
@@ -90,6 +91,23 @@ export const EventoPage = () => {
         }
     }
     setLoading(false); // Indicar que la carga ha terminado    
+  }
+
+  const handleTipoEntradaChange = async (e) => {
+    setTipoTicket(e.target.value)
+    console.log(e.target.value)
+    try {
+      const response = await axios.get("http://localhost:8000/tickets/obtener_precio_entrada/", {
+        params: {
+          tipo_ticket: e.target.value,
+          evento: id
+        }
+      });
+
+      setPrecioEntrada(response.data.precio_ticket);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -118,16 +136,18 @@ export const EventoPage = () => {
                 <div className="formComprarEntrada">
                   {/* COMPRAR ENTRADA FORM */}
                   <label htmlFor=""> Tipo de entrada
-                    <select
-                      {...register("tipoEntrada", {
-                        required: true,
-                      })}
+                    <select onChange={handleTipoEntradaChange}
                     >
+                      <option value="" disabled selected>Selecciona una opción</option>
                       <option value="STANDARD">STANDARD</option>
                       <option value="PLATINIUM">PLATINIUM</option>
                       <option value="VIP">VIP</option>
                     </select>
                   </label>
+                  
+                  {precioEntrada && (
+                    <p>Precio de la entrada: {precioEntrada}</p>
+                  )}
 
                   <label>
                     Cantidad Entrada

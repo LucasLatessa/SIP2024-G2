@@ -10,7 +10,7 @@ import mercadopago
 import json
 from dotenv import load_dotenv
 import requests
-
+from utils.authorization import RequestToken, authorized, can, getRequestToken
 
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
@@ -58,6 +58,7 @@ def get_tickets_by_cliente(request, cliente_id):
     return JsonResponse({'tickets': ticket_data})
 
 #Funcion para obtener todos los tickets de un evento
+@authorized
 def get_tickets_by_evento(request, evento_id):
     #Obtengo todos los tickets de ese evento
     tickets = Ticket.objects.filter(evento_id = evento_id)
@@ -72,11 +73,11 @@ def get_tickets_by_evento(request, evento_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({'tickets': ticket_data})
 
+#@authorized no funciona
 def obtener_ticket_evento(request):
     evento_id = request.GET.get('evento_id') 
     quantity = request.GET.get('quantity') 
     tipo_ticket = request.GET.get('tipo_ticket') 
-
     contador = 0
     ticket_id_list = [] 
     tickets_evento = Ticket.objects.filter(evento = evento_id)
@@ -159,3 +160,9 @@ def entregarToken(request):
     except:
         print("Error con el pago")
 
+def obtener_precio_entrada(request):
+    tipo_ticket = request.GET.get('tipo_ticket') 
+    evento = request.GET.get('evento') 
+    precio = Ticket.obtener_ticket_precio(tipo_ticket, evento)
+    print(precio)
+    return JsonResponse({'precio_ticket': precio})

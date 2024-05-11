@@ -39,6 +39,19 @@ class Ticket(models.Model):
             print("No se pudo cargar el ticket")
 
 
+    def obtener_ticket_precio(tipo_ticket, evento):
+        print(tipo_ticket)
+        print(evento)
+        tipo_ticket = TipoTickets.objects.filter(tipo = tipo_ticket).first()
+
+        ticket = Ticket.objects.filter(tipo_ticket = tipo_ticket, evento = evento).first()
+        precio = ticket.precioInicial
+
+        return precio
+
+
+
+
     def __str__(self):
         return f"TicketID: {self.id_Ticket}"
     
