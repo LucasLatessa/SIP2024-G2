@@ -106,6 +106,9 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
 
     ticket_id_list_str = ",".join(map(str, data_ticket_id_list)) #paso la lista a string porque no le gusta a mercado libre sino
 
+    #URL de Ngrok
+    ngrok_url = os.environ.get('NGROK_URL')
+
     preference_data = {
     "items": [
         {
@@ -122,7 +125,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "pending": "http://localhost:4040",
         },
     "auto_return": "approved",
-    "notification_url": "https://a011-181-99-247-176.ngrok-free.app/tickets/entregar",
+    "notification_url": f"https://{ngrok_url}/tickets/entregar",
     }
     try:
         preference_response = sdk.preference().create(preference_data)
