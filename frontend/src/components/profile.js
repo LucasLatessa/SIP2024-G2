@@ -189,7 +189,7 @@ export const Profile = () => {
         )}
        
         <div className="botones-container">
-          <button class="back" onClick={handleHome}>Volver</button>
+          <button className="back" onClick={handleHome}>Volver</button>
           <LogoutButton />
         </div>
       </div>

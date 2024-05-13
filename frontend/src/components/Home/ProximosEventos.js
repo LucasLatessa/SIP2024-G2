@@ -1,28 +1,28 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import { EventosBox } from "../EventosBox"; // Importa el componente EventosBox
 import "../styles/proximosEventos.css";
-import "../EventosBox";
-import { EventosBox } from "../EventosBox";
 
-
-export const ProximosEventos = ({eventos}) => {
+export const ProximosEventos = ({ eventos }) => {
   return (
     <section>
       <header className="proximosEventos">
-        <h2>Proximos eventos</h2>
+        <h2>Próximos eventos</h2>
         <Link className="allEventos" to="/eventos">
           Todos los eventos
         </Link>
       </header>
       <div className="listaEventos">
-        {eventos?.slice(0, 3).map((eventos) => ( //Traigo solo los primeros 3
+        {eventos?.slice(0, 3).map((evento) => ( // Itera sobre los primeros 3 eventos
           <EventosBox
-            nombre={eventos.nombre}
-            foto={eventos.imagen}
+            key={evento.id_Evento} // Proporciona una clave única para cada instancia de EventosBox
+            nombre={evento.nombre}
+            foto={evento.imagen}
             precioMin={"500"}
             precioMax={"700"}
-            fecha={eventos.fecha}
-            hora={eventos.hora}
-            id={eventos.id_Evento}
+            fecha={evento.fecha}
+            hora={evento.hora}
+            id={evento.id_Evento}
           />
         ))}
       </div>
