@@ -6,7 +6,8 @@ export const UserList = ({ rol }) => {
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedUserRole, setSelectedUserRole] = useState("");
   useEffect(() => {
-    fetchUsers();
+    if (rol=="ADMINISTRADOR") {
+    fetchUsers();}
   }, []);
 
   const fetchUsers = async () => {

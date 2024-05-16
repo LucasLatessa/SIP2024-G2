@@ -12,7 +12,7 @@ class Usuario(models.Model):
     user_id = models.AutoField(primary_key=True) #Provee AUTH0
     nickname = models.TextField() #Provee AUTH0
     nombre = models.TextField() #Provee AUTH0
-    apellido = models.TextField()
+    apellido = models.TextField(blank=True, null=True,)
     correo = models.TextField() #Provee AUTH0
     creacion = models.DateTimeField(blank=True, null=True,auto_now_add=True) 
     rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='CLIENTE')

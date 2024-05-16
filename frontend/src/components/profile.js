@@ -5,8 +5,7 @@ import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
 import { updateCliente,updateAdministrador,updateProductora,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
-import { getAllTicketsByCli } from '../services/tickets.service';
-import { getEvento } from '../services/eventos.service';
+
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
 import { UserList } from "./UserList";
@@ -19,7 +18,6 @@ export const Profile = () => {
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [tickets, setTickets] = useState([]);
   
 
   const handleLoginClick = () => {
@@ -44,8 +42,7 @@ export const Profile = () => {
               correo: user.email || ''
             };
             await crearCliente(userData);
-            const response = await getUserNick(user.nickname);
-            setusuarioData(response.data.cliente);
+            await fetchUserData();
             setLoadingCliente(false);
           } catch (error) {
             console.error('Error creando usuario:', error);
@@ -62,32 +59,6 @@ export const Profile = () => {
       fetchUserData();
     }
   }, [ user?.nickname]);
-  
-  useEffect(() => {
-    const cargarTickets = async () => {
-      if (usuarioData && isAuthenticated) {
-        try {
-          const res = await getAllTicketsByCli(usuarioData.user_id);
-          const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
-            const eventoRes = await getEvento(ticket.evento);
-            return {
-              precio: ticket.precioInicial,
-              tipo_ticket: ticket.tipo_ticket,
-              foto: eventoRes.data.imagen,
-              eventoNombre: eventoRes.data.nombre,
-              eventoFecha: eventoRes.data.fecha,
-              eventoHora: eventoRes.data.hora
-            };
-          }));
-          setTickets(ticketsConInfoCompleta);
-        } catch (error) {
-          console.error("Error al cargar los tickets:", error);
-        }
-      }
-    };
-
-    cargarTickets();
-  }, [ usuarioData]);
 
   const handleUpdateProfile = async () => {
     try {
@@ -132,8 +103,8 @@ export const Profile = () => {
   }
 
   return (
-    isAuthenticated && (
       <main>
+        {console.log("Renderizando")}
         <Header />
         <div className="datosContainer">
           <img src={user.picture} alt={user.name} />
@@ -196,11 +167,11 @@ export const Profile = () => {
             <LogoutButton />
           </div>
         </div>
-        <Tickets_profile rol={usuarioData.rol} tickets={tickets}/>
-        <UserList rol={usuarioData.rol} />
+               <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
+              <UserList rol={usuarioData.rol} /> 
         <Footer />
       </main>
-    )
+    
   );
 };
 
