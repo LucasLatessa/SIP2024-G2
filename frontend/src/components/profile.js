@@ -4,12 +4,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
-import { updateCliente,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
+import { updateCliente,updateAdministrador,updateProductora,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
 import { getAllTicketsByCli } from '../services/tickets.service';
 import { getEvento } from '../services/eventos.service';
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
-import { TicketBox } from "./TicketBox";
+import { UserList } from "./UserList";
+import { Tickets_profile } from "./Tickets_profile";
 
 export const Profile = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -27,23 +28,6 @@ export const Profile = () => {
   const handleHome = () => {
     navigate('/');
   };
-  /* // Función para actualizar el rol de un usuario
-  const handleUpdateRole = async (userId, newRole) => {
-    try {
-      // Llama al servicio para actualizar el rol del usuario
-      await updateRole(userId, newRole);
-      // Actualiza la lista de usuarios despues de modificar el rol
-      const updatedUsers = users.map(user => {
-        if (user.user_id === userId) {
-          return { ...user, rol: newRole };
-        }
-        return user;
-      });
-      setUsers(updatedUsers);
-    } catch (error) {
-      console.error('Error al actualizar el rol del usuario:', error);
-    }
-  }; */
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -107,7 +91,24 @@ export const Profile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      await updateCliente(editingUserData);
+      let updateFunction;
+      switch (usuarioData.rol) {
+        case "CLIENTE":
+          updateFunction = updateCliente;
+          break;
+        case "ADMINISTRADOR":
+          updateFunction = updateAdministrador;
+          break;
+        case "PRODUCTORA":
+          updateFunction = updateProductora;
+          break;
+        default:
+          // Si el rol no está definido, muestra un error
+          setError("Rol de usuario no reconocido");
+          return;
+      }
+      // Ejecuta la función de actualización correspondiente
+      await updateFunction(editingUserData);
       setusuarioData(editingUserData);
       setEditingUserData(null); 
       setError(null);
@@ -140,11 +141,12 @@ export const Profile = () => {
             <div>
               <h2 className="infoCliente">Información del cliente </h2>
               <p className="datos">ID: {usuarioData.user_id}</p>
-              <p className="datos">DNI: {usuarioData.dni}</p>
+              <p className="datos">DNI: {usuarioData.dni} </p>
               <p className="datos">Nombre: {usuarioData.nombre}</p>
               <p className="datos">Apellido: {usuarioData.apellido}</p>
               <p className="datos">Nickname: {usuarioData.nickname}</p>
               <p className="datos">Correo: {usuarioData.correo}</p>
+              <p className="datos">Rol: {usuarioData.rol}</p>
             </div>
           )}
           {editingUserData && (
@@ -194,19 +196,8 @@ export const Profile = () => {
             <LogoutButton />
           </div>
         </div>
-        <h2 className="tusTickets">Tus tickets</h2>
-        <section className="allListaEventosa">
-          {tickets?.map((ticket) => (
-            <TicketBox
-              nombre={ticket.eventoNombre}
-              foto={ticket.foto}
-              tipo_ticket={ticket.tipo_ticket}
-              precio={ticket.precio}
-              fecha={ticket.eventoFecha}
-              hora={ticket.eventoHora}
-            />
-          ))}
-        </section>
+        <Tickets_profile rol={usuarioData.rol} tickets={tickets}/>
+        <UserList rol={usuarioData.rol} />
         <Footer />
       </main>
     )

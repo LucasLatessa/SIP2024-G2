@@ -50,7 +50,8 @@ def get_usuario_by_nickname(request, nickname):
             'nombre': usuario.nombre,
             'apellido': usuario.apellido,
             'correo': usuario.correo,
-            'dni': dni
+            'dni': dni,
+            'rol': usuario.rol
         }
         return JsonResponse({'usuario': usuario_data})
     except Usuario.DoesNotExist:
@@ -102,33 +103,45 @@ def update_user_role(request, pk):
     try:
         user = Usuario.objects.get(pk=pk)
         # Verifica si el usuario autenticado tiene permisos de Administrador
-        """ try:
+        """try:
             administrador = Administrador.objects.get(user_id=request.user.user_id)
         except Administrador.DoesNotExist:
             return JsonResponse({'error': 'No tienes permisos de administrador'}, status=403)
  """
         # Obtiene el nuevo rol del cuerpo de la solicitud
         new_role = request.data.get('rol')
-        # Eliminar el cliente existente
+        # Eliminar el Usuario existente
         user.delete()
-        if new_role=="Administrador":
-            # Crear un nuevo administrador con los datos del cliente
+        if new_role=="ADMINISTRADOR":
+            # Crear un nuevo administrador con los datos del Usuario
             nuevo_admin = Administrador.objects.create(
                 nickname=user.nickname,
                 nombre=user.nombre,
                 apellido=user.apellido,
                 correo=user.correo,
                 creacion=datetime.now(),
+                rol="ADMINISTRADOR"
                 #dni=user.dni
             )
-        elif new_role=="Productora":
-            # Crear un nuevo administrador con los datos del cliente
+        elif new_role=="PRODUCTORA":
+            # Crear un nuevo administrador con los datos del Usuario
             nuevo_produ = Productora.objects.create(
                 nickname=user.nickname,
                 nombre=user.nombre,
                 apellido=user.apellido,
                 correo=user.correo,
                 creacion=datetime.now(),
+                rol="PRODUCTORA"
+            )
+        elif new_role=="CLIENTE":
+            # Crear un nuevo cliente con los datos del Usuario
+            nuevo_cli = Cliente.objects.create(
+                nickname=user.nickname,
+                nombre=user.nombre,
+                apellido=user.apellido,
+                correo=user.correo,
+                creacion=datetime.now(),
+                rol="CLIENTE"
             )
         return JsonResponse({'mensaje': 'Rol de usuario actualizado con éxito'}, status=200)
     except Usuario.DoesNotExist:

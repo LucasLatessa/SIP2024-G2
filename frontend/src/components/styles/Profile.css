@@ -20,7 +20,7 @@ body,main {
   color: black;
 }
 
-.infoCliente, .tusTickets {
+.infoCliente, .tusTickets, .users {
   color: #01a198;
   margin: 0 auto;
 }
@@ -103,4 +103,7 @@ button {
 
 .loading-container button:hover {
   background-color: #016868;
+}
+ .usuario{
+  color: white;
 }
