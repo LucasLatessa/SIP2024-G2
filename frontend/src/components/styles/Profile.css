@@ -2,7 +2,6 @@ body,main {
   background-color: var(--color-secundario);
 }
 
-
 .datosContainer {
   display: flex;
   flex-direction: column;
@@ -19,6 +18,11 @@ body,main {
 }
 .error-message {
   color: black;
+}
+
+.infoCliente, .tusTickets {
+  color: #01a198;
+  margin: 0 auto;
 }
 
 .formulario-edicion {

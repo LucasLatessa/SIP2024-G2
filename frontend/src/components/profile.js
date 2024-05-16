@@ -19,6 +19,7 @@ export const Profile = () => {
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
   const [tickets, setTickets] = useState([]);
+  
 
   const handleLoginClick = () => {
     loginWithRedirect();
@@ -130,84 +131,85 @@ export const Profile = () => {
   }
 
   return (
-    
     isAuthenticated && (
       <main>
-      <Header />
-      <div className="datosContainer">
-        
-        <img src={user.picture} alt={user.name} />
-        {usuarioData && (
-          <div>
-            <h2>Información del cliente </h2>
-            <p className="datos">ID: {usuarioData.user_id}</p>
-            <p className="datos">DNI: {usuarioData.dni}</p>
-            <p className="datos">Nombre: {usuarioData.nombre}</p>
-            <p className="datos">Apellido: {usuarioData.apellido}</p>
-            <p className="datos">Nickname: {usuarioData.nickname}</p>
-            <p className="datos">Correo: {usuarioData.correo}</p>
+        <Header />
+        <div className="datosContainer">
+          <img src={user.picture} alt={user.name} />
+          {usuarioData && (
+            <div>
+              <h2 className="infoCliente">Información del cliente </h2>
+              <p className="datos">ID: {usuarioData.user_id}</p>
+              <p className="datos">DNI: {usuarioData.dni}</p>
+              <p className="datos">Nombre: {usuarioData.nombre}</p>
+              <p className="datos">Apellido: {usuarioData.apellido}</p>
+              <p className="datos">Nickname: {usuarioData.nickname}</p>
+              <p className="datos">Correo: {usuarioData.correo}</p>
+            </div>
+          )}
+          {editingUserData && (
+            <div className="formulario-edicion">
+              <h2>Editar perfil</h2>
+              <label>
+                DNI:
+                <input
+                  type="number"
+                  name="dni"
+                  value={editingUserData.dni || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Nombre:
+                <input
+                  type="text"
+                  name="nombre"
+                  value={editingUserData.nombre || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Apellido:
+                <input
+                  type="text"
+                  name="apellido"
+                  value={editingUserData.apellido || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              {error && <p className="error-message">{error}</p>}
+              <button onClick={handleUpdateProfile}>Guardar cambios</button>
+            </div>
+          )}
+          {!editingUserData && (
+            <UpdateProfileButton
+              onClick={() => setEditingUserData(usuarioData)}
+            />
+          )}
+
+          <div className="botones-container">
+            <button className="back" onClick={handleHome}>
+              Volver
+            </button>
+            <LogoutButton />
           </div>
-        )}
-        {editingUserData && (
-          <div className="formulario-edicion">
-            <h2>Editar perfil</h2>
-            <label>
-              DNI:
-              <input
-                type="number"
-                name="dni"
-                value={editingUserData.dni || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Nombre:
-              <input
-                type="text"
-                name="nombre"
-                value={editingUserData.nombre || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Apellido:
-              <input
-                type="text"
-                name="apellido"
-                value={editingUserData.apellido || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            {error && <p className="error-message">{error}</p>}
-            <button onClick={handleUpdateProfile}>Guardar cambios</button>
-          
-          </div>
-          
-        )}
-        {!editingUserData && (
-          <UpdateProfileButton onClick={() => setEditingUserData(usuarioData)} />
-        )}
-       
-        <div className="botones-container">
-          <button className="back" onClick={handleHome}>Volver</button>
-          <LogoutButton />
         </div>
-      </div>
-      <h2>Tus tickets</h2>
-      <section className="allListaEventosa">
+        <h2 className="tusTickets">Tus tickets</h2>
+        <section className="allListaEventosa">
           {tickets?.map((ticket) => (
             <TicketBox
-            nombre={ticket.eventoNombre}
-            foto={ticket.foto}
-            tipo_ticket={ticket.tipo_ticket}
-            precio={ticket.precio}
-            fecha={ticket.eventoFecha}
-            hora={ticket.eventoHora}
-          />)
-          )}
+              nombre={ticket.eventoNombre}
+              foto={ticket.foto}
+              tipo_ticket={ticket.tipo_ticket}
+              precio={ticket.precio}
+              fecha={ticket.eventoFecha}
+              hora={ticket.eventoHora}
+            />
+          ))}
         </section>
-      <Footer />
+        <Footer />
       </main>
-    ));
+    )
+  );
 };
 
