@@ -1,37 +1,38 @@
-.Carousel {
+.carousel {
   width: 100%;
-  height: 500px;
-  overflow: hidden;
-  position: relative;
+  height: 50vh;
 }
 
-.Carousel .slide {
+.carousel .slide {
   width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
 }
-.Carousel .slide img {
+
+.carousel .slide img {
+  width: 100%;
+  height: 50vh;
+  margin: 0;
+  object-fit: fill;
+}
+
+/*
+.carousel .slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   margin: 0 auto;
 }
-.Carousel .slide.active {
+.carousel .slide.active {
   opacity: 1;
 }
 
-.Carousel .slide img {
+.carousel .slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
+}*/
 
-.Carousel .arrow {
+.carousel .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -46,19 +47,19 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.Carousel .arrow:hover {
+.carousel .arrow:hover {
   opacity: 1;
 }
 
-.Carousel .arrow.left {
+.carousel .arrow.left {
   left: 2rem;
 }
 
-.Carousel .arrow.right {
+.carousel .arrow.right {
   right: 2rem;
 }
 
-.Carousel .dots {
+.carousel .dots {
   position: absolute;
   bottom: 2rem;
   left: 50%;
@@ -67,7 +68,7 @@
   justify-content: center;
 }
 
-.Carousel .dot {
+.carousel .dot {
   background-color: #333;
   border-radius: 50%;
   width: 1rem;
@@ -77,6 +78,6 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.Carousel .dot.active {
+.carousel .dot.active {
   background-color: #fff;
-}
+} 
