@@ -145,11 +145,11 @@ export const EventoPage = () => {
                 <h3>Compra tu entrada</h3>
                 <section className="formComprarEntrada">
                   {/* COMPRAR ENTRADA FORM */}
-                  <label htmlFor="">
+                  <label >
                     {" "}
                     Tipo de entrada
-                    <select onChange={handleTipoEntradaChange}>
-                      <option value="" disabled selected>
+                    <select id="tipoEntrada"  onChange={handleTipoEntradaChange} defaultValue="">
+                      <option value="" disabled>
                         Selecciona una opción
                       </option>
                       <option value="STANDARD">STANDARD</option>
@@ -162,10 +162,12 @@ export const EventoPage = () => {
                     <p>Precio de la entrada: {precioEntrada}</p>
                   )}
 
-                  <label>
+                  <label >
                     Cantidad Entrada
                     <input
                       type="number"
+                      id="cantidadEntradas"
+                      name="cantidadEntradas"
                       {...register("cantidadEntradas", {
                         required: true,
                       })}

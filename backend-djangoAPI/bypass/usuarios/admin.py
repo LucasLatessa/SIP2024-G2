@@ -5,22 +5,22 @@ from .models import Usuario, Cliente, Administrador, Productora
 
 # Define custom admin classes
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion', 'rol')
+    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion')
     search_fields = ('nickname', 'nombre', 'apellido', 'correo')
     readonly_fields = ('creacion',)
 
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion', 'rol', 'dni')
+    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion',  'dni')
     search_fields = ('nickname', 'nombre', 'apellido', 'correo', 'dni')
     readonly_fields = ('creacion',)
 
 class AdministradorAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion', 'rol', 'dni')
+    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion',  'dni')
     search_fields = ('nickname', 'nombre', 'apellido', 'correo', 'dni')
     readonly_fields = ('creacion',)
 
 class ProductoraAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion', 'rol')
+    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion')
     search_fields = ('nickname', 'nombre', 'apellido', 'correo')
     readonly_fields = ('creacion',)
 

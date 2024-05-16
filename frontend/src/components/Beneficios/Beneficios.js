@@ -28,6 +28,7 @@ export const Beneficios = () => {
                 {beneficios?.map((beneficios) => (
                     <BeneficiosBox
                         id={beneficios.id_beneficio}
+                        key={beneficios.id_beneficio}
                         nombre={beneficios.nombre}
                         foto={beneficios.imagen}
                         descripcion={beneficios.descripcion}
