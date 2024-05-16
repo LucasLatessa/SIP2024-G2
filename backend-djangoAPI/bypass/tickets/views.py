@@ -129,7 +129,8 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
     }
     try:
         preference_response = sdk.preference().create(preference_data)
-        preference = preference_response["response"]       
+        preference = preference_response["response"]    
+        print(preference)   
         return JsonResponse({'id': preference["id"]})
     except:
         print("No se pudo crear la preferencia")
