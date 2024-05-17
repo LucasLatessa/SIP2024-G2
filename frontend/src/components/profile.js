@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
-import { updateCliente,updateAdministrador,updateProductora,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
+import { updateCliente,updateAdministrador,updateProductora,getUserNick } from '../services/usuarios.service';
 
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
@@ -34,20 +34,7 @@ export const Profile = () => {
         setLoadingCliente(false);
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          try {
-            const userData = {
-              nickname: user.nickname,
-              nombre: user.given_name || '',
-              apellido: user.family_name || '',
-              correo: user.email || ''
-            };
-            await crearCliente(userData);
-            await fetchUserData();
-            setLoadingCliente(false);
-          } catch (error) {
-            console.error('Error creando usuario:', error);
-            setLoadingCliente(false);
-          }
+            navigate('/terminos_condiciones');
         } else {
           console.error('Error al recuperar los datos del usuario:', error);
           setLoadingCliente(false);

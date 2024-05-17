@@ -9,6 +9,7 @@ import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
+import { TermsAndConditions } from "./components/term_cond";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/terminos_condiciones" element={<TermsAndConditions />} />
         <Route path="/perfil" element={<Profile />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/mercado" element={<Marketplace />} />
