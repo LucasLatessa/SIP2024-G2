@@ -49,6 +49,7 @@ main {
 .navegacion li a:hover{
   color: var(--color-letras-cuaternario);
   border-bottom: 5px solid var(--color-letras-cuaternario);
+  transition: all 100ms ease-in-out;
 }
 
 .logo {

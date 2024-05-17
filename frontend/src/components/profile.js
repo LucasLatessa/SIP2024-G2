@@ -4,21 +4,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./buttons/logoutButton";
 import "./styles/Profile.css";
 import { UpdateProfileButton } from "./buttons/updateProfileButton";
-import { updateCliente,getUser,crearCliente,getUserNick } from '../services/usuarios.service';
-import { getAllTicketsByCli } from '../services/tickets.service';
-import { getEvento } from '../services/eventos.service';
+import { updateCliente,updateAdministrador,updateProductora,getUserNick } from '../services/usuarios.service';
+
 import { Header } from "./header-footer/header";
 import { Footer } from "./header-footer/footer";
-import { TicketBox } from "./TicketBox";
+import { UserList } from "./UserList";
+import { Tickets_profile } from "./Tickets_profile";
 
 export const Profile = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
-  const [clienteData, setClienteData] = useState(null); 
+  const [usuarioData, setusuarioData] = useState(null); 
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [tickets, setTickets] = useState([]);
+  
 
   const handleLoginClick = () => {
     loginWithRedirect();
@@ -30,25 +30,11 @@ export const Profile = () => {
     const fetchUserData = async () => {
       try {
         const response = await getUserNick(user.nickname);
-        setClienteData(response.data.cliente);
+        setusuarioData(response.data.usuario);
         setLoadingCliente(false);
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          try {
-            const userData = {
-              nickname: user.nickname,
-              nombre: user.given_name || '',
-              apellido: user.family_name || '',
-              correo: user.email || ''
-            };
-            await crearCliente(userData);
-            const response = await getUserNick(user.nickname);
-            setClienteData(response.data.cliente);
-            setLoadingCliente(false);
-          } catch (error) {
-            console.error('Error creando usuario:', error);
-            setLoadingCliente(false);
-          }
+            navigate('/terminos_condiciones');
         } else {
           console.error('Error al recuperar los datos del usuario:', error);
           setLoadingCliente(false);
@@ -59,38 +45,29 @@ export const Profile = () => {
     if (isAuthenticated) {
       fetchUserData();
     }
-  }, [isAuthenticated, user?.nickname]);
-  
-  useEffect(() => {
-    const cargarTickets = async () => {
-      if (clienteData && isAuthenticated) {
-        try {
-          const res = await getAllTicketsByCli(clienteData.user_id);
-          const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
-            const eventoRes = await getEvento(ticket.evento);
-            return {
-              precio: ticket.precioInicial,
-              tipo_ticket: ticket.tipo_ticket,
-              foto: eventoRes.data.imagen,
-              eventoNombre: eventoRes.data.nombre,
-              eventoFecha: eventoRes.data.fecha,
-              eventoHora: eventoRes.data.hora
-            };
-          }));
-          setTickets(ticketsConInfoCompleta);
-        } catch (error) {
-          console.error("Error al cargar los tickets:", error);
-        }
-      }
-    };
-
-    cargarTickets();
-  }, [clienteData, isAuthenticated]);
+  }, [ user?.nickname]);
 
   const handleUpdateProfile = async () => {
     try {
-      await updateCliente(editingUserData);
-      setClienteData(editingUserData);
+      let updateFunction;
+      switch (usuarioData.rol) {
+        case "CLIENTE":
+          updateFunction = updateCliente;
+          break;
+        case "ADMINISTRADOR":
+          updateFunction = updateAdministrador;
+          break;
+        case "PRODUCTORA":
+          updateFunction = updateProductora;
+          break;
+        default:
+          // Si el rol no está definido, muestra un error
+          setError("Rol de usuario no reconocido");
+          return;
+      }
+      // Ejecuta la función de actualización correspondiente
+      await updateFunction(editingUserData);
+      setusuarioData(editingUserData);
       setEditingUserData(null); 
       setError(null);
     } catch (error) {
@@ -113,84 +90,74 @@ export const Profile = () => {
   }
 
   return (
-    
-    isAuthenticated && (
       <main>
-      <Header />
-      <div className="datosContainer">
-        
-        <img src={user.picture} alt={user.name} />
-        {clienteData && (
-          <div>
-            <h2>Información del cliente </h2>
-            <p className="datos">ID: {clienteData.user_id}</p>
-            <p className="datos">DNI: {clienteData.dni}</p>
-            <p className="datos">Nombre: {clienteData.nombre}</p>
-            <p className="datos">Apellido: {clienteData.apellido}</p>
-            <p className="datos">Nickname: {clienteData.nickname}</p>
-            <p className="datos">Correo: {clienteData.correo}</p>
-          </div>
-        )}
-        {editingUserData && (
-          <div className="formulario-edicion">
-            <h2>Editar perfil</h2>
-            <label>
-              DNI:
-              <input
-                type="number"
-                name="dni"
-                value={editingUserData.dni || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Nombre:
-              <input
-                type="text"
-                name="nombre"
-                value={editingUserData.nombre || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Apellido:
-              <input
-                type="text"
-                name="apellido"
-                value={editingUserData.apellido || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-            {error && <p className="error-message">{error}</p>}
-            <button onClick={handleUpdateProfile}>Guardar cambios</button>
-          
-          </div>
-          
-        )}
-        {!editingUserData && (
-          <UpdateProfileButton onClick={() => setEditingUserData(clienteData)} />
-        )}
-       
-        <div className="botones-container">
-          <button class="back" onClick={handleHome}>Volver</button>
-          <LogoutButton />
-        </div>
-      </div>
-      <h2>Tus tickets</h2>
-      <section className="allListaEventosa">
-          {tickets?.map((ticket) => (
-            <TicketBox
-            nombre={ticket.eventoNombre}
-            foto={ticket.foto}
-            tipo_ticket={ticket.tipo_ticket}
-            precio={ticket.precio}
-            fecha={ticket.eventoFecha}
-            hora={ticket.eventoHora}
-          />)
+        {console.log("Renderizando")}
+        <Header />
+        <div className="datosContainer">
+          <img src={user.picture} alt={user.name} />
+          {usuarioData && (
+            <div>
+              <h2 className="infoCliente">Información del  {usuarioData.rol.toLowerCase()} </h2>
+              <p className="datos">ID: {usuarioData.user_id}</p>
+              <p className="datos">DNI: {usuarioData.dni} </p>
+              <p className="datos">Nombre: {usuarioData.nombre}</p>
+              <p className="datos">Apellido: {usuarioData.apellido}</p>
+              <p className="datos">Nickname: {usuarioData.nickname}</p>
+              <p className="datos">Correo: {usuarioData.correo}</p>
+            </div>
           )}
-        </section>
-      <Footer />
+          {editingUserData && (
+            <div className="formulario-edicion">
+              <h2>Editar perfil</h2>
+              <label>
+                DNI:
+                <input
+                  type="number"
+                  name="dni"
+                  value={editingUserData.dni || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Nombre:
+                <input
+                  type="text"
+                  name="nombre"
+                  value={editingUserData.nombre || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Apellido:
+                <input
+                  type="text"
+                  name="apellido"
+                  value={editingUserData.apellido || ""}
+                  onChange={handleInputChange}
+                />
+              </label>
+              {error && <p className="error-message">{error}</p>}
+              <button onClick={handleUpdateProfile}>Guardar cambios</button>
+            </div>
+          )}
+          {!editingUserData && (
+            <UpdateProfileButton
+              onClick={() => setEditingUserData(usuarioData)}
+            />
+          )}
+
+          <div className="botones-container">
+            <button className="back" onClick={handleHome}>
+              Volver
+            </button>
+            <LogoutButton />
+          </div>
+        </div>
+               <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
+              <UserList rol={usuarioData.rol} /> 
+        <Footer />
       </main>
-    ));
+    
+  );
 };
 

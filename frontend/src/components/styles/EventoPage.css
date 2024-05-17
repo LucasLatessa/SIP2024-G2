@@ -71,7 +71,7 @@
     width: calc(33.33%); /*Porque se parte en 3*/
 }
 
-.comprarTicketSubmit{
+.comprarTicketsButton{
     flex-grow: 1;
     width: calc(33.33%); /*Porque se parte en 3*/
     display: flex;
@@ -79,7 +79,7 @@
     align-items: center;
 }
 
-.comprarTicketSubmit > input {
+.comprarTicketsButton > button {
     width: 10rem;
     height: 3rem;
     font-size: 1.5rem;
@@ -88,7 +88,7 @@
     border-radius: 30px;
 }
 
-.comprarTicketSubmit > input:hover {
+.comprarTicketsButton > button:hover {
     width: 11rem;
     height: 4rem;
     font-size: 1.8rem;

@@ -12,12 +12,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+# Cargo las variables de entorno del archivo .env
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59'
@@ -25,11 +26,14 @@ SECRET_KEY = 'django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Guardo la url del ngrok
+NGROK_URL = os.environ.get('NGROK_URL')
+
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',  # Incluye estas entradas básicas
     'localhost:4040',
-    '2b1c-181-99-247-176.ngrok-free.app',
+    NGROK_URL,
     ]
     # agregar host de ngrok cada vez que es levantado
 
@@ -159,7 +163,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://2b1c-181-99-247-176.ngrok-free.app",  # Añade tu dominio de Ngrok
+    f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
     "http://localhost:8000",  # Añade el host local si lo necesitas
     # Agrega otros dominios confiables si es necesario
 ]

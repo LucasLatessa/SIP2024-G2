@@ -16,6 +16,13 @@ article.evento {
   width: 399px; /*Valor fijo, con responsive funciona tambien*/
 }
 
+/*Animacion arriba del evento*/
+article.evento:hover{
+  margin-top: 0rem;
+  height: auto;
+  transition: all 0.35s ease-in-out;
+}
+
 article.evento h2 {
   grid-area: nombre;
   height: auto;

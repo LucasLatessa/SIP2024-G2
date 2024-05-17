@@ -9,6 +9,6 @@ router.register(r"Administrador",views.AdministradorView)
 router.register(r"Productora",views.ProductoraView)
 urlpatterns = [
     path('', include(router.urls)),
-    path('Usuario/nick/<str:nickname>/', views.get_cliente_by_nickname, name='get_cliente_by_nickname'),
-    path('<str:dni>/', views.get_cliente_by_dni, name='get_cliente_by_dni'),
+    path('Usuario/nick/<str:nickname>/', views.get_usuario_by_nickname, name='get_usuario_by_nickname'),
+    path('Usuario/<int:pk>/update-role/', views.update_user_role, name='update_user_role'),
 ]

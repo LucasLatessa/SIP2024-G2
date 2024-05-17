@@ -1,10 +1,7 @@
-body {
+body,main {
   background-color: var(--color-secundario);
 }
-h2 {
-  text-align: center;
 
-}
 .datosContainer {
   display: flex;
   flex-direction: column;
@@ -23,7 +20,7 @@ h2 {
   color: black;
 }
 
-h2 {
+.infoCliente, .tusTickets, .users {
   color: #01a198;
   margin: 0 auto;
 }
@@ -106,4 +103,22 @@ button {
 
 .loading-container button:hover {
   background-color: #016868;
+}
+ .usuario{
+  color: white;
+}
+.title_terms{
+  color: var(--color-letras-cuaternario);
+}
+.terms {
+  height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid white;
+  background-color: var(--color-secundario);
+  color: aliceblue;
+}
+label{
+  display: block;
 }

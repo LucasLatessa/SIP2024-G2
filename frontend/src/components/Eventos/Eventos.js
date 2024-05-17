@@ -29,6 +29,7 @@ export const Eventos = () => {
         <section className="allListaEventosa">
           {eventos?.map((eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
             <EventosBox
+            key={eventos.id_Evento}
             id={eventos.id_Evento}
             nombre={eventos.nombre}
             foto={eventos.imagen}
