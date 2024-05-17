@@ -97,14 +97,13 @@ export const Profile = () => {
           <img src={user.picture} alt={user.name} />
           {usuarioData && (
             <div>
-              <h2 className="infoCliente">Información del cliente </h2>
+              <h2 className="infoCliente">Información del  {usuarioData.rol.toLowerCase()} </h2>
               <p className="datos">ID: {usuarioData.user_id}</p>
               <p className="datos">DNI: {usuarioData.dni} </p>
               <p className="datos">Nombre: {usuarioData.nombre}</p>
               <p className="datos">Apellido: {usuarioData.apellido}</p>
               <p className="datos">Nickname: {usuarioData.nickname}</p>
               <p className="datos">Correo: {usuarioData.correo}</p>
-              <p className="datos">Rol: {usuarioData.rol}</p>
             </div>
           )}
           {editingUserData && (

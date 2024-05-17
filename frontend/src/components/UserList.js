@@ -42,7 +42,7 @@ export const UserList = ({ rol }) => {
       <ul>
         {users.map(user => (
           <li className="usuario" key={user.user_id}>
-            {user.nombre} {user.apellido} -  
+            {user.nickname} -  
             <select
               value={user.rol}
               onChange={(e) => handleUserRoleChange(user.user_id, e)}
