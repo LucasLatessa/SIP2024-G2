@@ -96,7 +96,7 @@ def obtener_ticket_evento(request):
 @csrf_exempt
 @api_view(['POST'])
 def prueba_mercadopago(request): #por el momento asumimos que todo va a funcionar como debe 
-    sdk = mercadopago.SDK("TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899")
+    sdk = mercadopago.SDK("TEST-2575880952392402-051110-b1664a93c9ad6040e18dc6f01e896cca-1793151899")
 
     body = json.loads(request.body) 
     data_quantity = body.get("quantity") 
@@ -122,7 +122,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
             "pending": "http://localhost:4040",
         },
     "auto_return": "approved",
-    "notification_url": "https://a011-181-99-247-176.ngrok-free.app/tickets/entregar",
+    "notification_url": "https://2b1c-181-99-247-176.ngrok-free.app/tickets/entregar",
     }
     try:
         preference_response = sdk.preference().create(preference_data)

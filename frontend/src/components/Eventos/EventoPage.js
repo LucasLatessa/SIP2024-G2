@@ -23,7 +23,7 @@ export const EventoPage = () => {
   const { user } = useAuth0();
   
     
-  initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
+  initMercadoPago("TEST-c35e3e75-83c4-4973-b107-961dd0527cdb", { locale: "es-AR" });
 
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
