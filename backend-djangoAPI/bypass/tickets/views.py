@@ -129,8 +129,7 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
     }
     try:
         preference_response = sdk.preference().create(preference_data)
-        preference = preference_response["response"]    
-        print(preference)   
+        preference = preference_response["response"]      
         return JsonResponse({'id': preference["id"]})
     except:
         print("No se pudo crear la preferencia")
@@ -141,7 +140,6 @@ def prueba_mercadopago(request): #por el momento asumimos que todo va a funciona
 @csrf_exempt
 @api_view(['POST'])
 def entregarToken(request):
-    print(request)
     try:
         payment_id = request.query_params.get('data.id')
         solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"	

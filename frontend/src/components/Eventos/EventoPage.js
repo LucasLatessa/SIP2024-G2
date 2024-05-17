@@ -20,7 +20,7 @@ export const EventoPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user } = useAuth0();
+  const { user,getAccessTokenSilently } = useAuth0();
   const { id } = useParams(); //Obtengo el id del evento
   const {
     getValues,
@@ -35,6 +35,8 @@ export const EventoPage = () => {
     locale: "es-AR",
   });
 
+  const token = getAccessTokenSilently();
+  console.log(token);
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
