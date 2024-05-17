@@ -15,7 +15,8 @@ export const Tickets_profile = ({ rol, user_id}) => {
             return {
               precio: ticket.precioInicial,
               tipo_ticket: ticket.tipo_ticket,
-              foto: eventoRes.data.imagen,
+              qr: ticket.qr,
+              foto: eventoRes.data.imagen,              
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
               eventoHora: eventoRes.data.hora

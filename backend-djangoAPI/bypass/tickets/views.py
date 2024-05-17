@@ -51,7 +51,8 @@ def get_tickets_by_cliente(request, cliente_id):
     ticket_data = [{'id_Ticket': ticket.id_Ticket,
                     'precioInicial': ticket.precioInicial,
                     'evento': ticket.evento.id_Evento if ticket.evento else None,
-                    'tipo_ticket': ticket.tipo_ticket.tipo if ticket.tipo_ticket else None}
+                    'tipo_ticket': ticket.tipo_ticket.tipo if ticket.tipo_ticket else None,
+                    'qr': ticket.qr.url if ticket.qr else None}
                    for ticket in tickets]
 
     # Devuelve los tickets como una respuesta JSON

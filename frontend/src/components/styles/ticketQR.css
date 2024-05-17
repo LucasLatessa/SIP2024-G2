@@ -1,13 +1,49 @@
 .ticketQR {
-    /*background-image: url("../../images/entrada.png");
-    background-size: cover;
-    background-position: center; 
-    background-repeat: no-repeat;  */
-    width: 50%;
+    width: 50vh;
+    height: 90vh;
     margin: 0 auto;
-    padding: 2rem;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-areas: "stack";
+    overflow: hidden;
 }
 
-.imagenEvento{
-    
+.imagenEventoQR{
+    margin: 0 auto;
+    height: 90vh;
+    grid-area: stack;
+    object-fit: cover;
+}
+
+.datosEventoQR{
+    grid-area: stack;
+    color: var(--color-letras-secundario);
+    text-align: center;
+    position: relative;
+}
+
+.datosEventoQRNombre{
+    font-size: 3rem;
+    text-transform: uppercase;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+    right: 0;
+}
+
+.datosEventoQRFecha{
+    font-size: 1.2rem;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+    right: 0;
+}
+
+.datosEventoQRImagen{
+    font-size: 1.2rem;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+    right: 0;
+    background-color: red;
 }

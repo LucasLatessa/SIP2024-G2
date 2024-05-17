@@ -33,11 +33,11 @@ export const TicketBox = ({nombre,foto,tipo_ticket,precio,fecha,hora,qr}) => {
       {modalOpen && (
         <div className="modal">
           <div onClick={closeModal} className="overlay">
-          <TicketQR className="modal-content"
+          <TicketQR
               nombre={nombre}
-              fecha={{fecha}}
-              hora={{hora}}
-              qr={{qr}}
+              fecha={fecha}
+              hora={hora}
+              qr={qr}
             />
           </div>
           

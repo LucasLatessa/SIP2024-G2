@@ -63,8 +63,8 @@ class Ticket(models.Model):
         precio = ticket.precioInicial
 
         return precio
-    
-    #Genero el QR del ticket
+
+    # Genero el QR del ticket
     def generar_qr(self):
         evento = self.evento
         propietario = self.propietario
@@ -84,7 +84,7 @@ class Ticket(models.Model):
         )
         qr.add_data(qr_input)
         qr.make(fit=True)
-        img = qr.make_image(fill='black',back_color='white').convert("RGB")
+        img = qr.make_image(fill="black", back_color="white").convert("RGB")
 
         # Invertir colores del QR (negro a blanco y blanco a negro)
         img = ImageOps.invert(img)
@@ -97,9 +97,9 @@ class Ticket(models.Model):
         new_data = []
         for item in datas:
             # Encontrar todos los píxeles negros
-            if item[:3] == (0, 0, 0):  
+            if item[:3] == (0, 0, 0):
                 # Reemplazarlos por transparente
-                new_data.append((255, 255, 255, 0))  
+                new_data.append((255, 255, 255, 0))
             else:
                 new_data.append(item)  # Dejar los píxeles blancos intactos
 
@@ -117,7 +117,7 @@ class Ticket(models.Model):
 
         # Guardo en el modelo
         buffer = BytesIO()
-        img.save(buffer, format='PNG')
+        img.save(buffer, format="PNG")
         filename = f"ticket_{Ticket.id_Ticket}.png"
         self.qr.save(filename, File(buffer), save=False)
 
@@ -162,5 +162,3 @@ class Publicacion(models.Model):
 #                 ticket=instance,
 #                 fechaInicial = datetime.datetime.now()
 #         )
-
-
