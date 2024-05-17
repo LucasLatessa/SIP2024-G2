@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from rest_framework import viewsets
 from .serializer import TicketSerializer, PublicacionSerializer, PrecioSerializer, TipoTicketSerializer
 from .models import Ticket, Publicacion, Precio, TipoTickets
@@ -58,7 +58,7 @@ def get_tickets_by_cliente(request, cliente_id):
     return JsonResponse({'tickets': ticket_data})
 
 #Funcion para obtener todos los tickets de un evento
-@authorized
+#@authorized
 def get_tickets_by_evento(request, evento_id):
     #Obtengo todos los tickets de ese evento
     tickets = Ticket.objects.filter(evento_id = evento_id)
@@ -73,8 +73,9 @@ def get_tickets_by_evento(request, evento_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({'tickets': ticket_data})
 
-#@authorized no funciona
-def obtener_ticket_evento(request):
+@authorized
+def obtener_ticket_evento(request:HttpRequest, token:RequestToken) -> JsonResponse:
+    print(token)
     evento_id = request.GET.get('evento_id') 
     quantity = request.GET.get('quantity') 
     tipo_ticket = request.GET.get('tipo_ticket') 

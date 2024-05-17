@@ -30,16 +30,16 @@ export const EventoPage = () => {
   } = useForm();
   const [eventos, setEventos] = useState([]);
   const [tickets, setTickets] = useState([]);
+  const [token, setToken] = useState();
 
   initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", {
     locale: "es-AR",
   });
-
-  const token = getAccessTokenSilently();
-  console.log(token);
+    
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
+      console.log(token);
       const response = await axios.get(
         "http://localhost:8000/tickets/obtener_ticket_evento/",
         {
@@ -47,6 +47,9 @@ export const EventoPage = () => {
             evento_id: id,
             quantity: quantity,
             tipo_ticket: tipoTicket,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -82,8 +85,15 @@ export const EventoPage = () => {
     async function cargarEventos() {
       const resEvento = await getEvento(id); //Solo eventos validos, si no existe hay que arreglarlo
       setEventos(resEvento.data);
+      
     }
     cargarEventos();
+    
+  async function obtenerToken(){
+      const token = await getAccessTokenSilently();
+      setToken(token)
+  }
+  obtenerToken();
   }, []);
 
   //Realizo la compra de tickets
