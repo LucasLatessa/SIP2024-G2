@@ -44,6 +44,7 @@ export const Tickets_profile = ({ rol, user_id}) => {
               precio={ticket.precio}
               fecha={ticket.eventoFecha}
               hora={ticket.eventoHora}
+              qr={ticket.qr}
             />
           ))}
         </section>
