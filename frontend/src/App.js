@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home } from "./components/Home/Home";
-import { Profile } from "./components/profile";
+import { Profile } from "./components/Profile/profile";
 import { Eventos } from "./components/Eventos/Eventos";
 import { Marketplace } from "./components/Publicaciones/marketplace";
 import { Beneficios } from "./components/Beneficios/Beneficios";
@@ -9,7 +9,7 @@ import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
-import { TermsAndConditions } from "./components/term_cond";
+import { TermsAndConditions } from "./components/RNF/term_cond";
 
 
 function App() {

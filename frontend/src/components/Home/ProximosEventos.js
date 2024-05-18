@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { EventosBox } from "../EventosBox"; // Importa el componente EventosBox
 import "../styles/proximosEventos.css";
+import { EventosBox } from "../Eventos/EventosBox";
 
 export const ProximosEventos = ({ eventos }) => {
   return (

@@ -1,9 +1,9 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
-import { EventosBox } from "../EventosBox";
 import "../styles/Eventos.css";
 import { getAllEventos } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
+import { EventosBox } from "./EventosBox";
 
 //Pagina donde se mostraran todos los eventos posibles
 export const Eventos = () => {

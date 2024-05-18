@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./styles/ticketsBox.css";
+import "../styles/ticketsBox.css";
 import { useState } from "react";
 import { TicketQR } from "./TicketQR";
 

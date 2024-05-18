@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { TicketBox } from "./TicketBox";
-import { getAllTicketsByCli } from '../services/tickets.service';
-import { getEvento } from '../services/eventos.service';
-import { getLugar } from '../services/lugar.service';
+import { TicketBox } from "../Tickets/TicketBox";
+import { getAllTicketsByCli } from '../../services/tickets.service';
+import { getEvento } from '../../services/eventos.service';
+import { getLugar } from '../../services/lugar.service';
 
 export const Tickets_profile = ({ rol, user_id}) => {
   const [tickets, setTickets] = useState([]);

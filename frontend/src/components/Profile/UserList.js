@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsers,getUserNick, updateRole } from "../services/usuarios.service";
+import { getAllUsers,getUserNick, updateRole } from "../../services/usuarios.service";
 
 export const UserList = ({ rol }) => {
   const [users, setUsers] = useState([]);

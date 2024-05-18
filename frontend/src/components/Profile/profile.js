@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
-import { LogoutButton } from "./buttons/logoutButton";
-import "./styles/Profile.css";
-import { UpdateProfileButton } from "./buttons/updateProfileButton";
-import { updateCliente,updateAdministrador,updateProductora,getUserNick } from '../services/usuarios.service';
-
-import { Header } from "./header-footer/header";
-import { Footer } from "./header-footer/footer";
-import { UserList } from "./UserList";
+import "../styles/Profile.css";
+import { updateCliente,updateAdministrador,updateProductora,getUserNick } from '../../services/usuarios.service';
+import { UpdateProfileButton } from "./updateProfileButton";
+import { LogoutButton } from "./logoutButton";
 import { Tickets_profile } from "./Tickets_profile";
+import { Header } from "../header-footer/header";
+import { Footer } from "../header-footer/footer";
+import { UserList } from "./UserList";
+
 
 export const Profile = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
