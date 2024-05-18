@@ -29,6 +29,7 @@ class Evento(models.Model):
     hora = models.TimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
     estado= models.ForeignKey(EstadoEvento, models.DO_NOTHING, db_column='estadoEvento',blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
     imagen = models.ImageField(upload_to="eventos",null=True)
 
     def __str__(self):

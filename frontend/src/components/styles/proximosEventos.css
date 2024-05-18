@@ -33,5 +33,6 @@ header.proximosEventos{
 
 .allEventos:hover{
   background-color: var(--color-letras-cuaternario);
+  transition: all 0.35s ease-in-out;
 }
 

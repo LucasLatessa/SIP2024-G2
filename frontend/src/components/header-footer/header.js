@@ -5,7 +5,7 @@ import "../styles/header.css";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const { loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const handleLoginClick = () => {
@@ -35,7 +35,7 @@ export const Header = () => {
         )}
         {isAuthenticated && (
             <div className="profile" onClick={handleProfileClick}>
-              <img src="/assets/user.png" alt="Usuario" className="icono-usuario" />
+              <img src={user.picture} alt="Usuario" className="icono-usuario-auth0" />
             </div>
         )}</li>
         

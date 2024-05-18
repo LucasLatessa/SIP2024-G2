@@ -208,10 +208,7 @@ export const EventoPage = () => {
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-                  totam ut ipsum obcaecati neque voluptate labore nesciunt
-                  eligendi ab mollitia. Ipsa, culpa voluptatibus? Repudiandae
-                  minus corporis, ab ipsam eum est?
+                  {eventos.descripcion}
                 </p>
               </section>
               <section className="comoLLegar">

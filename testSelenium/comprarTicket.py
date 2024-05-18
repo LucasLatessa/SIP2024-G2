@@ -12,6 +12,11 @@ def modificarCampo(nombre,selector):
     campo.clear()
     campo.send_keys(nombre)
 
+usuario = "ByPassSIP@gmail.com"
+contraseña = "ByPass2024"
+usuarioMP = "TESTUSER320418584"
+contraseñaMP = "qSuDm2hNuV"
+
 #Abrir pagina
 driver = webdriver.Chrome()
 driver.get("http://localhost:4040/")
@@ -19,17 +24,61 @@ driver.get("http://localhost:4040/")
 #Inicio sesion
 ejecutarClick("div.login")
 
-#Iniciar con google
-ejecutarClick("button.c0bb02cc9.cb6427d24.cc25322e6")
-
 #Correo
-modificarCampo("ByPassSIP@gmail.com","input[type='email']")
+modificarCampo(usuario,"input[name='username']")
 
-#Siguiente
-ejecutarClick("button[type='button']")
+#Contraseña
+modificarCampo(contraseña,"input[name='password']")
 
-#Click entendido
-ejecutarClick("div[role='button']")
+#IniciarSesion
+ejecutarClick("button[type='submit']")
+
+#Voy a evento
+ejecutarClick("a[href='/eventos']")
+
+#Selecciono 1 evento
+ejecutarClick("a[href='/evento/2']")
+
+#Selecciono tipo de entrada
+ejecutarClick("select[id='tipoEntrada']")
+ejecutarClick("option[value='STANDARD']")
+
+#Cantidad entrdas
+modificarCampo("1", "input[id='cantidadEntradas']")
+
+time.sleep(2)
+
+#Comprar
+ejecutarClick("button")
+
+time.sleep(5)
+
+#MP
+ejecutarClick("button[aria-label='Pagar con Mercado Pago']")
+
+time.sleep(5)
+
+#Cuenta MP
+ejecutarClick("div[class='title']")
+
+time.sleep(5)
+
+#Cuenta MP
+modificarCampo(usuarioMP,"input[type='email']")
+ejecutarClick("button[type='submit']")
+modificarCampo(contraseñaMP,"input[type='password']")
+ejecutarClick("button[type='submit']")
+
+time.sleep(5)
+
+#Pagar
+ejecutarClick("button[type='submit']")
+
+time.sleep(10)
+
+#Veo la entrada
+ejecutarClick("div.profile")
+ejecutarClick("button.modalQR")
 
 time.sleep(10000)
 

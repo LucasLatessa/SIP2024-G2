@@ -101,6 +101,15 @@ export const ProgramarEvento = () => {
                 />
               </label>
               <label>
+                Descripcion
+                <input
+                  type="text"
+                  {...register("descripcion", {
+                    required: true,
+                  })}
+                />
+              </label>
+              <label>
                 Imagen
                 <input
                   type="file"
