@@ -3,7 +3,7 @@ import "./styles/ticketsBox.css";
 import { useState } from "react";
 import { TicketQR } from "./TicketQR";
 
-export const TicketBox = ({nombre,foto,tipo_ticket,precio,fecha,hora,qr}) => {
+export const TicketBox = ({nombre,foto,tipo_ticket,precio,fecha,hora,qr,lugar}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
@@ -38,6 +38,7 @@ export const TicketBox = ({nombre,foto,tipo_ticket,precio,fecha,hora,qr}) => {
               fecha={fecha}
               hora={hora}
               qr={qr}
+              lugar={lugar}
             />
           </div>
           

@@ -29,21 +29,41 @@
     top: 9rem;
     left: 0;
     right: 0;
+    line-height: 1.1;
 }
 
 .datosEventoQRFecha{
     font-size: 1.2rem;
     position: absolute;
-    top: 9rem;
+    top: 8rem; /*8rem*/
     left: 0;
     right: 0;
 }
 
 .datosEventoQRImagen{
-    font-size: 1.2rem;
+    width: 60%;
+    margin: 0 auto;
     position: absolute;
-    top: 9rem;
+    top: 18rem;
     left: 0;
     right: 0;
-    background-color: red;
+}
+
+.datosEventoQRhora{
+    font-size: 2rem;
+    font-weight: bold;
+    position: absolute;
+    bottom: 5.7rem;
+    left: 0;
+    right: 0;
+    color: var(--color-letras-primario);
+}
+
+.datosEventoQRlugar{
+    font-size: 1rem;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 3.3rem;
+    left: 0;
+    right: 0;
 }

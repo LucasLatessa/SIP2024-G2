@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TicketBox } from "./TicketBox";
 import { getAllTicketsByCli } from '../services/tickets.service';
 import { getEvento } from '../services/eventos.service';
+import { getLugar } from '../services/lugar.service';
 
 export const Tickets_profile = ({ rol, user_id}) => {
   const [tickets, setTickets] = useState([]);
@@ -12,6 +13,8 @@ export const Tickets_profile = ({ rol, user_id}) => {
           const res = await getAllTicketsByCli(user_id);
           const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
             const eventoRes = await getEvento(ticket.evento);
+            const lugarRes = await getLugar(eventoRes.data.lugar)
+            //console.log(lugarRes)
             return {
               precio: ticket.precioInicial,
               tipo_ticket: ticket.tipo_ticket,
@@ -19,7 +22,8 @@ export const Tickets_profile = ({ rol, user_id}) => {
               foto: eventoRes.data.imagen,              
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
-              eventoHora: eventoRes.data.hora
+              eventoHora: eventoRes.data.hora,
+              eventoLugarNombre: lugarRes.data.nombre,
             };
           }));
           setTickets(ticketsConInfoCompleta);
@@ -46,6 +50,7 @@ export const Tickets_profile = ({ rol, user_id}) => {
               fecha={ticket.eventoFecha}
               hora={ticket.eventoHora}
               qr={ticket.qr}
+              lugar={ticket.eventoLugarNombre}
             />
           ))}
         </section>
