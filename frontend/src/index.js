@@ -19,6 +19,7 @@ root.render(
         audience:audience,
         redirect_uri: redirectUri,
       }}
+      cacheLocation="localstorage"
     >
       <App />
     </Auth0Provider>

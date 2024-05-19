@@ -12,7 +12,7 @@ import { UserList } from "./UserList";
 
 
 export const Profile = () => {
-  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const [usuarioData, setusuarioData] = useState(null); 
   const [loadingCliente, setLoadingCliente] = useState(true);
@@ -45,7 +45,7 @@ export const Profile = () => {
     if (isAuthenticated) {
       fetchUserData();
     }
-  }, [ user?.nickname]);
+  }, [isAuthenticated, user?.nickname, navigate]);
 
   const handleUpdateProfile = async () => {
     try {
@@ -61,11 +61,11 @@ export const Profile = () => {
           updateFunction = updateProductora;
           break;
         default:
-          // Si el rol no está definido, muestra un error
+          // Si el rol no esta definido, muestra un error
           setError("Rol de usuario no reconocido");
           return;
       }
-      // Ejecuta la función de actualización correspondiente
+      // Ejecuta la funcion de actualización correspondiente
       await updateFunction(editingUserData);
       setusuarioData(editingUserData);
       setEditingUserData(null); 
@@ -80,12 +80,19 @@ export const Profile = () => {
     setEditingUserData({ ...editingUserData, [name]: value });
   };
 
-  if (isLoading || loadingCliente) {
+  if (!isAuthenticated) {
     return (
       <div className="loading-container">
         <p className="noLogin">Usted no está logueado...</p>
         <button onClick={handleLoginClick}>Login</button>
     </div>
+    );
+  }
+  if (loadingCliente) {
+    return (
+        <div className="loading-container">
+            <p>Cargando datos del usuario...</p>
+        </div>
     );
   }
 
@@ -153,8 +160,8 @@ export const Profile = () => {
             <LogoutButton />
           </div>
         </div>
-               <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
-              <UserList rol={usuarioData.rol} /> 
+        <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
+        <UserList rol={usuarioData.rol} /> 
         <Footer />
       </main>
     
