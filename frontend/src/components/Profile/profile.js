@@ -91,7 +91,7 @@ export const Profile = () => {
   if (loadingCliente) {
     return (
         <div className="loading-container">
-            <p>Cargando datos del usuario...</p>
+            <p className="chargeClient">Cargando datos del usuario...</p>
         </div>
     );
   }

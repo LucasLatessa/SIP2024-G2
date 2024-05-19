@@ -13,7 +13,7 @@ body,main {
   margin-left: 10px;
 }
 
-.datos, .noLogin {
+.datos, .noLogin, .chargeClient {
   color: aliceblue;
 }
 .error-message {
