@@ -80,14 +80,14 @@ export const Profile = () => {
     setEditingUserData({ ...editingUserData, [name]: value });
   };
 
-  if (!isAuthenticated) {
+  /*if (!isAuthenticated) {
     return (
       <div className="loading-container">
         <p className="noLogin">Usted no está logueado...</p>
         <button onClick={handleLoginClick}>Login</button>
     </div>
     );
-  }
+  }*/
   if (loadingCliente) {
     return (
         <div className="loading-container">
