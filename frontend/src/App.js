@@ -10,7 +10,7 @@ import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 import { TermsAndConditions } from "./components/RNF/term_cond";
-
+import {PublicarTicket} from "./components/Tickets/PublicarTicket";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
         <Route path="/programarEvento" element={<ProgramarEvento />} />
         <Route path="/mercadopago" element={<Mercadopago />} />
         <Route path="/crearBeneficio" element={<CrearBeneficio />} />
+        <Route path="/publicar-ticket" element={<PublicarTicket />} />
       </Routes>
     </Router>
   );

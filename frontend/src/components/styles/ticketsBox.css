@@ -5,6 +5,7 @@ article.ticket {
     "nombre nombre"
     "fecha fecha"
     "tipo precio"
+    "publicar transferir"
     "ver ver";
   justify-content: center;
   align-items: center;
@@ -15,7 +16,7 @@ article.ticket {
   border-radius: 10px;
   margin: 1rem;
   width: 399px;
-  height: 370px;
+  height: 400px;
 }
 
 article.ticket h2 {
@@ -50,7 +51,6 @@ article.ticket .fecha {
 }
 
 article.ticket button {
-  grid-area: ver;
   padding: 0.5rem;
   text-decoration: none;
   text-align: center;
@@ -59,7 +59,15 @@ article.ticket button {
   color: var(--color-letras-secundario);
   width: 7rem;
 }
-
+.publicar{
+  grid-area: publicar;
+}
+.transferir{
+  grid-area: transferir;
+}
+.modalQR{
+  grid-area: ver;
+}
 article.ticket button:hover {
   background-color: var(--color-letras-secundario);
   color: var(--color-letras-terceario);
