@@ -10,6 +10,7 @@ import mercadopago
 import json
 from dotenv import load_dotenv
 import requests
+from datetime import datetime
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 
 class TicketView(viewsets.ModelViewSet):
@@ -170,3 +171,4 @@ def obtener_precio_entrada(request):
     precio = Ticket.obtener_ticket_precio(tipo_ticket, evento)
     print(precio)
     return JsonResponse({'precio_ticket': precio})
+

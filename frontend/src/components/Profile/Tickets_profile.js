@@ -16,6 +16,7 @@ export const Tickets_profile = ({ rol, user_id}) => {
             const lugarRes = await getLugar(eventoRes.data.lugar)
             //console.log(lugarRes)
             return {
+              id_ticket:ticket.id_Ticket,
               precio: ticket.precioInicial,
               tipo_ticket: ticket.tipo_ticket,
               qr: ticket.qr,
@@ -43,6 +44,7 @@ export const Tickets_profile = ({ rol, user_id}) => {
           {tickets?.map((ticket, index) => (
             <TicketBox
               key={index}
+              id_ticket={ticket.id_ticket}
               nombre={ticket.eventoNombre}
               foto={ticket.foto}
               tipo_ticket={ticket.tipo_ticket}

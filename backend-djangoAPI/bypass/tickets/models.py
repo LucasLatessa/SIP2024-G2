@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from eventos.models import Evento
 from usuarios.models import Cliente
 from PIL import Image, ImageOps
-
+from datetime import date
 # Create your models here.
 
 
@@ -140,7 +140,7 @@ class Precio(models.Model):
 class Publicacion(models.Model):
     id_Publicacion = models.AutoField(primary_key=True)
     precio = models.FloatField()
-    fecha = models.DateField(blank=True, null=True)
+    fecha = models.DateField(default=date.today, blank=True, null=True) 
     publica = models.BooleanField(default=True)
     ticket = models.ForeignKey(
         Ticket, models.DO_NOTHING, db_column="ticket", blank=True, null=True

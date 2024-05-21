@@ -4,12 +4,15 @@ import { useLocation } from "react-router-dom";
 import { useForm,useWatch  } from "react-hook-form";
 import { useState, useEffect } from "react";
 import "../styles/EventoPage.css";
+import { crearPublicacion } from '../../services/publicacion.service';
+import { useNavigate } from "react-router-dom";
 
 export const PublicarTicket = () => {
   const location = useLocation();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router
   const { register, handleSubmit, watch, control } = useForm();
   const [costos, setCostos] = useState(null);
+  const navigate = useNavigate();
   
  // Observar el campo de precio
  const precio = useWatch({
@@ -17,6 +20,7 @@ export const PublicarTicket = () => {
     name: "precio",
     defaultValue: "",
   });
+
 
   // Calcular costos cada vez que el precio cambie
   useEffect(() => {
@@ -30,6 +34,14 @@ export const PublicarTicket = () => {
     const ganancia = precio - costo;
     setCostos({ precio, costo, ganancia });
   };
+  const handlePublicar= () => {
+    const publicacion= {
+      ticket: ticket.id_ticket,
+      precio: costos.precio
+  }
+    crearPublicacion(publicacion);
+    navigate("/mercado");
+  }
 
   return (
     <>
@@ -72,7 +84,7 @@ export const PublicarTicket = () => {
                       <p>Costo de servicio: ${costos.costo}</p>
                       <p>Ganancia: ${costos.ganancia}</p>
                       <section className="publicarTicketButton">
-                        <button>Publicar</button>
+                        <button onClick={handlePublicar}>Publicar</button>
                       </section>
                     </section>
                   )}
