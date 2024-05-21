@@ -40,7 +40,7 @@ export const PublicarTicket = () => {
             <header className="headerEvento">
               <img
                 className="imagen"
-                src={ticket.imagen}
+                src={ticket.foto}
                 alt={"Imagen " + ticket.nombre}
               />
             </header>
