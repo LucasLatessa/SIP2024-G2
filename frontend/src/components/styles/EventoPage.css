@@ -188,7 +188,7 @@ p{
 } */
 
 /* PUBLICAR TICKET ESTILOS */
-p{
+.costos > p{
     color:aliceblue;
 }
 .formPublicarEntrada{
