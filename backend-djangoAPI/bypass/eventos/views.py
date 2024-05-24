@@ -71,3 +71,18 @@ def crear_evento(request):
 def crearTicketConTipo(cantidad, tipo, evento, precio):
     for _ in range(cantidad):
         Ticket.objects.create(evento=evento, precioInicial=precio, tipo_ticket=tipo)
+
+# Verificar si el usuario autenticado tiene permisos de Administrador
+@api_view(['PUT'])
+def update_event_state(request, pk):
+    try:
+        event = Evento.objects.get(pk=pk)
+        # Obtiene el nuevo estedo del cuerpo de la solicitud
+        new_state = request.data.get('state')
+        # Vamos a buscar el estado a los objetos que tenemos
+        state = EstadoEvento.objects.get(estado=new_state)
+        event.estado=state
+        event.save()
+        return JsonResponse({'mensaje': 'Estado de evento actualizado con éxito'}, status=200)
+    except Evento.DoesNotExist:
+        return JsonResponse({'error': 'Evento no encontrado'}, status=404)

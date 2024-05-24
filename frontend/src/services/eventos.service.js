@@ -16,9 +16,9 @@ export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
   headers: {
     'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
   }});
+export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_event}/update-state/`, { state: newState });
 
-
-
+export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}`);
 
 //Traer todos los clientes de la BD
 /*export const getDataFromAPI = () => {

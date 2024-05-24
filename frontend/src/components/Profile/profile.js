@@ -9,6 +9,7 @@ import { Tickets_profile } from "./Tickets_profile";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { UserList } from "./UserList";
+import { EventsList } from "./EventsList";
 
 
 export const Profile = () => {
@@ -162,6 +163,7 @@ export const Profile = () => {
         </div>
         <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
         <UserList rol={usuarioData.rol} /> 
+        <EventsList rol={usuarioData.rol} /> 
         <Footer />
       </main>
     
