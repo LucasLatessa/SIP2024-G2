@@ -5,7 +5,7 @@ import Carousel from './Carousel';
 import "../styles/home.css";
 import { ProximosEventos } from "./ProximosEventos";
 import { ViviLaExperiencia } from "./ViviLaExperiencia";
-import { getAllEventos } from "../../services/eventos.service";
+import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 export const Home = () => {
   const [eventos, setEventos] = useState([]);
@@ -13,7 +13,7 @@ export const Home = () => {
   //Realizo la peticion
   useEffect(() => {
     async function cargarEventos(){
-      const res = await getAllEventos();
+      const res = await getAllEventosAprobados();
       setEventos(res.data);
     }
     cargarEventos();

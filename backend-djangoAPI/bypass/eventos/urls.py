@@ -11,7 +11,7 @@ router.register(r"Lugar",views.LugarView, "lugar")
 urlpatterns = [
     path('', include(router.urls)),
     path('crearEvento/',views.crear_evento,name='crear_evento'),
-    path('all/', views.get_all_events, name='get_all_events'),
+    path('eventosAprobados/', views.get_eventos_aprobados, name='get_eventos_aprobados'),
     path('docs/', include_docs_urls(title="Eventos API")),
     path('Evento/<int:pk>/update-state/', views.update_event_state, name='update_event_state'),
 

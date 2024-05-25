@@ -1,7 +1,7 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import "../styles/Eventos.css";
-import { getAllEventos } from "../../services/eventos.service";
+import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { EventosBox } from "./EventosBox";
 
@@ -12,7 +12,7 @@ export const Eventos = () => {
   //Realizo la peticion para obtener todos los eventos
   useEffect(() => {
     async function cargarEventos(){
-      const res = await getAllEventos();
+      const res = await getAllEventosAprobados();
       setEventos(res.data);
     }
     cargarEventos();
