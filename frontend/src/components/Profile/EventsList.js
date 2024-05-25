@@ -3,19 +3,14 @@ import { getAllEventos, updateState,getEstadoEvento } from "../../services/event
 
 export const EventsList = ({ rol }) => {
   const [events, setEvents] = useState([]);
-  const [selectedIdEvent, setSelectedIdEvent] = useState("");
-  const [selectedState, setSelectedState] = useState("");
   useEffect(() => {
-    if (rol=="ADMINISTRADOR") {
+    if (rol==="ADMINISTRADOR") {
     fetchEvents();}
-  }, []);
+  }, [rol]);
 
   const fetchEvents = async () => {
     try {
       const response = await getAllEventos();
-      /* response.data.map(event => (
-        console.log(event.nombre, event.estado)
-      )) */
       const eventosModificados = await Promise.all(response.data.map(async evento => {
         const estado = await getEstadoEvento(evento.estado);
         return {
@@ -23,7 +18,6 @@ export const EventsList = ({ rol }) => {
           estado: estado.data.estado
         };
       }));
-      console.log(eventosModificados);
       setEvents(eventosModificados);
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);
@@ -42,17 +36,15 @@ export const EventsList = ({ rol }) => {
 
   const handleEventStateChange = (id_event, event) => {
     const newState = event.target.value;
-    setSelectedIdEvent(id_event);
-    setSelectedState(newState);
     handleStateChange(id_event, newState);
   };
-  if (rol=="ADMINISTRADOR") {
+  if (rol==="ADMINISTRADOR") {
     return (
     <div>
-      <h2 className="events">Lista de Eventos</h2>
+      <h2 className="eventsProfile">Lista de Eventos</h2>
       <ul>
         {events.map(event => (
-          <li className="evento" key={event.id_Evento}>
+          <li className="eventProfile" key={event.id_Evento}>
             {event.nombre} -  
             <select
               value={event.estado}

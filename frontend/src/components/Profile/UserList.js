@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsers,getUserNick, updateRole } from "../../services/usuarios.service";
+import { getAllUsers, updateRole } from "../../services/usuarios.service";
 
 export const UserList = ({ rol }) => {
   const [users, setUsers] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState("");
-  const [selectedUserRole, setSelectedUserRole] = useState("");
   useEffect(() => {
-    if (rol=="ADMINISTRADOR") {
+    if (rol==="ADMINISTRADOR") {
     fetchUsers();}
-  }, []);
+  }, [rol]);
 
   const fetchUsers = async () => {
     try {
@@ -31,11 +29,9 @@ export const UserList = ({ rol }) => {
 
   const handleUserRoleChange = (userId, event) => {
     const newRole = event.target.value;
-    setSelectedUserId(userId);
-    setSelectedUserRole(newRole);
     handleRoleChange(userId, newRole);
   };
-  if (rol=="ADMINISTRADOR") {
+  if (rol==="ADMINISTRADOR") {
     return (
     <div>
       <h2 className="users">Lista de Usuarios</h2>

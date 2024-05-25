@@ -20,7 +20,7 @@ body,main {
   color: black;
 }
 
-.infoCliente, .tusTickets, .users, .events {
+.infoCliente, .tusTickets, .users, .eventsProfile {
   color: #01a198;
   margin: 0 auto;
 }
@@ -104,7 +104,7 @@ button {
 .loading-container button:hover {
   background-color: #016868;
 }
- .usuario, .evento{
+ .usuario, .eventProfile{
   color: white;
 }
 .title_terms{
