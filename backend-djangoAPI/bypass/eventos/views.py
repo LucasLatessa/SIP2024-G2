@@ -42,6 +42,25 @@ def get_eventos_aprobados(request):
     # Devuelve los usuarios como una respuesta JSON
     return JsonResponse(event_data, safe=False)
 
+def get_eventos_productora(request, productora_nickname):
+    # Recupera todos los usuarios de la base de datos
+    events = Evento.objects.filter(productora=productora_nickname)
+
+    # Convierte los usuarios a un formato JSON
+    event_data = [
+        {
+            "id_Evento": event.id_Evento,
+            "nombre": event.nombre,
+            "fecha": event.fecha,
+            "hora": event.hora,
+            "imagen": request.build_absolute_uri(event.imagen.url) if event.imagen else None
+        }
+        for event in events
+    ]
+
+    # Devuelve los usuarios como una respuesta JSON
+    return JsonResponse(event_data, safe=False)
+
 
 # Creacion de eventos juntos con tickets de diferente tipo
 @csrf_exempt

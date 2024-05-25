@@ -22,6 +22,8 @@ export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_
 
 export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}`);
 
+export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);
+
 //Traer todos los clientes de la BD
 /*export const getDataFromAPI = () => {
   return fetch("http://localhost:8000/usuarios/clientes/all/")

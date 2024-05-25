@@ -1,8 +1,9 @@
 from django.db import models
 
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.apps import apps
+from usuarios.models import Productora
 
 # Create your models here.
 
@@ -31,6 +32,7 @@ class Evento(models.Model):
     estado= models.ForeignKey(EstadoEvento, models.DO_NOTHING, db_column='estadoEvento',blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
     imagen = models.ImageField(upload_to="eventos",null=True)
+    productora = models.ForeignKey(Productora, models.DO_NOTHING, db_column='nickname',blank=True, null=True)
 
     def __str__(self):
         return self.nombre
