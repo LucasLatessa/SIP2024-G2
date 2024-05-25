@@ -49,10 +49,10 @@ export const EventsList = ({ rol }) => {
   if (rol=="ADMINISTRADOR") {
     return (
     <div>
-      <h2 className="users">Lista de Eventos</h2>
+      <h2 className="events">Lista de Eventos</h2>
       <ul>
         {events.map(event => (
-          <li className="usuario" key={event.id_Evento}>
+          <li className="evento" key={event.id_Evento}>
             {event.nombre} -  
             <select
               value={event.estado}
