@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getEventosByProductora } from "../../services/eventos.service";
 import { Link } from "react-router-dom";
+import "../styles/productoraView.css";
 
 export const ProductoraView = ({ rol, id }) => {
   const [eventos, setEventos] = useState([]);
@@ -24,15 +25,16 @@ export const ProductoraView = ({ rol, id }) => {
   if (rol === "PRODUCTORA") {
     return (
       <div>
-        <h2> Mis eventos
-          <ul>{eventos.map(evento => (
-            <li key={evento.id_Evento}>
-              {evento.nombre}
-              <Link to={`/validarEntrada/${evento.id_Evento}`}>Validar entrada</Link>
+        <h2 className="misEventosProductora"> Mis eventos </h2>
+          <ul className="listaEventosProductora">{eventos.map(evento => (
+            <li className="eventosProductora" key={evento.id_Evento}>
+              <h3>{evento.nombre}</h3>
+              <p><img className="imagenEventoProductura" src={evento.imagen} alt={evento.nombre} /></p>
+              <Link className="modificarEntrada" to={`/modificarDatos/${evento.id_Evento}`}>Modificar datos</Link>
+              <Link className="validarEntrada" to={`/validarEntrada/${evento.id_Evento}`}>Validar entrada</Link>
             </li>
             
           ))}</ul>
-        </h2>
         <Link to={`/programarEvento`}>Programar Evento</Link>
       </div>
     );
