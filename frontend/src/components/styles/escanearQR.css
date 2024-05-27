@@ -1,0 +1,14 @@
+.escanearQRTitulo{
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-letras-secundario)
+}
+
+.escanearQR, .datosEntradaQR li{
+    text-align: center;
+    color: var(--color-letras-secundario)
+}
+
+.datosEntradaQR{
+    list-style: none;
+}

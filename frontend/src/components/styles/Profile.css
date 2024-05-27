@@ -2,6 +2,26 @@ body,main {
   background-color: var(--color-secundario);
 }
 
+
+.profile{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.infoClienteProfile{
+  color: var(--color-letras-cuaternario);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
 .datosContainer {
   display: flex;
   flex-direction: column;
@@ -20,9 +40,8 @@ body,main {
   color: black;
 }
 
-.infoCliente, .tusTickets, .users, .eventsProfile {
-  color: #01a198;
-  margin: 0 auto;
+.infoClienteProfile, .tusTickets, .users, .eventsProfile {
+
 }
 
 .formulario-edicion {

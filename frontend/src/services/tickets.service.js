@@ -20,3 +20,5 @@ export const crearTicket = (ticket) => ticketsAPI.post('/',ticket);
 export const getAllTicketsByCli = (id_cli) => tickets_cliAPI.get(`/byCliente/${id_cli}`);
 
 export const getTicketByEvent = (id_evento) => tickets_cliAPI.get(`/byEvento/${id_evento}`);
+
+export const cambiarEstadoTicket = (id) => tickets_cliAPI.put(`/cambiar_estado_ticket/${id}/`);

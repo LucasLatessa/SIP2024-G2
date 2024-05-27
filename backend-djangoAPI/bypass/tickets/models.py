@@ -31,6 +31,7 @@ class Ticket(models.Model):
         TipoTickets, on_delete=models.CASCADE, blank=True, null=True
     )
     qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
+    usada = models.BooleanField(default=False)
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
     #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
     # PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
@@ -70,11 +71,11 @@ class Ticket(models.Model):
         propietario = self.propietario
 
         # Creo el QR
-        qr_input = f"Ticket ID: {self.id_Ticket} - Evento: {evento.nombre}"
+        qr_input = f"{evento.id_Evento}-{self.id_Ticket}-"
         if propietario:
-            qr_input += f" - Propietario: {propietario.dni}"
+            qr_input += f"{propietario.dni}"
         else:
-            qr_input += " - Propietario: No asignado"
+            qr_input += "NULL"
 
         qr = qrcode.QRCode(
             version=1,

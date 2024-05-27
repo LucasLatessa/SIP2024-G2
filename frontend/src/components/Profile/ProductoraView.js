@@ -28,7 +28,9 @@ export const ProductoraView = ({ rol, id }) => {
           <ul>{eventos.map(evento => (
             <li key={evento.id_Evento}>
               {evento.nombre}
+              <Link to={`/validarEntrada/${evento.id_Evento}`}>Validar entrada</Link>
             </li>
+            
           ))}</ul>
         </h2>
         <Link to={`/programarEvento`}>Programar Evento</Link>
