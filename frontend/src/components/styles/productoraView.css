@@ -2,11 +2,11 @@
     text-align: center;
     text-transform: uppercase;
     color: var(--color-letras-secundario);
-    font-size: 2rem
+    font-size: 2rem;
+    margin-bottom: 0;
 }
 
 .listaEventosProductora{
-    background-color: rgb(193, 193, 193);
     border-radius: 20px;
     list-style: none;
     padding: 0.5rem;
