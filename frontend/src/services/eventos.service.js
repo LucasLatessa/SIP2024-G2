@@ -24,6 +24,12 @@ export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}`);
 
 export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);
 
+export const actualizarEvento = (evento) => eventosAPI.put('/actualizarEvento/',evento,{
+  headers: {
+    'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
+  }});
+
+
 //Traer todos los clientes de la BD
 /*export const getDataFromAPI = () => {
   return fetch("http://localhost:8000/usuarios/clientes/all/")

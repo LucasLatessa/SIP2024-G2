@@ -110,7 +110,7 @@ export const Profile = () => {
         <img src={user.picture} alt={user.name} />
         {usuarioData && (
           <div>
-            <h2 className="infoCliente">
+            <h2 className="infoClienteProfile">
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>
             <p className="datos">ID: {usuarioData.user_id}</p>

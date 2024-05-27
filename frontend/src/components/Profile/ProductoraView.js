@@ -30,7 +30,7 @@ export const ProductoraView = ({ rol, id }) => {
             <li className="eventosProductora" key={evento.id_Evento}>
               <h3>{evento.nombre}</h3>
               <p><img className="imagenEventoProductura" src={evento.imagen} alt={evento.nombre} /></p>
-              <Link className="modificarEntrada" to={`/modificarDatos/${evento.id_Evento}`}>Modificar datos</Link>
+              <Link className="modificarEntrada" to={`/modificarEvento/${evento.id_Evento}`}>Modificar datos</Link>
               <Link className="validarEntrada" to={`/validarEntrada/${evento.id_Evento}`}>Validar entrada</Link>
             </li>
             

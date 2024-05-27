@@ -12,6 +12,7 @@ import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 import { TermsAndConditions } from "./components/RNF/term_cond";
 import {PublicarTicket} from "./components/Tickets/PublicarTicket";
 import { QrScannerComponent  } from "./components/Profile/QrScannerComponent ";
+import { ModificarEventos } from "./components/Eventos/ModificarEventos";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/perfil" element={<Profile />} />
         <Route path="/validarEntrada/:id" element={<QrScannerComponent  />} />
         <Route path="/eventos" element={<Eventos />} />
+        <Route path="/modificarEvento/:id" element={<ModificarEventos />} />
         <Route path="/mercado" element={<Marketplace />} />
         <Route path="/beneficios" element={<Beneficios />} />
         <Route path="/evento/:id" element={<EventoPage />} />
