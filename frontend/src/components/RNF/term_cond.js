@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/Profile.css";
+import "../Profile/styles/Profile.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import {crearCliente } from '../../services/usuarios.service';
 import { useNavigate } from 'react-router-dom';

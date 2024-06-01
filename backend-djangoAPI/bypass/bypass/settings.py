@@ -172,4 +172,4 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
-APPEND_SLASH= True
+APPEND_SLASH=True

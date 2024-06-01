@@ -1,4 +1,4 @@
-import "../styles/ticketQR.css";
+import "./styles/ticketQR.css";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 

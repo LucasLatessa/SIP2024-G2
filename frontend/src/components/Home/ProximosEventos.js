@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/proximosEventos.css";
+import "./styles/proximosEventos.css";
 import { EventosBox } from "../Eventos/EventosBox";
 
+//Seccion donde se mostraran los proximos eventos del sitio
 export const ProximosEventos = ({ eventos }) => {
   return (
     <section>

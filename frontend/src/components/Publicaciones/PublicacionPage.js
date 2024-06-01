@@ -1,7 +1,7 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
-import "../styles/EventoPage.css"
+import "../Eventos/styles/EventoPage.css"
 import { useEffect, useState } from "react";
 import { getPublicacion } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";

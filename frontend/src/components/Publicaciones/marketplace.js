@@ -1,7 +1,7 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { PublicacionesBox } from "./PublicacionesBox";
-import "../styles/Eventos.css";
+import "../Eventos/styles/Eventos.css";
 import { getAllPublicacion } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
 import { getTicket } from "../../services/tickets.service";

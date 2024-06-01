@@ -5,7 +5,7 @@ import { crearEvento } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { getAllLugares } from "../../services/lugar.service";
 import { useNavigate } from "react-router";
-import "../styles/programarEvento.css";
+import "./styles/programarEvento.css";
 
 //Encargado de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento = () => {

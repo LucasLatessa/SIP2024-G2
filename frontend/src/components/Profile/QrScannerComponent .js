@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
-import "../styles/escanearQR.css";
+import "./styles/escanearQR.css";
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { cambiarEstadoTicket, getTicket } from "../../services/tickets.service";
 
