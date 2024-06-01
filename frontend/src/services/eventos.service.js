@@ -12,7 +12,7 @@ export const getAllEventos = () => eventosAPI.get('/Eventos/');
 
 export const getAllEventosAprobados = () => eventosAPI.get('/eventosAprobados/');
 
-export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}`);
+export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}/`);
 
 export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
   headers: {
