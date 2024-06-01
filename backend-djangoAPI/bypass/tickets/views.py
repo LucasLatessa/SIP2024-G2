@@ -127,7 +127,7 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
 @api_view(["POST"])
 def prueba_mercadopago(
     request,
-):  # por el momento asumimos que todo va a funcionar como debe
+):
     sdk = mercadopago.SDK(
         "TEST-2575880952392402-051110-b1664a93c9ad6040e18dc6f01e896cca-1793151899"
     )
