@@ -1,9 +1,14 @@
 .headerEvento img {
-  width: 100%;
-  height: 50vh;
-  margin: 0;
-}
+  width: 90%;
+  height: 60vh;
+  margin: 0 auto;
 
+}
+.headerEvento{
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-fondo);
+}
 .titulo-fecha {
   display: flex;
   width: 100%;
