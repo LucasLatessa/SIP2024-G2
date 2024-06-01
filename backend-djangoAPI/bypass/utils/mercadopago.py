@@ -1,18 +1,14 @@
 import os
 import mercadopago
 from dotenv import load_dotenv
-
+import json
+import requests
+from tickets.models import Ticket
 
 def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description):
     sdk = mercadopago.SDK(
         "TEST-2575880952392402-051110-b1664a93c9ad6040e18dc6f01e896cca-1793151899"
     )
-
-    body = json.loads(request.body)
-    data_quantity = body.get("quantity")
-    data_ticket_id_list = body.get("ticket_id")
-    data_unit_price = body.get("unit_price")
-    data_unit_description = body.get("description")
 
     ticket_id_list_str = ",".join(
         map(str, data_ticket_id_list)
@@ -46,3 +42,20 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
     except:
         print("No se pudo crear la preferencia")
         return None
+
+
+def entregartoken(payment_id):
+    solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"
+        
+    headers = {
+            "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
+        }    
+    
+    response = requests.get(solicitud, headers=headers)
+    data = response.json()
+    
+    ticket_id_list = data["additional_info"]["items"][0]["id"]
+    nick_name = data["additional_info"]["items"][0]["description"]
+
+    Ticket.modificarPropietario(ticket_id_list, nick_name)
+    return "cliente_data"

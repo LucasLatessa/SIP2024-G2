@@ -17,7 +17,8 @@ from dotenv import load_dotenv
 import requests
 from datetime import datetime
 from utils.authorization import RequestToken, authorized, can, getRequestToken
-from utils.mercadopago import preferencia
+from utils.mercadopago import preferencia, entregartoken
+import sys
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -105,7 +106,6 @@ def get_tickets_by_evento(request, evento_id):
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
-    print(token)
     evento_id = request.GET.get("evento_id")
     quantity = request.GET.get("quantity")
     tipo_ticket = request.GET.get("tipo_ticket")
@@ -140,34 +140,21 @@ def prueba_mercadopago(request):
 @csrf_exempt
 @api_view(["POST"])
 def entregarToken(request):
-    try:
-        payment_id = request.query_params.get("data.id")
-        solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"
-        merchant_order = request.query_params.get("topic")
+    payment_id = request.query_params.get("data.id")
+    merchant_order = request.query_params.get("topic")
 
-        headers = {
-            "Authorization": "Bearer TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
-        }
-
-        response = requests.get(solicitud, headers=headers)
-        data = response.json()
-
-        if merchant_order != "merchant_order":
-            ticket_id_list = data["additional_info"]["items"][0]["id"]
-            nick_name = data["additional_info"]["items"][0]["description"]
-            print(ticket_id_list)
-            Ticket.modificarPropietario(ticket_id_list, nick_name)
-
-        return JsonResponse({"cliente": "cliente_data"})
-    except:
-        print("Error con el pago")
+    if (merchant_order != "merchant_order"):
+        cliente_data = entregartoken(payment_id)
+        return JsonResponse({"cliente": cliente_data})
+    
+    else:
+        return JsonResponse({"cliente": None})
 
 
 def obtener_precio_entrada(request):
     tipo_ticket = request.GET.get("tipo_ticket")
     evento = request.GET.get("evento")
     precio = Ticket.obtener_ticket_precio(tipo_ticket, evento)
-    print(precio)
     return JsonResponse({"precio_ticket": precio})
 
 @api_view(["PUT"])
