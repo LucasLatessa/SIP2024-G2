@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import LazyLoad from "react-lazy-load";
 import { Link } from "react-router-dom";
-import "../styles/carousel.css";
+import "./styles/carousel.css";
 
+//Carrousel para mostrar 3 eventos
 const Carousel = ({ eventos }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState([]);
 
+  //Cada vez que se renderize la pagina, cargaremos los eventos (por ahora, trae 3)
   useEffect(() => {
     async function cargarEventosCarrousel() {
       if (eventos && eventos.length > 0) {
@@ -21,7 +23,7 @@ const Carousel = ({ eventos }) => {
     cargarEventosCarrousel();
   }, [eventos]);
 
-  //console.log(images[0]);
+  //Movimiento con flechas de izq a derecha
   const handleNext = () => {
     setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, images.length - 1));
   };
@@ -44,14 +46,16 @@ const Carousel = ({ eventos }) => {
           </Link>
         </LazyLoad>
       )}
-      <button className="arrow left"
+      <button
+        className="arrow left"
         onClick={handlePrev}
         aria-label="previous image"
         aria-hidden={currentIndex === 0}
       >
         {"<"}
       </button>
-      <button className="arrow right"
+      <button
+        className="arrow right"
         onClick={handleNext}
         aria-label="next image"
         aria-hidden={currentIndex === images.length - 1}

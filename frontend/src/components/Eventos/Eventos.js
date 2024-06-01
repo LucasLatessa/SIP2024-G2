@@ -1,6 +1,6 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
-import "../styles/Eventos.css";
+import "./styles/Eventos.css";
 import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { EventosBox } from "./EventosBox";

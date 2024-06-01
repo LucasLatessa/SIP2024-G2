@@ -1,4 +1,4 @@
-import "../styles/ticketsBox.css";
+import "./styles/ticketsBox.css";
 import { useState } from "react";
 import { TicketQR } from "./TicketQR";
 import { useNavigate } from "react-router-dom";

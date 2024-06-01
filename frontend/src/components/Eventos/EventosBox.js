@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/eventosBox.css";
+import "./styles/eventosBox.css";
 
 export const EventosBox = ({id, nombre, foto, precioMin, precioMax, fecha,hora}) => {
     return(

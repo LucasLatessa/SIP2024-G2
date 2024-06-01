@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getEventosByProductora } from "../../services/eventos.service";
 import { Link } from "react-router-dom";
-import "../styles/productoraView.css";
+import "./styles/productoraView.css";
 
 export const ProductoraView = ({ rol, id }) => {
   const [eventos, setEventos] = useState([]);

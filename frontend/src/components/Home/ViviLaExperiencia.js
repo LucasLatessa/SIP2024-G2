@@ -1,10 +1,11 @@
-import '../styles/viviLaExperiencia.css'
+import './styles/viviLaExperiencia.css'
 
+//Apartado de informacion sobre el sitio
 export const ViviLaExperiencia = () => {
  return(
     <section className="viviLaExperiencia">
         <h2 className="titulo"> Vivi la experiencia </h2>
-        <div className='experiencias'>
+        <article className='experiencias'>
             <figure>
                 <img src="./assets/Ticket.png"/>
                 <figcaption> Compra </figcaption>
@@ -17,7 +18,7 @@ export const ViviLaExperiencia = () => {
                 <img src="./assets/Ticket.png"/>
                 <figcaption> Disfruta </figcaption>
             </figure>
-        </div>
+        </article>
     </section>
  );   
 }

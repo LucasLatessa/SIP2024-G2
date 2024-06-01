@@ -3,7 +3,7 @@ import { Footer } from "../header-footer/footer";
 import { useLocation } from "react-router-dom";
 import { useForm,useWatch  } from "react-hook-form";
 import { useState, useEffect } from "react";
-import "../styles/EventoPage.css";
+import "../Eventos/styles/EventoPage.css";
 import { crearPublicacion } from '../../services/publicacion.service';
 import { useNavigate } from "react-router-dom";
 

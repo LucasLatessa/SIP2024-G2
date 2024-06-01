@@ -1,6 +1,7 @@
-import "../styles/footer.css";
+import "./styles/footer.css";
 import { Link } from "react-router-dom";
 
+//Footer del sitio
 export const Footer = () => {
   return (
     <footer>

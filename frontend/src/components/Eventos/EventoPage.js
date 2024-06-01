@@ -6,7 +6,7 @@ import {
   getAllEventos,
   getEvento,
 } from "../../services/eventos.service";
-import "../styles/EventoPage.css";
+import "./styles/EventoPage.css";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";

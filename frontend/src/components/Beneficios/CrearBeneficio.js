@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { crearBeneficio } from "../../services/beneficios.service";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import "../styles/crearBeneficio.css";
+import "./styles/crearBeneficio.css";
 
-//Encargado de realizar la creacion de eventos dentro de la pagina
+//Encargado de realizar la creacion de beneficios dentro de la pagina
 export const CrearBeneficio = () => {
   const navegate = useNavigate();
   const {
@@ -14,7 +14,7 @@ export const CrearBeneficio = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
- 
+
   //Realizo la peticion para crear el beneficio
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
@@ -32,6 +32,8 @@ export const CrearBeneficio = () => {
           <h1>Crear Beneficio</h1>
         </header>
         <section className="crearBeneficio">
+          
+          { /* FORMULARIO DE CREACION DE BENEFICIOS */ }
           <form
             onSubmit={handleSubmit(onSubmit)}
             encType="multipart/form-data"
@@ -54,7 +56,7 @@ export const CrearBeneficio = () => {
                   {...register("descripcion", {
                     required: true,
                   })}
-                />     
+                />
               </label>
               <label>
                 Porcentaje de descuento
@@ -84,7 +86,11 @@ export const CrearBeneficio = () => {
                 />
               </label>
             </div>
-            <input className="buttonCrearBeneficio" type="submit" value="Enviar" />
+            <input
+              className="buttonCrearBeneficio"
+              type="submit"
+              value="Enviar"
+            />
           </form>
         </section>
       </main>

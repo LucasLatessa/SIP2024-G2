@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../styles/eventosBox.css";
+import "../Eventos/styles/eventosBox.css";
 
 export const PublicacionesBox = ({ id, foto, precio,eventoNombre,eventoFecha,eventoHora}) => {
     return(
