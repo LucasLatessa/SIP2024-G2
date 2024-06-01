@@ -71,7 +71,7 @@ export const TermsAndConditions = () => {
         </p>
         <p>
           <strong>6. Conducta del Usuario</strong><br />
-          Usted acepta no utilizar nuestro sitio web para ningún propósito ilegal o prohibido
+          Usted acepta no utilizar nuestro sitio web para propósitos ilegales o prohibidos
           por estos Términos y Condiciones. Está prohibido publicar contenido ofensivo,
           difamatorio o que infrinja derechos de terceros.
         </p>
