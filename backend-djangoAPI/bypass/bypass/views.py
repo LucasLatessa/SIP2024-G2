@@ -1,5 +1,6 @@
 from django.http import HttpRequest, JsonResponse
 from utils.authorization import RequestToken, authorized, can, getRequestToken
+from utils.backup import backup_db
 
 
 def public(request: HttpRequest) -> JsonResponse:
@@ -29,3 +30,11 @@ def privateScoped(request: HttpRequest, token: RequestToken) -> JsonResponse:
             "token": token.dict(),
         }
     )
+
+def backup(request):
+    backupaux = backup_db()
+    if (backupaux == 'realizado'):
+        return JsonResponse({"backup": 'realizado'})
+    else:
+        return JsonResponse({"backup": 'fallido'})
+    
