@@ -20,6 +20,8 @@ export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
   }});
 export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_event}/update-state/`, { state: newState });
 
+export const getEventReport = (id) => eventosAPI.get(`/Evento/${id}/report/`);
+
 export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}/`);
 
 export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);

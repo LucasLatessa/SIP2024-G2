@@ -7,11 +7,10 @@ import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 
 export const ModificarEventos = () => {
-  const [evento, setEvento] = useState([]);
+  const [setEvento] = useState([]);
   const navegate = useNavigate();
   const {
     register,
-    formState: { errors },
     handleSubmit,
   } = useForm();
   const { id } = useParams();
@@ -29,12 +28,12 @@ export const ModificarEventos = () => {
       setLugar(res.data);
     }
     cargarLugar();
-  }, []);
+  }, [id,setEvento]);
 
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
     //console.log(data)
-    const res = await actualizarEvento(data);
+    await actualizarEvento(data);
     //Vuelvo a la pagina de eventos
     navegate("/perfil");
   });

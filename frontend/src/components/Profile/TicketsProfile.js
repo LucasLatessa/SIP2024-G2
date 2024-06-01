@@ -5,7 +5,7 @@ import { getEvento } from "../../services/eventos.service";
 import { getLugar } from "../../services/lugar.service";
 
 //Mostrar los tickets de un cliente
-export const Tickets_profile = ({ rol, user_id }) => {
+export const TicketsProfile = ({ rol, user_id }) => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
@@ -36,12 +36,12 @@ export const Tickets_profile = ({ rol, user_id }) => {
       }
     };
     //Si es cliente le cargo los tickets
-    if (rol == "CLIENTE") {
+    if (rol === "CLIENTE") {
       cargarTickets();
     }
-  }, []);
+  }, [rol, user_id]);
 
-  if (rol == "CLIENTE") {
+  if (rol === "CLIENTE") {
     //solo si es cliente tiene tickets asociados
     return (
       <>

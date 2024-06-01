@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 export const PublicarTicket = () => {
   const location = useLocation();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router
-  const { register, handleSubmit, watch, control } = useForm();
+  const { register, control } = useForm();
   const [costos, setCostos] = useState(null);
   const navigate = useNavigate();
   

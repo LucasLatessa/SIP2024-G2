@@ -10,7 +10,7 @@ import {
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
-import { Tickets_profile } from "./Tickets_profile";
+import { TicketsProfile  } from "./TicketsProfile";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { UserList } from "./UserList";
@@ -19,7 +19,7 @@ import { ProductoraView } from "./ProductoraView";
 
 //Perfil de los usuarios
 export const Profile = () => {
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
   const [usuarioData, setusuarioData] = useState(null);
   const [loadingCliente, setLoadingCliente] = useState(true);
@@ -167,7 +167,7 @@ export const Profile = () => {
           <LogoutButton />
         </div>
       </div>
-      <Tickets_profile rol={usuarioData.rol} user_id={usuarioData.user_id} />
+      <TicketsProfile  rol={usuarioData.rol} user_id={usuarioData.user_id} />
       <UserList rol={usuarioData.rol} />
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
       <EventsList rol={usuarioData.rol} />

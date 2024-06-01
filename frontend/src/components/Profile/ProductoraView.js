@@ -6,23 +6,23 @@ import "./styles/productoraView.css";
 //Vista de productora
 export const ProductoraView = ({ rol, id }) => {
   const [eventos, setEventos] = useState([]);
-
   useEffect(() => {
+    const fetchEventos = async () => {
+      try {
+        //console.log(id)
+        const response = await getEventosByProductora(id);
+        setEventos(response.data);
+      } catch (error) {
+        console.error("Error al obtener la lista de eventos de la productora");
+      }
+    };
+  
     if (rol === "PRODUCTORA") {
       fetchEventos();
     }
-  }, [rol]);
+  }, [rol, id]);
 
-  //Traigo los eventos de esa productora
-  const fetchEventos = async () => {
-    try {
-      //console.log(id)
-      const response = await getEventosByProductora(id);
-      setEventos(response.data);
-    } catch (error) {
-      console.error("Error al obtener la lista de eventos de la productora");
-    }
-  };
+ 
 
   //Solo si es producotra se muestra este componente
   if (rol === "PRODUCTORA") {
@@ -52,6 +52,7 @@ export const ProductoraView = ({ rol, id }) => {
               >
                 Validar entrada
               </Link>
+              <Link className="verReporte" to={`/reporteEvento/${evento.id_Evento}`}>Ver Reporte</Link>
             </li>
           ))}
         </ul>

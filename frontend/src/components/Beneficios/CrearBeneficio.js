@@ -2,7 +2,6 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useForm } from "react-hook-form";
 import { crearBeneficio } from "../../services/beneficios.service";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import "./styles/crearBeneficio.css";
 
@@ -11,16 +10,13 @@ export const CrearBeneficio = () => {
   const navegate = useNavigate();
   const {
     register,
-    formState: { errors },
     handleSubmit,
   } = useForm();
 
   //Realizo la peticion para crear el beneficio
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
-    //console.log(data)
-    const res = await crearBeneficio(data);
-    //console.log(res);
+    await crearBeneficio(data);
     navegate("/beneficios");
   });
 

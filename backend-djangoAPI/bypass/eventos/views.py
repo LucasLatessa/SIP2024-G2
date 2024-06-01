@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from .serializer import EventoSerializer, EstadoEventoSerializer, LugarSerializer
 from .models import Evento, EstadoEvento, Lugar
-from tickets.models import Ticket, TipoTickets
+from tickets.models import Ticket, TipoTickets, Ticket, TipoTickets
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
@@ -118,3 +118,41 @@ def update_event_state(request, pk):
         )
     except Evento.DoesNotExist:
         return JsonResponse({"error": "Evento no encontrado"}, status=404)
+
+def event_report(request, pk):
+    # Obtener el evento
+    try:
+        evento = Evento.objects.get(pk=pk)
+    except Evento.DoesNotExist:
+        return JsonResponse({'error': 'El evento no existe'}, status=404)
+    
+    # Obtener todos los tickets del evento
+    tickets = Ticket.objects.filter(evento=evento, propietario__isnull=False)
+    
+    # Calcular entradas vendidas por tipo
+    tipos_de_tickets = TipoTickets.objects.all()
+    entradas_por_tipo = {
+        tipo.tipo: tickets.filter(tipo_ticket=tipo).count()
+        for tipo in tipos_de_tickets
+    }
+    
+    # Entradas totales
+    entradas_totales = tickets.count()
+    
+    # Calcular ganancia total
+    ganancia_total = sum(ticket.precioInicial for ticket in tickets)
+    
+    # Calcular asistencia total (tickets usados)
+    asistencia_total = tickets.filter(usada=True).count()
+    
+    # Crear el reporte
+    reporte = {
+        'evento': evento.nombre,
+        'imagen': request.build_absolute_uri(evento.imagen.url) if evento.imagen else None,
+        'entradas_totales': entradas_totales,
+        'entradas_por_tipo': entradas_por_tipo,
+        'ganancia_total': ganancia_total,
+        'asistencia_total': asistencia_total,
+    }
+    
+    return JsonResponse(reporte)

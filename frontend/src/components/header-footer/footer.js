@@ -6,10 +6,24 @@ export const Footer = () => {
   return (
     <footer>
       <nav className="redesSociales">
-        <li><Link to="/"><img src="/assets/instagram.png"/></Link></li>
-        <li><Link to="/"><img src="/assets/youtube.png"/></Link></li>
-        <li><Link to="/"><img src="/assets/x.png"/></Link></li>
-        <li><Link to="/"><img src="/assets/facebook.png"/></Link></li>
+      <li>
+        <Link to="/">
+          <img src="/assets/instagram.png" alt="Instagram Logo" />
+        </Link>
+      </li>
+      <li>
+        <Link to="/">
+          <img src="/assets/youtube.png" alt="Youtube Logo"/>
+        </Link>
+      </li>
+      <li>
+        <Link to="/"><img src="/assets/x.png" alt="X Logo"/>
+        </Link>
+      </li>
+      <li>
+        <Link to="/"><img src="/assets/facebook.png"alt="Facebook Logo"/>
+        </Link>
+      </li>
         
       </nav>
       <small className="copyright">

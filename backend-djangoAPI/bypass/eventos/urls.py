@@ -15,5 +15,6 @@ urlpatterns = [
     path('byProductora/<int:productora_nickname>', views.get_eventos_productora, name='get_eventos_productora'),
     path('docs/', include_docs_urls(title="Eventos API")),
     path('Evento/<int:pk>/update-state/', views.update_event_state, name='update_event_state'),
+    path('Evento/<int:pk>/report/', views.event_report, name='event_report'),
 
 ]

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
@@ -12,7 +12,6 @@ export const QrScannerComponent = () => {
   const [idt, setidt] = useState(null);
   const [ide, setide] = useState(null);
   const [dni, setDni] = useState(null);
-  const [ticket, setTicket] = useState(null);
   const [error, setError] = useState(null);
 
   //Analizo la entrada para ver si corresponde a ese evento y no esta usada
@@ -23,7 +22,7 @@ export const QrScannerComponent = () => {
       setidt(idt);
       setide(ide);
       //Si es una entrada de ese evento
-      if (id == ide) {
+      if (id === ide) {
         //Pertenece al evento, pero puede ser que este usada
         const ticketData = await obtenerTicket(idt);
         if (ticketData && !ticketData.usada) {
@@ -53,7 +52,7 @@ export const QrScannerComponent = () => {
 
   //Realizo una peticion para cambiar el estado, asi no puede volver a usarla
   const cambiarEstado = async (idt) => {
-    const res = await cambiarEstadoTicket(idt);
+    await cambiarEstadoTicket(idt);
   };
 
   return (

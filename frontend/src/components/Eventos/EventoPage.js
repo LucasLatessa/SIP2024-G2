@@ -2,8 +2,6 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
 import {
-  FetchGET,
-  getAllEventos,
   getEvento,
 } from "../../services/eventos.service";
 import "./styles/EventoPage.css";
@@ -25,11 +23,8 @@ export const EventoPage = () => {
   const {
     getValues,
     register,
-    formState: { errors },
-    handleSubmit,
   } = useForm();
   const [eventos, setEventos] = useState([]);
-  const [tickets, setTickets] = useState([]);
   const [token, setToken] = useState();
 
   initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", {
@@ -83,18 +78,18 @@ export const EventoPage = () => {
   //Realizo la peticion para obtener el evento y mostrar sus datos en pantalla
   useEffect(() => {
     async function cargarEventos() {
-      const resEvento = await getEvento(id); //Solo eventos validos, si no existe hay que arreglarlo
+      const resEvento = await getEvento(id); //Solo eventos válidos, si no existe hay que arreglarlo
       setEventos(resEvento.data);
-      
     }
-    cargarEventos();
-    
-  async function obtenerToken(){
+  
+    async function obtenerToken() {
       const token = await getAccessTokenSilently();
-      setToken(token)
-  }
-  obtenerToken();
-  }, []);
+      setToken(token);
+    }
+  
+    cargarEventos();
+    obtenerToken();
+  }, [id, getAccessTokenSilently]);
 
   //Realizo la compra de tickets
   const handleBuy = async () => {
