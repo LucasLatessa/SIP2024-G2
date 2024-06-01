@@ -13,7 +13,7 @@ const tickets_cliAPI = axios.create({
 
 export const getAllTickets = () => ticketsAPI.get('/');
 
-export const getTicket = (id) => ticketsAPI.get(`/${id}`);
+export const getTicket = (id) => ticketsAPI.get(`/${id}/`);
 
 export const crearTicket = (ticket) => ticketsAPI.post('/',ticket);
 
