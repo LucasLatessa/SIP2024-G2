@@ -17,6 +17,7 @@ import { UserList } from "./UserList";
 import { EventsList } from "./EventsList";
 import { ProductoraView } from "./ProductoraView";
 
+//Perfil de los usuarios
 export const Profile = () => {
   const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
@@ -25,12 +26,16 @@ export const Profile = () => {
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleLoginClick = () => {
-    loginWithRedirect();
-  };
+  // const handleLoginClick = () => {
+  //   loginWithRedirect();
+  // };
+
+  //Boton que me lleva al Home
   const handleHome = () => {
     navigate("/");
   };
+
+  //Traigo los datos del cliente cuando se renderiza el componente
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -38,6 +43,7 @@ export const Profile = () => {
         setusuarioData(response.data.usuario);
         setLoadingCliente(false);
       } catch (error) {
+        //Si no esta registrado
         if (error.response && error.response.status === 404) {
           navigate("/terminos_condiciones");
         } else {
@@ -52,6 +58,7 @@ export const Profile = () => {
     }
   }, [isAuthenticated, user?.nickname, navigate]);
 
+  //Actualizo los datos del cliente
   const handleUpdateProfile = async () => {
     try {
       let updateFunction;
@@ -87,14 +94,6 @@ export const Profile = () => {
     setEditingUserData({ ...editingUserData, [name]: value });
   };
 
-  /*if (!isAuthenticated) {
-    return (
-      <div className="loading-container">
-        <p className="noLogin">Usted no está logueado...</p>
-        <button onClick={handleLoginClick}>Login</button>
-    </div>
-    );
-  }*/
   if (loadingCliente) {
     return (
       <div className="loading-container">

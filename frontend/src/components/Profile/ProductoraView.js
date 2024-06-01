@@ -3,6 +3,7 @@ import { getEventosByProductora } from "../../services/eventos.service";
 import { Link } from "react-router-dom";
 import "./styles/productoraView.css";
 
+//Vista de productora
 export const ProductoraView = ({ rol, id }) => {
   const [eventos, setEventos] = useState([]);
 
@@ -12,6 +13,7 @@ export const ProductoraView = ({ rol, id }) => {
     }
   }, [rol]);
 
+  //Traigo los eventos de esa productora
   const fetchEventos = async () => {
     try {
       //console.log(id)
@@ -22,21 +24,39 @@ export const ProductoraView = ({ rol, id }) => {
     }
   };
 
+  //Solo si es producotra se muestra este componente
   if (rol === "PRODUCTORA") {
     return (
-      <div>
+      <section>
         <h2 className="misEventosProductora"> Mis eventos </h2>
-          <ul className="listaEventosProductora">{eventos.map(evento => (
+        <ul className="listaEventosProductora">
+          {eventos.map((evento) => (
             <li className="eventosProductora" key={evento.id_Evento}>
               <h3>{evento.nombre}</h3>
-              <p><img className="imagenEventoProductura" src={evento.imagen} alt={evento.nombre} /></p>
-              <Link className="modificarEntrada" to={`/modificarEvento/${evento.id_Evento}`}>Modificar datos</Link>
-              <Link className="validarEntrada" to={`/validarEntrada/${evento.id_Evento}`}>Validar entrada</Link>
+              <p>
+                <img
+                  className="imagenEventoProductura"
+                  src={evento.imagen}
+                  alt={evento.nombre}
+                />
+              </p>
+              <Link
+                className="modificarEntrada"
+                to={`/modificarEvento/${evento.id_Evento}`}
+              >
+                Modificar datos
+              </Link>
+              <Link
+                className="validarEntrada"
+                to={`/validarEntrada/${evento.id_Evento}`}
+              >
+                Validar entrada
+              </Link>
             </li>
-            
-          ))}</ul>
+          ))}
+        </ul>
         <Link to={`/programarEvento`}>Programar Evento</Link>
-      </div>
+      </section>
     );
   }
 };

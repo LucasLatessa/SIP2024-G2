@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { getAllUsers, updateRole } from "../../services/usuarios.service";
 
+//Solo para vista de administrador, para el manejo de usuarios en el sistema
 export const UserList = ({ rol }) => {
   const [users, setUsers] = useState([]);
+
+  //Traigo todos los usuarios solamente si es un administrador
   useEffect(() => {
-    if (rol==="ADMINISTRADOR") {
-    fetchUsers();}
+    if (rol === "ADMINISTRADOR") {
+      fetchUsers();
+    }
   }, [rol]);
 
+  //Traigo todos los usuarios
   const fetchUsers = async () => {
     try {
       const response = await getAllUsers();
       setUsers(response.data);
-     } catch (error) {
+    } catch (error) {
       console.error("Error al obtener la lista de usuarios:", error);
     }
   };
 
+  //Cambio de role
   const handleRoleChange = async (userId, newRole) => {
     try {
       await updateRole(userId, newRole);
@@ -27,32 +33,35 @@ export const UserList = ({ rol }) => {
     }
   };
 
+  //Determino el rol a cambiar y ejecuto handleRoleChange
   const handleUserRoleChange = (userId, event) => {
     const newRole = event.target.value;
     handleRoleChange(userId, newRole);
   };
-  if (rol==="ADMINISTRADOR") {
+
+  //Solamente si es administrador muestro
+  if (rol === "ADMINISTRADOR") {
     return (
-    <div>
-      <h2 className="users">Lista de Usuarios</h2>
-      <ul>
-        {users.map(user => (
-          <li className="usuario" key={user.user_id}>
-            {user.nickname} -  
-            <select
-              value={user.rol}
-              onChange={(e) => handleUserRoleChange(user.user_id, e)}
-            >
-              <option value="CLIENTE">CLIENTE</option>
-              <option value="PRODUCTORA">PRODUCTORA</option>
-              <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-            </select>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );}else{
+      <div>
+        <h2 className="users">Lista de Usuarios</h2>
+        <ul>
+          {users.map((user) => (
+            <li className="usuario" key={user.user_id}>
+              {user.nickname} -
+              <select
+                value={user.rol}
+                onChange={(e) => handleUserRoleChange(user.user_id, e)}
+              >
+                <option value="CLIENTE">CLIENTE</option>
+                <option value="PRODUCTORA">PRODUCTORA</option>
+                <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+              </select>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  } else {
     return null;
   }
-  
 };

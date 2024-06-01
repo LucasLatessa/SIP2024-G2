@@ -1,44 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { TicketBox } from "../Tickets/TicketBox";
-import { getAllTicketsByCli } from '../../services/tickets.service';
-import { getEvento } from '../../services/eventos.service';
-import { getLugar } from '../../services/lugar.service';
+import { getAllTicketsByCli } from "../../services/tickets.service";
+import { getEvento } from "../../services/eventos.service";
+import { getLugar } from "../../services/lugar.service";
 
-export const Tickets_profile = ({ rol, user_id}) => {
+//Mostrar los tickets de un cliente
+export const Tickets_profile = ({ rol, user_id }) => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     const cargarTickets = async () => {
-        try {
-          const res = await getAllTicketsByCli(user_id);
-          const ticketsConInfoCompleta = await Promise.all(res.data.tickets.map(async (ticket) => {
+      try {
+        //Obtengo todos los ticket de un cliente con la informacion completa
+        const res = await getAllTicketsByCli(user_id);
+        const ticketsConInfoCompleta = await Promise.all(
+          res.data.tickets.map(async (ticket) => {
             const eventoRes = await getEvento(ticket.evento);
-            const lugarRes = await getLugar(eventoRes.data.lugar)
-            //console.log(lugarRes)
+            const lugarRes = await getLugar(eventoRes.data.lugar);
             return {
-              id_ticket:ticket.id_Ticket,
+              id_ticket: ticket.id_Ticket,
               precio: ticket.precioInicial,
               tipo_ticket: ticket.tipo_ticket,
               qr: ticket.qr,
-              foto: eventoRes.data.imagen,              
+              foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
               eventoHora: eventoRes.data.hora,
               eventoLugarNombre: lugarRes.data.nombre,
             };
-          }));
-          setTickets(ticketsConInfoCompleta);
-        } catch (error) {
-          console.error("Error al cargar los tickets:", error);
-        }
+          })
+        );
+        setTickets(ticketsConInfoCompleta);
+      } catch (error) {
+        console.error("Error al cargar los tickets:", error);
+      }
     };
-    if (rol=="CLIENTE") {
-    cargarTickets();
-  }
+    //Si es cliente le cargo los tickets
+    if (rol == "CLIENTE") {
+      cargarTickets();
+    }
   }, []);
 
-  if (rol=="CLIENTE") {//solo si es cliente tiene tickets asociados
-    return (<>
+  if (rol == "CLIENTE") {
+    //solo si es cliente tiene tickets asociados
+    return (
+      <>
         <h2 className="tusTickets">Tus tickets</h2>
         <section className="allListaEventosa">
           {tickets?.map((ticket, index) => (
@@ -56,9 +62,9 @@ export const Tickets_profile = ({ rol, user_id}) => {
             />
           ))}
         </section>
-        </>
-    )}
-  else{
+      </>
+    );
+  } else {
     return null;
   }
-}
+};

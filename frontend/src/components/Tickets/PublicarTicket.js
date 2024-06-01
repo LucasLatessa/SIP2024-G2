@@ -7,6 +7,7 @@ import "../Eventos/styles/EventoPage.css";
 import { crearPublicacion } from '../../services/publicacion.service';
 import { useNavigate } from "react-router-dom";
 
+//Publicacion de tickets dentro del sitio
 export const PublicarTicket = () => {
   const location = useLocation();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router

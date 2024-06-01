@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../Eventos/styles/eventosBox.css";
 
+//Forma de mostrar las publicaciones dentro de la pagina
 export const PublicacionesBox = ({ id, foto, precio,eventoNombre,eventoFecha,eventoHora}) => {
     return(
         <article className="evento">
