@@ -10,7 +10,7 @@ const eventosAPI = axios.create({
 
 export const getAllEventos = () => eventosAPI.get('/Eventos/');
 
-export const getAllEventosAprobados = () => eventosAPI.get('/eventosAprobados');
+export const getAllEventosAprobados = () => eventosAPI.get('/eventosAprobados/');
 
 export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}`);
 
@@ -20,7 +20,7 @@ export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
   }});
 export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_event}/update-state/`, { state: newState });
 
-export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}`);
+export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}/`);
 
 export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);
 

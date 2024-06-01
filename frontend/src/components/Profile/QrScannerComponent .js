@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { QrScanner } from "react-qr-reader";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
