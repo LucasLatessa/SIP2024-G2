@@ -10,6 +10,7 @@ import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
 import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 import { TermsAndConditions } from "./components/RNF/term_cond";
+import { Ayuda } from "./components/RNF/ayuda";
 import {PublicarTicket} from "./components/Tickets/PublicarTicket";
 import { QrScannerComponent  } from "./components/Profile/QrScannerComponent ";
 import { ModificarEventos } from "./components/Eventos/ModificarEventos";
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/terminos_condiciones" element={<TermsAndConditions />} />
+        <Route path="/ayuda" element={<Ayuda />} />
         <Route path="/perfil" element={<Profile />} />
         <Route path="/validarEntrada/:id" element={<QrScannerComponent  />} />
         <Route path="/eventos" element={<Eventos />} />

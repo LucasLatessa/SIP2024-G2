@@ -35,7 +35,7 @@ export const TermsAndConditions = () => {
   };
 
   return (
-    <div>
+    <div className="container-terms">
       <h1 className="title_terms">Términos y Condiciones</h1>
       <article className="terms">
         <p>

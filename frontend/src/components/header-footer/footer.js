@@ -24,6 +24,10 @@ export const Footer = () => {
         <Link to="/"><img src="/assets/facebook.png"alt="Facebook Logo"/>
         </Link>
       </li>
+      <li>
+        <Link to="/ayuda"><a>Obtener Ayuda</a>
+        </Link>
+      </li>
         
       </nav>
       <small className="copyright">

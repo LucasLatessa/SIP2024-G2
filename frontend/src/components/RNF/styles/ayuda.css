@@ -1,0 +1,28 @@
+.ayuda-main {
+    background-image: none;
+  }
+  
+  
+.titulo{
+    color: var(--color-letras-secundario);
+}
+li{
+    color:var(--color-letras-secundario);
+}
+.login-list,.comprar-list {
+    list-style-type: decimal; /* Cambia los bullets por números */
+    padding-left: 20px; /* Añade espacio a la izquierda para los números */
+  }
+  
+  .login-item {
+    margin-bottom: 10px; /* Espacio entre elementos de la lista */
+    position: relative;
+  }
+  
+  .ayuda-img {
+    display: block; /* Las imágenes se muestran como bloques, una debajo de la otra */
+    margin-top: 5px; /* Añade espacio entre el texto y la imagen */
+    max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+    height: 200px; /* Mantiene la proporción de la imagen */
+    border: 1px solid white;
+}
