@@ -39,3 +39,16 @@ nav.redesSociales li a img{
     font-size: 1.2rem;
     color: var(--color-letras-secundario);
 }
+.link-ayuda {
+    display: inline-block;
+    color: white; 
+    text-decoration: none; 
+    font-size: 16px;
+    transition: background-color 0.3s ease; 
+}
+  
+  .link-ayuda:hover {
+    color: var(--color-letras-cuaternario);
+  }
+  
+  

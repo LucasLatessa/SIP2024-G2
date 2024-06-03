@@ -3,6 +3,7 @@ import "./styles/ayuda.css";
 
 export const Ayuda = () => {
   const [comprarEntrada, setComprarEntrada] = useState(false);
+  const [venderEntrada, setVenderEntrada] = useState(false);
   const [logearse, setLogearse] = useState(false);
 
   return (
@@ -36,6 +37,20 @@ export const Ayuda = () => {
             <li className="comprar-3">Seleccionar tipo de entrada y cantidad</li>
             <li className="comprar-4">Clickear Comprar (redirige a MercadoPago)</li>
             <li className="comprar-5">Listo, ya tenes tu entrada (la podes ver en el perfil)</li>
+          </ul>
+        )}
+      </article>
+      <article className={`vender ${venderEntrada ? 'active' : ''}`}>
+        <button className="ayuda-boton" onClick={() => setVenderEntrada(!venderEntrada)}>
+          Vender una entrada en el Mercado
+        </button>
+        {venderEntrada && (
+          <ul className="vender-list">
+            <li className="comprar-1">Logueate en nuestro sistema</li>
+            <li className="comprar-2">En el perfil, dirigite a "Tus tickets"</li>
+            <li className="comprar-3">En la entrada que desea vender, seleccione "Vender"</li>
+            <li className="comprar-4">Completar el precio y presionar "Publicar"</li>
+            <li className="comprar-5">Listo, ya pueden comprar tu entrada (la podes ver en el mercado)</li>
           </ul>
         )}
       </article>
