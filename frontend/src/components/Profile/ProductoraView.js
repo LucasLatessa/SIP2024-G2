@@ -33,30 +33,26 @@ export const ProductoraView = ({ rol, id }) => {
           {eventos.map((evento) => (
             <li className="eventosProductora" key={evento.id_Evento}>
               <h3>{evento.nombre}</h3>
-              <p>
-                <img
-                  className="imagenEventoProductura"
-                  src={evento.imagen}
-                  alt={evento.nombre}
-                />
-              </p>
-              <Link
-                className="modificarEntrada"
-                to={`/modificarEvento/${evento.id_Evento}`}
-              >
-                Modificar datos
-              </Link>
-              <Link
-                className="validarEntrada"
-                to={`/validarEntrada/${evento.id_Evento}`}
-              >
-                Validar entrada
-              </Link>
-              <Link className="verReporte" to={`/reporteEvento/${evento.id_Evento}`}>Ver Reporte</Link>
+              <img
+                className="imagenEventoProductura"
+                src={evento.imagen}
+                alt={evento.nombre}
+              />
+              <div className="botonesEventoProductora">
+                <Link className="modificarEntrada" to={`/modificarEvento/${evento.id_Evento}`}>
+                  Modificar datos
+                </Link>
+                <Link className="validarEntrada" to={`/validarEntrada/${evento.id_Evento}`}>
+                  Validar entrada
+                </Link>
+                <Link className="verReporte" to={`/reporteEvento/${evento.id_Evento}`}>
+                  Ver Reporte
+                </Link>
+              </div>
             </li>
           ))}
         </ul>
-        <Link to={`/programarEvento`}>Programar Evento</Link>
+        <Link className="programar" to={`/programarEvento`}>Programar Evento</Link>
       </section>
     );
   }
