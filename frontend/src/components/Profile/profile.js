@@ -13,9 +13,8 @@ import { LogoutButton } from "./logoutButton";
 import { TicketsProfile  } from "./TicketsProfile";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
-import { UserList } from "./UserList";
-import { EventsList } from "./EventsList";
 import { ProductoraView } from "./ProductoraView";
+import { AdministradorView } from "./AdministradorView";
 
 //Perfil de los usuarios
 export const Profile = () => {
@@ -168,9 +167,8 @@ export const Profile = () => {
         </div>
       </div>
       <TicketsProfile  rol={usuarioData.rol} user_id={usuarioData.user_id} />
-      <UserList rol={usuarioData.rol} />
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
-      <EventsList rol={usuarioData.rol} />
+      <AdministradorView rol={usuarioData.rol} id={usuarioData.user_id} />
       <Footer />
     </main>
   );
