@@ -28,7 +28,7 @@ export const ProductoraView = ({ rol, id }) => {
   if (rol === "PRODUCTORA") {
     return (
       <section>
-        <h2 className="misEventosProductora"> Mis eventos </h2>
+        <h2 className="misEventosProductora"> Tus eventos </h2>
         <ul className="listaEventosProductora">
           {eventos.map((evento) => (
             <li className="eventosProductora" key={evento.id_Evento}>

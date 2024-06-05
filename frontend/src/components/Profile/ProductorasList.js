@@ -35,7 +35,7 @@ export const ProductorasList = () => {
 
   return (
     <>
-      <h2 className="eventsProfile">Lista de Productoras</h2>
+      <h2 className="produsProfile">Lista de Productoras</h2>
       {productoras.length === 0 ? (
         <p>No hay productoras disponibles.</p>
       ) : (

@@ -10,7 +10,7 @@ import {
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
-import { TicketsProfile  } from "./TicketsProfile";
+import { ClienteView  } from "./ClienteView";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { ProductoraView } from "./ProductoraView";
@@ -166,7 +166,7 @@ export const Profile = () => {
           <LogoutButton />
         </div>
       </div>
-      <TicketsProfile  rol={usuarioData.rol} user_id={usuarioData.user_id} />
+      <ClienteView  rol={usuarioData.rol} user_id={usuarioData.user_id} />
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
       <AdministradorView rol={usuarioData.rol} id={usuarioData.user_id} />
       <Footer />

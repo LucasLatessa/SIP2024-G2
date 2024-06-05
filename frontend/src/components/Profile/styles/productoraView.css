@@ -1,6 +1,5 @@
-.misEventosProductora{
+.misEventosProductora,.users, .eventsProfile,.produsProfile, .tusTickets{
     text-align: center;
-    text-transform: uppercase;
     color: var(--color-letras-cuaternario);
     font-size: 2rem;
     margin-bottom: 0;
@@ -57,9 +56,10 @@
     height: 6rem;
 }
 .programar {
-    display: inline-block;
+    display: block; 
+    width: fit-content; 
+    margin: 1rem auto; 
     padding: 0.3rem 1rem;
-    margin-right:  1rem 2rem;
     text-decoration: none;
     text-align: center;
     border-radius: 5px;

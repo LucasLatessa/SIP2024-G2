@@ -5,7 +5,7 @@ import { getEvento } from "../../services/eventos.service";
 import { getLugar } from "../../services/lugar.service";
 
 //Mostrar los tickets de un cliente
-export const TicketsProfile = ({ rol, user_id }) => {
+export const ClienteView = ({ rol, user_id }) => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
