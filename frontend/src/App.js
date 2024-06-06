@@ -15,6 +15,7 @@ import {PublicarTicket} from "./components/Tickets/PublicarTicket";
 import { QrScannerComponent  } from "./components/Profile/QrScannerComponent ";
 import { ModificarEventos } from "./components/Eventos/ModificarEventos";
 import { ReporteEvento } from "./components/Profile/ReporteEvento";
+import { TransferirTicket} from "./components/Tickets/TransferirTicket";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/mercadopago" element={<Mercadopago />} />
         <Route path="/crearBeneficio" element={<CrearBeneficio />} />
         <Route path="/publicar-ticket" element={<PublicarTicket />} />
+        <Route path="/transferirTicket" element={<TransferirTicket />} />
       </Routes>
     </Router>
   );

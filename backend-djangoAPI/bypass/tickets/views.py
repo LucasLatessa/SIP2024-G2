@@ -82,6 +82,20 @@ def get_tickets_by_cliente(request, cliente_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 
+@api_view(["POST"])
+def crearPublicacion(request):
+    publicacion = json.loads(request.body)
+    ticketRequest = publicacion.get("ticket")
+    precioRequest = publicacion.get("precio")
+    ticket = Ticket.objects.get(id_Ticket = ticketRequest)
+    publicado = Publicacion.objects.filter(ticket = ticket, publica = True)
+    if (not publicado):
+        Publicacion.objects.create(ticket=ticket, precio=precioRequest)
+        return JsonResponse(
+            {"mensaje": "Publicacion creada con éxito"}, status=200
+        )
+    else:
+        return JsonResponse({"error": "Publicacion existente"}, status=404)
 
 # Funcion para obtener todos los tickets de un evento
 # @authorized

@@ -12,4 +12,4 @@ export const getAllPublicacion = () => publicacionAPI.get('/');
 
 export const getPublicacion = (id) => publicacionAPI.get(`/${id}`);
 
-export const crearPublicacion = (publicacion) => publicacionAPI.post('/',publicacion);
+export const crearPublicacion = (publicacion) => publicacionAPI.post('/crear',publicacion);

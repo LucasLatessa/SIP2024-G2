@@ -17,6 +17,11 @@ export const TicketBox = ({id_ticket,nombre,foto,tipo_ticket,precio,fecha,hora,q
     const ticket = {id_ticket, nombre, foto, tipo_ticket, precio, fecha, hora, qr, lugar };
     navigate('/publicar-ticket', { state: { ticket } });
   };
+  const handleTransferir = () => {
+    const ticket = {id_ticket, nombre, foto, tipo_ticket, precio, fecha, hora, qr, lugar };
+    navigate('/transferirTicket', { state: { ticket } });
+  };
+
   return (
     <>
       <article className="ticket">
@@ -28,7 +33,7 @@ export const TicketBox = ({id_ticket,nombre,foto,tipo_ticket,precio,fecha,hora,q
           {fecha} - {hora}
         </p>
         <button className="publicar" onClick={handlePublicar}>Vender</button>
-        <button className="transferir">Transferir</button>
+        <button className="transferir" onClick={handleTransferir}>Transferir</button>
         <button className="modalQR" onClick={openModal}>Ver QR</button>
       </article>
 

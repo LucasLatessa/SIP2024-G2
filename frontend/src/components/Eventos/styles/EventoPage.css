@@ -41,12 +41,18 @@
   font-size: 1.5rem;
 }
 
-.comprarEntrada, .publicarEntrada {
+.mensajeError {
+    background-color: black;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.comprarEntrada, .publicarEntrada, .transferirEntrada {
     margin: 0 2rem;
     background-color: var(--color-letras-cuaternario);
 }
 
-.comprarEntrada h3, .publicarEntrada h3{
+.comprarEntrada h3, .publicarEntrada h3, .transferirEntrada h3{
     text-align: center;
     color: var(--color-letras-secundario);
     text-transform: uppercase;
@@ -56,14 +62,14 @@
     margin:0;
 }
 
-.formComprarEntrada, .formPublicarEntrada{
+.formComprarEntrada, .formPublicarEntrada, .formTransferirEntrada{
     display: flex;
     justify-content: space-between;
     align-items: center;
     
 }
 
-.formComprarEntrada label, .formComprarEntrada label{
+.formComprarEntrada label, .formComprarEntrada label, .formTransferirEntrada label{
     font-size: 2rem;
     text-transform: uppercase;
     display: flex;
@@ -76,7 +82,7 @@
     width: calc(33.33%); /*Porque se parte en 3*/
 }
 
-.comprarTicketsButton, .publicarTicketButton{
+.comprarTicketsButton, .publicarTicketButton, .TransferirTicketButton{
     flex-grow: 1;
     width: calc(33.33%); /*Porque se parte en 3*/
     display: flex;
@@ -84,7 +90,7 @@
     align-items: center;
 }
 
-.comprarTicketsButton >button, .publicarTicketButton > button {
+.comprarTicketsButton >button, .publicarTicketButton > button, .TransferirTicketButton > button {
     width: 10rem;
     height: 3rem;
     font-size: 1.5rem;
@@ -116,6 +122,12 @@
     display: block;
     font-size: 1.2rem;
 }
+
+.formTransferirEntrada label > input{
+    display: block;
+    font-size: 1.2rem;
+}
+
 .acercaDelEvento, .comoLLegar{
     margin: 0 2rem;
 }

@@ -14,6 +14,7 @@ export const PublicarTicket = () => {
   const { register, control } = useForm();
   const [costos, setCostos] = useState(null);
   const navigate = useNavigate();
+  const [mensajeError, setMensaje] = useState(null);
   
  // Observar el campo de precio
  const precio = useWatch({
@@ -35,13 +36,18 @@ export const PublicarTicket = () => {
     const ganancia = precio - costo;
     setCostos({ precio, costo, ganancia });
   };
-  const handlePublicar= () => {
+  const handlePublicar= async () => {
     const publicacion= {
       ticket: ticket.id_ticket,
       precio: costos.precio
   }
-    crearPublicacion(publicacion);
-    navigate("/mercado");
+    try {
+      const response = await crearPublicacion(publicacion);
+      navigate("/mercado");
+    } catch (error) {
+      setMensaje('No se puede volver a publicar el mismo ticket')
+      console.log("Error al crear publicacion:", error);
+    }
   }
 
   return (
@@ -84,6 +90,7 @@ export const PublicarTicket = () => {
                       <p>Precio: ${costos.precio}</p>
                       <p>Costo de servicio: ${costos.costo}</p>
                       <p>Ganancia: ${costos.ganancia}</p>
+                      {mensajeError && <p className="mensajeError">{mensajeError}</p>}
                       <section className="publicarTicketButton">
                         <button onClick={handlePublicar}>Publicar</button>
                       </section>
