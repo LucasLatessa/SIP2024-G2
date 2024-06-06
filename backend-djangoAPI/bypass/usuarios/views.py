@@ -9,7 +9,8 @@ from django.core.exceptions import ValidationError
 from datetime import datetime
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-
+from eventos.models import Evento
+from tickets.models import  Ticket, TipoTickets
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     queryset = Usuario.objects.all()
@@ -146,3 +147,53 @@ def update_user_role(request, pk):
         return JsonResponse({'mensaje': 'Rol de usuario actualizado con éxito'}, status=200)
     except Usuario.DoesNotExist:
         return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+    
+
+def produ_report(request, pk):
+    # Obtener la productora
+    try:
+        productora = Productora.objects.get(pk=pk)
+    except Productora.DoesNotExist:
+        return JsonResponse({'error': 'La productora no existe'}, status=404)
+    
+    # Obtener todos los eventos de la productora
+    eventos = Evento.objects.filter(productora=productora)
+    
+    # Inicializar datos para el reporte
+    total_entradas_vendidas = 0
+    total_ganancia = 0
+    total_asistencia = 0
+    eventos_data = []
+    
+    for evento in eventos:
+        tickets = Ticket.objects.filter(evento=evento, propietario__isnull=False)
+        tipos_de_tickets = TipoTickets.objects.all()
+        entradas_por_tipo = {
+            tipo.tipo: tickets.filter(tipo_ticket=tipo).count()
+            for tipo in tipos_de_tickets
+        }
+        entradas_totales = tickets.count()
+        ganancia_total = sum(ticket.precioInicial for ticket in tickets)
+        asistencia_total = tickets.filter(usada=True).count()
+        
+        total_entradas_vendidas += entradas_totales
+        total_ganancia += ganancia_total
+        total_asistencia += asistencia_total
+        
+        eventos_data.append({
+            'evento': evento.nombre,
+            'entradas_totales': entradas_totales,
+            'entradas_por_tipo': entradas_por_tipo,
+            'ganancia_total': ganancia_total,
+            'asistencia_total': asistencia_total,
+        })
+    
+    reporte = {
+        'productora': productora.nickname,
+        'eventos': eventos_data,
+        'total_entradas_vendidas': total_entradas_vendidas,
+        'total_ganancia': total_ganancia,
+        'total_asistencia': total_asistencia,
+    }
+    
+    return JsonResponse(reporte)

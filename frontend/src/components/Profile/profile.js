@@ -10,12 +10,11 @@ import {
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
-import { TicketsProfile  } from "./TicketsProfile";
+import { ClienteView  } from "./ClienteView";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
-import { UserList } from "./UserList";
-import { EventsList } from "./EventsList";
 import { ProductoraView } from "./ProductoraView";
+import { AdministradorView } from "./AdministradorView";
 
 //Perfil de los usuarios
 export const Profile = () => {
@@ -167,10 +166,9 @@ export const Profile = () => {
           <LogoutButton />
         </div>
       </div>
-      <TicketsProfile  rol={usuarioData.rol} user_id={usuarioData.user_id} />
-      <UserList rol={usuarioData.rol} />
+      <ClienteView  rol={usuarioData.rol} user_id={usuarioData.user_id} />
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
-      <EventsList rol={usuarioData.rol} />
+      <AdministradorView rol={usuarioData.rol} id={usuarioData.user_id} />
       <Footer />
     </main>
   );

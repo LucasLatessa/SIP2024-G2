@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import { getAllUsers, updateRole } from "../../services/usuarios.service";
 
 //Solo para vista de administrador, para el manejo de usuarios en el sistema
-export const UserList = ({ rol }) => {
+export const UserList = () => {
   const [users, setUsers] = useState([]);
 
   //Traigo todos los usuarios solamente si es un administrador
   useEffect(() => {
-    if (rol === "ADMINISTRADOR") {
       fetchUsers();
-    }
-  }, [rol]);
+  }, []);
 
   //Traigo todos los usuarios
   const fetchUsers = async () => {
@@ -40,7 +38,6 @@ export const UserList = ({ rol }) => {
   };
 
   //Solamente si es administrador muestro
-  if (rol === "ADMINISTRADOR") {
     return (
       <div>
         <h2 className="users">Lista de Usuarios</h2>
@@ -61,7 +58,5 @@ export const UserList = ({ rol }) => {
         </ul>
       </div>
     );
-  } else {
-    return null;
-  }
+  
 };

@@ -1,6 +1,5 @@
-.misEventosProductora{
+.misEventosProductora,.users, .eventsProfile,.produsProfile, .tusTickets{
     text-align: center;
-    text-transform: uppercase;
     color: var(--color-letras-cuaternario);
     font-size: 2rem;
     margin-bottom: 0;
@@ -30,14 +29,21 @@
     text-transform: uppercase;
 }
 
-.validarEntrada, .modificarEntrada, .verReporte{
+.botonesEventoProductora {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap; 
+}
+.validarEntrada, .modificarEntrada, .verReporte {
     padding: 0.5rem;
-    margin: 1rem;
+    margin: 0.5rem 0; 
     text-decoration: none;
     text-align: center;
     border-radius: 5px;
     border: 1px solid var(--color-letras-terceario);
     color: var(--color-letras-terceario);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .validarEntrada:hover, .modificarEntrada:hover, .verReporte:hover{
@@ -48,4 +54,24 @@
 .imagenEventoProductura{
     width: 10rem;
     height: 6rem;
+}
+.programar {
+    display: block; 
+    width: fit-content; 
+    margin: 1rem auto; 
+    padding: 0.3rem 1rem;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid var(--color-letras-terceario);
+    color: var(--color-letras-terceario);
+    background-color: var(--color-fondo-primario); /* Fondo del botón */
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transiciones suaves para hover */
+}
+
+.programar:hover {
+    color: var(--color-letras-secundario);
+    background-color: var(--color-letras-terceario); /* Cambio de fondo en hover */
 }

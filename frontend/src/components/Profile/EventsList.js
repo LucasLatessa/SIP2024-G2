@@ -6,15 +6,13 @@ import {
 } from "../../services/eventos.service";
 
 //Componente para modificar el estado de los eventos, solamente si es administrador
-export const EventsList = ({ rol }) => {
+export const EventsList = () => {
   const [events, setEvents] = useState([]);
 
   //Solamente si es administrador muestra los eventos
   useEffect(() => {
-    if (rol === "ADMINISTRADOR") {
       fetchEvents();
-    }
-  }, [rol]);
+  }, []);
 
   //Trae todos los eventos y junto con los estados
   const fetchEvents = async () => {
@@ -52,7 +50,6 @@ export const EventsList = ({ rol }) => {
     handleStateChange(id_event, newState);
   };
 
-  if (rol === "ADMINISTRADOR") {
     return (
       <div>
         <h2 className="eventsProfile">Lista de Eventos</h2>
@@ -73,7 +70,4 @@ export const EventsList = ({ rol }) => {
         </ul>
       </div>
     );
-  } else {
-    return null;
-  }
 };
