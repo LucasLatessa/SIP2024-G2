@@ -75,6 +75,7 @@ def get_tickets_by_cliente(request, cliente_id):
             "evento": ticket.evento.id_Evento if ticket.evento else None,
             "tipo_ticket": ticket.tipo_ticket.tipo if ticket.tipo_ticket else None,
             "qr": request.build_absolute_uri(ticket.qr.url) if ticket.qr else None,
+            "usada": ticket.usada
         }  # Construye una URL absoluta para el campo QR
         for ticket in tickets
     ]

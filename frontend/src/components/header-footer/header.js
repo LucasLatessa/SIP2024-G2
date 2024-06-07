@@ -10,7 +10,8 @@ export const Header = () => {
   const { loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    loginWithRedirect();
+    navigate("/login")
+    //loginWithRedirect();
   };
   const handleProfileClick = () => {
     navigate("/perfil");

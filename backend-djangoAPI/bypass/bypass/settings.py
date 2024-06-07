@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',  # Incluye estas entradas básicas
     'localhost:4040',
+    '192.168.0.111:4040',
     NGROK_URL,
     ]
     # agregar host de ngrok cada vez que es levantado
@@ -145,7 +146,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4040"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040"]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -165,6 +166,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
     "http://localhost:8000",  # Añade el host local si lo necesitas
+    "https://localhost:8000",  # Añade el host local si lo necesitas
     # Agrega otros dominios confiables si es necesario
 ]
 
