@@ -25,7 +25,7 @@ export const ProductorasList = () => {
   // Actualiza las productoras
   const handleReport = async (id_User, newState) => {
     try {
-      await updateState(id_User, newState);
+      // FALTA UPDATE STATE await updateState(id_User, newState);
       // Actualizar la lista de productoras después de cambiar el estado
       await fetchProdu();
     } catch (error) {

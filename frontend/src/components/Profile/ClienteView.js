@@ -22,6 +22,7 @@ export const ClienteView = ({ rol, user_id }) => {
               precio: ticket.precioInicial,
               tipo_ticket: ticket.tipo_ticket,
               qr: ticket.qr,
+              usada: ticket.usada,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
@@ -59,6 +60,7 @@ export const ClienteView = ({ rol, user_id }) => {
               hora={ticket.eventoHora}
               qr={ticket.qr}
               lugar={ticket.eventoLugarNombre}
+              usada={ticket.usada}
             />
           ))}
         </section>

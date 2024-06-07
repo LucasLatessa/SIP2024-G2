@@ -17,6 +17,7 @@ article.ticket {
   margin: 1rem;
   width: 399px;
   height: 400px;
+  position: relative;
 }
 
 article.ticket h2 {
@@ -50,7 +51,7 @@ article.ticket .fecha {
   height: 5px;
 }
 
-article.ticket button {
+article.ticket button, .profileBeneficios {
   padding: 0.5rem;
   text-decoration: none;
   text-align: center;
@@ -59,19 +60,40 @@ article.ticket button {
   color: var(--color-letras-secundario);
   width: 7rem;
 }
+
 .publicar{
   grid-area: publicar;
 }
+
 .transferir{
   grid-area: transferir;
 }
+
 .modalQR{
   grid-area: ver;
 }
-article.ticket button:hover {
+
+article.ticket button:hover, .profileBeneficios:hover {
   background-color: var(--color-letras-secundario);
   color: var(--color-letras-terceario);
   border: 1px solid var(--color-letras-terceario);
+}
+
+.ticket.usado::before {
+  content: "USADO";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.5); /* Filtro rojo semitransparente */
+  border-radius: 5px;
 }
 
 /*Mostrar entrada*/
@@ -87,6 +109,7 @@ article.ticket button:hover {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  z-index:99999;
 }
 
 .overlay {
