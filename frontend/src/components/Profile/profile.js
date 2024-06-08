@@ -112,7 +112,10 @@ export const Profile = () => {
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>
             <p className="datos">ID: {usuarioData.user_id}</p>
-            <p className="datos">DNI: {usuarioData.dni} </p>
+            {console.log(usuarioData.rol)}
+            {!(usuarioData.rol === "PRODUCTORA") && (
+                <p className="datos">DNI: {usuarioData.dni} </p>
+            )}
             <p className="datos">Nombre: {usuarioData.nombre}</p>
             <p className="datos">Apellido: {usuarioData.apellido}</p>
             <p className="datos">Nickname: {usuarioData.nickname}</p>
@@ -122,7 +125,8 @@ export const Profile = () => {
         {editingUserData && (
           <div className="formulario-edicion">
             <h2>Editar perfil</h2>
-            <label>
+            {!(usuarioData.rol === "PRODUCTORA") && (
+              <label>
               DNI:
               <input
                 type="number"
@@ -131,6 +135,7 @@ export const Profile = () => {
                 onChange={handleInputChange}
               />
             </label>
+            )}
             <label>
               Nombre:
               <input

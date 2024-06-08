@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import { getAllLugares } from "../../services/lugar.service";
 import { useNavigate } from "react-router";
 import "./styles/programarEvento.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 //Encargado de realizar la creacion de eventos dentro de la pagina
-export const ProgramarEvento = () => {
+export const ProgramarEvento =() => {
+  const { user } = useAuth0();
   const navegate = useNavigate();
   const {
     register,
@@ -29,10 +31,21 @@ export const ProgramarEvento = () => {
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
     //console.log(data)
+
+    // Calcular el total de entradas
+    const cantTickets =
+      parseInt(data.cantidadEntradasVIP) +
+      parseInt(data.cantidadEntradasPLATINIUM) +
+      parseInt(data.cantidadEntradasSTANDARD);
+
+    // Agregar el total de entradas a los datos
+    data.cantTickets = cantTickets;
+    data.id_productora = user.nickname;
+
     await crearEvento(data);
     //console.log(res);.
     //Vuelvo a la pagina de eventos
-    navegate("/eventos");
+    navegate("/perfil");
   });
 
   return (
@@ -73,21 +86,13 @@ export const ProgramarEvento = () => {
                 </select>
               </label>
               <label>
-                Cantidad de entradas
-                <input
-                  type="number"
-                  {...register("cantidadEntradas", {
-                    required: true,
-                  })}
-                />
-              </label>
-              <label>
                 Fecha
                 <input
                   type="date"
                   {...register("fecha", {
                     required: true,
                   })}
+                  defaultValue={new Date().toISOString().split('T')[0]}
                 />
               </label>
               <label>

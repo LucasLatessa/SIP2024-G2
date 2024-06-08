@@ -38,7 +38,7 @@ class Ticket(models.Model):
 
     def save(self, *args, **kwargs):
         # Cada vez que hay update
-        super().save(*args, **kwargs)
+        #super().save(*args, **kwargs)
         self.generar_qr()
         super().save(*args, **kwargs)
 
@@ -101,16 +101,6 @@ class Ticket(models.Model):
             if item[:3] == (0, 0, 0):
                 # Reemplazarlos por transparente
                 new_data.append((255, 255, 255, 0))
-            else:
-                new_data.append(item)  # Dejar los píxeles blancos intactos
-
-        img.putdata(new_data)
-
-        # Reemplazo el color negro con transparencia
-        new_data = []
-        for item in datas:
-            if item[:3] == (0, 0, 0):  # Encontrar todos los píxeles negros
-                new_data.append((255, 255, 255, 0))  # Reemplazarlos por transparente
             else:
                 new_data.append(item)  # Dejar los píxeles blancos intactos
 
