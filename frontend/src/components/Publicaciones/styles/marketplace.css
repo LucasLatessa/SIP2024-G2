@@ -15,12 +15,17 @@
 .formFiltros{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .formFiltros label{
+    font-weight: bolder;
     color: var(--color-letras-primario);
     text-transform: uppercase;
-    padding-left: 5vh;
+    text-align: center;
+}
+
+.formFiltros input{
+    margin: 1rem;
 }
 
