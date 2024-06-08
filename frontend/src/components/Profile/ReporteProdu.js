@@ -94,16 +94,31 @@ export const ReporteProdu = () => {
           </section>
           {eventosFiltrados.map((evento, index) => (
             <div key={index} className="event">
-              <h3>{evento.evento}</h3>
-              <p>Entradas Totales: {evento.entradas_totales}</p>
-              <p>Ganancia Total: ${evento.ganancia_total}</p>
-              <p>Asistencia Total: {evento.asistencia_total}</p>
-              <h4>Entradas por Tipo:</h4>
-              <ul className="event-entradas-list">
-                {Object.entries(evento.entradas_por_tipo).map(([tipo, cantidad]) => (
-                  <li key={tipo} className="event-entradas-item">{tipo}: {cantidad}</li>
-                ))}
-              </ul>
+              <div className="event-info">
+                <h3>{evento.evento}</h3>
+                <div className="event-stats">
+                  <div>
+                    <p>Entradas Totales</p>
+                    <p>{evento.entradas_totales}</p>
+                  </div>
+                  <div>
+                    <p>Ganancia Total</p>
+                    <p>${evento.ganancia_total}</p>
+                  </div>
+                  <div>
+                    <p>Asistencia Total</p>
+                    <p>{evento.asistencia_total}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="entradas-tipo">
+                <h4>Entradas por Tipo:</h4>
+                <ul className="event-entradas-list">
+                  {Object.entries(evento.entradas_por_tipo).map(([tipo, cantidad]) => (
+                    <li key={tipo} className="event-entradas-item">{tipo}: {cantidad}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </section>
