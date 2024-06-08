@@ -271,24 +271,65 @@ h1 {
 }
 
 .event {
-  margin-bottom: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #ffffff;
-  width: 90%; /* Ajusta el ancho según tus necesidades */
-  max-width: 600px; /* Máximo ancho */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-align: center;
+  background-color: var(--color-principal-claro);
+  border: 1px solid var(--color-letras-primario);
+  border-radius: 10px;
+  padding: 0rem 1rem;
+  display: flex;
+  margin: 1rem 0;
+  text-align: left;
+  color: var(--color-letras-cuaternario);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.event-info {
+  flex: 1;
+}
+
+.entradas-tipo {
+  margin-left: 80px; 
+  flex: 1;
+  margin-top: 50px; 
+}
+.event h3 {
+  color: var(--color-letras-cuaternario);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.event p {
+  margin: 0.5rem 0;
 }
 
 .event-entradas-list {
   list-style: none;
   padding: 0;
+  margin: 1rem 0 0 0;
 }
 
 .event-entradas-item {
   margin-bottom: 5px;
   color:black;
+  padding: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.event-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.event-stats div {
+  flex: 1 1 calc(33.333% - 1rem);
+  background-color: var(--color-fondo-secundario);
+  border-radius: 5px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.event-stats div p {
+  margin: 0.2rem 0;
+  font-size: 1rem;
+  color: var(--color-letras-primario);
 }
 
