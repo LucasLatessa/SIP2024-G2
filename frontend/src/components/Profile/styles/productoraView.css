@@ -68,12 +68,11 @@
     background-color: var(--color-letras-terceario);
 }
 
-  
-
 .imagenEventoProductura{
     width: 10rem;
     height: 6rem;
 }
+
 .programar {
     display: block; 
     width: fit-content; 
@@ -93,4 +92,34 @@
 .programar:hover {
     color: var(--color-letras-secundario);
     background-color: var(--color-letras-terceario); /* Cambio de fondo en hover */
+}
+
+/* Estilos para el select */
+.filtros {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Opcional: Centra horizontalmente el contenido dentro de la sección */
+    gap: 1rem; /* Añade un espacio entre el h3 y el select */
+    margin-bottom: 1rem;
+}
+
+.filtros h3 {
+    margin: 0;
+    font-size: 1.5rem; /* Ajusta según sea necesario */
+}
+
+#evento-select, #orden-select {
+    display: block;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--color-letras-cuaternario);
+    background-color: var(--color-fondo);
+    color: var(--color-letras-secundario);
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#evento-select:hover, #orden-select:hover {
+    color: var(--color-letras-secundario);
+    background-color: var(--color-fondo);
 }

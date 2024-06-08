@@ -8,6 +8,8 @@ import "./styles/Profile.css";
 
 export const ReporteProdu = () => {
   const [reporte, setReporte] = useState(null);
+  const [eventoSeleccionado, setEventoSeleccionado] = useState("");
+  const [ordenSeleccionado, setOrdenSeleccionado] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -22,6 +24,29 @@ export const ReporteProdu = () => {
 
     fetchReporte();
   }, [id]);
+
+  const handleEventoChange = (e) => {
+    setEventoSeleccionado(e.target.value);
+  };
+
+  const handleOrdenChange = (e) => {
+    setOrdenSeleccionado(e.target.value);
+  };
+
+  const eventosFiltrados = reporte?.eventos
+    .filter((evento) =>
+      eventoSeleccionado ? evento.evento === eventoSeleccionado : true
+    )
+    .sort((a, b) => {
+      if (ordenSeleccionado === "tickets") {
+        return b.entradas_totales - a.entradas_totales;
+      } else if (ordenSeleccionado === "recaudado") {
+        return b.ganancia_total - a.ganancia_total;
+      } else if (ordenSeleccionado === "asistencia") {
+        return b.asistencia_total - a.asistencia_total;
+      }
+      return 0;
+    });
 
   if (!reporte) {
     return <div>Cargando reporte...</div>;
@@ -50,7 +75,24 @@ export const ReporteProdu = () => {
         </section>
         <section className="events">
           <h2>Eventos de la Productora</h2>
-          {reporte.eventos.map((evento, index) => (
+          <section className="filtros">
+            <h3>Filtros:</h3>
+            <select id="evento-select" value={eventoSeleccionado} onChange={handleEventoChange}>
+              <option value="">Todos los eventos</option>
+              {reporte.eventos.map((evento, index) => (
+                <option key={index} value={evento.evento}>
+                  {evento.evento}
+                </option>
+              ))}
+            </select>
+            <select id="orden-select" value={ordenSeleccionado} onChange={handleOrdenChange}>
+              <option value="">Ordenar por</option>
+              <option value="tickets">Más tickets vendidos</option>
+              <option value="recaudado">Más recaudado</option>
+              <option value="asistencia">Mayor asistencia</option>
+            </select>
+          </section>
+          {eventosFiltrados.map((evento, index) => (
             <div key={index} className="event">
               <h3>{evento.evento}</h3>
               <p>Entradas Totales: {evento.entradas_totales}</p>
