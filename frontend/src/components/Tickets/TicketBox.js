@@ -2,7 +2,6 @@ import "./styles/ticketsBox.css";
 import { useState } from "react";
 import { TicketQR } from "./TicketQR";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 export const TicketBox = ({id_ticket,nombre,foto,tipo_ticket,precio,fecha,hora,qr,lugar,usada}) => {
   const [modalOpen, setModalOpen] = useState(false);

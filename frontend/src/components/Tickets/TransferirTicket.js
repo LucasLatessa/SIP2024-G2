@@ -1,8 +1,8 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useLocation } from "react-router-dom";
-import { useForm,useWatch  } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useForm  } from "react-hook-form";
+import { useState } from "react";
 import "../Eventos/styles/EventoPage.css";
 import { tranferir } from '../../services/tickets.service';
 import { getUserNick } from '../../services/usuarios.service';

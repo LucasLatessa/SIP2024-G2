@@ -4,7 +4,7 @@
 .titulo{
     color: var(--color-letras-secundario);
 }
-li{
+.ayuda-main ul li{
     color:var(--color-letras-secundario);
 }
 .ayuda-boton{
