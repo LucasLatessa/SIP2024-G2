@@ -4,12 +4,18 @@ import { PublicacionesBox } from "./PublicacionesBox";
 import "../Eventos/styles/Eventos.css";
 import { getAllPublicacion } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
-import { getTicket } from "../../services/tickets.service";
+import { getTicket, getTipoTicket } from "../../services/tickets.service";
 import { useEffect, useState } from "react";
+import "./styles/marketplace.css";
 
 //Mercado de entradas
 export const Marketplace = () => {
   const [publicaciones, setPublicaciones] = useState([]);
+  const [search, setSearch] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [entryType, setEntryType] = useState("");
+  const [filteredTickets, setFilteredTickets] = useState([]);
 
   //Traigo todas las publicaciones
   useEffect(() => {
@@ -20,10 +26,12 @@ export const Marketplace = () => {
           res.data.map(async (publicacion) => {
             const ticketRes = await getTicket(publicacion.ticket);
             const eventoRes = await getEvento(ticketRes.data.evento);
+            const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
             return {
               id: publicacion.id_Publicacion,
               precio: publicacion.precio,
               fecha: publicacion.fecha,
+              tipo: tipoRes.data.tipo,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
@@ -32,12 +40,51 @@ export const Marketplace = () => {
           })
         );
         setPublicaciones(publicacionesConInfoCompleta);
+        setFilteredTickets(publicacionesConInfoCompleta);
       } catch (error) {
         console.error("Error al cargar las publicaciones:", error);
       }
     }
     cargarPublicaciones();
   }, []);
+
+  /* --------------------
+          FILTROS
+     --------------------*/
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "search") {
+      setSearch(value);
+    } else if (name === "minPrice") {
+      setMinPrice(value);
+    } else if (name === "maxPrice") {
+      setMaxPrice(value);
+    } else if (name === "entryType") {
+      setEntryType(value);
+    }
+
+    let filtered = publicaciones;
+
+    if (name === "search" && value) {
+      filtered = filtered.filter((ticket) =>
+        ticket.eventoNombre.toLowerCase().includes(value.toLowerCase())
+      );
+    } else if (name === "minPrice" && value) {
+      filtered = filtered.filter(
+        (ticket) => ticket.precio >= parseFloat(value)
+      );
+    } else if (name === "maxPrice" && value) {
+      filtered = filtered.filter(
+        (ticket) => ticket.precio <= parseFloat(value)
+      );
+    } else if (name === "entryType" && value) {
+      filtered = filtered.filter((ticket) => ticket.tipo === value);
+    }
+
+    setFilteredTickets(filtered);
+  };
 
   return (
     <>
@@ -46,8 +93,54 @@ export const Marketplace = () => {
         <header className="tituloEventos">
           <h1>Mercado</h1>
         </header>
+
+        <section className="sectionFiltros">
+          <h2 className="tituloFiltros">Filtros</h2>
+          <form className="formFiltros">
+            <label>
+              Nombre:
+              <input
+                type="text"
+                name="search"
+                value={search}
+                onChange={handleFilterChange}
+              />
+            </label>
+            <label>
+              Precio Mínimo:
+              <input
+                type="number"
+                name="minPrice"
+                value={minPrice}
+                onChange={handleFilterChange}
+              />
+            </label>
+            <label>
+              Precio Máximo:
+              <input
+                type="number"
+                name="maxPrice"
+                value={maxPrice}
+                onChange={handleFilterChange}
+              />
+            </label>
+            <label>
+              Tipo de Entrada:
+              <select
+                name="entryType"
+                value={entryType}
+                onChange={handleFilterChange}
+              >
+                <option value="">Todos</option>
+                <option value="VIP">VIP</option>
+                <option value="PLATINIUM">PLATINIUM</option>
+                <option value="STANDARD">STANDARD</option>
+              </select>
+            </label>
+          </form>
+        </section>
         <section className="allListaEventosa">
-          {publicaciones?.map((publicacion) => (
+          {filteredTickets?.map((publicacion) => (
             <PublicacionesBox
               id={publicacion.id}
               foto={publicacion.foto}

@@ -42,7 +42,7 @@ export const PublicarTicket = () => {
       precio: costos.precio
   }
     try {
-      const response = await crearPublicacion(publicacion);
+      await crearPublicacion(publicacion);
       navigate("/mercado");
     } catch (error) {
       setMensaje('No se puede volver a publicar el mismo ticket')

@@ -1,16 +1,16 @@
-.tituloBeneficios {
+.tituloBeneficios  {
     margin: 0;
-    padding: 8rem;
+    padding: 4rem;
     background-image: url(../../../images/ViviLaExperiencia.jpg);
     background-repeat: no-repeat;
     background-size: auto;
     background-position: center;
     background-size: cover;
-}
-
+    height: 10vh; 
+  }
 .tituloBeneficios h1 {
     text-align: center;
-    font-size: 5rem;
+    font-size: 3.5rem;
     color: var(--color-letras-secundario);
     text-shadow: 2px 2px 4px var(--color-letras-primario);
 }

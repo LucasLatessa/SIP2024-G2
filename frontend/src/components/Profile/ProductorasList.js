@@ -43,7 +43,7 @@ export const ProductorasList = () => {
           {productoras.map((productora) => (
             <li key={productora.user_id} className="productora-item">
               {productora.nickname} - 
-              <Link className="verReporte" to={`/reporteProdu/${productora.user_id}`}>Ver Reporte</Link>
+              <Link className="verReporteAdmin" to={`/reporteProdu/${productora.user_id}`}>Ver Reporte</Link>
             </li>
           ))}
         </ul>

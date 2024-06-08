@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -197,3 +198,34 @@ def produ_report(request, pk):
     }
     
     return JsonResponse(reporte)
+
+@api_view(['POST'])
+def crear_usuario(request):
+    user = json.loads(request.body)
+    # Obtiene el nuevo rol del cuerpo de la solicitud
+    role = request.data.get('rol')
+    #print(role)
+    try:
+        if role=="productora":
+            # Crear un nuevo administrador con los datos del Usuario
+            nuevo_usuario = Productora.objects.create(
+                nickname=user.get("nickname"),
+                nombre=user.get("nombre"),
+                apellido=user.get("apellido"),
+                correo=user.get("correo"),
+                creacion=datetime.now(),
+                rol="PRODUCTORA"
+            )
+        elif role=="cliente":
+            # Crear un nuevo administrador con los datos del Usuario
+            nuevo_usuario = Cliente.objects.create(
+                nickname=user.get("nickname"),
+                nombre=user.get("nombre"),
+                apellido=user.get("apellido"),
+                correo=user.get("correo"),
+                creacion=datetime.now(),
+                rol="CLIENTE"
+            )
+        return JsonResponse({'mensaje': 'Usuario creado con éxito'}, status=200)
+    except Usuario.DoesNotExist:
+        return JsonResponse({'error': 'No se pudo crear el usuario, faltan datos'}, status=404)

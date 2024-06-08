@@ -31,7 +31,7 @@ class Evento(models.Model):
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
     estado= models.ForeignKey(EstadoEvento, models.DO_NOTHING, db_column='estadoEvento',blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    imagen = models.ImageField(upload_to="eventos",null=True)
+    imagen = models.ImageField(upload_to="eventos",blank=True, null=True)
     productora = models.ForeignKey(Productora, models.DO_NOTHING, db_column='nickname',blank=True, null=True)
 
     def __str__(self):

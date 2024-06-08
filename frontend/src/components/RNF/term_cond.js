@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Profile/styles/Profile.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import { crearCliente } from "../../services/usuarios.service";
+import { crearUsuario } from "../../services/usuarios.service";
 import { useNavigate } from "react-router-dom";
 
 //Terminos y condiciones a la hora de registtrase
@@ -32,7 +32,7 @@ export const TermsAndConditions = () => {
         correo: user.email || "",
         rol: role,
       };
-      await crearCliente(userData);
+      await crearUsuario(userData);
       //await fetchUserData();
     } catch (error) {
       console.error("Error creando usuario:", error);
