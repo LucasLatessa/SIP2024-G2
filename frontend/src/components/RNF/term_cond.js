@@ -9,9 +9,14 @@ export const TermsAndConditions = () => {
   const navigate = useNavigate();
   const { user } = useAuth0();
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [role, setRole] = useState("");
 
   const handleCheckboxChange = (e) => {
     setTermsAccepted(e.target.checked);
+  };
+
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
   };
 
   const handleCreateAccount = async () => {
@@ -25,6 +30,7 @@ export const TermsAndConditions = () => {
         nombre: user.given_name || "",
         apellido: user.family_name || "",
         correo: user.email || "",
+        rol: role,
       };
       await crearCliente(userData);
       //await fetchUserData();
@@ -130,6 +136,31 @@ export const TermsAndConditions = () => {
         />
         Acepto los Términos y Condiciones
       </label>
+      <fieldset>
+        <legend>Seleccione su rol:</legend>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="productora"
+              checked={role === "productora"}
+              onChange={handleRoleChange}
+            />
+            Productora
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="cliente"
+              checked={role === "cliente"}
+              onChange={handleRoleChange}
+            />
+            Cliente
+          </label>
+        </div>
+      </fieldset>
       <button onClick={handleCreateAccount}>Crear Cuenta</button>
     </div>
   );

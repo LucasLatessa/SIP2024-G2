@@ -4,14 +4,15 @@ import React from "react";
 import "./styles/header.css";
 import { Link } from "react-router-dom";
 
+
 //Header del sitio
 export const Header = () => {
   const { user, isAuthenticated } = useAuth0();
   const { loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    navigate("/login")
-    //loginWithRedirect();
+    //navigate("/login")
+    loginWithRedirect();
   };
   const handleProfileClick = () => {
     navigate("/perfil");

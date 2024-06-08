@@ -17,7 +17,6 @@ import { ModificarEventos } from "./components/Eventos/ModificarEventos";
 import { ReporteEvento } from "./components/Profile/ReporteEvento";
 import { ReporteProdu } from "./components/Profile/ReporteProdu";
 import { TransferirTicket} from "./components/Tickets/TransferirTicket";
-import { Login } from "./components/Profile/Login";
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
         <Route path="/terminos_condiciones" element={<TermsAndConditions />} />
         <Route path="/ayuda" element={<Ayuda />} />
         <Route path="/perfil" element={<Profile />} />
-        <Route path="/login" element={<Login />}/>
         <Route path="/validarEntrada/:id" element={<QrScannerComponent  />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/reporteEvento/:id" element={<ReporteEvento/>} />
