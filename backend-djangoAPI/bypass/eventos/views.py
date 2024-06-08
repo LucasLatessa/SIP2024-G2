@@ -165,3 +165,30 @@ def event_report(request, pk):
     }
 
     return JsonResponse(reporte)
+
+@csrf_exempt
+@api_view(["PUT"])
+def actualizar_evento(request, pk):
+    try:
+        # Obtener el evento existente
+        evento = get_object_or_404(Evento, pk=pk)
+
+        # Deserializar los datos de la solicitud y actualizar el evento
+        data = request.data.dict()  # Convertir QueryDict a dict
+        #print(data)
+        if 'imagen' not in request.FILES:
+            #data['imagen'] = evento.imagen
+            data.pop('imagen', None)  # Eliminar el campo imagen si no está presente
+
+        # Deserializar los datos de la solicitud y actualizar el evento
+        serializer = EventoSerializer(evento, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()  # Guardar los cambios en el evento
+
+            return JsonResponse({"mensaje": "Evento actualizado con éxito!"}, status=200)
+        else:
+            print(serializer.errors)  # Logging para ver errores de serialización
+            return JsonResponse({"error": serializer.errors}, status=400)
+    except Exception as e:
+        print(str(e))  # Logging para cualquier excepción que ocurra
+        return JsonResponse({"error": str(e)}, status=400)

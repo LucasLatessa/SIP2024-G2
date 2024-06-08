@@ -26,7 +26,7 @@ export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}/`);
 
 export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);
 
-export const actualizarEvento = (evento) => eventosAPI.put('/actualizarEvento/',evento,{
+export const actualizarEvento = (evento,id) => eventosAPI.put(`/actualizarEvento/${id}/`,evento,{
   headers: {
     'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
   }});

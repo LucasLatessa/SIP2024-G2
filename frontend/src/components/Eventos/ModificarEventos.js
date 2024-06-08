@@ -7,12 +7,9 @@ import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 
 export const ModificarEventos = () => {
-  const [setEvento] = useState([]);
+  const [evento, setEvento] = useState([]);
   const navegate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const {register,handleSubmit,setValue} = useForm();
   const { id } = useParams();
   const [lugar, setLugar] = useState([]);
 
@@ -30,13 +27,34 @@ export const ModificarEventos = () => {
     cargarLugar();
   }, [id,setEvento]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    data.imagen = data.imagen[0]; //Para guardar la imagen
-    //console.log(data)
-    await actualizarEvento(data);
-    //Vuelvo a la pagina de eventos
-    navegate("/perfil");
-  });
+  useEffect(() => {
+    setValue("nombre", evento.nombre); // Establecer el valor predefinido
+    setValue("lugar", evento.lugar); // Establecer el valor predefinido
+    setValue("fecha", evento.fecha); // Establecer el valor predefinido
+    setValue("hora", evento.hora); // Establecer el valor predefinido
+    setValue("descripcion", evento.descripcion); // Establecer el valor predefinido
+  }, [evento, setValue]);
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (key === "imagen" && data.imagen && data.imagen[0]) {
+        formData.append(key, data.imagen[0]); // Extraer el archivo del FileList
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    try {
+      await actualizarEvento(formData,id);
+      alert('Evento actualizado con éxito');
+      navegate('/perfil');
+    } catch (error) {
+      console.error('Error actualizando el evento:', error);
+      alert('Hubo un error actualizando el evento');
+    }
+  };
 
   return (
     <>
@@ -56,17 +74,13 @@ export const ModificarEventos = () => {
                 Nombre del evento
                 <input
                   type="text"
-                  {...register("nombre", {
-                    required: true,
-                  })}
+                  {...register("nombre")}
                 />
               </label>
               <label>
                 Lugar
                 <select
-                  {...register("lugar", {
-                    required: true,
-                  })}
+                  {...register("lugar")}
                 >
                   {lugar?.map((lugar) => (
                     <option key={lugar.id_Lugar} value={lugar.id_Lugar}>
@@ -76,113 +90,34 @@ export const ModificarEventos = () => {
                 </select>
               </label>
               <label>
-                Cantidad de entradas
-                <input
-                  type="number"
-                  {...register("cantidadEntradas", {
-                    required: true,
-                  })}
-                />
-              </label>
-              <label>
                 Fecha
                 <input
                   type="date"
-                  {...register("fecha", {
-                    required: true,
-                  })}
+                  {...register("fecha")}
                 />
               </label>
               <label>
                 Hora
                 <input
                   type="time"
-                  {...register("hora", {
-                    required: true,
-                  })}
+                  {...register("hora")}
                 />
               </label>
               <label>
                 Descripcion
-                <input
-                  type="text"
-                  {...register("descripcion", {
-                    required: true,
-                  })}
+                <textarea
+                  {...register("descripcion")}
+                  rows="4" // Número de filas visibles
+                  cols="130" // Ancho del textarea
                 />
               </label>
               <label>
                 Imagen
                 <input
                   type="file"
-                  {...register("imagen", {
-                    required: true,
-                  })}
+                  {...register("imagen")}
                 />
               </label>
-            </div>
-            <div className="datosEntradas">
-              <div className="tipoEntrada">
-                <label>
-                  Entradas VIP
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasVIP", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    step="0.01" // Incremento 0.01 para permitir decimales
-                    {...register("precioVIP", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Platinium
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasPLATINIUM", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioPLATINIUM", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Standard
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasSTANDARD", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioSTANDARD", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
             </div>
             <input className="buttonCrearEvento" type="submit" value="Actualizar" />
           </form>
