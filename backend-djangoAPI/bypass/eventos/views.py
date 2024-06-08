@@ -7,6 +7,7 @@ from tickets.models import Ticket, TipoTickets, Ticket, TipoTickets
 from usuarios.models import Productora
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from django.utils import timezone
 
 
 class EventoView(viewsets.ModelViewSet):
@@ -24,11 +25,21 @@ class LugarView(viewsets.ModelViewSet):
     queryset = Lugar.objects.all()
 
 
-def get_eventos_aprobados(request):
-    # Recupera todos los usuarios de la base de datos
-    events = Evento.objects.filter(estado=EstadoEvento.objects.get(estado="APROBADO"))
 
-    # Convierte los usuarios a un formato JSON
+def get_eventos_aprobados(request):
+    # Obtener la fecha y hora actual
+    now = timezone.now()
+
+    # Recupera todos los eventos aprobados de la base de datos
+    events = Evento.objects.filter(estado=EstadoEvento.objects.get(estado="APROBADO"), fecha__gte=now.date())
+
+    # Filtra los eventos cuya fecha sea mayor o igual a la fecha actual y hora mayor o igual a la hora actual si la fecha es hoy
+    upcoming_events = [
+        event for event in events
+        if (event.fecha > now.date()) or (event.fecha == now.date() and event.hora >= now.time())
+    ]
+
+    # Convierte los eventos a un formato JSON
     event_data = [
         {
             "id_Evento": event.id_Evento,
@@ -39,10 +50,10 @@ def get_eventos_aprobados(request):
                 request.build_absolute_uri(event.imagen.url) if event.imagen else None
             ),
         }
-        for event in events
+        for event in upcoming_events
     ]
 
-    # Devuelve los usuarios como una respuesta JSON
+    # Devuelve los eventos como una respuesta JSON
     return JsonResponse(event_data, safe=False)
 
 
