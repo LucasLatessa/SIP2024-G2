@@ -22,3 +22,5 @@ export const getAllTicketsByCli = (id_cli) => tickets_cliAPI.get(`/byCliente/${i
 export const getTicketByEvent = (id_evento) => tickets_cliAPI.get(`/byEvento/${id_evento}`);
 
 export const cambiarEstadoTicket = (id) => tickets_cliAPI.put(`/cambiar_estado_ticket/${id}/`);
+
+export const getTipoTicket = (id) => tickets_cliAPI.get(`TipoTicket/${id}/`);
