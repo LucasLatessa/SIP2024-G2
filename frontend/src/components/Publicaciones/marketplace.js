@@ -10,6 +10,11 @@ import { useEffect, useState } from "react";
 //Mercado de entradas
 export const Marketplace = () => {
   const [publicaciones, setPublicaciones] = useState([]);
+  const [search, setSearch] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [entryType, setEntryType] = useState("");
+  const [filteredTickets, setFilteredTickets] = useState([]);
 
   //Traigo todas las publicaciones
   useEffect(() => {
@@ -39,6 +44,41 @@ export const Marketplace = () => {
     cargarPublicaciones();
   }, []);
 
+  /* --------------------
+          FILTROS
+     --------------------*/
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "search") {
+      setSearch(value);
+    } else if (name === "minPrice") {
+      setMinPrice(value);
+    } else if (name === "maxPrice") {
+      setMaxPrice(value);
+    } else if (name === "entryType") {
+      setEntryType(value);
+    }
+
+    let filtered = publicaciones;
+
+    if (name === "search" && value) {
+      filtered = filtered.filter(ticket =>
+        ticket.eventoNombre.toLowerCase().includes(value.toLowerCase())
+      );
+    } else if (name === "minPrice" && value) {
+      filtered = filtered.filter(ticket => ticket.precio >= parseFloat(value));
+    } else if (name === "maxPrice" && value) {
+      filtered = filtered.filter(ticket => ticket.precio <= parseFloat(value));
+    } else if (name === "entryType" && value) {
+      filtered = filtered.filter(ticket => ticket.tipo === value);
+    }
+
+    setFilteredTickets(filtered);
+  };
+
+
   return (
     <>
       <Header />
@@ -46,9 +86,48 @@ export const Marketplace = () => {
         <header className="tituloEventos">
           <h1>Mercado</h1>
         </header>
-
+        <h2>Filtros</h2>
+        <form>
+          <div>
+            <label>Buscar por nombre:</label>
+            <input
+              type="text"
+              name="search"
+              value={search}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div>
+            <label>Precio Mínimo:</label>
+            <input
+              type="number"
+              name="minPrice"
+              value={minPrice}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div>
+            <label>Precio Máximo:</label>
+            <input
+              type="number"
+              name="maxPrice"
+              value={maxPrice}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div>
+            <label>Tipo de Entrada:</label>
+            <select name="entryType" value={entryType} onChange={handleFilterChange}>
+              <option value="">Todos</option>
+              <option value="VIP">VIP</option>
+              <option value="PLATINIUM">PLATINIUM</option>
+              <option value="STANDARD">STANDARD</option>
+            </select>
+          </div>
+        </form>
+        <h2>Tickets</h2>
         <section className="allListaEventosa">
-          {publicaciones?.map((publicacion) => (
+          {filteredTickets?.map((publicacion) => (
             <PublicacionesBox
               id={publicacion.id}
               foto={publicacion.foto}

@@ -23,6 +23,10 @@
     margin: 1rem 0;
 }
 
+.productora-item{
+    color: var(--color-letras-secundario)
+}
+
 .eventosProductora h3{
     color:var(--color-letras-primario);
     padding: 2rem;
