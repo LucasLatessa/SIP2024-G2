@@ -34,7 +34,6 @@ export const EventoPage = () => {
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
-      console.log(token);
       const response = await axios.get(
         "http://localhost:8000/tickets/obtener_ticket_evento/",
         {
@@ -51,7 +50,6 @@ export const EventoPage = () => {
       console.log(response.data.ticket_id_list);
       return response.data.ticket_id_list;
     } catch (error) {
-      console.log(error);
       return [];
     }
   };
@@ -109,7 +107,6 @@ export const EventoPage = () => {
 
   const handleTipoEntradaChange = async (e) => {
     setTipoTicket(e.target.value);
-    console.log(e.target.value);
     try {
       const response = await axios.get(
         "http://localhost:8000/tickets/obtener_precio_entrada/",

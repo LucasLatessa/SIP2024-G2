@@ -46,7 +46,6 @@ export const Marketplace = () => {
         <header className="tituloEventos">
           <h1>Mercado</h1>
         </header>
-
         <section className="allListaEventosa">
           {publicaciones?.map((publicacion) => (
             <PublicacionesBox
