@@ -46,8 +46,7 @@ class Ticket(models.Model):
         try:
             ticket_id_list = ticket_id_str.split(",")
             for ticket_id in ticket_id_list:
-
-                ticket = Ticket.objects.get(id_Ticket=ticket_id, propietario=None)
+                ticket = Ticket.objects.get(id_Ticket=ticket_id)
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
 
                 ticket.propietario = nuevo_propietario
@@ -56,8 +55,6 @@ class Ticket(models.Model):
             print("No se pudo cargar el ticket")
 
     def obtener_ticket_precio(tipo_ticket, evento):
-        print(tipo_ticket)
-        print(evento)
         tipo_ticket = TipoTickets.objects.get(tipo=tipo_ticket)
 
         ticket = Ticket.objects.filter(tipo_ticket=tipo_ticket, evento=evento).last()
@@ -140,6 +137,15 @@ class Publicacion(models.Model):
     def __str__(self):
         return "Publicacion " + str(self.id_Publicacion)
 
+
+    def modificarPublicado(publi_id):
+        try:
+            publicacion = Publicacion.objects.get(id_Publicacion=publi_id)
+            publicacion.publica = False
+
+            publicacion.save()
+        except:
+            print("No se pudo eliminar publicacion")
 
 # class TipoEntrada(models.Model):
 

@@ -13,3 +13,9 @@ export const getAllPublicacion = () => publicacionAPI.get('/');
 export const getPublicacion = (id) => publicacionAPI.get(`/${id}`);
 
 export const crearPublicacion = (publicacion) => publicacionAPI.post('/crear',publicacion);
+
+export const crearPreferenciaEvento = ( ticket_publi_id, unit_price, description) => publicacionAPI.post(`/comprarPublicacion`,{ 
+  ticket_publi_id: ticket_publi_id, 
+  unit_price: unit_price, 
+  description: description
+});
