@@ -118,6 +118,32 @@ def get_tickets_by_evento(request, evento_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 
+def get_tickets_by_evento_min_max(request, evento_id):
+# Obtengo todos los tickets de ese evento
+    tickets = Ticket.objects.filter(evento_id=evento_id,usada=False)
+
+    valorMax = 10000000000
+    min = valorMax
+    max = 0
+    for ticket_no_usados in  tickets:
+        if ticket_no_usados.precioInicial >= max:
+            max = ticket_no_usados.precioInicial
+        elif  ticket_no_usados.precioInicial <= min:
+            min = ticket_no_usados.precioInicial
+
+    if valorMax == min:
+        min = 0
+
+    # Creo el JSON  
+    precios_data = [
+        {
+            "precioMaximo": max,
+            "precioMinimo": min
+        }
+    ]
+
+    # Devuelve los tickets como una respuesta JSON
+    return JsonResponse({"precios":precios_data})
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
