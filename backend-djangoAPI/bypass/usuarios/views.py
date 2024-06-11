@@ -53,6 +53,8 @@ def get_usuario_by_nickname(request, nickname):
             'apellido': usuario.apellido,
             'correo': usuario.correo,
             'dni': dni,
+            'public_key': usuario.Public_Key,
+            'access_token': usuario.Access_Token,
             'rol': usuario.rol
         }
         return JsonResponse({'usuario': usuario_data})
