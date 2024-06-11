@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import "../Eventos/styles/EventoPage.css";
 import { crearPublicacion } from '../../services/publicacion.service';
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getUserNick } from '../../services/usuarios.service';
 
 //Publicacion de tickets dentro del sitio
 export const PublicarTicket = () => {
@@ -15,6 +17,9 @@ export const PublicarTicket = () => {
   const [costos, setCostos] = useState(null);
   const navigate = useNavigate();
   const [mensajeError, setMensaje] = useState(null);
+  const { user,getAccessTokenSilently } = useAuth0();
+  const [userNoAuth0,setUserNoAuth0 ] = useState(null);
+  const [token, setToken] = useState();
   
  // Observar el campo de precio
  const precio = useWatch({
@@ -29,25 +34,43 @@ export const PublicarTicket = () => {
     if (precio) {
       calcularCostos(Number(precio));
     }
-  }, [precio]);
+    async function obtenerToken() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    async function getUsuario() {
+      const res = await getUserNick(user.nickname);
+      setUserNoAuth0(res);      
+    }
+    obtenerToken();
+    getUsuario();
+
+  }, [precio,getAccessTokenSilently]);
 
   const calcularCostos = (precio) => {
     const costo = precio * 0.15; // costo fijo del 15%
     const ganancia = precio - costo;
     setCostos({ precio, costo, ganancia });
   };
-  const handlePublicar= async () => {
+  const handlePublicar= async () => {    
     const publicacion= {
       ticket: ticket.id_ticket,
       precio: costos.precio
   }
+   if (userNoAuth0.data.usuario.public_key !== null){
     try {
       await crearPublicacion(publicacion);
       navigate("/mercado");
-    } catch (error) {
+     } catch (error) {
       setMensaje('No se puede volver a publicar el mismo ticket')
-      console.log("Error al crear publicacion:", error);
-    }
+       console.log("Error al crear publicacion:", error);
+     }
+   }
+  else{
+    setMensaje('No tiene una cuenta de mercado pago')
+    console.log("No cuenta mp");
+  }
+ 
   }
 
   return (
