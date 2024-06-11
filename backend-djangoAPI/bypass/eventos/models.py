@@ -26,7 +26,7 @@ class Evento(models.Model):
     id_Evento = models.AutoField(primary_key=True)
     nombre = models.TextField()
     cantTickets = models.IntegerField(default=0)
-    entradasDisponibles = models.IntegerField(default=0)
+    #entradasDisponibles = models.IntegerField(default=0)
     fecha = models.DateField(blank=True, null=True)
     hora = models.TimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
