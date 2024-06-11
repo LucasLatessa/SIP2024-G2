@@ -267,6 +267,7 @@ h1 {
   color: var(--color-letras-cuaternario);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .event-info {
   flex: 1;
 }
@@ -276,6 +277,7 @@ h1 {
   flex: 1;
   margin-top: 50px; 
 }
+
 .event h3 {
   color: var(--color-letras-cuaternario);
   margin-bottom: 0.5rem;
@@ -319,3 +321,7 @@ h1 {
   color: var(--color-letras-primario);
 }
 
+.asistencia-baja p:nth-child(2) {
+  color: red !important;  
+  font-weight: bold;
+}
