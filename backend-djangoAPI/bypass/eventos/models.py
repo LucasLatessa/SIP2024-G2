@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 
 from django.db.models.signals import post_save
@@ -47,8 +48,9 @@ class Evento(models.Model):
             estado_agotado = EstadoEvento.objects.get(estado='AGOTADO')
             self.estado = estado_agotado
         super(Evento, self).save(*args, **kwargs)
-        # Revaloriza tickets según la demanda
+        # Revaloriza tickets según la demanda y temporalidad
         self.revalorizar_ticket()
+        self.revalorizar_por_temporalidad()
 
     #EVENTO DE REVALORIZACION POR DISPONIBILIDAD
     def revalorizar_ticket(self):
@@ -69,6 +71,30 @@ class Evento(models.Model):
                     nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
                     ticket.precioInicial = nuevo_precio
                     ticket.save()
+
+    #EVENTO DE REVALORIZACION POR TEMPORALIDAD
+    def revalorizar_por_temporalidad(self):
+        from tickets.models import Ticket  # Importación diferida
+
+        hoy = datetime.now().date()
+        dias_faltantes = (self.fecha - hoy).days
+
+        #El evento ya ocurrio o es hoy
+        if dias_faltantes <= 0:
+            return 
+        
+        #Aumenta un 25% por cada semana de proximidad 
+        semana_para_evento = dias_faltantes / 7
+        porcentaje_aumento = 0.25 * (1/ semana_para_evento)
+
+        #Aplico aumento a los tickets que no tienen dueño
+        tickets = Ticket.objects.filter(evento=self)
+        for ticket in tickets:
+            if ticket.precioInicial and ticket.propietario is None:
+                print("EVENTO DE REVALORIZACION POR TEMPORALIDAD - Ticket: ", ticket.id_Ticket)
+                nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
+                ticket.precioInicial = nuevo_precio
+                ticket.save()
 
 #Trigger para asignar estado Pendiente al evento cuando se crea
 @receiver(post_save, sender=Evento)
