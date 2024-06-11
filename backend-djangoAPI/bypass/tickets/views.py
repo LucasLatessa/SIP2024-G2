@@ -237,3 +237,11 @@ def cambiar_estado_ticket(request, id_Ticket):
     ticket.usada = True
     ticket.save()
     return JsonResponse({"mensaje": "Cambio de estado a usado!"}, status=200)
+
+@api_view(["PUT"])
+def transferirTicket(request):
+    body = json.loads(request.body)
+    id_ticket = body.get("id_ticket")
+    nuevoPropietario = body.get("nuevoPropietario")
+    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario)  
+    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)

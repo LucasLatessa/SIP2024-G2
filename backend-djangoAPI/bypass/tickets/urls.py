@@ -20,6 +20,7 @@ urlpatterns = [
     path('obtener_precio_entrada/', views.obtener_precio_entrada, name= 'obtener_precio_entrada'),
     path('cambiar_estado_ticket/<int:id_Ticket>/', views.cambiar_estado_ticket, name='cambiar_estado_ticket'),
     path('Publicacion/crear', views.crearPublicacion, name='crear_publicacion'),
+    path('Ticket/transferir', views.transferirTicket, name='transferirTicket'),
     path('Publicacion/comprarPublicacion', views.comprarPublicacion, name='comprarPublicacion'),
     path('Publicacion/entregarTicketTpublicacion', views.entregarTicketTpublicacion, name ='entregarTicketTpublicacion')
 ]

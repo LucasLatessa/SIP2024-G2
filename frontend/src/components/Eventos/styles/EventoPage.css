@@ -62,14 +62,19 @@
     margin:0;
 }
 
-.formComprarEntrada, .formPublicarEntrada, .formTransferirEntrada{
+.formComprarEntrada, .formPublicarEntrada {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    
+    align-items: center;   
 }
 
-.formComprarEntrada label, .formComprarEntrada label, .formTransferirEntrada label{
+.formTransferirEntrada {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.formComprarEntrada label, .formComprarEntrada label {
     font-size: 2rem;
     text-transform: uppercase;
     display: flex;
@@ -82,7 +87,7 @@
     width: calc(33.33%); /*Porque se parte en 3*/
 }
 
-.comprarTicketsButton, .publicarTicketButton, .TransferirTicketButton{
+.comprarTicketsButton, .publicarTicketButton {
     flex-grow: 1;
     width: calc(33.33%); /*Porque se parte en 3*/
     display: flex;
@@ -90,7 +95,7 @@
     align-items: center;
 }
 
-.comprarTicketsButton >button, .publicarTicketButton > button, .TransferirTicketButton > button {
+.comprarTicketsButton > button, .publicarTicketButton > button, .TransferirTicketButton > button {
     width: 10rem;
     height: 3rem;
     font-size: 1.5rem;
@@ -102,7 +107,7 @@
     background-color: var(--color-letras-terceario);
     color: var(--color-letras-secundario);
 }
-.calcular:hover, .publicarTicketButton > button:hover  {
+.calcular:hover, .publicarTicketButton > button:hover, .TransferirTicketButton > button  {
     background-color: var(--color-letras-secundario);
     color:var(--color-letras-terceario);
 }
@@ -126,6 +131,10 @@
 .formTransferirEntrada label > input{
     display: block;
     font-size: 1.2rem;
+}
+
+.formTransferirEntrada {
+    text-align: center;
 }
 
 .acercaDelEvento, .comoLLegar{
