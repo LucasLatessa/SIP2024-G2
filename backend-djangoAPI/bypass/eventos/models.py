@@ -26,7 +26,7 @@ class Evento(models.Model):
     id_Evento = models.AutoField(primary_key=True)
     nombre = models.TextField()
     cantTickets = models.IntegerField(default=0)
-    #entradasDisponibles = models.IntegerField(default=0)
+    cantTicketsTotal = models.IntegerField(default=0)
     fecha = models.DateField(blank=True, null=True)
     hora = models.TimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
@@ -39,11 +39,36 @@ class Evento(models.Model):
         return self.nombre
     
     def save(self, *args, **kwargs):
+        # Asigna cantTickets a cantTicketsTotal si es una nueva instancia
+        if not self.pk:  # Si el objeto es nuevo y no tiene primary key (id_Evento) asignado aún
+            self.cantTicketsTotal = self.cantTickets
         # Asigna el estado "AGOTADO" si no hay más tickets disponibles
         if self.cantTickets == 0:
             estado_agotado = EstadoEvento.objects.get(estado='AGOTADO')
             self.estado = estado_agotado
         super(Evento, self).save(*args, **kwargs)
+        # Revaloriza tickets según la demanda
+        self.revalorizar_ticket()
+
+    #EVENTO DE REVALORIZACION POR DISPONIBILIDAD
+    def revalorizar_ticket(self):
+        from tickets.models import Ticket  # Importación diferida
+        # Umbrales y porcentaje de aumento
+        umbral_bajo = self.cantTicketsTotal * 25 / 100 #Umbral, a partir del 25%
+        porcentaje_aumento = 0.10  # 10%
+        print(umbral_bajo)
+        print(self.cantTicketsTotal)
+
+        #Si supera el umbral aumento los precios
+        if self.cantTickets <= umbral_bajo:
+            tickets = Ticket.objects.filter(evento=self)
+            for ticket in tickets:
+                if ticket.precioInicial and ticket.propietario is None: 
+                    #Aumento del porcentaje dado
+                    print("EVENTO DE REVALORIZACION - Ticket: ", ticket.id_Ticket)
+                    nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
+                    ticket.precioInicial = nuevo_precio
+                    ticket.save()
 
 #Trigger para asignar estado Pendiente al evento cuando se crea
 @receiver(post_save, sender=Evento)
