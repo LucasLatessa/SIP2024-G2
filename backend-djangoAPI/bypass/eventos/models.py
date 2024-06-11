@@ -26,6 +26,7 @@ class Evento(models.Model):
     id_Evento = models.AutoField(primary_key=True)
     nombre = models.TextField()
     cantTickets = models.IntegerField(default=0)
+    #entradasDisponibles = models.IntegerField(default=0)
     fecha = models.DateField(blank=True, null=True)
     hora = models.TimeField(blank=True, null=True)
     lugar = models.ForeignKey(Lugar, models.DO_NOTHING, db_column='lugar', blank=True, null=True)
@@ -36,6 +37,13 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def save(self, *args, **kwargs):
+        # Asigna el estado "AGOTADO" si no hay más tickets disponibles
+        if self.cantTickets == 0:
+            estado_agotado = EstadoEvento.objects.get(estado='AGOTADO')
+            self.estado = estado_agotado
+        super(Evento, self).save(*args, **kwargs)
 
 #Trigger para asignar estado Pendiente al evento cuando se crea
 @receiver(post_save, sender=Evento)

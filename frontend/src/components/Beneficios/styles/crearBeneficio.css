@@ -1,6 +1,13 @@
-.formularioBeneficio {
+.crearBeneficio {
   justify-items: center;
-  height: 50vh;
+  margin: 0 2rem;
+  background-color: var(--color-letras-cuaternario);
+  padding: 10px;
+  text-align: center;
+}
+
+.formularioBeneficio {
+  text-align: justify;
 }
 
 .datosBeneficio {
@@ -15,7 +22,21 @@
 }
 
 .buttonCrearBeneficio {
-  grid-area: enviar;
+  text-align: center;
+}
+
+.buttonCrearBeneficio > button{
+  width: 10rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+  border-radius: 30px;
+}
+
+.buttonCrearBeneficio > button:hover {
+  background-color: var(--color-letras-secundario);
+  color:var(--color-letras-terceario);
 }
 
 /*--*/
@@ -31,4 +52,95 @@ label {
 .datosBeneficio label > select {
   display: block; /*Label arriba del input*/
   width: 100%;
+}
+
+
+.comprarEntrada, .publicarEntrada, .transferirEntrada {
+  margin: 0 2rem;
+  background-color: var(--color-letras-cuaternario);
+}
+
+.comprarEntrada h3, .publicarEntrada h3, .transferirEntrada h3{
+  text-align: center;
+  color: var(--color-letras-secundario);
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin:0;
+}
+
+.formComprarEntrada, .formPublicarEntrada {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   
+}
+
+.formTransferirEntrada {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.formComprarEntrada label, .formComprarEntrada label {
+  font-size: 2rem;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  flex-grow: 1;
+  width: calc(33.33%); /*Porque se parte en 3*/
+}
+
+.comprarTicketsButton, .publicarTicketButton {
+  flex-grow: 1;
+  width: calc(33.33%); /*Porque se parte en 3*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comprarTicketsButton > button, .publicarTicketButton > button, .TransferirTicketButton > button {
+  width: 10rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+  border-radius: 30px;
+}
+.calcular{
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+}
+.calcular:hover, .publicarTicketButton > button:hover  {
+  background-color: var(--color-letras-secundario);
+  color:var(--color-letras-terceario);
+}
+.comprarTicketsButton > button:hover {
+  width: 11rem;
+  height: 4rem;
+  font-size: 1.8rem;
+  background-color: var(--color-letras-secundario);
+  color:var(--color-letras-terceario);
+}
+
+.formComprarEntrada label > input, .formComprarEntrada label > select{
+  display: block;
+  font-size: 1.5rem;
+}
+.formPublicarEntrada label > input{
+  display: block;
+  font-size: 1.2rem;
+}
+
+.formTransferirEntrada label > input{
+  display: block;
+  font-size: 1.2rem;
+}
+
+.formTransferirEntrada {
+  text-align: center;
 }

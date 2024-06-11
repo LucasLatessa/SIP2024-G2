@@ -24,12 +24,8 @@ export const CrearBeneficio = () => {
     <>
       <Header />
       <main className="App">
-        <header className="tituloBeneficio">
-          <h1>Crear Beneficio</h1>
-        </header>
         <section className="crearBeneficio">
-          
-          { /* FORMULARIO DE CREACION DE BENEFICIOS */ }
+          <h3>Publica un nuevo beneficio</h3>
           <form
             onSubmit={handleSubmit(onSubmit)}
             encType="multipart/form-data"
@@ -82,11 +78,9 @@ export const CrearBeneficio = () => {
                 />
               </label>
             </div>
-            <input
-              className="buttonCrearBeneficio"
-              type="submit"
-              value="Enviar"
-            />
+            <section className="buttonCrearBeneficio">
+              <button type="submit">Confirmar</button>
+            </section>
           </form>
         </section>
       </main>

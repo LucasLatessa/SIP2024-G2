@@ -49,9 +49,14 @@ class Ticket(models.Model):
                 ticket = Ticket.objects.get(id_Ticket=ticket_id)
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
 
+                #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles
                 ticket.propietario = nuevo_propietario
+                eventoTicket = ticket.evento
+                eventoTicket.cantTickets -= 1
                 ticket.save()
-        except:
+                eventoTicket.save()
+        except Exception as e:
+            print(e)
             print("No se pudo cargar el ticket")
 
     def obtener_ticket_precio(tipo_ticket, evento):

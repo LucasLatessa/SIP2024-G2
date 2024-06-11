@@ -39,10 +39,11 @@ export const Eventos = () => {
     }
 
     async function ticketsEventos(){
-
       const res = await getTicketByEventPrecio(res.data)
     }
+
     cargarEventos();
+    
   }, []);
 
   /* --------------------
@@ -111,12 +112,10 @@ export const Eventos = () => {
 
         <section className="allListaEventosa">
           {filteredEventos?.map(
-            (
-              eventos //Obtengo todos los eventos y utilizo el componente para mostrarlos
-            ) => (
+            (eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
               <EventosBox
-                key={eventos.id_Evento}
-                id={eventos.id_Evento}
+                key={eventos.id}
+                id={eventos.id}
                 nombre={eventos.nombre}
                 foto={eventos.imagen}
                 precioMin={eventos.precioMin}
