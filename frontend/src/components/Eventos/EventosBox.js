@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./styles/eventosBox.css";
 
 export const EventosBox = ({id, nombre, foto, precioMin, precioMax, fecha,hora}) => {
+    
+    console.log(id)
     return(
         <article className="evento">
             <h2>{nombre}</h2>
