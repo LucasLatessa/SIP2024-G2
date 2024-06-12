@@ -1,22 +1,29 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import "./styles/beneficios.css";
-import { getAllBeneficios } from "../../services/beneficios.service";
+import { getBeneficiosByCliente } from "../../services/beneficios.service";
 import { useEffect, useState } from "react";
 import { BeneficiosBox } from "./BeneficiosBox";
+import { useAuth0 } from "@auth0/auth0-react";
 
-//Seccion donde voy a mostrar todos los beneficios que ofrece la pagina (seran codigos de productos)
 export const Beneficios = () => {
   const [beneficios, setBeneficios] = useState([]);
+  const { user, isAuthenticated } = useAuth0();
 
-  //Realizo la peticion para obtener todos los eventos
   useEffect(() => {
     async function cargarBeneficios() {
-      const res = await getAllBeneficios();
-      setBeneficios(res.data);
+      if (isAuthenticated && user && user.nickname) {
+        try {
+          const res = await getBeneficiosByCliente(user.nickname);
+          console.log(res.data);
+          setBeneficios(res.data);
+        } catch (error) {
+          console.error("Error al cargar beneficios:", error);
+        }
+      }
     }
     cargarBeneficios();
-  }, []);
+  }, [isAuthenticated, user]);
 
   return (
     <>
@@ -25,20 +32,22 @@ export const Beneficios = () => {
         <header className="tituloBeneficios">
           <h1>Beneficios</h1>
         </header>
-
         <section className="allListaBeneficios">
-          {beneficios?.map((beneficios) => (
-            <BeneficiosBox
-              id={beneficios.id_beneficio}
-              key={beneficios.id_beneficio}
-              nombre={beneficios.nombre}
-              foto={beneficios.imagen}
-              descripcion={beneficios.descripcion}
-              porcentajeDescuento={beneficios.porcentajeDescuento}
-              codigoDescuento={beneficios.codigoDescuento}
-              usado={beneficios.usado}
-            />
-          ))}
+          {console.log(beneficios.length)}
+          {
+            beneficios?.map((beneficio) => (
+              <BeneficiosBox
+                id={beneficio.id_beneficio}
+                key={beneficio.id_beneficio}
+                nombre={beneficio.nombre}
+                foto={beneficio.imagen}
+                descripcion={beneficio.descripcion}
+                porcentajeDescuento={beneficio.porcentajeDescuento}
+                codigoDescuento={beneficio.codigoDescuento}
+                usado={beneficio.usado}
+              />
+            ))
+          }
         </section>
       </main>
       <Footer />
