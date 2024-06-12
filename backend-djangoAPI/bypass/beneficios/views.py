@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from .models import Beneficio
 from eventos.models import Evento
 from usuarios.models import Cliente
+from usuarios.models import Productora
 from tickets.models import Ticket
 
 class BeneficioView(viewsets.ModelViewSet):
@@ -58,4 +59,38 @@ def getBeneficiosByCliente(request, nickname):
         return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
     
     except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+def getBeneficiosByProductora(request, nickname):
+    try:
+        # Obtener el cliente por su nickname
+        productora = Productora.objects.get(nickname=nickname)
+        id_productora = productora.user_id
+        # Obtener los eventos de la productora
+        eventos = Evento.objects.filter(productora_id=id_productora)
+        # Obtener los beneficios asociados a esos eventos
+        beneficios = Beneficio.objects.filter(evento__in=eventos)
+        # Serializar los datos
+        beneficios_data = [
+            {
+                'id_beneficio': beneficio.id_beneficio,
+                'nombre': beneficio.nombre,
+                'descripcion': beneficio.descripcion,
+                'porcentajeDescuento': beneficio.porcentajeDescuento,
+                'codigoDescuento': beneficio.codigoDescuento,
+                'usado': beneficio.usado,
+                'imagen': (request.build_absolute_uri(beneficio.imagen.url) if beneficio.imagen else None),
+                'evento': beneficio.evento.nombre if beneficio.evento else None,
+            }
+            for beneficio in beneficios
+        ]
+        
+        return JsonResponse(beneficios_data, safe = False)
+    
+    except Productora.DoesNotExist:
+        return JsonResponse({'error': 'Productora no encontrada'}, status=404)
+    
+    except Exception as e:
+        print(e)
         return JsonResponse({'error': str(e)}, status=500)

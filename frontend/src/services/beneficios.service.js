@@ -11,6 +11,8 @@ const beneficiosCliAPI = axios.create({
 
 export const getBeneficiosByCliente = (nickname) => beneficiosCliAPI.get(`/nick/${nickname}`);
 
+export const getBeneficiosByProductora = (nickname) => beneficiosCliAPI.get(`/nickProductora/${nickname}`);
+
 export const getBeneficio = (id) => beneficiosAPI.get(`/${id}`);
 
 export const crearBeneficio = (beneficio) => beneficiosAPI.post('/',beneficio,{

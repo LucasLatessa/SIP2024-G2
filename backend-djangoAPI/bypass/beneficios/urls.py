@@ -8,5 +8,6 @@ router.register(r"Beneficios",views.BeneficioView, "beneficios")
 urlpatterns = [
     path('', include(router.urls)),
     path('crearBeneficio/',views.crear_beneficio,name='crear_beneficio'),
-    path('nick/<str:nickname>/', views.getBeneficiosByCliente, name='getBeneficiosByCliente')
+    path('nick/<str:nickname>/', views.getBeneficiosByCliente, name='getBeneficiosByCliente'),
+    path('nickProductora/<str:nickname>/', views.getBeneficiosByProductora, name='getBeneficiosByProductora')
 ]

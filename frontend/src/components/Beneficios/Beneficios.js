@@ -1,54 +1,48 @@
+import "./styles/beneficios.css";
+import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getUserNick } from "../../services/usuarios.service";
+import { BeneficiosCliente } from "./BeneficiosCliente";
+import { BeneficiosProductora } from "./BeneficiosProductora";
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
-import "./styles/beneficios.css";
-import { getBeneficiosByCliente } from "../../services/beneficios.service";
-import { useEffect, useState } from "react";
-import { BeneficiosBox } from "./BeneficiosBox";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export const Beneficios = () => {
-  const [beneficios, setBeneficios] = useState([]);
+  const [usuario, setUsuario] = useState(null);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    async function cargarBeneficios() {
-      if (isAuthenticated && user && user.nickname) {
+    async function getUsuario() {
+      if (isAuthenticated && user?.nickname) {
         try {
-          const res = await getBeneficiosByCliente(user.nickname);
-          console.log(res.data);
-          setBeneficios(res.data);
+          const res = await getUserNick(user.nickname);
+          setUsuario(res.data.usuario);
         } catch (error) {
-          console.error("Error al cargar beneficios:", error);
+          console.error("Error al obtener el usuario:", error);
         }
       }
     }
-    cargarBeneficios();
-  }, [isAuthenticated, user]);
+    getUsuario();
+  }, [isAuthenticated, user?.nickname]);
+
+  if (!isAuthenticated || !usuario) {
+    return <div>Cargando...</div>;
+  }
+
+  let contenido;
+  if (usuario.rol === 'CLIENTE') {
+    contenido = <BeneficiosCliente usuario={user} />;
+  } else if (usuario.rol === 'PRODUCTORA') {
+    contenido = <BeneficiosProductora usuario={user} />;
+  } else {
+    contenido = <div>No tiene permisos para ver esta sección.</div>;
+  }
 
   return (
     <>
       <Header />
       <main>
-        <header className="tituloBeneficios">
-          <h1>Beneficios</h1>
-        </header>
-        <section className="allListaBeneficios">
-          {console.log(beneficios.length)}
-          {
-            beneficios?.map((beneficio) => (
-              <BeneficiosBox
-                id={beneficio.id_beneficio}
-                key={beneficio.id_beneficio}
-                nombre={beneficio.nombre}
-                foto={beneficio.imagen}
-                descripcion={beneficio.descripcion}
-                porcentajeDescuento={beneficio.porcentajeDescuento}
-                codigoDescuento={beneficio.codigoDescuento}
-                usado={beneficio.usado}
-              />
-            ))
-          }
-        </section>
+        {contenido}
       </main>
       <Footer />
     </>
