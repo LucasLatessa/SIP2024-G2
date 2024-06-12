@@ -32,9 +32,9 @@ const Carousel = ({ eventos }) => {
     setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
-  return (
-    <div className="carousel">
-      {images.length > 0 && (
+  if (images.length > 0) {
+    return (
+      <div className="carousel">
         <LazyLoad>
           <Link className="slide" to={`/evento/${images[currentIndex].id}`}>
             <img
@@ -45,25 +45,25 @@ const Carousel = ({ eventos }) => {
             />
           </Link>
         </LazyLoad>
-      )}
-      <button
-        className="arrow left"
-        onClick={handlePrev}
-        aria-label="previous image"
-        aria-hidden={currentIndex === 0}
-      >
-        {"<"}
-      </button>
-      <button
-        className="arrow right"
-        onClick={handleNext}
-        aria-label="next image"
-        aria-hidden={currentIndex === images.length - 1}
-      >
-        {">"}
-      </button>
-    </div>
-  );
+        <button
+          className="arrow left"
+          onClick={handlePrev}
+          aria-label="previous image"
+          aria-hidden={currentIndex === 0}
+        >
+          {"<"}
+        </button>
+        <button
+          className="arrow right"
+          onClick={handleNext}
+          aria-label="next image"
+          aria-hidden={currentIndex === images.length - 1}
+        >
+          {">"}
+        </button>
+      </div>
+    );
+  }
 };
 
 export default Carousel;

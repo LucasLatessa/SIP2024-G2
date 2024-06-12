@@ -15,6 +15,8 @@ class Usuario(models.Model):
     apellido = models.TextField(blank=True, null=True)
     correo = models.TextField() #Provee AUTH0
     creacion = models.DateTimeField(blank=True, null=True,auto_now_add=True) 
+    Public_Key = models.TextField(blank=True, null=True)
+    Access_Token = models.TextField(blank=True, null=True)  
     rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='CLIENTE')
     
     def __str__(self):

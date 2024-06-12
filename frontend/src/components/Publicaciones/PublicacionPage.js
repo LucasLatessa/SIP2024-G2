@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getPublicacion,crearPreferenciaEvento } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
 import { getTicket } from "../../services/tickets.service";
-import { getUser } from "../../services/usuarios.service";
+import { getUser, getUserNick } from "../../services/usuarios.service";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -19,11 +19,9 @@ export const PublicacionPage = () => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [ticketId, setTicketId] = useState(null);
   const { user,getAccessTokenSilently } = useAuth0();
+  const [userNoAuth0,setUserNoAuth0 ] = useState(null);
   const [token, setToken] = useState();
-  
-  initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", {
-    locale: "es-AR",
-  });
+  const [userVendedor, setUserVendedor] = useState(null)
 
   useEffect(() => {
     async function cargarPublicacion() {
@@ -31,9 +29,9 @@ export const PublicacionPage = () => {
         const res = await getPublicacion(id);
         const publicacionConInfoCompleta = res.data;
         const ticketRes = await getTicket(publicacionConInfoCompleta.ticket);
-
         setTicketId(ticketRes);
         const vendedorRes = await getUser(ticketRes.data.propietario);
+        setUserVendedor(vendedorRes);
         const eventoRes = await getEvento(ticketRes.data.evento);
         const publicacionCompleta = {
           id: publicacionConInfoCompleta.id_Publicacion,
@@ -54,18 +52,33 @@ export const PublicacionPage = () => {
       const token = await getAccessTokenSilently();
       setToken(token);
     }
+
+    async function getUsuario() {
+      console.log(userVendedor);
+      const res = await getUserNick(userVendedor.data.nickname);
+      setUserNoAuth0(res);      
+    }
+
     cargarPublicacion();
     obtenerToken();
+    getUsuario();
   }, [id,getAccessTokenSilently]);
   
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
-    const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
-    const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname);
-    if (res_id.data.id) {
-      setPreferenceId(res_id.data.id);
+    if (userNoAuth0.data.usuario.public_key !== null){
+      initMercadoPago(userNoAuth0.data.usuario.public_key, { locale: "es-AR" });
+      const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
+      const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname);
+      if (res_id.data.id) {
+        setPreferenceId(res_id.data.id);
+      }
     }
+    else{
+      console.log("no tiene cuenta de mp el vendedor");
+    }
+    
     setLoading(false);
   }
 

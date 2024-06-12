@@ -52,6 +52,15 @@ export const ReporteProdu = () => {
     return <div>Cargando reporte...</div>;
   }
 
+  const calcularPorcentaje = (valor, total) => {
+    return total === 0 ? "0.00" : ((valor / total) * 100).toFixed(2);
+  };
+
+  const asistenciaClase = (porcentaje) => {
+    console.log(porcentaje)
+    return porcentaje < 30.00 ? "asistencia-baja" : "";
+  };
+
   return (
     <main>
       <Header />
@@ -92,35 +101,41 @@ export const ReporteProdu = () => {
               <option value="asistencia">Mayor asistencia</option>
             </select>
           </section>
-          {eventosFiltrados.map((evento, index) => (
-            <div key={index} className="event">
-              <div className="event-info">
-                <h3>{evento.evento}</h3>
-                <div className="event-stats">
-                  <div>
-                    <p>Entradas Totales</p>
-                    <p>{evento.entradas_totales}</p>
-                  </div>
-                  <div>
-                    <p>Ganancia Total</p>
-                    <p>${evento.ganancia_total}</p>
-                  </div>
-                  <div>
-                    <p>Asistencia Total</p>
-                    <p>{evento.asistencia_total}</p>
+          {eventosFiltrados.map((evento, index) => {
+            const entradasPorcentaje = calcularPorcentaje(evento.entradas_totales, reporte.total_entradas_vendidas);
+            const gananciaPorcentaje = calcularPorcentaje(evento.ganancia_total, reporte.total_ganancia);
+            const asistenciaPorcentaje = calcularPorcentaje(evento.asistencia_total, reporte.total_asistencia);
+           
+            return (
+              <div key={index} className="event">
+                <div className="event-info">
+                  <h3>{evento.evento}</h3>
+                  <div className="event-stats">
+                    <div>
+                      <p>Entradas Totales</p>
+                      <p>{evento.entradas_totales} ({entradasPorcentaje}%)</p>
+                    </div>
+                    <div>
+                      <p>Ganancia Total</p>
+                      <p>${evento.ganancia_total} ({gananciaPorcentaje}%)</p>
+                    </div>
+                    <div className={asistenciaClase(parseFloat(asistenciaPorcentaje))}>
+                      <p>Asistencia Total</p>
+                      <p>{evento.asistencia_total} ({asistenciaPorcentaje}%)</p>
+                    </div>
                   </div>
                 </div>
+                <div className="entradas-tipo">
+                  <h4>Entradas por Tipo:</h4>
+                  <ul className="event-entradas-list">
+                    {Object.entries(evento.entradas_por_tipo).map(([tipo, cantidad]) => (
+                      <li key={tipo} className="event-entradas-item">{tipo}: {cantidad}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <div className="entradas-tipo">
-                <h4>Entradas por Tipo:</h4>
-                <ul className="event-entradas-list">
-                  {Object.entries(evento.entradas_por_tipo).map(([tipo, cantidad]) => (
-                    <li key={tipo} className="event-entradas-item">{tipo}: {cantidad}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </section>
       </div>
       <Footer />
