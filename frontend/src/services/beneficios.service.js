@@ -13,6 +13,8 @@ export const getBeneficiosByCliente = (nickname) => beneficiosCliAPI.get(`/nick/
 
 export const getBeneficiosByProductora = (nickname) => beneficiosCliAPI.get(`/nickProductora/${nickname}`);
 
+export const deleteBeneficio = (id) => beneficiosCliAPI.put(`/delete/${id}/`);
+
 export const getBeneficio = (id) => beneficiosAPI.get(`/${id}`);
 
 export const crearBeneficio = (beneficio) => beneficiosAPI.post('/',beneficio,{

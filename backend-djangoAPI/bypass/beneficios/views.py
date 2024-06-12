@@ -18,7 +18,7 @@ class BeneficioView(viewsets.ModelViewSet):
 @api_view(['POST'])
 def crear_beneficio(request):
     try:
-        #Serializo el evento con los datos del POST
+        #Serializo el beneficio con los datos del POST
         serializer = BeneficioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() #Creo el beneficio
@@ -29,16 +29,9 @@ def crear_beneficio(request):
 
 def getBeneficiosByCliente(request, nickname):
     try:
-        # Obtener el cliente por su nickname
         cliente = Cliente.objects.get(nickname=nickname)
-        
-        # Obtener los eventos para los cuales el cliente tiene tickets
         eventos = Ticket.objects.filter(propietario=cliente).values_list('evento', flat=True).distinct()
-        
-        # Obtener los beneficios asociados a esos eventos
-        beneficios = Beneficio.objects.filter(evento__in=eventos)
-        
-        # Serializar los datos
+        beneficios = Beneficio.objects.filter(evento__in=eventos, vigente=True)  # Filtrar solo vigentes
         beneficios_data = [
             {
                 'id_beneficio': beneficio.id_beneficio,
@@ -52,26 +45,18 @@ def getBeneficiosByCliente(request, nickname):
             }
             for beneficio in beneficios
         ]
-        
-        return JsonResponse(beneficios_data, safe = False)
-    
+        return JsonResponse(beneficios_data, safe=False)
     except Cliente.DoesNotExist:
         return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
-    
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-    
 
 def getBeneficiosByProductora(request, nickname):
     try:
-        # Obtener el cliente por su nickname
         productora = Productora.objects.get(nickname=nickname)
         id_productora = productora.user_id
-        # Obtener los eventos de la productora
         eventos = Evento.objects.filter(productora_id=id_productora)
-        # Obtener los beneficios asociados a esos eventos
-        beneficios = Beneficio.objects.filter(evento__in=eventos)
-        # Serializar los datos
+        beneficios = Beneficio.objects.filter(evento__in=eventos, vigente=True)  # Filtrar solo vigentes
         beneficios_data = [
             {
                 'id_beneficio': beneficio.id_beneficio,
@@ -85,12 +70,21 @@ def getBeneficiosByProductora(request, nickname):
             }
             for beneficio in beneficios
         ]
-        
-        return JsonResponse(beneficios_data, safe = False)
-    
+        return JsonResponse(beneficios_data, safe=False)
     except Productora.DoesNotExist:
         return JsonResponse({'error': 'Productora no encontrada'}, status=404)
-    
     except Exception as e:
-        print(e)
+        return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt
+@api_view(['PUT'])
+def eliminar_beneficio(request, id):
+    try:
+        beneficio = Beneficio.objects.get(id_beneficio=id)
+        beneficio.vigente = False
+        beneficio.save()
+        return JsonResponse({'mensaje': 'Beneficio eliminado (baja lógica)'}, status=200)
+    except Beneficio.DoesNotExist:
+        return JsonResponse({'error': 'Beneficio no encontrado'}, status=404)
+    except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

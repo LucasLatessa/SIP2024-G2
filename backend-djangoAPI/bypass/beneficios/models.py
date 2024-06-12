@@ -10,6 +10,11 @@ class Beneficio(models.Model):
     codigoDescuento =models.IntegerField()
     usado = models.BooleanField()
     imagen = models.ImageField(upload_to="beneficios",null=True)
+    vigente = models.BooleanField(default=True)
     
     def __str__(self):
         return self.nombre
+    
+    def baja_logica(self):
+        self.vigente = False
+        self.save()

@@ -27,7 +27,6 @@ export const BeneficiosCliente = ({usuario}) => {
           <h1>Beneficios</h1>
         </header>
         <section className="allListaBeneficios">
-          {console.log(beneficios.length)}
           {
             beneficios?.map((beneficio) => (
               <BeneficiosBox
