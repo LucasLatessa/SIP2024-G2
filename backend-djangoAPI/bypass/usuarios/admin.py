@@ -5,7 +5,7 @@ from .models import Usuario, Cliente, Administrador, Productora
 
 # Define custom admin classes
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion')
+    list_display = ('user_id', 'nickname', 'nombre', 'apellido', 'correo', 'creacion','Public_Key','Access_Token')
     search_fields = ('nickname', 'nombre', 'apellido', 'correo')
     readonly_fields = ('creacion',)
 

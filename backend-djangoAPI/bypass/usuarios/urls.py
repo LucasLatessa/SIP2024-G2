@@ -12,5 +12,6 @@ urlpatterns = [
     path('Usuario/nick/<str:nickname>/', views.get_usuario_by_nickname, name='get_usuario_by_nickname'),
     path('Usuario/<int:pk>/update-role/', views.update_user_role, name='update_user_role'),
     path('Productora/<int:pk>/report/', views.produ_report, name='produ_report'),
-    path('Usuario/create', views.crear_usuario, name='crear_usuario')
+    path('Usuario/create', views.crear_usuario, name='crear_usuario'),
+    path('Usuario/updateMP/<str:nn>/', views.updateMP, name='updateMP')
 ]
