@@ -16,9 +16,8 @@ root.render(
     clientId={clientId}
     authorizationParams={{
       audience:audience,
-      redirect_uri: redirectUri,
+      redirect_uri: window.location.origin,
     }}
-    cacheLocation="localstorage"
   >
     <App />
   </Auth0Provider>

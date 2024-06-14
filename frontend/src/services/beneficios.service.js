@@ -1,12 +1,13 @@
-import axios from "axios";
+import axios from "./axios";
 
-const apiServerUrl = "http://127.0.0.1:8000"
+// const apiServerUrl = "http://127.0.0.1:8000"
+//const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND
 
 const beneficiosAPI = axios.create({
-  baseURL: `${apiServerUrl}/beneficios/Beneficios`
+  baseURL: `${axios.defaults.baseURL}/beneficios/Beneficios`
 })
 const beneficiosCliAPI = axios.create({
-  baseURL: `${apiServerUrl}/beneficios`
+  baseURL: `${axios.defaults.baseURL}/beneficios`
 })
 
 export const getBeneficiosByCliente = (nickname) => beneficiosCliAPI.get(`/nick/${nickname}`);

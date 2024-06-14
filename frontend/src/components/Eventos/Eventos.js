@@ -5,6 +5,7 @@ import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { EventosBox } from "./EventosBox";
 import { getTicketByEventPrecio } from "../../services/tickets.service";
+import axios from "axios";
 
 //Pagina donde se mostraran todos los eventos posibles
 export const Eventos = () => {

@@ -1,39 +1,35 @@
-# Etapa de construcción: construye la aplicación React
-FROM node:14.18.0-alpine as build
+# Fase 1: Construcción de la aplicación
+FROM node:16 AS build
 
-# Establece el directorio de trabajo en el contenedor
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos de configuración de la aplicación (package.json, package-lock.json)
+# Copiar package.json y package-lock.json
 COPY package*.json ./
 
-# Instala las dependencias
-RUN npm install --silent
+# Instalar dependencias
+RUN npm install
 
-# Copia el código de la aplicación
+# Copiar todo el código fuente
 COPY . .
 
-# Construye la aplicación React optimizada para producción
+# Comando para depuración (opcional)
+RUN echo "Contenido del directorio /app:" && ls -la /app
+
+# Construir la aplicación para producción
 RUN npm run build
 
-# Etapa de producción: sirve la aplicación construida en un servidor web Nginx
-FROM nginx:1.21.4-alpine
+# Fase 2: Servir la aplicación con Nginx
+FROM nginx:stable-alpine
 
-# Copia los archivos construidos desde la etapa de construcción al servidor Nginx
+# Copiar archivos de construcción de la fase anterior
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Configura Nginx para servir la aplicación React en el puerto 4040
-RUN echo " \
-    server { \
-        listen       4040; \
-        server_name  localhost; \
-        root   /usr/share/nginx/html; \
-        index  index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-        }" > /etc/nginx/conf.d/default.conf
+# Copiar configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expone el puerto 4040 para que la aplicación sea accesible desde afuera del contenedor
-EXPOSE 4040
+# Exponer el puerto
+EXPOSE 80
 
-# Comando para iniciar Nginx
+# Comando para ejecutar Nginx
 CMD ["nginx", "-g", "daemon off;"]

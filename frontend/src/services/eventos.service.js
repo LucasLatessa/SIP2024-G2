@@ -1,11 +1,10 @@
-import axios from "axios";
+import axios from "./axios";
 
-/* PETICIONES A LOS EVENTOS */
-
-const apiServerUrl = "http://127.0.0.1:8000"
+// const apiServerUrl = "http://127.0.0.1:8000"
+//const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND
 
 const eventosAPI = axios.create({
-  baseURL: `${apiServerUrl}/eventos`
+  baseURL: `${axios.defaults.baseURL}/eventos`
 })
 
 export const getAllEventos = () => eventosAPI.get('/Eventos/');

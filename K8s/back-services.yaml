@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: josuegaticaodato/backend-bypass
+          image: josuegaticaodato/back-bypass
           ports:
             - containerPort: 8000
 

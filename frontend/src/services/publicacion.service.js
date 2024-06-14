@@ -1,11 +1,10 @@
-import axios from "axios";
+import axios from "./axios";
 
-/* PETICIONES A LAS PUBLICACIONES DISPONIBLES EN EL MERCADO */
-
-const apiServerUrl = "http://127.0.0.1:8000"
+// const apiServerUrl = "http://127.0.0.1:8000"
+//const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND
 
 const publicacionAPI = axios.create({
-  baseURL: `${apiServerUrl}/tickets/Publicacion`
+  baseURL: `${axios.defaults.baseURL}/tickets/Publicacion`
 })
 
 export const getAllPublicacion = () => publicacionAPI.get('/');

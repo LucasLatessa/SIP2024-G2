@@ -1,20 +1,19 @@
-import axios from "axios";
+import axios from "./axios";
 
-/* PETICIONES A LOS USUARIOS DEL SISTEMA */
-
-const apiServerUrl = "http://127.0.0.1:8000"
+// const apiServerUrl = "http://127.0.0.1:8000"
+//const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND
 
 const usersAPI = axios.create({
-  baseURL: `${apiServerUrl}/usuarios/Usuario/`
+  baseURL: `${axios.defaults.baseURL}/usuarios/Usuario/`
 })
 const clientAPI = axios.create({
-  baseURL: `${apiServerUrl}/usuarios/Cliente/`
+  baseURL: `${axios.defaults.baseURL}/usuarios/Cliente/`
 })
 const adminAPI = axios.create({
-  baseURL: `${apiServerUrl}/usuarios/Administrador/`
+  baseURL: `${axios.defaults.baseURL}/usuarios/Administrador/`
 })
 const producAPI = axios.create({
-  baseURL: `${apiServerUrl}/usuarios/Productora/`
+  baseURL: `${axios.defaults.baseURL}/usuarios/Productora/`
 })
 
 export const getAllUsers = () => usersAPI.get('/');

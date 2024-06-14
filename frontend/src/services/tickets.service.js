@@ -1,14 +1,13 @@
-import axios from "axios";
+import axios from "./axios";
 
-/* PETICIONES A LOS TICKETS */
-
-const apiServerUrl = "http://127.0.0.1:8000"
+// const apiServerUrl = "http://127.0.0.1:8000"
+//const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND
 
 const ticketsAPI = axios.create({
-  baseURL: `${apiServerUrl}/tickets/Ticket`
+  baseURL: `${axios.defaults.baseURL}/tickets/Ticket`
 })
 const tickets_cliAPI = axios.create({
-  baseURL: `${apiServerUrl}/tickets`
+  baseURL: `${axios.defaults.baseURL}/tickets`
 })
 
 export const getAllTickets = () => ticketsAPI.get('/');
