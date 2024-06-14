@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchlabels:
+    matchLabels:
       app: backend
   template:
     metadata:
@@ -18,7 +18,7 @@ spec:
         - name: backend
           image: josuegaticaodato/backend-bypass
           ports:
-            -containerPort: 8000
+            - containerPort: 8000
 
 ---
 apiVersion: v1
