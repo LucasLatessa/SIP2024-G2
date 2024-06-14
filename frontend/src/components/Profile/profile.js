@@ -7,6 +7,7 @@ import {
   updateAdministrador,
   updateProductora,
   getUserNick,
+  updateClienteMP
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
@@ -23,6 +24,7 @@ export const Profile = () => {
   const [usuarioData, setusuarioData] = useState(null);
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
+  const [editingUserDataMP, setEditingUserDataMP] = useState(null);
   const [error, setError] = useState(null);
 
   // const handleLoginClick = () => {
@@ -101,6 +103,16 @@ export const Profile = () => {
     );
   }
 
+  const handleButton = async () => {
+    const json_data = {
+        public_key : editingUserData['public_key'],
+        access_token : editingUserData['access_token'],
+        user_nn : user.nickname,
+    };
+    console.log(json_data)
+    const response = await updateClienteMP(json_data);
+  }
+
   return (
     <main>
       <Header />
@@ -158,10 +170,42 @@ export const Profile = () => {
             <button onClick={handleUpdateProfile}>Guardar cambios</button>
           </div>
         )}
+        {editingUserDataMP && (
+           <div className="formulario-edicion">
+            <label>
+            public_key:
+            <input
+                type="text"
+                name="public_key"
+                onChange={handleInputChange}
+            />
+            </label>
+            <label>
+            access_token:
+            <input
+                type="text"
+                name="access_token"
+                onChange={handleInputChange}
+            />
+           </label>
+           <div className="botonAgregarMP">
+                    <button className="Agregar Cuenta" onClick={handleButton}>
+                        Agregar Cuenta 
+                    </button>
+                </div>
+         </div>                 
+        )}
         {!editingUserData && (
           <UpdateProfileButton
             onClick={() => setEditingUserData(usuarioData)}
           />
+        )}
+        {!editingUserDataMP && (
+            <div className="botonDesplegarMP">
+              <button className="des" onClick={() => setEditingUserDataMP(usuarioData)}>
+                  desplegar
+              </button>
+          </div>
         )}
 
         <div className="botones-container">
