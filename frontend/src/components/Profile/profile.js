@@ -92,7 +92,17 @@ export const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditingUserData({ ...editingUserData, [name]: value });
+    if (editingUserData) {
+      setEditingUserData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else if (editingUserDataMP) {
+      setEditingUserDataMP((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   if (loadingCliente) {
@@ -123,7 +133,7 @@ export const Profile = () => {
             <h2 className="infoClienteProfile">
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>
-            <p className="datos">ID: {usuarioData.user_id}</p>
+            
             {console.log(usuarioData.rol)}
             {!(usuarioData.rol === "PRODUCTORA") && (
                 <p className="datos">DNI: {usuarioData.dni} </p>
@@ -203,7 +213,7 @@ export const Profile = () => {
         {!editingUserDataMP && (
             <div className="botonDesplegarMP">
               <button className="des" onClick={() => setEditingUserDataMP(usuarioData)}>
-                  desplegar
+                  Cuenta Mercadopago
               </button>
           </div>
         )}
