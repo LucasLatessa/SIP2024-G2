@@ -4,8 +4,27 @@ import { BeneficiosBox } from "./BeneficiosBox";
 import { getBeneficiosByProductora } from "../../services/beneficios.service";
 import { deleteBeneficio } from "../../services/beneficios.service";
 
+const Modal = ({ message, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 2000); // 2 segundos antes de recargar la página
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <p>{message}</p>
+      </div>
+    </div>
+  );
+};
+
 export const BeneficiosProductora = ({ usuario }) => {
   const [beneficios, setBeneficios] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     async function cargarBeneficios() {
@@ -24,10 +43,15 @@ export const BeneficiosProductora = ({ usuario }) => {
       await deleteBeneficio(id); // Llama a la función deleteBeneficio de tu archivo de servicios
       setBeneficios(beneficios.filter(beneficio => beneficio.id_beneficio !== id));
       console.log('Beneficio eliminado correctamente');
-      alert('Beneficio eliminado con éxito');
+      setShowModal(true);
     } catch (error) {
       console.error("Error al eliminar beneficio:", error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    window.location.reload(); // Recarga la página
   };
 
   const isProductora = true;
@@ -54,6 +78,7 @@ export const BeneficiosProductora = ({ usuario }) => {
           ))}
         </section>
       </main>
+      {showModal && <Modal message="Beneficio eliminado con éxito" onClose={handleCloseModal} />}
     </>
   );
 };

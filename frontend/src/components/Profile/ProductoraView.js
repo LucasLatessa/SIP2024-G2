@@ -29,7 +29,7 @@ export const ProductoraView = ({ rol, id }) => {
     return (
       <section>
         <h2 className="misEventosProductora"> Beneficios </h2>
-        <Link className="programar" to={`/crearBeneficio`}>Programar un beneficio</Link>
+        <Link className="programar" to={`/crearBeneficio`}>Crear un beneficio</Link>
         <h2 className="misEventosProductora"> Tus eventos </h2>
         <ul className="listaEventosProductora">
           {eventos.map((evento) => (

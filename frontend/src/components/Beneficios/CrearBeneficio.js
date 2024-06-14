@@ -7,7 +7,6 @@ import { getEventosByProductora } from "../../services/eventos.service";
 import { getUserNick } from "../../services/usuarios.service";
 import { useNavigate } from "react-router";
 import "./styles/crearBeneficio.css";
-import { useParams } from "react-router-dom";
 import { useAuth0 } from '@auth0/auth0-react';
 
 export const CrearBeneficio = () => {
@@ -16,19 +15,24 @@ export const CrearBeneficio = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const { user } = useAuth0();
-  const [usuarioData, setusuarioData] = useState(null);
+  const [usuarioData, setUsuarioData] = useState(null);
 
   useEffect(() => {
     async function obtenerDatos() {
       try {
         // Obtener la productora
         const productora = await getUserNick(user.nickname);
-        setusuarioData(productora.data.usuario);
+        setUsuarioData(productora.data.usuario);
 
         // Obtener los eventos de la productora
         if (productora.data.usuario && productora.data.usuario.user_id) {
           const response = await getEventosByProductora(productora.data.usuario.user_id);
           setEventos(response.data);
+
+          // Establecer el primer evento como seleccionado por defecto si hay eventos
+          if (response.data.length > 0) {
+            setEventoSeleccionado(response.data[0].id_Evento);
+          }
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -42,12 +46,13 @@ export const CrearBeneficio = () => {
     setEventoSeleccionado(event.target.value);
   };
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = async (data) => {
     data.imagen = data.imagen[0]; // Para guardar la imagen
     data.evento = eventoSeleccionado; // Añadir el evento seleccionado al formulario
+    data.vigente = true;
     await crearBeneficio(data);
     navigate("/beneficios");
-  });
+  };
 
   return (
     <>
