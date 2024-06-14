@@ -74,6 +74,7 @@ export const BeneficiosProductora = ({ usuario }) => {
               usado={beneficio.usado}
               isProductora={isProductora}
               onDelete={handleDelete}
+              nombreEvento={beneficio.evento}
             />
           ))}
         </section>

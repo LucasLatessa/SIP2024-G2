@@ -38,6 +38,7 @@ export const BeneficiosCliente = ({usuario}) => {
                 porcentajeDescuento={beneficio.porcentajeDescuento}
                 codigoDescuento={beneficio.codigoDescuento}
                 usado={beneficio.usado}
+                nombreEvento={beneficio.evento}
               />
             ))
           }

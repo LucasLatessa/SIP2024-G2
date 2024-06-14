@@ -10,6 +10,7 @@ export const BeneficiosBox = ({
   codigoDescuento,
   isProductora,
   onDelete,
+  nombreEvento
 }) => {
   return (
     <article className="beneficio">
@@ -21,6 +22,7 @@ export const BeneficiosBox = ({
       )}
       <h3 className="codigo">Codigo: {codigoDescuento}</h3>
       {isProductora && <button className="delete" onClick={() => onDelete(id)}>Eliminar</button>}
+      <p>Beneficio de: {nombreEvento}</p>
     </article>
   );
 };
