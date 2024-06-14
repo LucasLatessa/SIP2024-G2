@@ -26,3 +26,14 @@ yarn-error.log*
 #PyCache
 __pycache__/
 entorno_bypass
+
+#Credenciales
+id_rsa*
+
+#Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+**/.ssh/*
+credentials.json
+*.terraform.lock.hcl

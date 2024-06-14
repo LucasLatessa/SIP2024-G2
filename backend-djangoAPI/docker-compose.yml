@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - sqlite_db:/app/db.sqlite3
+      - static_volume:/app/static
+      - media_volume:/app/media
+    environment:
+      - SECRET_KEY=f5&7r!_-hm$6zx8&v%g%@+#3tn4%+9!14(2)6ka&y13cj#h-g-
+      - DEBUG=1  # Opcional, para activar el modo debug en Django
+
+volumes:
+  sqlite_db:
+  static_volume:
+  media_volume:
