@@ -16,7 +16,6 @@ usuario = "cliente@example.com"
 contraseña = "Cliente123"
 usuarioMP = "TESTUSER320418584"
 contraseñaMP = "qSuDm2hNuV"
-
 #Abrir pagina
 driver = webdriver.Chrome()
 driver.get("http://localhost:4040/")
