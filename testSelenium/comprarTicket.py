@@ -12,8 +12,8 @@ def modificarCampo(nombre,selector):
     campo.clear()
     campo.send_keys(nombre)
 
-usuario = "ByPassSIP@gmail.com"
-contraseña = "ByPass2024"
+usuario = "cliente@example.com"
+contraseña = "Cliente123"
 usuarioMP = "TESTUSER320418584"
 contraseñaMP = "qSuDm2hNuV"
 
@@ -37,7 +37,7 @@ ejecutarClick("button[type='submit']")
 ejecutarClick("a[href='/eventos']")
 
 #Selecciono 1 evento
-ejecutarClick("a[href='/evento/2']")
+ejecutarClick("a[href='/evento/108']")
 
 #Selecciono tipo de entrada
 ejecutarClick("select[id='tipoEntrada']")
@@ -57,7 +57,7 @@ time.sleep(5)
 ejecutarClick("button[aria-label='Pagar con Mercado Pago']")
 
 time.sleep(5)
-
+ 
 #Cuenta MP
 ejecutarClick("div[class='title']")
 
@@ -79,7 +79,7 @@ time.sleep(10)
 #Veo la entrada
 ejecutarClick("div.profile")
 ejecutarClick("button.modalQR")
-
+ 
 time.sleep(10000)
 
 #Click en siguiente
