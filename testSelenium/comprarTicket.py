@@ -16,6 +16,7 @@ usuario = "cliente@example.com"
 contraseña = "Cliente123"
 usuarioMP = "TESTUSER320418584"
 contraseñaMP = "qSuDm2hNuV"
+verificacionMP="663413"
 #Abrir pagina
 driver = webdriver.Chrome()
 driver.get("http://localhost:4040/")
@@ -50,17 +51,17 @@ time.sleep(2)
 #Comprar
 ejecutarClick("button")
 
-time.sleep(5)
+time.sleep(2)
 
 #MP
 ejecutarClick("button[aria-label='Pagar con Mercado Pago']")
 
-time.sleep(5)
+time.sleep(2)
  
 #Cuenta MP
 ejecutarClick("div[class='title']")
 
-time.sleep(5)
+time.sleep(2)
 
 #Cuenta MP
 modificarCampo(usuarioMP,"input[type='email']")
@@ -68,21 +69,25 @@ ejecutarClick("button[type='submit']")
 modificarCampo(contraseñaMP,"input[type='password']")
 ejecutarClick("button[type='submit']")
 
-time.sleep(5)
+time.sleep(2)
 
 #Pagar
 ejecutarClick("button[type='submit']")
-
-time.sleep(10)
+time.sleep(2)
+# Ingresar código de verificación de Mercado Pago
+#-----------------COMENTAR SI DEJA DE PEDIR LA VERIFICACION-----------------
+for i in range(len(verificacionMP)):
+    selector = f"input[id=':R6muh:-digit-{i}']"
+    modificarCampo(verificacionMP[i], selector)
+ejecutarClick("button[data-testid='submit_button']")
+#---------------------------------------------------------------------------
+time.sleep(15)
 
 #Veo la entrada
 ejecutarClick("div.profile")
-ejecutarClick("button.modalQR")
+#ejecutarClick("button.modalQR")
  
-time.sleep(10000)
-
-#Click en siguiente
-#siguiente = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='button']"))).click()
+time.sleep(100000)
 
 #time.sleep(10000)
 
