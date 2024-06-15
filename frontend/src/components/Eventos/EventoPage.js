@@ -19,6 +19,7 @@ export const EventoPage = () => {
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
   const { user,getAccessTokenSilently } = useAuth0();
+  const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const {
     getValues,
@@ -99,9 +100,12 @@ export const EventoPage = () => {
       const id = await createPreference(ticket_id_list, quantity);
       if (id) {
         setPreferenceId(id);
-        console.log(id);
       }
     }
+    else {
+      setcantTickets(ticket_id_list.length)
+    }
+    
     setLoading(false); // Indicar que la carga ha terminado
   };
 
@@ -191,8 +195,7 @@ export const EventoPage = () => {
                         </div>
                       ) : (
                         <div>
-                          No se pudo cargar la billetera porque el ID de
-                          preferencia es nulo
+                          Cantidad tickets disponibles: {cantTickets}
                         </div>
                       ))}
                   </section>

@@ -191,7 +191,6 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
             if contador < int(quantity):
                 contador += 1
                 ticket_id_list.append(ticket_id)
-
     return JsonResponse({"ticket_id_list": ticket_id_list})
 
 
