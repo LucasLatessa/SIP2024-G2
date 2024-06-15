@@ -18,6 +18,8 @@ root.render(
       audience:audience,
       redirect_uri: window.location.origin,
     }}
+    cacheLocation="localstorage"
+    useRefreshTokens={true} 
   >
     <App />
   </Auth0Provider>
