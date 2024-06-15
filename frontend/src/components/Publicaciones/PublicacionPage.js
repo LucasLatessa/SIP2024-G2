@@ -12,6 +12,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 //Pagina donde se puede ver la publicacion en si
 export const PublicacionPage = () => {
+
   const { id } = useParams(); //Obtengo el id del evento
   const [publicacion, setPublicacion] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -23,6 +24,7 @@ export const PublicacionPage = () => {
   const [token, setToken] = useState();
   const [userVendedor, setUserVendedor] = useState(null)
 
+
   useEffect(() => {
     async function cargarPublicacion() {
       try {
@@ -31,7 +33,7 @@ export const PublicacionPage = () => {
         const ticketRes = await getTicket(publicacionConInfoCompleta.ticket);
         setTicketId(ticketRes);
         const vendedorRes = await getUser(ticketRes.data.propietario);
-        setUserVendedor(vendedorRes);
+        setUserVendedor(vendedorRes); // Aquí se establece el userVendedor
         const eventoRes = await getEvento(ticketRes.data.evento);
         const publicacionCompleta = {
           id: publicacionConInfoCompleta.id_Publicacion,
@@ -48,32 +50,47 @@ export const PublicacionPage = () => {
         console.error("Error al cargar la publicación:", error);
       }
     }
+
     async function obtenerToken() {
       const token = await getAccessTokenSilently();
       setToken(token);
     }
 
-    async function getUsuario() {
-      console.log(userVendedor);
-      const res = await getUserNick(userVendedor.data.nickname);
-      setUserNoAuth0(res);      
-    }
-
     cargarPublicacion();
     obtenerToken();
+  }, [id, getAccessTokenSilently]);
+
+  useEffect(() => {
+    async function getUsuario() {
+      if (userVendedor) {
+        try {
+          const res = await getUserNick(userVendedor.data.nickname);
+          setUserNoAuth0(res);
+        } catch (error) {
+          console.error("Error al obtener el usuario:", error);
+        }
+      }
+    }
+    
     getUsuario();
-  }, [id,getAccessTokenSilently]);
-  
+  }, [userVendedor]);
+
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
+    console.log(userNoAuth0);
     if (userNoAuth0.data.usuario.public_key !== null){
-      initMercadoPago(userNoAuth0.data.usuario.public_key, { locale: "es-AR" });
+      console.log(user.nickname)
+      initMercadoPago(userNoAuth0.data.usuario.public_key, {
+        locale: "es-AR",
+      });
       const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
-      const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname);
+      const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname, publicacion.vendedorNombre);
       if (res_id.data.id) {
         setPreferenceId(res_id.data.id);
+        console.log(res_id.data.id);
       }
+      
     }
     else{
       console.log("no tiene cuenta de mp el vendedor");

@@ -2,11 +2,12 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { PublicacionesBox } from "./PublicacionesBox";
 import "../Eventos/styles/Eventos.css";
-import { getAllPublicacion } from "../../services/publicacion.service";
+import { getAllPublicacion, getAllPublicacion1} from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
 import { getTicket, getTipoTicket } from "../../services/tickets.service";
 import { useEffect, useState } from "react";
 import "./styles/marketplace.css";
+import axios from "axios";
 
 //Mercado de entradas
 export const Marketplace = () => {
@@ -21,10 +22,10 @@ export const Marketplace = () => {
   useEffect(() => {
     async function cargarPublicaciones() {
       try {
-        const res = await getAllPublicacion();
+        const res = await getAllPublicacion1();
         const publicacionesConInfoCompleta = await Promise.all(
-          res.data.map(async (publicacion) => {
-            const ticketRes = await getTicket(publicacion.ticket);
+          res.data.publicaciones.map(async (publicacion) => {
+            const ticketRes = await getTicket(publicacion.ticket_id);
             const eventoRes = await getEvento(ticketRes.data.evento);
             const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
             return {
