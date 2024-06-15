@@ -16,19 +16,35 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: josuegaticaodato/front-bypass
+          image: josuegaticaodato/frontend-bypass
           ports:
             - containerPort: 80
+          env:
+            - name: REACT_APP_AUTH0_DOMAIN
+              value: "dev-tkm11ny0scl8iufa.us.auth0.com"
+            - name: REACT_APP_AUTH0_CLIENT_ID
+              value: "hxD8uEpOkkw9F2cjaVrWfHd1VlseEcJh"
+            - name: REACT_APP_AUTH0_CALLBACK_URL
+              value: "http://frontend-services/perfil"  # Ajusta esto según el nombre del servicio y el puerto correcto
+            - name: REACT_APP_API_SERVER_URL
+              value: "http://backend-services:8000"  # Ajusta esto según el nombre del servicio y el puerto correcto
+            - name: REACT_APP_AUTH0_AUDIENCE
+              value: "https://bypassAPI.com"
+            - name: REACT_APP_TEST_MERCADOPAGO
+              value: "TEST-ad9af574-3705-4b15-b991-f28af2497f9f"
+            - name: REACT_APP_DJANGO_BACKEND
+              value: "http://backend-services:8000"  # Ajusta esto según el nombre del servicio y el puerto correcto
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: frontend-services
 spec:
-  ports:
-    - port: 80
-      targetPort: 80
   selector:
     app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
   type: LoadBalancer

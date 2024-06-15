@@ -33,7 +33,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
             "pending": "http://localhost:4040",
         },
         "auto_return": "approved",
-        "notification_url": f"https://{ngrok_url}/{url}",
+        "notification_url": f"https://backend/{url}",
     }
     try:
         preference_response = sdk.preference().create(preference_data)

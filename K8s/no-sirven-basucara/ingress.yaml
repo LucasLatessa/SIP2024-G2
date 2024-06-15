@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: basic-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redireccionar automáticamente a HTTPS
+spec:
+  tls:
+    - hosts:
+        - mi-aplicacion.example.com  # Nombre de host ficticio
+      secretName: tls-secret  # Nombre del secreto que contendrá el certificado SSL/TLS
+  rules:
+    - host: mi-aplicacion.example.com  # Nombre de host ficticio
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            frontend:
+              service:
+                name: frontend
+                port:
+                  number: 80

@@ -16,18 +16,34 @@ spec:
     spec:
       containers:
         - name: backend
-          image: josuegaticaodato/back-bypass
+          image: josuegaticaodato/backend-bypass
           ports:
             - containerPort: 8000
+          env:
+            - name: DJANGO_SECRET_KEY
+              value: "f5&7r!_-hm$6zx8&v%g%@+#3tn4%+9!14(2)6ka&y13cj#h-g-"
+            - name: CLIENT_ORIGIN_URL
+              value: "http://frontend-services"  # Ajusta esto según el nombre del servicio y el puerto correcto
+            - name: PORT
+              value: "8000"
+            - name: DEBUG_ENABLE
+              value: "false"
+            - name: AUTH0_DOMAIN
+              value: "dev-tkm11ny0scl8iufa.us.auth0.com"
+            - name: AUTH0_API_IDENTIFIER
+              value: "https://bypassAPI.com"
+            - name: PROD_ACCESS_TOKEN
+              value: "TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: backend-services
 spec:
   ports:
     - port: 8000
+      targetPort: 8000
   selector:
     app: backend
   type: LoadBalancer

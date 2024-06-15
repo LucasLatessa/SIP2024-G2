@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const apiServerUrl = process.env.REACT_APP_DJANGO_BACKEND;
+console.log(apiServerUrl);
 
 const instance = axios.create({
   baseURL: apiServerUrl,

@@ -28,6 +28,7 @@ DEBUG = True
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
+CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 
 # ALLOWED_HOSTS = [
 #     'localhost',
@@ -146,7 +147,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040",CLIENT_ORIGIN_URL]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -169,6 +170,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Añade el host local si lo necesitas
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
+    "http://backend-services",
+    "{CLIENT_ORIGIN_URL}"
     # Agrega otros dominios confiables si es necesario
     # Aca tendriamos que poner la ip que le va a asginar el K8s
 ]
