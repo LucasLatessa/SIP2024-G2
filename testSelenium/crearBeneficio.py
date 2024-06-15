@@ -1,64 +1,84 @@
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 import time
+from selenium.webdriver.support.ui import Select
 
 def ejecutarClick(selector):
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector))).click()
+    try:
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector))).click()
+    except Exception as e:
+        print(f"Error al hacer clic en el selector {selector}: {e}")
+
+def ejecutarClickPorTexto(texto):
+    try:
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, f"//button[text()='{texto}']"))).click()
+    except Exception as e:
+        print(f"Error al hacer clic en el botón con texto '{texto}': {e}")
 
 def modificarCampo(valor, selector):
-    campo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
-    campo.clear()
-    campo.send_keys(valor)
+    try:
+        campo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
+        campo.clear()
+        campo.send_keys(valor)
+    except Exception as e:
+        print(f"Error al modificar el campo {selector} con valor {valor}: {e}")
 
-# Datos de inicio de sesión
-usuario = "ByPassSIP@gmail.com"
-contraseña = "ByPass2024"
+def seleccionarOpcion(texto_visible, selector):
+    try:
+        campo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
+        select = Select(campo)
+        select.select_by_visible_text(texto_visible)
+    except Exception as e:
+        print(f"Error al seleccionar la opción {texto_visible} en {selector}: {e}")
 
-# Datos del beneficio
-nombre_beneficio = "Beneficio de Prueba"
-descripcion_beneficio = "Descripción del beneficio de prueba"
-porcentaje_descuento = "10"
-codigo_descuento = "CODIGOPRUEBA"
-ruta_imagen = "./backend-djangoAPI/bypass/media/beneficios/image.jpg"  # Asegúrate de cambiar esto por una ruta válida en tu sistema
+def subirImagen(ruta_archivo, selector):
+    try:
+        campo = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
+        campo.send_keys(ruta_archivo)
+    except Exception as e:
+        print(f"Error al subir la imagen {ruta_archivo} en {selector}: {e}")
+
+usuario = "testprodu@example.com"
+contraseña = "Produ123"
 
 # Abrir página
 driver = webdriver.Chrome()
 driver.get("http://localhost:4040/")
 
-# Iniciar sesión
+# Inicio de sesión
 ejecutarClick("div.login")
+# Correo
 modificarCampo(usuario, "input[name='username']")
+# Contraseña
 modificarCampo(contraseña, "input[name='password']")
+# Iniciar sesión
 ejecutarClick("button[type='submit']")
 
-# Esperar a que la página se cargue y redirija después del inicio de sesión
-time.sleep(5)
+# Ir al perfil
+ejecutarClick("div.profile")
 
-# Navegar a la página de creación de beneficios
-driver.get("http://localhost:4040/crear-beneficio")
+# Clic en crear beneficio
+ejecutarClick("a[href='/crearBeneficio']")
+time.sleep(10)
 
-# Rellenar el formulario de creación de beneficios
-modificarCampo(nombre_beneficio, "input[name='nombre']")
-modificarCampo(descripcion_beneficio, "input[name='descripcion']")
-modificarCampo(porcentaje_descuento, "input[name='porcentajeDescuento']")
-modificarCampo(codigo_descuento, "input[name='codigoDescuento']")
-
-# Seleccionar un evento (asumiendo que hay al menos un evento disponible)
-select_evento = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'evento-select')))
-select_evento.click()
-time.sleep(1)  # Esperar a que las opciones se carguen
-select_evento.find_element_by_tag_name("option").click()
+# Cargar los datos del beneficio
+seleccionarOpcion("Milei", "select[name='evento-select']")
+modificarCampo("Coca Cola", "input[name='nombre']")
+modificarCampo("Descuento en bebida Coca Cola", "input[name='descripcion']")
+time.sleep(1)
+modificarCampo("50", "input[name='porcentajeDescuento']")
+modificarCampo("151525", "input[name='codigoDescuento']")
 
 # Subir una imagen
-input_imagen = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='imagen']")))
-input_imagen.send_keys(ruta_imagen)
-
-# Confirmar la creación del beneficio
-ejecutarClick("button[type='submit']")
-
-# Esperar un momento para asegurarse de que la creación se complete
+subirImagen("C:/prueba.png", "input[name='imagen']")
 time.sleep(5)
 
-# Verificar que se ha redirigido
+# Hacer clic en el botón de enviar
+ejecutarClick("section.buttonCrearBeneficio button[type='submit']")
+
+time.sleep(10000)
+
+# Cerrar el navegador
+driver.quit()

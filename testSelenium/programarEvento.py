@@ -75,7 +75,7 @@ modificarCampo(250, "input[name='precioPLATINIUM']")
 modificarCampo(2, "input[name='cantidadEntradasSTANDARD']")
 modificarCampo(350, "input[name='precioSTANDARD']")
 # Hacer clic en el botón de enviar
-ejecutarClick("input.buttonCrearEvento[type='submit']")
+ejecutarClick("button.buttonCrearEvento[type='submit']")
 
 
 

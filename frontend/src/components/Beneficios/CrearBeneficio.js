@@ -70,6 +70,7 @@ export const CrearBeneficio = () => {
                 Nombre
                 <input
                   type="text"
+                  name="nombre" 
                   {...register("nombre", {
                     required: true,
                   })}
@@ -79,6 +80,7 @@ export const CrearBeneficio = () => {
                 Descripción
                 <input
                   type="text"
+                  name="descripcion" 
                   {...register("descripcion", {
                     required: true,
                   })}
@@ -86,7 +88,7 @@ export const CrearBeneficio = () => {
               </label>
               <label>
                 Eventos
-                <select id="evento-select" value={eventoSeleccionado} onChange={handleEventoChange}>
+                <select id="evento-select" name="evento-select" value={eventoSeleccionado} onChange={handleEventoChange}>
                   {eventos.map((evento) => (
                     <option key={evento.id_Evento} value={evento.id_Evento}>
                       {evento.nombre}
@@ -98,6 +100,7 @@ export const CrearBeneficio = () => {
                 Porcentaje de descuento
                 <input
                   type="number"
+                  name="descuento" 
                   {...register("porcentajeDescuento", {
                     required: false,
                   })}
@@ -107,15 +110,18 @@ export const CrearBeneficio = () => {
                 Código de descuento
                 <input
                   type="text"
+                  name="codigo" 
                   {...register("codigoDescuento", {
                     required: true,
                   })}
+                 
                 />
               </label>
               <label>
                 Imagen
                 <input
                   type="file"
+                  name="imagen"
                   {...register("imagen", {
                     required: true,
                   })}
