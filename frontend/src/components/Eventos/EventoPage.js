@@ -27,7 +27,7 @@ export const EventoPage = () => {
   const [eventos, setEventos] = useState([]);
   const [token, setToken] = useState();
 
-  initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", {
+  initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
     
@@ -47,7 +47,6 @@ export const EventoPage = () => {
           },
         }
       );
-      console.log(response.data.ticket_id_list);
       return response.data.ticket_id_list;
     } catch (error) {
       return [];
@@ -100,6 +99,7 @@ export const EventoPage = () => {
       const id = await createPreference(ticket_id_list, quantity);
       if (id) {
         setPreferenceId(id);
+        console.log(id);
       }
     }
     setLoading(false); // Indicar que la carga ha terminado
@@ -184,6 +184,7 @@ export const EventoPage = () => {
                         <div>Cargando...</div>
                       ) : preferenceId ? (
                         <div>
+                          preferenceId
                           <Wallet
                             initialization={{ preferenceId: preferenceId }}
                           />

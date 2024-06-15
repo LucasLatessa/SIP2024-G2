@@ -92,17 +92,19 @@ export const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (editingUserData) {
-      setEditingUserData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    } else if (editingUserDataMP) {
+     if ((name == "public_key") || (name == "access_token")){
       setEditingUserDataMP((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
+    else {
+      setEditingUserData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+    console.log(value)
   };
 
   if (loadingCliente) {
@@ -115,8 +117,8 @@ export const Profile = () => {
 
   const handleButton = async () => {
     const json_data = {
-        public_key : editingUserData['public_key'],
-        access_token : editingUserData['access_token'],
+        public_key : editingUserDataMP['public_key'],
+        access_token : editingUserDataMP['access_token'],
         user_nn : user.nickname,
     };
     console.log(json_data)
@@ -200,7 +202,7 @@ export const Profile = () => {
            </label>
            <div className="botonAgregarMP">
                     <button className="Agregar Cuenta" onClick={handleButton}>
-                        Agregar Cuenta 
+                        Agregar Cuenta MP 
                     </button>
                 </div>
          </div>                 

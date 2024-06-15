@@ -69,10 +69,15 @@ class Evento(models.Model):
                     #Aumento del porcentaje dado
                     print("EVENTO DE REVALORIZACION - Ticket: ", ticket.id_Ticket)
                     nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
+                    print("precio viejo",ticket.precioInicial)
+                    print("nuevo viejo",nuevo_precio)
                     ticket.precioInicial = nuevo_precio
                     ticket.save()
 
     #EVENTO DE REVALORIZACION POR TEMPORALIDAD
+    def guardar(evento):
+        evento.save()
+
     def revalorizar_por_temporalidad(self):
         from tickets.models import Ticket  # Importación diferida
 
@@ -93,6 +98,8 @@ class Evento(models.Model):
             if ticket.precioInicial and ticket.propietario is None:
                 print("EVENTO DE REVALORIZACION POR TEMPORALIDAD - Ticket: ", ticket.id_Ticket)
                 nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
+                print("precio viejo",ticket.precioInicial)
+                print("nuevo viejo",nuevo_precio)
                 ticket.precioInicial = nuevo_precio
                 ticket.save()
 

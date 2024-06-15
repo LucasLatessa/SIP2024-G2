@@ -9,6 +9,7 @@ from .serializer import (
     TipoTicketSerializer,
 )
 from .models import Ticket, Publicacion, Precio, TipoTickets
+from usuarios.models import Usuario
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 import mercadopago
@@ -41,7 +42,7 @@ class TipoTicketView(viewsets.ModelViewSet):
     queryset = TipoTickets.objects.all()
 
 
-def get_all_publication(request):
+def get_all_publication(request,l):
     # Filtra las publicaciones que estén marcadas como publicas
     publications = Publicacion.objects.filter(publica=True)
 
@@ -58,7 +59,6 @@ def get_all_publication(request):
         }
         for publication in publications
     ]
-
     # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({"publicaciones": publication_data})
 
@@ -104,22 +104,26 @@ def comprarPublicacion(request):
     data_ticket_publi_id= body.get("ticket_publi_id")
     data_unit_price= body.get("unit_price")
     data_description= body.get("description")
-    respuesta= preferencia(1,data_ticket_publi_id,data_unit_price,data_description,"tickets/Publicacion/entregarTicketTpublicacion")
+    data_vendedor_nickname= body.get("vendedor_nickname")
+    data_ticket_publi_id.append(-1)
+
+    access_token = Usuario.objects.get(nickname=data_vendedor_nickname).Access_Token
+
+    respuesta= preferencia(1,data_ticket_publi_id,data_unit_price,data_description,"tickets/Publicacion/entregarTicketTpublicacion", access_token)
     return JsonResponse({"id":respuesta})
 
 @api_view(["POST"])
 def entregarTicketTpublicacion(request):
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
-
-    if (merchant_order != "merchant_order"):
-        data = entregartoken(payment_id)
+    if (merchant_order != "merchant_order" and payment_id != None):
+        data = entregartoken(payment_id, "vendedor")
             
         ticket_publi_id = data["additional_info"]["items"][0]["id"]
         nick_name = data["additional_info"]["items"][0]["description"]
         ticket_publi_id_split = ticket_publi_id.split(",")
 
-        Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name)
+        Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publi")
         Publicacion.modificarPublicado(ticket_publi_id_split[1])
         return JsonResponse({"cliente": "cliente_data"})
     
@@ -142,7 +146,6 @@ def get_tickets_by_evento(request, evento_id):
         }
         for ticket in tickets
     ]
-
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 
@@ -182,7 +185,6 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
     ticket_id_list = []
     tickets_evento = Ticket.objects.filter(evento=evento_id)
     ticket_id = None
-
     for ticket in tickets_evento:
         if (ticket.propietario is None) and (ticket.tipo_ticket.tipo == tipo_ticket):
             ticket_id = ticket.id_Ticket
@@ -202,7 +204,7 @@ def prueba_mercadopago(request):
     data_unit_price = body.get("unit_price")
     data_unit_description = body.get("description")
 
-    respuesta= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar")
+    respuesta= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
     return JsonResponse({"id":respuesta})
 
 
@@ -211,14 +213,9 @@ def prueba_mercadopago(request):
 def entregarToken(request):
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
-
-    if (merchant_order != "merchant_order"):
-        data = entregartoken(payment_id)
-            
-        ticket_id_list = data["additional_info"]["items"][0]["id"]
-        nick_name = data["additional_info"]["items"][0]["description"]
-
-        Ticket.modificarPropietario(ticket_id_list, nick_name)
+    if (merchant_order != "merchant_order" and payment_id != None):
+        data = entregartoken(payment_id, "evento")    
+        Ticket.modificarPropietario(data["additional_info"]["items"][0]["id"], data["additional_info"]["items"][0]["description"], "evento")
         return JsonResponse({"cliente": "cliente_data"})
     
     else:

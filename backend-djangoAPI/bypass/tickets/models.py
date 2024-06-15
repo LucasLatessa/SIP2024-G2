@@ -42,19 +42,27 @@ class Ticket(models.Model):
         self.generar_qr()
         super().save(*args, **kwargs)
 
-    def modificarPropietario(ticket_id_str, propietario):
+    def modificarPropietario(ticket_id_str, propietario, tipo):
         try:
             ticket_id_list = ticket_id_str.split(",")
+            print(ticket_id_str)
             for ticket_id in ticket_id_list:
+                print(ticket_id)
+                print(propietario)
                 ticket = Ticket.objects.get(id_Ticket=ticket_id)
+                print("aaaaaaaaaaaaaaa-1")
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
+                print("aaaaaaaaaaaaaaa0")
+                evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
 
                 #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles
                 ticket.propietario = nuevo_propietario
-                eventoTicket = ticket.evento
-                eventoTicket.cantTickets -= 1
                 ticket.save()
-                eventoTicket.save()
+                if (tipo == "evento"):
+                    evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
+                    evento.cantTickets -= 1
+                    Evento.guardar(evento)
+
         except Exception as e:
             print(e)
             print("No se pudo cargar el ticket")
