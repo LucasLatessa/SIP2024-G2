@@ -150,7 +150,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4040",
     "https://localhost:4040",
     "https://192.168.0.111:4040",
-    "https://bypass-ruby.vercel.app"
+    "https://bypass-events.vercel.app"
     ]
 
 CORS_ALLOW_METHODS = [
@@ -174,7 +174,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Añade el host local si lo necesitas
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
-    "https://bypass-ruby.vercel.app",
+    "https://bypass-events.vercel.app",
     "https://bypass-7lu9.onrender.com"
 ]
 
