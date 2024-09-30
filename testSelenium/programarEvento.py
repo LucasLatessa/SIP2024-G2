@@ -56,7 +56,7 @@ ejecutarClick("div.profile")
 
 #Cliqueo programar evento
 ejecutarClick("a[href='/programarEvento']")
-
+time.sleep(2)
 #Modifico datos evento
 modificarCampo("Selenium","input[name='nombre']")
 seleccionarOpcion("Monumental", "select[name='lugar']")
@@ -74,8 +74,9 @@ modificarCampo(250, "input[name='precioPLATINIUM']")
 
 modificarCampo(2, "input[name='cantidadEntradasSTANDARD']")
 modificarCampo(350, "input[name='precioSTANDARD']")
+time.sleep(2)
 # Hacer clic en el botón de enviar
-ejecutarClick("button.buttonCrearEvento[type='submit']")
+ejecutarClick("input.buttonCrearEvento[type='submit']")
 
 
 

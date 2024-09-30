@@ -61,13 +61,12 @@ ejecutarClick("div.profile")
 
 # Clic en crear beneficio
 ejecutarClick("a[href='/crearBeneficio']")
-time.sleep(10)
+time.sleep(5)
 
 # Cargar los datos del beneficio
 seleccionarOpcion("Milei", "select[name='evento-select']")
 modificarCampo("Coca Cola", "input[name='nombre']")
 modificarCampo("Descuento en bebida Coca Cola", "input[name='descripcion']")
-time.sleep(1)
 modificarCampo("50", "input[name='porcentajeDescuento']")
 modificarCampo("151525", "input[name='codigoDescuento']")
 
