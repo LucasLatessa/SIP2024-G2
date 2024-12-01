@@ -21,6 +21,7 @@ export const EventoPage = () => {
   const { user,getAccessTokenSilently } = useAuth0();
   const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
+  const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
   const {
     getValues,
     register,
@@ -35,8 +36,9 @@ export const EventoPage = () => {
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
+      
       const response = await axios.get(
-        "http://localhost:8000/tickets/obtener_ticket_evento/",
+        `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
           params: {
             evento_id: id,
@@ -58,7 +60,7 @@ export const EventoPage = () => {
   const createPreference = async (ticket_id_list, quantity) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/tickets/prueba_mercadopago/",
+        `${backendUrl}/tickets/prueba_mercadopago/`,
         {
           quantity: quantity,
           ticket_id: ticket_id_list,
@@ -113,7 +115,7 @@ export const EventoPage = () => {
     setTipoTicket(e.target.value);
     try {
       const response = await axios.get(
-        "http://localhost:8000/tickets/obtener_precio_entrada/",
+        `${backendUrl}/tickets/obtener_precio_entrada/`,
         {
           params: {
             tipo_ticket: e.target.value,

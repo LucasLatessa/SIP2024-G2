@@ -28,7 +28,7 @@ DEBUG = True
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
-
+CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 # ALLOWED_HOSTS = [
 #     'localhost',
 #     '127.0.0.1',  # Incluye estas entradas básicas
@@ -150,7 +150,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4040",
     "https://localhost:4040",
     "https://192.168.0.111:4040",
-    "https://bypass-events.vercel.app"
+    CLIENT_ORIGIN_URL
     ]
 
 CORS_ALLOW_METHODS = [

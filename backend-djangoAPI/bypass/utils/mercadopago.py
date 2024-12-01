@@ -3,7 +3,7 @@ import mercadopago
 from dotenv import load_dotenv
 import json
 import requests
-
+CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, url, token):
     sdk = mercadopago.SDK(
         "APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899"
@@ -30,9 +30,9 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 },
             ],
             "back_urls": {
-                "success": "http://localhost:4040",
-                "failure": "http://localhost:4040",
-                "pending": "http://localhost:4040",
+                "success": CLIENT_ORIGIN_URL,
+                "failure": CLIENT_ORIGIN_URL,
+                "pending": CLIENT_ORIGIN_URL,
             },
             "auto_return": "approved",
             "notification_url": f"https://{ngrok_url}/{url}",
@@ -54,9 +54,9 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 },
             ],
             "back_urls": {
-                "success": "http://localhost:4040",
-                "failure": "http://localhost:4040",
-                "pending": "http://localhost:4040",
+                "success": CLIENT_ORIGIN_URL,
+                "failure": CLIENT_ORIGIN_URL,
+                "pending": CLIENT_ORIGIN_URL,
             },
             "auto_return": "approved",
             "notification_url": f"https://{ngrok_url}/{url}",

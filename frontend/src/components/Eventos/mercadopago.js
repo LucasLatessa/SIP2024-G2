@@ -6,7 +6,7 @@ export const Mercadopago = () => {
     const [preferenceId, setPreferenceId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
-    
+    const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
     initMercadoPago("TEST-ad9af574-3705-4b15-b991-f28af2497f9f", { locale: "es-AR" });
     let evento_id = 1;
     let quantity = 1;
@@ -14,7 +14,7 @@ export const Mercadopago = () => {
 
     const obtenerTicket = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/tickets/obtener_ticket_evento/",{
+            const response = await axios.get(`${backendUrl}/tickets/obtener_ticket_evento/`,{
                 params: {
                     evento_id:evento_id,
                     quantity:quantity
@@ -31,7 +31,7 @@ export const Mercadopago = () => {
 
     const createPreference = async (ticket_id_list) => {
         try {
-            const response = await axios.post("http://localhost:8000/tickets/prueba_mercadopago/", {
+            const response = await axios.post(`${backendUrl}/tickets/prueba_mercadopago/`, {
                 quantity: quantity,
                 ticket_id: ticket_id_list,
                 unit_price: unit_price,
