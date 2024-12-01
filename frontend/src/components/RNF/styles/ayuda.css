@@ -7,6 +7,9 @@
 .ayuda-main ul li{
     color:var(--color-letras-secundario);
 }
+legend{
+  color: var(--color-principal-claro);
+}
 .ayuda-boton{
   background-color: var(--color-letras-cuaternario);
   color: #fff;
