@@ -74,7 +74,7 @@
     align-items: center;
 }
 
-.formComprarEntrada label, .formComprarEntrada label {
+.formComprarEntrada label {
     font-size: 2rem;
     text-transform: uppercase;
     display: flex;
@@ -122,10 +122,6 @@
 .formComprarEntrada label > input, .formComprarEntrada label > select{
     display: block;
     font-size: 1.5rem;
-}
-.formPublicarEntrada label > input{
-    display: block;
-    font-size: 1.2rem;
 }
 
 .formTransferirEntrada label > input{

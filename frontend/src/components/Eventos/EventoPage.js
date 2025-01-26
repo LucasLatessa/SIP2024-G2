@@ -150,15 +150,19 @@ export const EventoPage = () => {
                   Fecha del evento: {eventos.fecha} - {eventos.hora}
                 </p>
               </section>
-
+  
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
                 <section className="formComprarEntrada">
                   {/* COMPRAR ENTRADA FORM */}
-                  <label >
-                    {" "}
+                  <label>
                     Tipo de entrada
-                    <select id="tipoEntrada"  onChange={handleTipoEntradaChange} defaultValue="">
+                    <select
+                      id="tipoEntrada"
+                      onChange={handleTipoEntradaChange}
+                      defaultValue=""
+                      disabled={!!preferenceId}
+                    >
                       <option value="" disabled>
                         Selecciona una opción
                       </option>
@@ -167,12 +171,9 @@ export const EventoPage = () => {
                       <option value="VIP">VIP</option>
                     </select>
                   </label>
-
-                  {precioEntrada && (
-                    <p>Precio de la entrada: {precioEntrada}</p>
-                  )}
-
-                  <label >
+  
+                  
+                  <label>
                     Cantidad Entrada
                     <input
                       type="number"
@@ -181,33 +182,47 @@ export const EventoPage = () => {
                       {...register("cantidadEntradas", {
                         required: true,
                       })}
+                      disabled={!!preferenceId}
+                      min="1"
                     />
                   </label>
+                  {precioEntrada && (
+                    <p>Precio de la entrada: {precioEntrada}</p>
+                  )}
                   <section className="comprarTicketsButton">
-                    <button onClick={handleBuy}>Comprar</button>
-                    {buttonClicked &&
-                      (loading ? (
-                        <div>Cargando...</div>
-                      ) : preferenceId ? (
-                        <div>
-                          preferenceId
-                          <Wallet
-                            initialization={{ preferenceId: preferenceId }}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          Cantidad tickets disponibles: {cantTickets}
-                        </div>
-                      ))}
+                    {/* Mostrar botón de comprar solo si no se ha hecho clic y no hay preferenceId */}
+                    {!buttonClicked || !preferenceId ? (
+                      <button className="comprarEntrada" onClick={handleBuy}>
+                        Comprar
+                      </button>
+                    ) : null}
+                    {/* Si el botón fue clickeado */}
+                    {buttonClicked && (
+                      <>
+                        {/* Si está cargando, mostramos "Cargando..." */}
+                        {loading ? (
+                          <div>Cargando...</div>
+                        ) : (
+                          // Si tenemos un preferenceId, mostramos el componente Wallet de MercadoPago
+                          preferenceId ? (
+                            <div>
+                              <Wallet initialization={{ preferenceId: preferenceId }} />
+                            </div>
+                          ) : (
+                            // Si no tenemos preferenceId, mostramos la cantidad de tickets disponibles
+                            <div>Cantidad tickets disponibles: {cantTickets}</div>
+                          )
+                        )}
+                      </>
+                    )}
+                    
+  
                   </section>
                 </section>
               </section>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
-                <p>
-                  {eventos.descripcion}
-                </p>
+                <p>{eventos.descripcion}</p>
               </section>
               <section className="comoLLegar">
                 <h3>Como llegar</h3>
@@ -216,11 +231,8 @@ export const EventoPage = () => {
             </article>
           </>
         ) : (
-          <p>No existe el evento</p> // NO ANDA POR EL MOMENTO
+          <p>No existe el evento</p>
         )}
-        <section className="comprarEntradas">
-          <form>{/* En proceso */}</form>
-        </section>
       </main>
       <Footer />
     </>
