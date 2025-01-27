@@ -33,24 +33,24 @@ export const EventoPage = () => {
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
-      async function obtenerToken() {
-        const token = await getAccessTokenSilently();
-        setToken(token);
-      }
-      obtenerToken();
+      const token = await getAccessTokenSilently();
+      setToken(token);
+      
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
           params: {
             evento_id: id,
             quantity: quantity,
-            tipo_ticket: tipoTicket,
+            tipo_ticket: tipo_ticket,
           },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      
+      console.log(response)
       return response.data.ticket_id_list;
     } catch (error) {
       return [];
@@ -95,7 +95,7 @@ export const EventoPage = () => {
     setLoading(true);
     const quantity = parseInt(getValues("cantidadEntradas"));
 
-    const ticket_id_list = await obtenerTicket(quantity, id);
+    const ticket_id_list = await obtenerTicket(quantity, id,tipoTicket);
     if (ticket_id_list.length === quantity) {
       const id = await createPreference(ticket_id_list, quantity);
       if (id) {
