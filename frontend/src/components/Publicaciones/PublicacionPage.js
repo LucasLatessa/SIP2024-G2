@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getPublicacion,crearPreferenciaEvento } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
 import { getTicket } from "../../services/tickets.service";
+import { getTipoTicket } from "../../services/tickets.service";
 import { getUser, getUserNick } from "../../services/usuarios.service";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,9 +19,9 @@ export const PublicacionPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
-  const [ticketId, setTicketId] = useState(null);
   const { user,getAccessTokenSilently } = useAuth0();
   const [userNoAuth0,setUserNoAuth0 ] = useState(null);
+  const [ticketId, setTicketId] = useState(null);
   const [token, setToken] = useState();
   const [userVendedor, setUserVendedor] = useState(null)
 
@@ -31,6 +32,7 @@ export const PublicacionPage = () => {
         const res = await getPublicacion(id);
         const publicacionConInfoCompleta = res.data;
         const ticketRes = await getTicket(publicacionConInfoCompleta.ticket);
+        const tipoTicket= await getTipoTicket(ticketRes.data.tipo_ticket);
         setTicketId(ticketRes);
         const vendedorRes = await getUser(ticketRes.data.propietario);
         setUserVendedor(vendedorRes); // Aquí se establece el userVendedor
@@ -38,10 +40,12 @@ export const PublicacionPage = () => {
         const publicacionCompleta = {
           id: publicacionConInfoCompleta.id_Publicacion,
           precio: publicacionConInfoCompleta.precio,
+          tipo: tipoTicket.data.tipo,
           fecha: publicacionConInfoCompleta.fecha,
           foto: eventoRes.data.imagen,
           vendedorNombre: vendedorRes.data.nickname,
           eventoNombre: eventoRes.data.nombre,
+          eventoDesc: eventoRes.data.descripcion,
           eventoFecha: eventoRes.data.fecha,
           eventoHora: eventoRes.data.hora,
         };
@@ -103,31 +107,45 @@ export const PublicacionPage = () => {
   return (
     <>
       <Header />
-      <main className="App">
-        {publicacion ? (
-          <section className="informacionEvento">
-            <h2 className="titulo">{publicacion.eventoNombre}</h2>
-            <figure className="figuraEvento">
+      <main className="App eventoPage">
+        {publicacion ? ( // Si existe el evento muestro los datos
+          <>
+            <header className="headerEvento">
               <img
                 className="imagen"
                 src={publicacion.foto}
                 alt={"Imagen " + publicacion.eventoNombre}
               />
-              <figcaption className="descripcion"> Lorem</figcaption>
-              <figcaption className="fechas">
-                {" "}
-                Fecha del evento: {publicacion.eventoFecha} -{" "}
-                {publicacion.eventoHora}{" "}
-              </figcaption>
-              <p>Precio: ${publicacion.precio}</p>
-              <p>Publicada por: {publicacion.vendedorNombre} </p>
-            </figure>
-          </section>
-        ) : (
-          <p>No existe el evento</p>
-        )}
-        <section className="comprarEntradas">
-        <button onClick={handleBuy}>Comprar</button>
+            </header>
+            <article className="informacionEvento">
+              <section className="titulo-fecha">
+                <h1 className="titulo">{publicacion.eventoNombre}</h1>
+                <p className="fecha">
+                  Fecha del evento: {publicacion.eventoFecha} - {publicacion.eventoHora}
+                </p>
+              </section>
+  
+              <section className="comprarEntrada">
+                <h3>Compra tu entrada de reventa</h3>
+                <section className="formComprarEntrada">
+                  {/* COMPRAR ENTRADA FORM */}
+                  <label>
+                    Tipo de entrada: {publicacion.tipo }
+                    
+                  </label>
+  
+                  
+                  
+                  {publicacion.precio && (
+                    <label>Precio de la entrada: ${publicacion.precio}</label>
+                  )}
+                   <label>Publicada por: {publicacion.vendedorNombre}</label>
+                  <section className="comprarTicketsButton">
+                  {!buttonClicked || !preferenceId ? (
+                      <button className="comprarEntrada" onClick={handleBuy}>
+                        Comprar
+                      </button>
+                    ) : null}
                     {buttonClicked &&
                       (loading ? (
                         <div>Cargando...</div>
@@ -143,7 +161,25 @@ export const PublicacionPage = () => {
                           preferencia es nulo
                         </div>
                       ))}
-        </section>
+                    
+                    
+  
+                  </section>
+                </section>
+              </section>
+              <section className="acercaDelEvento">
+                <h3>Acerca del evento</h3>
+                <p>{publicacion.eventoDesc}</p>
+              </section>
+              <section className="comoLLegar">
+                <h3>Como llegar</h3>
+                {/* Mapita de Google Maps*/}
+              </section>
+            </article>
+          </>
+        ) : (
+          <p>No existe el evento</p>
+        )}
       </main>
       <Footer />
     </>

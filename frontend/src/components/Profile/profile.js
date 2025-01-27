@@ -16,6 +16,8 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { ProductoraView } from "./ProductoraView";
 import { AdministradorView } from "./AdministradorView";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Perfil de los usuarios
 export const Profile = () => {
@@ -83,6 +85,7 @@ export const Profile = () => {
       setusuarioData(editingUserData);
       setEditingUserData(null);
       setError(null);
+      toast.success("Datos actualizados con éxito!"); // Notificación
     } catch (error) {
       setError(
         "Error al actualizar el perfil. El DNI que intenta ingresar ya existe."
@@ -104,7 +107,6 @@ export const Profile = () => {
         [name]: value,
       }));
     }
-    console.log(value)
   };
 
   if (loadingCliente) {
@@ -115,13 +117,13 @@ export const Profile = () => {
     );
   }
 
-  const handleButton = async () => {
+  const handleAgregarMP = async () => {
     const json_data = {
         public_key : editingUserDataMP['public_key'],
         access_token : editingUserDataMP['access_token'],
         user_nn : user.nickname,
     };
-    console.log(json_data)
+    toast.success("¡Cuenta agregada con éxito!"); // Notificación
     const response = await updateClienteMP(json_data);
   }
 
@@ -201,7 +203,7 @@ export const Profile = () => {
             />
            </label>
            <div className="botonAgregarMP">
-                    <button className="Agregar Cuenta" onClick={handleButton}>
+                    <button className="Agregar Cuenta" onClick={handleAgregarMP}>
                         Agregar Cuenta MP 
                     </button>
                 </div>
@@ -231,6 +233,7 @@ export const Profile = () => {
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
       <AdministradorView rol={usuarioData.rol} id={usuarioData.user_id} />
       <Footer />
+      <ToastContainer />
     </main>
   );
 };

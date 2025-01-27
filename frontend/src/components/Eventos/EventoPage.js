@@ -1,15 +1,15 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
-import {
-  getEvento,
-} from "../../services/eventos.service";
+import { getEvento } from "../../services/eventos.service";
 import "./styles/EventoPage.css";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
 export const EventoPage = () => {
@@ -18,25 +18,21 @@ export const EventoPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user,getAccessTokenSilently } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
-  const {
-    getValues,
-    register,
-  } = useForm();
-  const [eventos, setEventos] = useState([]);
+  const { getValues, register } = useForm();
+  const [evento, setEvento] = useState([]);
   const [token, setToken] = useState();
 
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
-    
+
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
-      
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
@@ -79,14 +75,14 @@ export const EventoPage = () => {
   useEffect(() => {
     async function cargarEventos() {
       const resEvento = await getEvento(id); //Solo eventos válidos, si no existe hay que arreglarlo
-      setEventos(resEvento.data);
+      setEvento(resEvento.data);
     }
-  
+
     async function obtenerToken() {
       const token = await getAccessTokenSilently();
       setToken(token);
     }
-  
+
     cargarEventos();
     obtenerToken();
   }, [id, getAccessTokenSilently]);
@@ -102,12 +98,12 @@ export const EventoPage = () => {
       const id = await createPreference(ticket_id_list, quantity);
       if (id) {
         setPreferenceId(id);
+        toast.success("¡Compra realizada con éxito!(ESTA MAL, SOLO PRUEBA)");
       }
+    } else {
+      setcantTickets(ticket_id_list.length);
     }
-    else {
-      setcantTickets(ticket_id_list.length)
-    }
-    
+
     setLoading(false); // Indicar que la carga ha terminado
   };
 
@@ -134,23 +130,23 @@ export const EventoPage = () => {
     <>
       <Header />
       <main className="App eventoPage">
-        {eventos ? ( // Si existe el evento muestro los datos
+        {evento ? ( // Si existe el evento muestro los datos
           <>
             <header className="headerEvento">
               <img
                 className="imagen"
-                src={eventos.imagen}
-                alt={"Imagen " + eventos.nombre}
+                src={evento.imagen}
+                alt={"Imagen " + evento.nombre}
               />
             </header>
             <article className="informacionEvento">
               <section className="titulo-fecha">
-                <h1 className="titulo">{eventos.nombre}</h1>
+                <h1 className="titulo">{evento.nombre}</h1>
                 <p className="fecha">
-                  Fecha del evento: {eventos.fecha} - {eventos.hora}
+                  Fecha del evento: {evento.fecha} - {evento.hora}
                 </p>
               </section>
-  
+
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
                 <section className="formComprarEntrada">
@@ -171,24 +167,28 @@ export const EventoPage = () => {
                       <option value="VIP">VIP</option>
                     </select>
                   </label>
-  
-                  
+
                   <label>
-                    Cantidad Entrada
+                    Cantidad Entradas
                     <input
                       type="number"
                       id="cantidadEntradas"
                       name="cantidadEntradas"
                       {...register("cantidadEntradas", {
                         required: true,
+                        validate: (value) =>
+                          value > 0 || "Debe ser un número positivo", // Valida que sea positivo
                       })}
                       disabled={!!preferenceId}
                       min="1"
+                      onInput={(e) => {
+                        if (e.target.value < 1) {
+                          e.target.value = ""; // Limpia el valor si es menor a 1
+                        }
+                      }}
                     />
                   </label>
-                  {precioEntrada && (
-                    <p>Precio de la entrada: {precioEntrada}</p>
-                  )}
+                  {precioEntrada && <p>Precio por entrada: {precioEntrada}</p>}
                   <section className="comprarTicketsButton">
                     {/* Mostrar botón de comprar solo si no se ha hecho clic y no hay preferenceId */}
                     {!buttonClicked || !preferenceId ? (
@@ -196,33 +196,32 @@ export const EventoPage = () => {
                         Comprar
                       </button>
                     ) : null}
+                    <ToastContainer />
                     {/* Si el botón fue clickeado */}
                     {buttonClicked && (
                       <>
                         {/* Si está cargando, mostramos "Cargando..." */}
                         {loading ? (
                           <div>Cargando...</div>
+                        ) : // Si tenemos un preferenceId, mostramos el componente Wallet de MercadoPago
+                        preferenceId ? (
+                          <div>
+                            <Wallet
+                              initialization={{ preferenceId: preferenceId }}
+                            />
+                          </div>
                         ) : (
-                          // Si tenemos un preferenceId, mostramos el componente Wallet de MercadoPago
-                          preferenceId ? (
-                            <div>
-                              <Wallet initialization={{ preferenceId: preferenceId }} />
-                            </div>
-                          ) : (
-                            // Si no tenemos preferenceId, mostramos la cantidad de tickets disponibles
-                            <div>Cantidad tickets disponibles: {cantTickets}</div>
-                          )
+                          // Si no tenemos preferenceId, mostramos la cantidad de tickets disponibles
+                          <div>Cantidad tickets disponibles: {cantTickets}</div>
                         )}
                       </>
                     )}
-                    
-  
                   </section>
                 </section>
               </section>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
-                <p>{eventos.descripcion}</p>
+                <p>{evento.descripcion}</p>
               </section>
               <section className="comoLLegar">
                 <h3>Como llegar</h3>
