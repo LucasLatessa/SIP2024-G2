@@ -78,6 +78,8 @@ def update_cliente(request, cliente_id):
     apellido = my_data.get("apellido", cliente.apellido)
     correo = my_data.get("correo", cliente.correo)
     dni = my_data.get("dni", cliente.dni)
+    public_key = my_data.get("public_key", cliente.Public_Key)
+    access_token = my_data.get("access_token", cliente.Access_Token)
 
     print(dni)
     print(apellido)
@@ -88,6 +90,8 @@ def update_cliente(request, cliente_id):
     cliente.apellido = apellido
     cliente.correo = correo
     cliente.dni = dni
+    cliente.Public_Key=public_key
+    cliente.Access_Token=access_token
 
     # Guardar los cambios en la base de datos
     cliente.save()
