@@ -197,7 +197,7 @@ export const EventoPage = () => {
                         <button className="comprarEntrada" onClick={handleBuy}>
                           Comprar
                         </button>
-                      ) : null};
+                      ) : null}
                       {!isAuthenticated && (
                         <div className="login-message">
                           <p>
