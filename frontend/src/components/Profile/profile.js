@@ -42,7 +42,6 @@ export const Profile = () => {
       try {
         const response = await getUserNick(user.nickname);
         setusuarioData(response.data.usuario);
-        console.log(response.data.usuario)
         setLoadingCliente(false);
       } catch (error) {
         //Si no esta registrado
@@ -120,8 +119,6 @@ export const Profile = () => {
             <h2 className="infoClienteProfile">
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>
-            
-            {console.log(usuarioData.rol)}
             {!(usuarioData.rol === "PRODUCTORA") && (
                 <p className="datos">DNI: {usuarioData.dni} </p>
             )}

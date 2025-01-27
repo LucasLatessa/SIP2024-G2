@@ -34,7 +34,6 @@ export const Eventos = () => {
           
         })
       )
-      //console.log(datosEventoCompleto[0].precioMin)
       setEventos(datosEventoCompleto);
       setFilteredEventos(datosEventoCompleto);
     }

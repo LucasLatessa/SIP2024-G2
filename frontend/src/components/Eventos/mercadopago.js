@@ -20,11 +20,10 @@ export const Mercadopago = () => {
                     quantity:quantity
                 }
             });
-            console.log(response.data.ticket_id_list);
             return response.data.ticket_id_list;
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return [];
         }
     };
@@ -38,7 +37,7 @@ export const Mercadopago = () => {
             });
             return response.data.id;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return null;
         }
     };

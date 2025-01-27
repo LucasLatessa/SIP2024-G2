@@ -57,7 +57,6 @@ export const ReporteProdu = () => {
   };
 
   const asistenciaClase = (porcentaje) => {
-    console.log(porcentaje)
     return porcentaje < 30.00 ? "asistencia-baja" : "";
   };
 

@@ -30,7 +30,6 @@ export const ProgramarEvento =() => {
   //Realizo la peticion para crear el evento
   const onSubmit = handleSubmit(async (data) => {
     data.imagen = data.imagen[0]; //Para guardar la imagen
-    //console.log(data)
 
     // Calcular el total de entradas
     const cantTickets =
@@ -43,7 +42,6 @@ export const ProgramarEvento =() => {
     data.id_productora = user.nickname;
 
     await crearEvento(data);
-    //console.log(res);.
     //Vuelvo a la pagina de eventos
     navegate("/perfil");
   });

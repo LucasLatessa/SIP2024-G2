@@ -49,8 +49,6 @@ export const EventoPage = () => {
           },
         }
       );
-      
-      console.log(response)
       return response.data.ticket_id_list;
     } catch (error) {
       return [];
@@ -71,7 +69,7 @@ export const EventoPage = () => {
       );
       return response.data.id;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   };
@@ -124,7 +122,7 @@ export const EventoPage = () => {
 
       setPrecioEntrada(response.data.precio_ticket);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -64,12 +64,11 @@ export const PublicarTicket = () => {
       navigate("/mercado");
      } catch (error) {
       toast.error('No se puede volver a publicar el mismo ticket')
-       console.log("Error al crear publicacion:", error);
+       console.error("Error al crear publicacion:", error);
      }
    }
   else{
     toast.error('No tiene una cuenta de mercado pago')
-    console.log("No cuenta mp");
   }
  
   }

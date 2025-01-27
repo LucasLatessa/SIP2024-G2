@@ -75,9 +75,7 @@ export const PublicacionPage = () => {
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
-    console.log(userNoAuth0);
     if (userNoAuth0.data.usuario.public_key !== null){
-      console.log(user.nickname)
       initMercadoPago(userNoAuth0.data.usuario.public_key, {
         locale: "es-AR",
       });
@@ -85,7 +83,6 @@ export const PublicacionPage = () => {
       const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname, publicacion.vendedorNombre);
       if (res_id.data.id) {
         setPreferenceId(res_id.data.id);
-        console.log(res_id.data.id);
       }
       
     }

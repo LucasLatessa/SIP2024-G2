@@ -42,7 +42,6 @@ export const BeneficiosProductora = ({ usuario }) => {
     try {
       await deleteBeneficio(id); // Llama a la función deleteBeneficio de tu archivo de servicios
       setBeneficios(beneficios.filter(beneficio => beneficio.id_beneficio !== id));
-      console.log('Beneficio eliminado correctamente');
       setShowModal(true);
     } catch (error) {
       console.error("Error al eliminar beneficio:", error);
