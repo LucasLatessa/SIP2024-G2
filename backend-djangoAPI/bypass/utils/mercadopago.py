@@ -6,7 +6,7 @@ import requests
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, url, token):
     sdk = mercadopago.SDK(
-        "APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899"
+        "APP_USR-7414342170996710-012615-503bde8fdc5c4c1dc5d80c79c6ba7382-2235055866"#Cuenta de prueba "Vendedor"de lucas
     )
     
     BACKEND_ORIGIN_URL = os.environ.get("BACKEND_ORIGIN_URL")
@@ -76,11 +76,11 @@ def entregartoken(payment_id, evento):
     solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"
     if evento == "evento" :
         headers = {
-                "Authorization": "Bearer APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899"
+                "Authorization": "Bearer APP_USR-7414342170996710-012615-503bde8fdc5c4c1dc5d80c79c6ba7382-2235055866"
             } 
     else: 
         headers = {
-                "Authorization": "Bearer APP_USR-1598373692127396-061423-e44ea2d6679a1d18eb3811f21f243ce0-1796663413"                
+                "Authorization": "Bearer APP_USR-7414342170996710-012615-503bde8fdc5c4c1dc5d80c79c6ba7382-2235055866"                
             }    
     response = requests.get(solicitud, headers=headers)
     data = response.json()
