@@ -87,7 +87,7 @@ export const PublicacionPage = () => {
       
     }
     else{
-      console.log("no tiene cuenta de mp el vendedor");
+      console.error("no tiene cuenta de mp el vendedor");
     }
     
     setLoading(false);
