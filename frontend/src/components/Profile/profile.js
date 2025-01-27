@@ -41,7 +41,6 @@ export const Profile = () => {
     const fetchUserData = async () => {
       try {
         const response = await getUserNick(user.nickname);
-        console.log(response.data.usuario)
         setusuarioData(response.data.usuario);
         setLoadingCliente(false);
       } catch (error) {
@@ -80,7 +79,6 @@ export const Profile = () => {
           return;
       }
       // Ejecuta la funcion de actualización correspondiente
-      console.log(editingUserData)
       await updateFunction(editingUserData);
       setusuarioData(editingUserData);
       setEditingUserData(null);

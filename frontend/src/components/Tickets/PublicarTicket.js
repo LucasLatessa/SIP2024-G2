@@ -58,7 +58,7 @@ export const PublicarTicket = () => {
       ticket: ticket.id_ticket,
       precio: costos.precio
   }
-   if (userNoAuth0.data.usuario.public_key !== null){
+   if (userNoAuth0.data.usuario.Public_Key !== null){
     try {
       await crearPublicacion(publicacion);
       navigate("/mercado");

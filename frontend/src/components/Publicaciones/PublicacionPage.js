@@ -75,8 +75,8 @@ export const PublicacionPage = () => {
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
-    if (userNoAuth0.data.usuario.public_key !== null){
-      initMercadoPago(userNoAuth0.data.usuario.public_key, {
+    if (userNoAuth0.data.usuario.Public_Key !== null){
+      initMercadoPago(userNoAuth0.data.usuario.Public_Key, {
         locale: "es-AR",
       });
       const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
