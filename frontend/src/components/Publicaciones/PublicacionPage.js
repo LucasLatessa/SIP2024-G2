@@ -134,15 +134,19 @@ export const PublicacionPage = () => {
                   )}
                    <label>Publicada por: {publicacion.vendedorNombre}</label>
                   <section className="comprarTicketsButton">
-                  {isAuthenticated &&(!buttonClicked || !preferenceId )? (
+                      {isAuthenticated &&(!buttonClicked || !preferenceId )? (
                         <button className="comprarEntrada" onClick={handleBuy}>
                           Comprar
                         </button>
-                      ) : (
-                      <div className="login-message">
-                        <p>Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.</p>
-                      </div>
-                    )}
+                      ) : null};
+                      {!isAuthenticated && (
+                        <div className="login-message">
+                          <p>
+                            Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.
+                          </p>
+                        </div>
+                      )}
+                    
                     {buttonClicked &&
                       (loading ? (
                         <div>Cargando...</div>

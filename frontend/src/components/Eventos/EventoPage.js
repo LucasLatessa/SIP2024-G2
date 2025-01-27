@@ -197,11 +197,14 @@ export const EventoPage = () => {
                         <button className="comprarEntrada" onClick={handleBuy}>
                           Comprar
                         </button>
-                      ) : (
-                      <div className="login-message">
-                        <p>Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.</p>
-                      </div>
-                    )}
+                      ) : null};
+                      {!isAuthenticated && (
+                        <div className="login-message">
+                          <p>
+                            Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.
+                          </p>
+                        </div>
+                      )}
                     
                     <ToastContainer />
                     {/* Si el botón fue clickeado */}
