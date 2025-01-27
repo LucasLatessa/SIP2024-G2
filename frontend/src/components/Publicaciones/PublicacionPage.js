@@ -176,7 +176,7 @@ export const PublicacionPage = () => {
             </article>
           </>
         ) : (
-          <p>No existe el evento</p>
+          <p className="parrafo">Cargando...</p>
         )}
       </main>
       <Footer />
