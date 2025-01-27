@@ -18,7 +18,7 @@ export const EventoPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { user,isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
   const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
@@ -33,6 +33,11 @@ export const EventoPage = () => {
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
+      async function obtenerToken() {
+        const token = await getAccessTokenSilently();
+        setToken(token);
+      }
+      obtenerToken();
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
@@ -78,13 +83,10 @@ export const EventoPage = () => {
       setEvento(resEvento.data);
     }
 
-    async function obtenerToken() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
+    
 
     cargarEventos();
-    obtenerToken();
+
   }, [id, getAccessTokenSilently]);
 
   //Realizo la compra de tickets
@@ -191,11 +193,16 @@ export const EventoPage = () => {
                   {precioEntrada && <p className="parrafo">Precio por entrada: {precioEntrada}</p>}
                   <section className="comprarTicketsButton">
                     {/* Mostrar botón de comprar solo si no se ha hecho clic y no hay preferenceId */}
-                    {!buttonClicked || !preferenceId ? (
-                      <button className="comprarEntrada" onClick={handleBuy}>
-                        Comprar
-                      </button>
-                    ) : null}
+                    {isAuthenticated &&(!buttonClicked || !preferenceId )? (
+                        <button className="comprarEntrada" onClick={handleBuy}>
+                          Comprar
+                        </button>
+                      ) : (
+                      <div className="login-message">
+                        <p>Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.</p>
+                      </div>
+                    )}
+                    
                     <ToastContainer />
                     {/* Si el botón fue clickeado */}
                     {buttonClicked && (

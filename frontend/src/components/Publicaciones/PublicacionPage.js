@@ -19,7 +19,7 @@ export const PublicacionPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
-  const { user,getAccessTokenSilently } = useAuth0();
+  const { user,isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
   const [userNoAuth0,setUserNoAuth0 ] = useState(null);
   const [ticketId, setTicketId] = useState(null);
   const [token, setToken] = useState();
@@ -54,14 +54,7 @@ export const PublicacionPage = () => {
         console.error("Error al cargar la publicación:", error);
       }
     }
-
-    async function obtenerToken() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-
     cargarPublicacion();
-    obtenerToken();
   }, [id, getAccessTokenSilently]);
 
   useEffect(() => {
@@ -141,11 +134,15 @@ export const PublicacionPage = () => {
                   )}
                    <label>Publicada por: {publicacion.vendedorNombre}</label>
                   <section className="comprarTicketsButton">
-                  {!buttonClicked || !preferenceId ? (
-                      <button className="comprarEntrada" onClick={handleBuy}>
-                        Comprar
-                      </button>
-                    ) : null}
+                  {isAuthenticated &&(!buttonClicked || !preferenceId )? (
+                        <button className="comprarEntrada" onClick={handleBuy}>
+                          Comprar
+                        </button>
+                      ) : (
+                      <div className="login-message">
+                        <p>Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.</p>
+                      </div>
+                    )}
                     {buttonClicked &&
                       (loading ? (
                         <div>Cargando...</div>
