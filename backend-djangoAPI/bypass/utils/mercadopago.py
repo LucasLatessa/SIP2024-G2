@@ -9,7 +9,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
         "APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899"
     )
     
-    BACKEND_ORIGIN_URL = os.environ.get("BACKEND_ORIGIN_URL")
+    FRONTEND_ORIGIN_URL = os.environ.get("FRONTEND_ORIGIN_URL")
 
     if (data_ticket_id_list[-1] == -1):
 
@@ -35,7 +35,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": CLIENT_ORIGIN_URL,
             },
             "auto_return": "approved",
-            "notification_url": f"https://{BACKEND_ORIGIN_URL}/{url}",
+            "notification_url": f"https://{FRONTEND_ORIGIN_URL}/{url}",
             #"marketplace": 614744135521445,
             #"marketplace_fee": 1,
         }
@@ -59,7 +59,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": "http://localhost:4040",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{BACKEND_ORIGIN_URL}/{url}",
+            "notification_url": f"https://{FRONTEND_ORIGIN_URL}/{url}",
         }
 
 
