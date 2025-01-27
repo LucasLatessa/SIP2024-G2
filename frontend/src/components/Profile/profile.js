@@ -41,6 +41,7 @@ export const Profile = () => {
     const fetchUserData = async () => {
       try {
         const response = await getUserNick(user.nickname);
+        console.log(response.data.usuario)
         setusuarioData(response.data.usuario);
         setLoadingCliente(false);
       } catch (error) {
@@ -79,6 +80,7 @@ export const Profile = () => {
           return;
       }
       // Ejecuta la funcion de actualización correspondiente
+      console.log(editingUserData)
       await updateFunction(editingUserData);
       setusuarioData(editingUserData);
       setEditingUserData(null);
@@ -127,7 +129,7 @@ export const Profile = () => {
             <p className="datos">Nickname: {usuarioData.nickname}</p>
             <p className="datos">Correo: {usuarioData.correo}</p>
             <p className="MP" style={{ textDecoration: 'underline' }}>Mercado Pago:</p>
-            <p className="MP">Public Key: {usuarioData.public_key}</p>
+            <p className="MP">Public Key: {usuarioData.Public_Key}</p>
             <p className="MP">Access Token: Oculto</p>
           </div>
         )}
@@ -167,8 +169,8 @@ export const Profile = () => {
               Public Key:
               <input
                 type="text"
-                name="public_key"
-                value={editingUserData.public_key || ""}
+                name="Public_Key"
+                value={editingUserData.Public_Key || ""}
                 onChange={handleInputChange}
               />
             </label>
@@ -176,8 +178,8 @@ export const Profile = () => {
               Access Token:
               <input
                 type="text"
-                name="access_token"
-                value={editingUserData.access_token || ""}
+                name="Access_Token"
+                value={editingUserData.Access_Token || ""}
                 onChange={handleInputChange}
               />
             </label>
