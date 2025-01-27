@@ -103,21 +103,6 @@ def update_cliente(request, cliente_id):
     return JsonResponse({'cliente': cliente_data})
 
 
-@api_view(['PUT'])
-def updateMP(request, nn):
-    try:
-        user = Usuario.objects.get(nickname=nn)
-        public_key = request.data.get('public_key')
-        access_token = request.data.get('access_token')
-
-        user.Public_Key = public_key
-        user.Access_Token = access_token
-        user.save()
-        return JsonResponse({'mensaje': 'Claves cargadas con exito'}, status=200)
-    except Usuario.DoesNotExist:
-        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
-
-
 
 @api_view(['PUT'])
 #@permission_classes([IsAuthenticated])

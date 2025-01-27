@@ -33,6 +33,9 @@
 .datos, .noLogin, .chargeClient {
   color: aliceblue;
 }
+.MP{
+  color: #009ee3;
+}
 .error-message {
   color: black;
 }

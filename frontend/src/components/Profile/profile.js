@@ -6,8 +6,7 @@ import {
   updateCliente,
   updateAdministrador,
   updateProductora,
-  getUserNick,
-  updateClienteMP
+  getUserNick
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
@@ -26,7 +25,6 @@ export const Profile = () => {
   const [usuarioData, setusuarioData] = useState(null);
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
-  const [editingUserDataMP, setEditingUserDataMP] = useState(null);
   const [error, setError] = useState(null);
 
   // const handleLoginClick = () => {
@@ -44,6 +42,7 @@ export const Profile = () => {
       try {
         const response = await getUserNick(user.nickname);
         setusuarioData(response.data.usuario);
+        console.log(response.data.usuario)
         setLoadingCliente(false);
       } catch (error) {
         //Si no esta registrado
@@ -95,19 +94,12 @@ export const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-     if ((name == "public_key") || (name == "access_token")){
-      setEditingUserDataMP((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-    else {
+     
       setEditingUserData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
-  };
 
   if (loadingCliente) {
     return (
@@ -117,15 +109,6 @@ export const Profile = () => {
     );
   }
 
-  const handleAgregarMP = async () => {
-    const json_data = {
-        public_key : editingUserDataMP['public_key'],
-        access_token : editingUserDataMP['access_token'],
-        user_nn : user.nickname,
-    };
-    toast.success("¡Cuenta agregada con éxito!"); // Notificación
-    const response = await updateClienteMP(json_data);
-  }
 
   return (
     <main>
@@ -146,6 +129,9 @@ export const Profile = () => {
             <p className="datos">Apellido: {usuarioData.apellido}</p>
             <p className="datos">Nickname: {usuarioData.nickname}</p>
             <p className="datos">Correo: {usuarioData.correo}</p>
+            <p className="MP" style={{ textDecoration: 'underline' }}>Mercado Pago:</p>
+            <p className="MP">Public Key: {usuarioData.public_key}</p>
+            <p className="MP">Access Token: Oculto</p>
           </div>
         )}
         {editingUserData && (
@@ -180,46 +166,32 @@ export const Profile = () => {
                 onChange={handleInputChange}
               />
             </label>
+            <label>
+              Public Key:
+              <input
+                type="text"
+                name="public_key"
+                value={editingUserData.public_key || ""}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Access Token:
+              <input
+                type="text"
+                name="access_token"
+                value={editingUserData.access_token || ""}
+                onChange={handleInputChange}
+              />
+            </label>
             {error && <p className="error-message">{error}</p>}
             <button onClick={handleUpdateProfile}>Guardar cambios</button>
           </div>
-        )}
-        {editingUserDataMP && (
-           <div className="formulario-edicion">
-            <label>
-            public_key:
-            <input
-                type="text"
-                name="public_key"
-                onChange={handleInputChange}
-            />
-            </label>
-            <label>
-            access_token:
-            <input
-                type="text"
-                name="access_token"
-                onChange={handleInputChange}
-            />
-           </label>
-           <div className="botonAgregarMP">
-                    <button className="Agregar Cuenta" onClick={handleAgregarMP}>
-                        Agregar Cuenta MP 
-                    </button>
-                </div>
-         </div>                 
         )}
         {!editingUserData && (
           <UpdateProfileButton
             onClick={() => setEditingUserData(usuarioData)}
           />
-        )}
-        {!editingUserDataMP && (
-            <div className="botonDesplegarMP">
-              <button className="des" onClick={() => setEditingUserDataMP(usuarioData)}>
-                  Cuenta Mercadopago
-              </button>
-          </div>
         )}
 
         <div className="botones-container">
