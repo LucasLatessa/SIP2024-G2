@@ -8,6 +8,8 @@ import { crearPublicacion } from '../../services/publicacion.service';
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserNick } from '../../services/usuarios.service';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Publicacion de tickets dentro del sitio
 export const PublicarTicket = () => {
@@ -16,7 +18,6 @@ export const PublicarTicket = () => {
   const { register, control } = useForm();
   const [costos, setCostos] = useState(null);
   const navigate = useNavigate();
-  const [mensajeError, setMensaje] = useState(null);
   const { user,getAccessTokenSilently } = useAuth0();
   const [userNoAuth0,setUserNoAuth0 ] = useState(null);
   const [token, setToken] = useState();
@@ -62,12 +63,12 @@ export const PublicarTicket = () => {
       await crearPublicacion(publicacion);
       navigate("/mercado");
      } catch (error) {
-      setMensaje('No se puede volver a publicar el mismo ticket')
+      toast.error('No se puede volver a publicar el mismo ticket')
        console.log("Error al crear publicacion:", error);
      }
    }
   else{
-    setMensaje('No tiene una cuenta de mercado pago')
+    toast.error('No tiene una cuenta de mercado pago')
     console.log("No cuenta mp");
   }
  
@@ -113,7 +114,6 @@ export const PublicarTicket = () => {
                       <p>Precio: ${costos.precio}</p>
                       <p>Costo de servicio: ${costos.costo}</p>
                       <p>Ganancia: ${costos.ganancia}</p>
-                      {mensajeError && <p className="mensajeError">{mensajeError}</p>}
                       <section className="publicarTicketButton">
                         <button onClick={handlePublicar}>Publicar</button>
                       </section>
@@ -128,6 +128,7 @@ export const PublicarTicket = () => {
         )}
       </main>
       <Footer />
+      <ToastContainer />
     </>
   );
 };

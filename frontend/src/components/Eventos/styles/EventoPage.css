@@ -44,11 +44,6 @@ p{
   font-size: 1.5rem;
 }
 
-.mensajeError {
-    background-color: black;
-    border-radius: 8px;
-    padding: 8px;
-}
 
 .comprarEntrada, .publicarEntrada, .transferirEntrada {
     margin: 0 2rem;
