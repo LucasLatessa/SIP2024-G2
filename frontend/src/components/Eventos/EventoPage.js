@@ -188,7 +188,7 @@ export const EventoPage = () => {
                       }}
                     />
                   </label>
-                  {precioEntrada && <p>Precio por entrada: {precioEntrada}</p>}
+                  {precioEntrada && <p className="parrafo">Precio por entrada: {precioEntrada}</p>}
                   <section className="comprarTicketsButton">
                     {/* Mostrar botón de comprar solo si no se ha hecho clic y no hay preferenceId */}
                     {!buttonClicked || !preferenceId ? (

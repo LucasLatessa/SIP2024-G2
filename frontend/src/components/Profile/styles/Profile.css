@@ -1,6 +1,3 @@
-body,main {
-  background-color: var(--color-secundario);
-}
 
 
 .profile{
@@ -71,16 +68,7 @@ body,main {
   color: var(--color-secundario);
   border: 1px solid black;
 }
-button {
-  background-color: var(--color-letras-cuaternario);
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  padding: 10px 20px;
-  margin:5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 .logout{
   background-color: var(--color-letras-terceario);
 }
@@ -136,9 +124,7 @@ button {
   background-color: var(--color-secundario);
   color: aliceblue;
 }
-label{
-  display: block;
-}
+
 /*--------------REPORTE EVENTO-------------- */
 
 .reporteEvento {
@@ -160,10 +146,6 @@ label{
   margin-right: 20px;
 }
 
-h1 {
-  font-size: 24px;
-  margin: 0;
-}
 
 .stats {
   display: flex;

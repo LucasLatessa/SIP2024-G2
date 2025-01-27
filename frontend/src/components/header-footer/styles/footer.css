@@ -1,7 +1,8 @@
-main {
-  min-height: 60vh;
-}
 
+/* Para que el footer no quede flotando */
+main {
+    min-height: 60vh;
+  }
 /*Footer abajo siempre*/
 footer {
     /*position: fixed;

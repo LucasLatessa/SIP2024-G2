@@ -1,7 +1,4 @@
-/* Para que el footer no quede flotando */
-main {
-  min-height: 60vh;
-}
+
 
 .header-principal {
   background-color: var(--color-principal);
