@@ -10,6 +10,7 @@ router.register(r"TipoTicket", views.TipoTicketView)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('reservar_ticket/', views.reservar_ticket, name='reservar_ticket'),
     path('obtener_ticket_evento/', views.obtener_ticket_evento, name='comprarTicket'),
     path('Publicacion/publicas/<int:l>', views.get_all_publication, name='get_all_publication'),
     path('prueba_mercadopago/', views.prueba_mercadopago, name='prueba_mercadopago'),

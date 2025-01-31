@@ -32,6 +32,7 @@ class Ticket(models.Model):
     )
     qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
     usada = models.BooleanField(default=False)
+    reservado = models.BooleanField(default=False)
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
     #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
     # PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)

@@ -35,7 +35,6 @@ export const EventoPage = () => {
     try {
       const token = await getAccessTokenSilently();
       setToken(token);
-      
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
@@ -92,12 +91,19 @@ export const EventoPage = () => {
     setButtonClicked(true);
     setLoading(true);
     const quantity = parseInt(getValues("cantidadEntradas"));
-
     const ticket_id_list = await obtenerTicket(quantity, id,tipoTicket);
     if (ticket_id_list.length === quantity) {
       const id = await createPreference(ticket_id_list, quantity);
       if (id) {
         setPreferenceId(id);
+        const response = await axios.get(
+          `${backendUrl}/tickets/reservar_ticket/`,
+          {
+            params: {
+              ticket_id: ticket_id_list.join(","),
+            },
+          }
+        );
         toast.success("¡Compra realizada con éxito!(ESTA MAL, SOLO PRUEBA)");
       }
     } else {

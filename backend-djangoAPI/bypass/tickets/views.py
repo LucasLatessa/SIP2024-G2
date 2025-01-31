@@ -20,7 +20,8 @@ from datetime import datetime
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 from utils.mercadopago import preferencia, entregartoken
 import sys
-
+import time
+import threading
 
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
@@ -183,15 +184,38 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
     tipo_ticket = request.GET.get("tipo_ticket")
     contador = 0
     ticket_id_list = []
+    print(request)
     tickets_evento = Ticket.objects.filter(evento=evento_id)
     ticket_id = None
     for ticket in tickets_evento:
-        if (ticket.propietario is None) and (ticket.tipo_ticket.tipo == tipo_ticket):
+        if (ticket.propietario is None) and (not ticket.reservado) and (ticket.tipo_ticket.tipo == tipo_ticket):
             ticket_id = ticket.id_Ticket
             if contador < int(quantity):
                 contador += 1
                 ticket_id_list.append(ticket_id)
     return JsonResponse({"ticket_id_list": ticket_id_list})
+
+def reservar_ticket(request: HttpRequest):
+    data_ticket_id_list = request.GET.get("ticket_id").split(",")
+    for ticket_id in data_ticket_id_list :
+        ticket = Ticket.objects.get(id_Ticket=ticket_id)
+        ticket.reservado=True
+        ticket.save()
+
+    hilo=threading.Thread(target=timer_desreservar,args=(data_ticket_id_list,), daemon=False)
+    hilo.start()
+
+    return JsonResponse({"ticket_id_list": "data_ticket_id_list"})
+
+def timer_desreservar(data_ticket_id_list):
+    time.sleep(300)#5 minutos
+    for ticket_id in data_ticket_id_list :
+        ticket = Ticket.objects.get(id_Ticket=ticket_id)
+        ticket.reservado=False
+        ticket.save()
+        print(ticket)
+    
+    print("se completo el timer el ticket")
 
 
 @csrf_exempt
