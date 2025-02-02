@@ -184,7 +184,6 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
     tipo_ticket = request.GET.get("tipo_ticket")
     contador = 0
     ticket_id_list = []
-    print(request)
     tickets_evento = Ticket.objects.filter(evento=evento_id)
     ticket_id = None
     for ticket in tickets_evento:
@@ -213,7 +212,6 @@ def timer_desreservar(data_ticket_id_list):
         ticket = Ticket.objects.get(id_Ticket=ticket_id)
         ticket.reservado=False
         ticket.save()
-        print(ticket)
     
     print("se completo el timer el ticket")
 

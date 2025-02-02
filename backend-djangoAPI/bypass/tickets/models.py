@@ -46,14 +46,9 @@ class Ticket(models.Model):
     def modificarPropietario(ticket_id_str, propietario, tipo):
         try:
             ticket_id_list = ticket_id_str.split(",")
-            print(ticket_id_str)
             for ticket_id in ticket_id_list:
-                print(ticket_id)
-                print(propietario)
                 ticket = Ticket.objects.get(id_Ticket=ticket_id)
-                print("aaaaaaaaaaaaaaa-1")
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
-                print("aaaaaaaaaaaaaaa0")
                 evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
 
                 #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles

@@ -58,8 +58,6 @@ class Evento(models.Model):
         # Umbrales y porcentaje de aumento
         umbral_bajo = self.cantTicketsTotal * 25 / 100 #Umbral, a partir del 25%
         porcentaje_aumento = 0.10  # 10%
-        print(umbral_bajo)
-        print(self.cantTicketsTotal)
 
         #Si supera el umbral aumento los precios
         if self.cantTickets <= umbral_bajo:
