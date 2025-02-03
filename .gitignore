@@ -5,7 +5,8 @@
 /.pnp
 .pnp.js
 */venv
-media/tickets/ticket_*.png
+bypass/media/
+*/media/tickets/ticket_*.png
 # testing
 /coverage
 

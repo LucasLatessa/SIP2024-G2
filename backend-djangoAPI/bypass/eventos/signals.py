@@ -71,3 +71,10 @@ def crear_evento_post_migrate(sender, **kwargs):
             print(f"La imagen {path_imagen} no se encuentra en el directorio.")
     except Exception as e:
         print(f"Error al crear el evento y los tickets: {e}")
+
+@receiver(post_migrate)
+def aprobar_evento(sender, **kwargs):
+    estado = EstadoEvento.objects.get(estado='APROBADO')
+    evento = Evento.objects.get(nombre="Evento de prueba")
+    evento.estado = estado
+    evento.save()
