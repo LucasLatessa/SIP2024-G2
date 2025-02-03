@@ -68,7 +68,7 @@ class Evento(models.Model):
                     print("EVENTO DE REVALORIZACION - Ticket: ", ticket.id_Ticket)
                     nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
                     print("precio viejo",ticket.precioInicial)
-                    print("nuevo viejo",nuevo_precio)
+                    print("precio nuevo",nuevo_precio)
                     ticket.precioInicial = nuevo_precio
                     ticket.save()
 
@@ -97,7 +97,7 @@ class Evento(models.Model):
                 print("EVENTO DE REVALORIZACION POR TEMPORALIDAD - Ticket: ", ticket.id_Ticket)
                 nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
                 print("precio viejo",ticket.precioInicial)
-                print("nuevo viejo",nuevo_precio)
+                print("precio nuevo",nuevo_precio)
                 ticket.precioInicial = nuevo_precio
                 ticket.save()
 

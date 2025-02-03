@@ -9,6 +9,7 @@ from eventos.models import Evento
 from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
+import os
 # Create your models here.
 
 
@@ -111,11 +112,16 @@ class Ticket(models.Model):
                 new_data.append(item)  # Dejar los píxeles blancos intactos
 
         img.putdata(new_data)
+        filename = f"ticket_{self.id_Ticket}.png"
+        # Eliminar el archivo existente si ya está guardado
+        if self.qr:  
+            if os.path.isfile(self.qr.path):  
+                os.remove(self.qr.path)  
 
         # Guardo en el modelo
         buffer = BytesIO()
         img.save(buffer, format="PNG")
-        filename = f"ticket_{Ticket.id_Ticket}.png"
+        
         self.qr.save(filename, File(buffer), save=False)
 
     def __str__(self):

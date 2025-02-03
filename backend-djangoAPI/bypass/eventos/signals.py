@@ -74,7 +74,11 @@ def crear_evento_post_migrate(sender, **kwargs):
 
 @receiver(post_migrate)
 def aprobar_evento(sender, **kwargs):
-    estado = EstadoEvento.objects.get(estado='APROBADO')
     evento = Evento.objects.get(nombre="Evento de prueba")
-    evento.estado = estado
-    evento.save()
+    # Verificar si el estado actual del evento es "PENDIENTE"
+    estado_pendiente = EstadoEvento.objects.get(estado='PENDIENTE')
+    if evento.estado == estado_pendiente:
+        estado_aprobado = EstadoEvento.objects.get(estado='APROBADO')
+        evento.estado = estado_aprobado
+        evento.save()
+    
