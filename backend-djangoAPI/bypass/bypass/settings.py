@@ -23,10 +23,9 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
@@ -175,7 +174,7 @@ CORS_ALLOW_HEADERS = [
     "content-type",
 ]
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
@@ -183,6 +182,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Añade el host local si lo necesitas
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
+    "http://35.196.38.34:8000/", #ip vm de google
+    "https://bypass-events.vercel.app",
     "https://bypass-events.vercel.app",
     "https://bypass-7lu9.onrender.com"
 ]
