@@ -1,5 +1,5 @@
 #!/bin/bash
-
+:'
 # Actualiza los paquetes y el sistema
 sudo apt update && sudo apt upgrade -y
 
@@ -31,69 +31,49 @@ mysql -u root -proot -e "FLUSH PRIVILEGES;"
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash -
 sudo apt install -y nodejs
 
-sudo apt install python3-venv -y
-cd ~/backend-djangoAPI/bypass 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-
 # Clona tu repositorio (reemplaza con tu repo real)
-cd /home
+cd /home/lucas
 git clone -b deploy https://github.com/LucasLatessa/SIP2024-G2.git
 cd SIP2024-G2
 
-# Instala dependencias de Django
-cd backend-djangoAPI/bypass
+sudo apt install python3-venv -y
+cd backend-djangoAPI/bypass 
 python3 -m venv venv
 source venv/bin/activate
+# Instala dependencias de Django
 pip install -r requirements.txt
-
 # Configura Django (cambia esto según tu proyecto)
 python manage.py migrate
 
-# Inicia el servidor Django en el puerto 8000
-nohup python manage.py runserver 0.0.0.0:8000 &
-
-deactivate
 # Instala dependencias de React
-cd ../../frontend
-npm install
-npm start
+sudo npm install
+'
+#sudo lsof -i -P -n
+
+#sudo killall ngrok
+#sudo killall python
+#bash script.sh > script.log 2>&1 &
+#echo $BACKEND_ORIGIN_URL
+
+
+cd SIP2024-G2/frontend
+sudo npm start &
+
+sleep 10
+
+ngrok http 8000 > /dev/null & sleep 2 && export BACKEND_ORIGIN_URL=$(curl -s http://localhost:4041/api/tunnels | jq -r '.tunnels[0].public_url') 
+cd ../backend-djangoAPI/bypass
+source venv/bin/activate
+python manage.py runserver &
+deactivate
+sudo systemctl start nginx
 : '
-# Instala y configura Nginx (para servir React)
+
+# Instala y configura Nginx 
 sudo apt install -y nginx
 sudo systemctl enable nginx
 sudo systemctl start nginx
 
-# Configura Nginx para servir el frontend
-sudo tee /etc/nginx/sites-available/default > /dev/null <<EOF
-server {
-    listen 80;
-    server_name _;
-    
-    location / {
-        root /home/tu-repo/frontend/build;
-        index index.html;
-        try_files \$uri /index.html;
-    }
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:8000/;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
-}
-EOF
-
 # Reinicia Nginx para aplicar la configuración
 sudo systemctl restart nginx
 '
-# Abre los puertos en el firewall de Google Cloud
-#gcloud compute firewall-rules create allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80,tcp:443 --source-ranges=0.0.0.0/0 --target-tags=http-server
-
-#gcloud compute firewall-rules create allow-mysql --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:3306 --source-ranges=0.0.0.0/0 --target-tags=mysql-server
-
-echo "Despliegue completado. Django corriendo en puerto 8000, React en puerto 80."

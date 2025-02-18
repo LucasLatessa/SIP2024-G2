@@ -104,7 +104,6 @@ export const EventoPage = () => {
             },
           }
         );
-        toast.success("¡Compra realizada con éxito!(ESTA MAL, SOLO PRUEBA)");
       }
     } else {
       setcantTickets(ticket_id_list.length);

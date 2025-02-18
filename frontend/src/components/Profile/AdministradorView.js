@@ -9,13 +9,21 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 //Vista de productora
-export const AdministradorView = ({ rol, id }) => {
-  const [showRestore, setShowRestore] = useState(false);
-  const handleBackup = async () => {
+const handleBackup = async () => {
     try {
         const response = await crearBackup();
-        if (response.data.backup === 'realizado') {
-             toast.success('Backup realizado con éxito');
+
+        // Si la respuesta contiene un archivo, proceder a descargarlo
+        if (response.status === 200) {
+            const blob = new Blob([response.data], { type: 'application/sql' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `backup_${new Date().toISOString()}.sql`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            toast.success('Backup realizado con éxito');
         } else {
             toast.error('Error al realizar el backup');
         }

@@ -37,7 +37,7 @@ contraseña = "Produ123"
 
 #Abrir pagina
 driver = webdriver.Chrome()
-driver.get("http://localhost:4040/")
+driver.get("https://35.196.38.34:4040/")
 
 #Inicio sesion
 ejecutarClick("div.login")

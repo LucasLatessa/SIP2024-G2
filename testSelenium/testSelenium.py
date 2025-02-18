@@ -6,7 +6,7 @@ import time
 
 #Abrir pagina
 driver = webdriver.Chrome()
-driver.get("http://localhost:4040/")
+driver.get("https://35.196.38.34:4040/")
 
 #Click en iniciar sesion
 login = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.login"))).click()

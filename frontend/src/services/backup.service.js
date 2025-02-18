@@ -7,7 +7,7 @@ const backupAPI = axios.create({
   baseURL: `${axios.defaults.baseURL}/api`
 })
 
-export const crearBackup = () => backupAPI.get('/backup');
+export const crearBackup = () => backupAPI.get('/backup', { responseType: 'blob' });
 
 export const restore = (db) => backupAPI.post('/restore', db, {
   headers: {
