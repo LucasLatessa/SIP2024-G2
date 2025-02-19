@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import "./styles/escanearQR.css";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { cambiarEstadoTicket, getTicket } from "../../services/tickets.service";
-
+import { getEvento } from "../../services/eventos.service";
 //Escaner QR para las entradas
 export const QrScannerComponent = () => {
   const { id } = useParams(); //Obtengo el id del evento
@@ -16,9 +16,11 @@ export const QrScannerComponent = () => {
 
   //Analizo la entrada para ver si corresponde a ese evento y no esta usada
   const analizarEntrada = async (data) => {
+    
     if (data) {
       const [ide, idt, dni] = data.split("-"); //Formato de los datos IDT-IDE-DNI
-
+      const resEvento = await getEvento(ide);
+      console.log(resEvento);
       setidt(idt);
       setide(ide);
       //Si es una entrada de ese evento

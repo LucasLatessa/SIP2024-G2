@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
+from sympy import Max, Min
 from rest_framework import viewsets
 from .serializer import (
     TicketSerializer,
@@ -130,6 +131,16 @@ def entregarTicketTpublicacion(request):
     
     else:
         return JsonResponse({"cliente": None})
+@api_view(["PUT"])
+def transferirTicket(request):
+    body = json.loads(request.body)
+    id_ticket = body.get("id_ticket")
+    nuevoPropietario = body.get("nuevoPropietario")
+    Ticket.transferir(str(id_ticket), nuevoPropietario)
+    publicacion = Publicacion.objects.get(ticket = id_ticket)
+    Publicacion.modificarPublicado(publicacion.id_Publicacion)
+    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
+
 
 # Funcion para obtener todos los tickets de un evento
 # @authorized
@@ -151,31 +162,20 @@ def get_tickets_by_evento(request, evento_id):
     return JsonResponse({"tickets": ticket_data})
 
 def get_tickets_by_evento_min_max(request, evento_id):
-# Obtengo todos los tickets de ese evento
-    tickets = Ticket.objects.filter(evento_id=evento_id,usada=False)
+    # Obtengo los valores mínimo y máximo de los tickets no usados de ese evento
+    precios = Ticket.objects.filter(evento_id=evento_id, usada=False).aggregate(
+        precioMinimo=Min('precioInicial'),
+        precioMaximo=Max('precioInicial')
+    )
 
-    valorMax = 10000000000
-    min = valorMax
-    max = 0
-    for ticket_no_usados in  tickets:
-        if ticket_no_usados.precioInicial >= max:
-            max = ticket_no_usados.precioInicial
-        elif  ticket_no_usados.precioInicial <= min:
-            min = ticket_no_usados.precioInicial
+    # Si no hay tickets, establecer precios en 0
+    precios_data = {
+        "precioMaximo": precios["precioMaximo"] or 0,
+        "precioMinimo": precios["precioMinimo"] or 0
+    }
 
-    if valorMax == min:
-        min = 0
-
-    # Creo el JSON  
-    precios_data = [
-        {
-            "precioMaximo": max,
-            "precioMinimo": min
-        }
-    ]
-
-    # Devuelve los tickets como una respuesta JSON
-    return JsonResponse({"precios":precios_data})
+    # Devuelve la respuesta en formato JSON
+    return JsonResponse({"precios": precios_data})
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
@@ -256,10 +256,3 @@ def cambiar_estado_ticket(request, id_Ticket):
     ticket.save()
     return JsonResponse({"mensaje": "Cambio de estado a usado!"}, status=200)
 
-@api_view(["PUT"])
-def transferirTicket(request):
-    body = json.loads(request.body)
-    id_ticket = body.get("id_ticket")
-    nuevoPropietario = body.get("nuevoPropietario")
-    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario)  
-    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)

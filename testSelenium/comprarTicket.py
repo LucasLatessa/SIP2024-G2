@@ -58,7 +58,7 @@ ejecutarClick("a[href='/evento/1']")
 time.sleep(2)
 #Selecciono tipo de entrada
 ejecutarClick("select[id='tipoEntrada']")
-ejecutarClick("option[value='VIP']")
+ejecutarClick("option[value='PLATINIUM']")
 
 #Cantidad entrdas
 modificarCampo("1", "input[id='cantidadEntradas']")

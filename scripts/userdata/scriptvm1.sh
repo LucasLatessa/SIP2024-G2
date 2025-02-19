@@ -52,12 +52,12 @@ sudo npm install
 
 #sudo killall ngrok
 #sudo killall python
-#bash script.sh > script.log 2>&1 &
+#nohup bash script.sh > script.log 2>&1 &
 #echo $BACKEND_ORIGIN_URL
-
+#tail -f script.log
 
 cd SIP2024-G2/frontend
-sudo npm start &
+sudo nohup npm start &
 
 sleep 10
 

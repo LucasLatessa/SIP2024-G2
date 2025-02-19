@@ -64,6 +64,18 @@ class Ticket(models.Model):
             print(e)
             print("No se pudo cargar el ticket")
 
+    def transferir(ticket_id, propietario):
+        try:
+           ticket = Ticket.objects.get(id_Ticket=ticket_id)
+           nuevo_propietario = Cliente.objects.get(nickname=propietario)
+           #Otorgo el ticket al propietario
+           ticket.propietario = nuevo_propietario
+           ticket.save()
+        except Exception as e:
+            print(e)
+            print("No se pudo transferir el ticket")
+
+
     def obtener_ticket_precio(tipo_ticket, evento):
         tipo_ticket = TipoTickets.objects.get(tipo=tipo_ticket)
 
@@ -114,14 +126,14 @@ class Ticket(models.Model):
         img.putdata(new_data)
         filename = f"ticket_{self.id_Ticket}.png"
         # Eliminar el archivo existente si ya está guardado
-        if self.qr:  
-            if os.path.isfile(self.qr.path):  
-                os.remove(self.qr.path)  
+        if self.qr:
+            if os.path.isfile(self.qr.path):
+                os.remove(self.qr.path)
 
         # Guardo en el modelo
         buffer = BytesIO()
         img.save(buffer, format="PNG")
-        
+
         self.qr.save(filename, File(buffer), save=False)
 
     def __str__(self):
@@ -143,7 +155,7 @@ class Precio(models.Model):
 class Publicacion(models.Model):
     id_Publicacion = models.AutoField(primary_key=True)
     precio = models.FloatField()
-    fecha = models.DateField(default=date.today, blank=True, null=True) 
+    fecha = models.DateField(default=date.today, blank=True, null=True)
     publica = models.BooleanField(default=True)
     ticket = models.ForeignKey(
         Ticket, models.DO_NOTHING, db_column="ticket", blank=True, null=True

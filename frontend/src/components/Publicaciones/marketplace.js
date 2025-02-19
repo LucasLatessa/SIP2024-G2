@@ -26,12 +26,14 @@ export const Marketplace = () => {
         const publicacionesConInfoCompleta = await Promise.all(
           res.data.publicaciones.map(async (publicacion) => {
             const ticketRes = await getTicket(publicacion.ticket_id);
+            console.log(ticketRes.data);
             const eventoRes = await getEvento(ticketRes.data.evento);
             const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
             return {
               id: publicacion.id_Publicacion,
               precio: publicacion.precio,
               fecha: publicacion.fecha,
+              precio_original: ticketRes.data.precioInicial,
               tipo: tipoRes.data.tipo,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
@@ -146,6 +148,7 @@ export const Marketplace = () => {
               id={publicacion.id}
               foto={publicacion.foto}
               precio={publicacion.precio}
+              precio_original={publicacion.precio_original}
               eventoNombre={publicacion.eventoNombre}
               eventoFecha={publicacion.eventoFecha}
               eventoHora={publicacion.eventoHora}
