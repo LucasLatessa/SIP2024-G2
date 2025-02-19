@@ -33,7 +33,6 @@ contraseñaMP = "qSuDm2hNuV"
 verificacionMP="663413"
 chrome_options = Options()
 chrome_options.add_argument('--ignore-certificate-errors')
-chrome_options.add_argument('--incognito')  # Opcional: para usar el navegador en modo incógnito
 
 #Abrir pagina
 driver = webdriver.Chrome(options=chrome_options)
