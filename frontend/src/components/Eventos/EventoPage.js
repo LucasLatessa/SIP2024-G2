@@ -18,12 +18,12 @@ export const EventoPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user,isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
   const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
   const { getValues, register } = useForm();
-  const [evento, setEvento] = useState([]);
+  const [evento, setEvento] = useState(null);
   const [token, setToken] = useState();
 
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
@@ -76,14 +76,20 @@ export const EventoPage = () => {
   //Realizo la peticion para obtener el evento y mostrar sus datos en pantalla
   useEffect(() => {
     async function cargarEventos() {
-      const resEvento = await getEvento(id); //Solo eventos válidos, si no existe hay que arreglarlo
-      setEvento(resEvento.data);
+      const resEvento = await getEvento(id);
+      const evento = resEvento.data;
+      const fechaFormateada = new Date(evento.fecha).toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
+      setEvento({
+        ...evento,
+        fecha: fechaFormateada,
+      });
     }
-
-    
-
     cargarEventos();
-
   }, [id, getAccessTokenSilently]);
 
   //Realizo la compra de tickets
@@ -91,12 +97,12 @@ export const EventoPage = () => {
     setButtonClicked(true);
     setLoading(true);
     const quantity = parseInt(getValues("cantidadEntradas"));
-    const ticket_id_list = await obtenerTicket(quantity, id,tipoTicket);
+    const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
     if (ticket_id_list.length === quantity) {
-      const id = await createPreference(ticket_id_list, quantity);
-      if (id) {
-        setPreferenceId(id);
-        const response = await axios.get(
+      const idPref = await createPreference(ticket_id_list, quantity);
+      if (idPref) {
+        setPreferenceId(idPref);
+        await axios.get(
           `${backendUrl}/tickets/reservar_ticket/`,
           {
             params: {
@@ -108,8 +114,7 @@ export const EventoPage = () => {
     } else {
       setcantTickets(ticket_id_list.length);
     }
-
-    setLoading(false); // Indicar que la carga ha terminado
+    setLoading(false);
   };
 
   const handleTipoEntradaChange = async (e) => {
@@ -124,7 +129,6 @@ export const EventoPage = () => {
           },
         }
       );
-
       setPrecioEntrada(response.data.precio_ticket);
     } catch (error) {
       console.error(error);
@@ -135,8 +139,8 @@ export const EventoPage = () => {
     <>
       <Header />
       <main className="App eventoPage">
-        {evento ? ( // Si existe el evento muestro los datos
-          <>
+        {evento ? (
+          <div className="publicacion-container">
             <header className="headerEvento">
               <img
                 className="imagen"
@@ -145,17 +149,14 @@ export const EventoPage = () => {
               />
             </header>
             <article className="informacionEvento">
-              <section className="titulo-fecha">
                 <h1 className="titulo">{evento.nombre}</h1>
                 <p className="fecha">
                   Fecha del evento: {evento.fecha} - {evento.hora}
                 </p>
-              </section>
 
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
-                <section className="formComprarEntrada">
-                  {/* COMPRAR ENTRADA FORM */}
+                <form className="formComprarEntrada" onSubmit={e => { e.preventDefault(); handleBuy(); }}>
                   <label>
                     Tipo de entrada
                     <select
@@ -182,55 +183,50 @@ export const EventoPage = () => {
                       {...register("cantidadEntradas", {
                         required: true,
                         validate: (value) =>
-                          value > 0 || "Debe ser un número positivo", // Valida que sea positivo
+                          value > 0 || "Debe ser un número positivo",
                       })}
                       disabled={!!preferenceId}
                       min="1"
                       onInput={(e) => {
                         if (e.target.value < 1) {
-                          e.target.value = ""; // Limpia el valor si es menor a 1
+                          e.target.value = "";
                         }
                       }}
                     />
                   </label>
                   {precioEntrada && <p className="parrafo">Precio por entrada: {precioEntrada}</p>}
-                  <section className="comprarTicketsButton">
-                    {/* Mostrar botón de comprar solo si no se ha hecho clic y no hay preferenceId */}
-                    {isAuthenticated &&(!buttonClicked || !preferenceId )? (
-                        <button className="comprarEntrada" onClick={handleBuy}>
-                          Comprar
-                        </button>
-                      ) : null}
-                      {!isAuthenticated && (
-                        <div className="login-message">
-                          <p>
-                            Para comprar entradas, por favor <a href="" onClick={loginWithRedirect}>inicia sesión</a>.
-                          </p>
-                        </div>
-                      )}
-                    
+                  <div className="comprarTicketsButton">
+                    {isAuthenticated && (!buttonClicked || !preferenceId) && (
+                      <button className="comprarEntradaBtn" type="submit">
+                        Comprar
+                      </button>
+                    )}
+                    {!isAuthenticated && (
+                      <div className="login-message">
+                        <p>
+                          Para comprar entradas, por favor{" "}
+                          <a href="" onClick={loginWithRedirect}>inicia sesión</a>.
+                        </p>
+                      </div>
+                    )}
                     <ToastContainer />
-                    {/* Si el botón fue clickeado */}
                     {buttonClicked && (
                       <>
-                        {/* Si está cargando, mostramos "Cargando..." */}
                         {loading ? (
-                          <div>Cargando...</div>
-                        ) : // Si tenemos un preferenceId, mostramos el componente Wallet de MercadoPago
-                        preferenceId ? (
-                          <div>
-                            <Wallet
-                              initialization={{ preferenceId: preferenceId }}
-                            />
+                          <div className="loading">Cargando...</div>
+                        ) : preferenceId ? (
+                          <div className="wallet-container">
+                            <Wallet initialization={{ preferenceId: preferenceId }} />
                           </div>
                         ) : (
-                          // Si no tenemos preferenceId, mostramos la cantidad de tickets disponibles
-                          <div>Cantidad tickets disponibles: {cantTickets}</div>
+                          <div className="error-message">
+                            Cantidad tickets disponibles: {cantTickets}
+                          </div>
                         )}
                       </>
                     )}
-                  </section>
-                </section>
+                  </div>
+                </form>
               </section>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
@@ -241,7 +237,7 @@ export const EventoPage = () => {
                 {/* Mapita de Google Maps*/}
               </section>
             </article>
-          </>
+          </div>
         ) : (
           <p>No existe el evento</p>
         )}

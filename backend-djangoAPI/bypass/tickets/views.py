@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
-from sympy import Max, Min
+
 from rest_framework import viewsets
 from .serializer import (
     TicketSerializer,
@@ -23,7 +23,7 @@ from utils.mercadopago import preferencia, entregartoken
 import sys
 import time
 import threading
-
+from django.db.models import Min, Max
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()

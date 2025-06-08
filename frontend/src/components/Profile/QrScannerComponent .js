@@ -6,36 +6,44 @@ import "./styles/escanearQR.css";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { cambiarEstadoTicket, getTicket } from "../../services/tickets.service";
 import { getEvento } from "../../services/eventos.service";
+
 //Escaner QR para las entradas
 export const QrScannerComponent = () => {
   const { id } = useParams(); //Obtengo el id del evento
-  const [idt, setidt] = useState(null);
-  const [ide, setide] = useState(null);
-  const [dni, setDni] = useState(null);
+  const [ticketInfo, setTicketInfo] = useState(null);
   const [error, setError] = useState(null);
 
   //Analizo la entrada para ver si corresponde a ese evento y no esta usada
   const analizarEntrada = async (data) => {
-    
+    setError(null);
     if (data) {
       const [ide, idt, dni] = data.split("-"); //Formato de los datos IDT-IDE-DNI
-      const resEvento = await getEvento(ide);
-      console.log(resEvento);
-      setidt(idt);
-      setide(ide);
-      //Si es una entrada de ese evento
-      if (id === ide) {
-        //Pertenece al evento, pero puede ser que este usada
-        const ticketData = await obtenerTicket(idt);
-        if (ticketData && !ticketData.usada) {
-          setDni(dni);
-          //Cambio el estado a usado
-          cambiarEstado(idt);
+      try {
+        const resEvento = await getEvento(ide);
+        //Si es una entrada de ese evento
+        if (id === ide) {
+          //Pertenece al evento, pero puede ser que este usada
+          const ticketData = await obtenerTicket(idt);
+          if (ticketData && !ticketData.usada) {
+            //Cambio el estado a usado
+            await cambiarEstado(idt);
+            setTicketInfo({
+              idt,
+              ide: resEvento.data.nombre,
+              dni,
+              mensaje: "Entrada valida, que lo disfrute!",
+            });
+          } else {
+            setTicketInfo(null);
+            setError("La entrada ya fue usada");
+          }
         } else {
-          setError("La entrada ya fue usada");
+          setTicketInfo(null);
+          setError("La entrada no pertenece a este evento");
         }
-      } else {
-        setError("La entrada no pertenece a este evento");
+      } catch (e) {
+        setTicketInfo(null);
+        setError("Error procesando la entrada");
       }
     }
   };
@@ -57,25 +65,38 @@ export const QrScannerComponent = () => {
     await cambiarEstadoTicket(idt);
   };
 
+  const limpiarInfo = () => {
+    setTicketInfo(null);
+    setError(null);
+  };
+
   return (
     <>
       <Header />
-      <main>
-        <h1 className="escanearQRTitulo">Validar entrada</h1>
-        {!dni && (
-          <Scanner onScan={(result) => analizarEntrada(result[0].rawValue)} />
-        )}
-        {error && <h2 className="escanearQR">{error}</h2>}
-        {dni && (
-          <section>
-            <h2 className="escanearQR">Entrada valida, que lo disfrute!</h2>
-            <ul className="datosEntradaQR">
-              <li>Ticket: {idt}</li>
-              <li>Evento: {ide}</li>
-              <li>DNI: {dni}</li>
-            </ul>
-          </section>
-        )}
+      <main style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
+        <div>
+          <h1 className="escanearQRTitulo">Validar entrada</h1>
+          <Scanner onScan={(result) => result && analizarEntrada(result[0].rawValue)} />
+        </div>
+        <div>
+          {error && (
+            <div>
+              <h2 className="escanearQR">{error}</h2>
+              <button onClick={limpiarInfo}>Limpiar</button>
+            </div>
+          )}
+          {ticketInfo && (
+            <section>
+              <h2 className="escanearQR">{ticketInfo.mensaje}</h2>
+              <ul className="datosEntradaQR">
+                <li>Ticket: {ticketInfo.idt}</li>
+                <li>Evento: {ticketInfo.ide}</li>
+                <li>DNI: {ticketInfo.dni}</li>
+              </ul>
+              <button onClick={limpiarInfo}>Limpiar</button>
+            </section>
+          )}
+        </div>
       </main>
       <Footer />
     </>

@@ -29,6 +29,11 @@ export const Marketplace = () => {
             console.log(ticketRes.data);
             const eventoRes = await getEvento(ticketRes.data.evento);
             const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
+            const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
             return {
               id: publicacion.id_Publicacion,
               precio: publicacion.precio,
@@ -37,7 +42,7 @@ export const Marketplace = () => {
               tipo: tipoRes.data.tipo,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
-              eventoFecha: eventoRes.data.fecha,
+              eventoFecha: fechaFormateada,
               eventoHora: eventoRes.data.hora,
             };
           })

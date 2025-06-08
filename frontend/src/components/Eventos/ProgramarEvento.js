@@ -11,18 +11,19 @@ import { useAuth0 } from "@auth0/auth0-react";
 //Encargado de realizar la creacion de eventos dentro de la pagina
 export const ProgramarEvento =() => {
   const { user } = useAuth0();
-  const navegate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset
   } = useForm();
-  const [lugar, setLugar] = useState([]);
+  const [lugares, setLugares] = useState([]);
 
   //Realizo la peticion para cargar los lugares disponibles donde se puede realizar el evento
   useEffect(() => {
     async function cargarLugar() {
       const res = await getAllLugares();
-      setLugar(res.data);
+      setLugares(res.data);
     }
     cargarLugar();
   }, []);
@@ -42,8 +43,9 @@ export const ProgramarEvento =() => {
     data.id_productora = user.nickname;
 
     await crearEvento(data);
+    reset();
     //Vuelvo a la pagina de eventos
-    navegate("/perfil");
+    navigate("/perfil");
   });
 
   return (
@@ -54,137 +56,142 @@ export const ProgramarEvento =() => {
           <h1>Programar Evento</h1>
         </header>
         <section className="crearEvento">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            encType="multipart/form-data"
-            className="formularioEvento"
-          >
-            <div className="datosEvento">
-              <label>
-                Nombre del evento
-                <input
-                  type="text"
-                  {...register("nombre", {
-                    required: true,
-                  })}
-                />
-              </label>
-              <label>
-                Lugar
-                <select
-                  {...register("lugar", {
-                    required: true,
-                  })}
-                >
-                  {lugar?.map((lugar) => (
-                    <option key={lugar.id_Lugar} value={lugar.id_Lugar}>
-                      {lugar.nombre}{" "}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Fecha
-                <input
-                  type="date"
-                  {...register("fecha", {
-                    required: true,
-                  })}
-                  defaultValue={new Date().toISOString().split('T')[0]}
-                />
-              </label>
-              <label>
-                Hora
-                <input
-                  type="time"
-                  {...register("hora", {
-                    required: true,
-                  })}
-                />
-              </label>
-              <label>
-                Descripcion
-                <input
-                  type="text"
-                  {...register("descripcion", {
-                    required: true,
-                  })}
-                />
-              </label>
-              <label>
-                Imagen
-                <input
-                  type="file"
-                  {...register("imagen", {
-                    required: true,
-                  })}
-                />
-              </label>
+          <form className="formularioEvento" onSubmit={onSubmit} encType="multipart/form-data">
+            <div className="bloquesForm">
+              <div className="datosEvento">
+                <label>
+                  Nombre del evento
+                  <input
+                    type="text"
+                    {...register("nombre", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Lugar
+                  <select
+                    {...register("lugar", {
+                      required: true,
+                    })}
+                  >
+                    <option value="">Selecciona un lugar</option>
+                    {lugares?.map((lugar) => (
+                      <option key={lugar.id_Lugar} value={lugar.id_Lugar}>
+                        {lugar.nombre}{" "}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Fecha
+                  <input
+                    type="date"
+                    {...register("fecha", {
+                      required: true,
+                    })}
+                    defaultValue={new Date().toISOString().split('T')[0]}
+                  />
+                </label>
+                <label>
+                  Hora
+                  <input
+                    type="time"
+                    {...register("hora", {
+                      required: true,
+                    })}
+                  />
+                </label>
+                <label>
+                  Descripción
+                  <textarea
+                    {...register("descripcion", {
+                      required: true,
+                    })}
+                    rows={3}
+                  />
+                </label>
+                <label>
+                  Imagen
+                  <input
+                    type="file"
+                    accept="image/*"
+                    {...register("imagen", {
+                      required: true,
+                    })}
+                  />
+                </label>
+              </div>
+              <div className="datosEntradas">
+                <div className="tipoEntrada">
+                  <h4>VIP</h4>
+                  <div className="fila-entrada">
+                    <label>
+                      Cantidad
+                      <input
+                        type="number"
+                        min="0"
+                        {...register("cantidadEntradasVIP", { required: true })}
+                      />
+                    </label>
+                    <label>
+                      Precio
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01" // Incremento 0.01 para permitir decimales
+                        {...register("precioVIP", { required: true })}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="tipoEntrada">
+                  <h4>Platinium</h4>
+                  <div className="fila-entrada">
+                    <label>
+                      Cantidad
+                      <input
+                        type="number"
+                        min="0"
+                        {...register("cantidadEntradasPLATINIUM", { required: true })}
+                      />
+                    </label>
+                    <label>
+                      Precio
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01" // Incremento 0.01 para permitir decimales
+                        {...register("precioPLATINIUM", { required: true })}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="tipoEntrada">
+                  <h4>Standard</h4>
+                  <div className="fila-entrada">
+                    <label>
+                      Cantidad
+                      <input
+                        type="number"
+                        min="0"
+                        {...register("cantidadEntradasSTANDARD", { required: true })}
+                      />
+                    </label>
+                    <label>
+                      Precio
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01" // Incremento 0.01 para permitir decimales
+                        {...register("precioSTANDARD", { required: true })}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="datosEntradas">
-              <div className="tipoEntrada">
-                <label>
-                  Entradas VIP
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasVIP", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    step="0.01" // Incremento 0.01 para permitir decimales
-                    {...register("precioVIP", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Platinium
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasPLATINIUM", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioPLATINIUM", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-              <div className="tipoEntrada">
-                <label>
-                  Entradas Standard
-                  <input
-                    type="number"
-                    {...register("cantidadEntradasSTANDARD", {
-                      required: true,
-                    })}
-                  />
-                </label>
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    {...register("precioSTANDARD", {
-                      required: true,
-                    })}
-                  />
-                </label>
-              </div>
-            </div>
-            <input className="buttonCrearEvento" type="submit" value="Enviar" />
+            <input className="buttonCrearEvento" type="submit" value="Crear evento" />
           </form>
         </section>
       </main>

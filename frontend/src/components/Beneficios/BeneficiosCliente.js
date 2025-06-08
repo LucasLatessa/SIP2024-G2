@@ -1,5 +1,3 @@
-import { Header } from "../header-footer/header";
-import { Footer } from "../header-footer/footer";
 import "./styles/beneficios.css";
 import { getBeneficiosByCliente } from "../../services/beneficios.service";
 import { useEffect, useState } from "react";
