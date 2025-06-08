@@ -48,7 +48,6 @@ def crear_evento_post_migrate(sender, **kwargs):
                     nombre="Evento de prueba",
                     defaults={
                         "cantTickets":3,
-                        "cantTicketsTotal":3,
                         "fecha":datetime.strptime("2026-02-02", "%Y-%m-%d").date(),
                         "hora":"21:00",
                         "lugar":lugar,

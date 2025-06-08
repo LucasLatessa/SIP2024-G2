@@ -34,7 +34,6 @@ class Migration(migrations.Migration):
                 ('id_Evento', models.AutoField(primary_key=True, serialize=False)),
                 ('nombre', models.TextField()),
                 ('cantTickets', models.IntegerField(default=0)),
-                ('cantTicketsTotal', models.IntegerField(default=0)),
                 ('fecha', models.DateField(blank=True, null=True)),
                 ('hora', models.TimeField(blank=True, null=True)),
                 ('descripcion', models.TextField(blank=True, null=True)),

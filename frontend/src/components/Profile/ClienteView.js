@@ -16,7 +16,6 @@ export const ClienteView = ({ rol, user_id }) => {
         const ticketsConInfoCompleta = await Promise.all(
           res.data.tickets.map(async (ticket) => {
             const eventoRes = await getEvento(ticket.evento);
-            const lugarRes = await getLugar(eventoRes.data.lugar);
             const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
               day: '2-digit',
               month: '2-digit',
@@ -32,7 +31,7 @@ export const ClienteView = ({ rol, user_id }) => {
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: fechaFormateada,
               eventoHora: eventoRes.data.hora,
-              eventoLugarNombre: lugarRes.data.nombre,
+              eventoLugarNombre: eventoRes.data.lugar,
             };
           })
         );

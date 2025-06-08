@@ -18,14 +18,15 @@ export const EventoPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
+    useAuth0();
   const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
   const { getValues, register } = useForm();
   const [evento, setEvento] = useState(null);
   const [token, setToken] = useState();
-
+  const [maxCantidad, setMaxCantidad] = useState(null); // cantidad maxima segun tipo
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
@@ -78,11 +79,14 @@ export const EventoPage = () => {
     async function cargarEventos() {
       const resEvento = await getEvento(id);
       const evento = resEvento.data;
-      const fechaFormateada = new Date(evento.fecha).toLocaleDateString('es-AR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
+      const fechaFormateada = new Date(evento.fecha).toLocaleDateString(
+        "es-AR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }
+      );
 
       setEvento({
         ...evento,
@@ -102,14 +106,11 @@ export const EventoPage = () => {
       const idPref = await createPreference(ticket_id_list, quantity);
       if (idPref) {
         setPreferenceId(idPref);
-        await axios.get(
-          `${backendUrl}/tickets/reservar_ticket/`,
-          {
-            params: {
-              ticket_id: ticket_id_list.join(","),
-            },
-          }
-        );
+        await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
+          params: {
+            ticket_id: ticket_id_list.join(","),
+          },
+        });
       }
     } else {
       setcantTickets(ticket_id_list.length);
@@ -118,13 +119,22 @@ export const EventoPage = () => {
   };
 
   const handleTipoEntradaChange = async (e) => {
-    setTipoTicket(e.target.value);
+    const tipo = e.target.value;
+    setTipoTicket(tipo);
+
+    // buscar la cantidad disponible del tipo elegido
+    const entradaSeleccionada = evento.tickets_por_tipo.find(
+      (t) => t.tipo_ticket__tipo === tipo
+    );
+    setMaxCantidad(entradaSeleccionada?.cantidad || null); // actualiza el max del input
+
+    // pedir el precio al backend
     try {
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_precio_entrada/`,
         {
           params: {
-            tipo_ticket: e.target.value,
+            tipo_ticket: tipo,
             evento: id,
           },
         }
@@ -149,14 +159,20 @@ export const EventoPage = () => {
               />
             </header>
             <article className="informacionEvento">
-                <h1 className="titulo">{evento.nombre}</h1>
-                <p className="fecha">
-                  Fecha del evento: {evento.fecha} - {evento.hora}
-                </p>
+              <h1 className="titulo">{evento.nombre}</h1>
+              <p className="fecha">
+                Fecha del evento: {evento.fecha} - {evento.hora}
+              </p>
 
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
-                <form className="formComprarEntrada" onSubmit={e => { e.preventDefault(); handleBuy(); }}>
+                <form
+                  className="formComprarEntrada"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleBuy();
+                  }}
+                >
                   <label>
                     Tipo de entrada
                     <select
@@ -166,11 +182,17 @@ export const EventoPage = () => {
                       disabled={!!preferenceId}
                     >
                       <option value="" disabled>
-                        Selecciona una opción
+                        Selecciona una opcion
                       </option>
-                      <option value="STANDARD">STANDARD</option>
-                      <option value="PLATINIUM">PLATINIUM</option>
-                      <option value="VIP">VIP</option>
+                      {evento?.tickets_por_tipo.map((tipo) => (
+                        <option
+                          key={tipo.tipo_ticket__tipo}
+                          value={tipo.tipo_ticket__tipo}
+                        >
+                          {tipo.tipo_ticket__tipo} (Disponibles: {tipo.cantidad}
+                          )
+                        </option>
+                      ))}
                     </select>
                   </label>
 
@@ -183,10 +205,11 @@ export const EventoPage = () => {
                       {...register("cantidadEntradas", {
                         required: true,
                         validate: (value) =>
-                          value > 0 || "Debe ser un número positivo",
+                          value > 0 || "Debe ser un numero positivo",
                       })}
                       disabled={!!preferenceId}
                       min="1"
+                      max={maxCantidad || undefined}
                       onInput={(e) => {
                         if (e.target.value < 1) {
                           e.target.value = "";
@@ -194,7 +217,11 @@ export const EventoPage = () => {
                       }}
                     />
                   </label>
-                  {precioEntrada && <p className="parrafo">Precio por entrada: {precioEntrada}</p>}
+                  {precioEntrada && (
+                    <p className="parrafo">
+                      Precio por entrada: {precioEntrada}
+                    </p>
+                  )}
                   <div className="comprarTicketsButton">
                     {isAuthenticated && (!buttonClicked || !preferenceId) && (
                       <button className="comprarEntradaBtn" type="submit">
@@ -205,7 +232,10 @@ export const EventoPage = () => {
                       <div className="login-message">
                         <p>
                           Para comprar entradas, por favor{" "}
-                          <a href="" onClick={loginWithRedirect}>inicia sesión</a>.
+                          <a href="" onClick={loginWithRedirect}>
+                            inicia sesión
+                          </a>
+                          .
                         </p>
                       </div>
                     )}
@@ -216,7 +246,9 @@ export const EventoPage = () => {
                           <div className="loading">Cargando...</div>
                         ) : preferenceId ? (
                           <div className="wallet-container">
-                            <Wallet initialization={{ preferenceId: preferenceId }} />
+                            <Wallet
+                              initialization={{ preferenceId: preferenceId }}
+                            />
                           </div>
                         ) : (
                           <div className="error-message">

@@ -13,7 +13,6 @@ def test_revalorizacion_por_temporalidad():
     evento = Evento.objects.create(
         nombre='Evento de Prueba',
         cantTickets=100,
-        cantTicketsTotal=100,
         fecha=(datetime.now() + timedelta(days=7)).date(),  # Fecha en el futuro (30 días a partir de hoy)
         hora='20:00:00',
         lugar=lugar,

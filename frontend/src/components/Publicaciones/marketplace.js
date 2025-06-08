@@ -26,7 +26,6 @@ export const Marketplace = () => {
         const publicacionesConInfoCompleta = await Promise.all(
           res.data.publicaciones.map(async (publicacion) => {
             const ticketRes = await getTicket(publicacion.ticket_id);
-            console.log(ticketRes.data);
             const eventoRes = await getEvento(ticketRes.data.evento);
             const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
             const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {

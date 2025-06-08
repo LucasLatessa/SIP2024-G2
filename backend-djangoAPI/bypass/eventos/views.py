@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
+from rest_framework.response import Response
 from .serializer import EventoSerializer, EstadoEventoSerializer, LugarSerializer
 from .models import Evento, EstadoEvento, Lugar
 from tickets.models import Ticket, TipoTickets, Ticket, TipoTickets
@@ -8,11 +9,27 @@ from usuarios.models import Productora
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.utils import timezone
-
+from django.db.models import Count
 
 class EventoView(viewsets.ModelViewSet):
     serializer_class = EventoSerializer
     queryset = Evento.objects.all()
+
+    #para obtener tambien la cantidad de tickets por tipo 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        # contar cantidad de tickets por tipo para este evento(sin propietario)
+        tickets_por_tipo = (
+            Ticket.objects.filter(evento=instance,propietario__isnull=True)
+            .values('tipo_ticket__tipo')  # o el campo que quieras mostrar
+            .annotate(cantidad=Count('id_Ticket'))
+        )
+        return Response({
+            **serializer.data,
+            "tickets_por_tipo": tickets_por_tipo,
+        })
 
 
 class EstadoEventoView(viewsets.ModelViewSet):

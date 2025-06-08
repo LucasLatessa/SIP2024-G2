@@ -1,69 +1,73 @@
 .ticketQR {
-    width: 50vh;
-    height: 90vh;
+    width: 300px;
+    max-width: 95vw;
+    aspect-ratio: 9/16;
     margin: 0 auto;
     display: grid;
     grid-template-rows: 100%;
     grid-template-areas: "stack";
     overflow: hidden;
-}
-
-.imagenEventoQR{
-    margin: 0 auto;
-    height: 90vh;
-    grid-area: stack;
-    object-fit: cover;
-}
-
-.datosEventoQR{
-    grid-area: stack;
-    color: var(--color-letras-secundario);
-    text-align: center;
+    background: var(--color-fondo);
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(49,130,206,0.10);
     position: relative;
 }
 
-.datosEventoQRNombre{
-    font-size: 3rem;
-    text-transform: uppercase;
-    position: absolute;
-    top: 9rem;
-    left: 0;
-    right: 0;
-    line-height: 1.1;
-}
-
-.datosEventoQRFecha{
-    font-size: 1.2rem;
-    position: absolute;
-    top: 8rem; /*8rem*/
-    left: 0;
-    right: 0;
-}
-
-.datosEventoQRImagen{
-    width: 60%;
+.imagenEventoQR {
     margin: 0 auto;
-    position: absolute;
-    top: 18rem;
-    left: 0;
-    right: 0;
+    height:  100%;
+    grid-area: stack;
+    object-fit: cover;
+    z-index: 1;
 }
 
-.datosEventoQRhora{
-    font-size: 2rem;
+.datosEventoQR {
+    grid-area: stack;
+    color: var(--color-letras-secundario);
+    text-align: center;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none; /* evita que tape el QR si es necesario */
+}
+
+.datosEventoQRNombre {
+    font-size: 1.5rem;
+    text-transform: uppercase;
     font-weight: bold;
-    position: absolute;
-    bottom: 5.7rem;
-    left: 0;
-    right: 0;
-    color: var(--color-letras-primario);
+    margin-bottom: 0.3rem;
+    line-height: 1.1;
+    margin-top: 3rem;
 }
 
-.datosEventoQRlugar{
+.datosEventoQRFecha {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--color-letras-secundario);
+}
+
+.datosEventoQRImagen {
+    width: 90%;
+    min-width: 80px;
+    margin: 0rem auto;
+    display: block;
+}
+
+.datosEventoQRhora {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-letras-primario);
+    margin-top: 0.5rem;
+}
+
+.datosEventoQRlugar {
     font-size: 1rem;
     text-transform: uppercase;
-    position: absolute;
-    bottom: 3.3rem;
-    left: 0;
-    right: 0;
+    color: var(--color-letras-cuaternario);
+    font-weight: 500;
+    margin-top: 0.3rem;
 }
