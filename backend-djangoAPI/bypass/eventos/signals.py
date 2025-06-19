@@ -18,7 +18,8 @@ def crear_estados_evento(sender, **kwargs):
     estados = [
         'PENDIENTE',
         'APROBADO',
-        'CANCELADO'
+        'CANCELADO',
+        'AGOTADO'
     ]
     
     for estado in estados:

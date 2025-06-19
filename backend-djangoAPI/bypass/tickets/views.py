@@ -213,7 +213,7 @@ def timer_desreservar(data_ticket_id_list):
         ticket.reservado=False
         ticket.save()
     
-    print("se completo el timer el ticket")
+    print("Se completo el timer el ticket")
 
 
 @csrf_exempt
@@ -224,22 +224,46 @@ def prueba_mercadopago(request):
     data_ticket_id_list = body.get("ticket_id")
     data_unit_price = body.get("unit_price")
     data_unit_description = body.get("description")
-
-    respuesta= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
-    return JsonResponse({"id":respuesta})
+    resultado= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
+    if resultado.get("ok"):
+        # si se creo la preferencia correctamente
+        return JsonResponse({
+            "success": True,
+            "preference_id": resultado.get("preference_id"),
+            "init_point": resultado.get("init_point")
+        })
+    else:
+        # si hubo error, devolver info para debug
+        return JsonResponse({
+            "success": False,
+            "error": resultado.get("error"),
+            "status": resultado.get("status"),
+        }, status=resultado.get("status", 400))
 
 
 @csrf_exempt
 @api_view(["POST"])
 def entregarToken(request):
-    payment_id = request.query_params.get("data.id")
-    merchant_order = request.query_params.get("topic")
-    if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "evento")    
-        Ticket.modificarPropietario(data["additional_info"]["items"][0]["id"], data["additional_info"]["items"][0]["description"], "evento")
-        return JsonResponse({"cliente": "cliente_data"})
-    
+    payment_id = request.query_params.get("id")
+    topic = request.query_params.get("topic")
+    # Solo procesar pagos, no merchant orders
+    if topic == "payment" and payment_id:
+        data = entregartoken(payment_id, "evento")
+
+        # Verificar que pago esté aprobado antes de seguir
+        if data.get("status") == "approved":
+            try:
+                ticket_id = data["additional_info"]["items"][0]["id"]
+                cliente_nickname = data["additional_info"]["items"][0]["description"]
+                Ticket.modificarPropietario(ticket_id, cliente_nickname, "evento")
+                return JsonResponse({"cliente": "cliente_data"})
+            except Exception as e:
+                print(f"Error procesando ticket: {e}")
+                return JsonResponse({"error": "Error procesando ticket"}, status=500)
+        else:
+            return JsonResponse({"error": "Pago no aprobado aún"}, status=400)
     else:
+        # No procesar merchant_order o notificaciones no deseadas
         return JsonResponse({"cliente": None})
 
 

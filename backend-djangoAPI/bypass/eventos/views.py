@@ -22,8 +22,9 @@ class EventoView(viewsets.ModelViewSet):
 
         # contar cantidad de tickets por tipo para este evento(sin propietario)
         tickets_por_tipo = (
-            Ticket.objects.filter(evento=instance,propietario__isnull=True)
-            .values('tipo_ticket__tipo')  # o el campo que quieras mostrar
+            Ticket.objects
+            .filter(evento=instance, propietario__isnull=True, reservado=False)
+            .values('tipo_ticket__tipo')  
             .annotate(cantidad=Count('id_Ticket'))
         )
         return Response({
@@ -114,10 +115,6 @@ def crear_evento(request):
                 )
                 precioEntrada = request.data.get("precio" + tipo_ticket.tipo, "")
                 
-                print(
-                    f"Tipo: {tipo_ticket.tipo}, Cantidad: {cantEntradas}, Precio: {precioEntrada}"
-                )
-
                 if (cantEntradas and precioEntrada):  # Asegúrate de que estos valores existen y son válidos
                     # Creacio de las entradas del evento, segun el tipo
                     crearTicketConTipo(int(cantEntradas),tipo_ticket,serializer.instance,precioEntrada)
@@ -203,7 +200,6 @@ def actualizar_evento(request, pk):
 
         # Deserializar los datos de la solicitud y actualizar el evento
         data = request.data.dict()  # Convertir QueryDict a dict
-        #print(data)
         if 'imagen' not in request.FILES:
             #data['imagen'] = evento.imagen
             data.pop('imagen', None)  # Eliminar el campo imagen si no está presente

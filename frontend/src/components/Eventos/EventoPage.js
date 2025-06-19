@@ -17,16 +17,16 @@ export const EventoPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
+  const [error, setError] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
   const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
     useAuth0();
-  const [cantTickets, setcantTickets] = useState(null);
   const { id } = useParams(); //Obtengo el id del evento
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
   const { getValues, register } = useForm();
   const [evento, setEvento] = useState(null);
   const [token, setToken] = useState();
-  const [maxCantidad, setMaxCantidad] = useState(null); // cantidad maxima segun tipo
+  const [maxCantidadTickets, setMaxCantidadTickets] = useState(null); // cantidad maxima segun tipo
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
@@ -67,7 +67,7 @@ export const EventoPage = () => {
           description: user.nickname,
         }
       );
-      return response.data.id;
+      return response.data;
     } catch (error) {
       console.error(error);
       return null;
@@ -78,6 +78,7 @@ export const EventoPage = () => {
   useEffect(() => {
     async function cargarEventos() {
       const resEvento = await getEvento(id);
+      console.log("Evento obtenido:", resEvento);
       const evento = resEvento.data;
       const fechaFormateada = new Date(evento.fecha).toLocaleDateString(
         "es-AR",
@@ -98,25 +99,47 @@ export const EventoPage = () => {
 
   //Realizo la compra de tickets
   const handleBuy = async () => {
-    setButtonClicked(true);
-    setLoading(true);
-    const quantity = parseInt(getValues("cantidadEntradas"));
-    const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
-    if (ticket_id_list.length === quantity) {
-      const idPref = await createPreference(ticket_id_list, quantity);
-      if (idPref) {
-        setPreferenceId(idPref);
-        await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
-          params: {
-            ticket_id: ticket_id_list.join(","),
-          },
-        });
-      }
-    } else {
-      setcantTickets(ticket_id_list.length);
-    }
+  setButtonClicked(true);
+  setLoading(true);
+  setError("");
+
+  const quantity = parseInt(getValues("cantidadEntradas"));
+  // Validar tipo de ticket
+  if (!tipoTicket) {
+    setError("Seleccioná un tipo de entrada.");
     setLoading(false);
-  };
+    return;
+  }
+  // Validar cantidad
+  if (isNaN(quantity) || quantity < 1) {
+    setError("Ingresá una cantidad válida de entradas.");
+    setLoading(false);
+    return;
+  }
+  
+  const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
+
+  if (ticket_id_list.length === quantity) {
+    const result = await createPreference(ticket_id_list, quantity);
+    console.log("Resultado de la preferencia:", result);
+    if (result?.success) {
+      setPreferenceId(result.preference_id);
+
+      await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
+        params: {
+          ticket_id: ticket_id_list.join(","),
+        },
+      });
+    } else {
+      setError("Hubo un error al crear la preferencia de pago.");
+    }
+
+  } else {
+    setError(`Hay ${ticket_id_list.length} tickets disponibles.`);
+  }
+
+  setLoading(false);
+};
 
   const handleTipoEntradaChange = async (e) => {
     const tipo = e.target.value;
@@ -126,7 +149,7 @@ export const EventoPage = () => {
     const entradaSeleccionada = evento.tickets_por_tipo.find(
       (t) => t.tipo_ticket__tipo === tipo
     );
-    setMaxCantidad(entradaSeleccionada?.cantidad || null); // actualiza el max del input
+    setMaxCantidadTickets(entradaSeleccionada?.cantidad || null); // actualiza el max del input
 
     // pedir el precio al backend
     try {
@@ -209,7 +232,7 @@ export const EventoPage = () => {
                       })}
                       disabled={!!preferenceId}
                       min="1"
-                      max={maxCantidad || undefined}
+                      max={maxCantidadTickets || undefined}
                       onInput={(e) => {
                         if (e.target.value < 1) {
                           e.target.value = "";
@@ -252,7 +275,7 @@ export const EventoPage = () => {
                           </div>
                         ) : (
                           <div className="error-message">
-                            Cantidad tickets disponibles: {cantTickets}
+                            {error}
                           </div>
                         )}
                       </>

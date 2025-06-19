@@ -169,7 +169,6 @@ def crear_usuario(request):
     user = json.loads(request.body)
     # Obtiene el nuevo rol del cuerpo de la solicitud
     role = request.data.get('rol')
-    #print(role)
     try:
         if role=="productora":
             # Crear un nuevo administrador con los datos del Usuario

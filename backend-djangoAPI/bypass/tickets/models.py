@@ -31,7 +31,7 @@ class Ticket(models.Model):
     tipo_ticket = models.ForeignKey(
         TipoTickets, on_delete=models.CASCADE, blank=True, null=True
     )
-    qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
+    qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True, default=None)
     usada = models.BooleanField(default=False)
     reservado = models.BooleanField(default=False)
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
@@ -41,7 +41,6 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         # Cada vez que hay update
         #super().save(*args, **kwargs)
-        self.generar_qr()
         super().save(*args, **kwargs)
 
     def modificarPropietario(ticket_id_str, propietario, tipo):
@@ -54,7 +53,11 @@ class Ticket(models.Model):
 
                 #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles
                 ticket.propietario = nuevo_propietario
+                # Generar QR
                 ticket.save()
+                ticket.generar_qr()
+                ticket.save()
+                
                 if (tipo == "evento"):
                     evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
                     evento.cantTickets -= 1
