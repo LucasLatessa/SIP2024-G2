@@ -9,7 +9,7 @@ import { Footer } from "../header-footer/footer";
 
 export const Beneficios = () => {
   const [usuario, setUsuario] = useState(null);
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     async function getUsuario() {
@@ -24,13 +24,23 @@ export const Beneficios = () => {
     }
     getUsuario();
   }, [isAuthenticated, user?.nickname]);
-
-  if (!isAuthenticated || !usuario) {
-    return <div>Cargando...</div>;
-  }
+  
+  
 
   let contenido;
-  if (usuario.rol === 'CLIENTE') {
+  if (!usuario && isAuthenticated) {
+    contenido = <div>Cargando...</div>;
+  } else if(!isAuthenticated){
+    contenido = <div className="login-message" style={{ textAlign: 'center', marginTop: '20px', color: '#ffff' }}>
+            <p>
+              Para ver beneficios, por favor{" "}
+              <a href="" onClick={loginWithRedirect}>
+                inicia sesión
+              </a>
+              .
+            </p>
+          </div>
+  } else if (usuario.rol === 'CLIENTE') {
     contenido = <BeneficiosCliente usuario={user} />;
   } else if (usuario.rol === 'PRODUCTORA') {
     contenido = <BeneficiosProductora usuario={user} />;
@@ -42,6 +52,9 @@ export const Beneficios = () => {
     <>
       <Header />
       <main>
+        <header className="tituloBeneficios">
+          <h1>Beneficios</h1>
+        </header>
         {contenido}
       </main>
       <Footer />

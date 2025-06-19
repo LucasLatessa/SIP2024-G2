@@ -21,9 +21,6 @@ export const BeneficiosCliente = ({usuario}) => {
   return (
     <>
       <main>
-        <header className="tituloBeneficios">
-          <h1>Beneficios</h1>
-        </header>
         <section className="allListaBeneficios">
           {
             beneficios?.map((beneficio) => (
