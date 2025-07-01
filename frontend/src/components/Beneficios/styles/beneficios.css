@@ -10,8 +10,10 @@
   }
 .tituloBeneficios h1 {
     text-align: center;
-    font-size: 3.5rem;
+    font-size: 2.2rem;
     color: var(--color-letras-secundario);
+    font-weight: bold;
+    margin: 0;
     text-shadow: 2px 2px 4px var(--color-letras-primario);
 }
 

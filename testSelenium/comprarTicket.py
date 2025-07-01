@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 import time
 import logging
 
@@ -30,9 +31,12 @@ contraseña = "Cliente123"
 usuarioMP = "TESTUSER320418584"
 contraseñaMP = "qSuDm2hNuV"
 verificacionMP="663413"
+chrome_options = Options()
+chrome_options.add_argument('--ignore-certificate-errors')
+
 #Abrir pagina
-driver = webdriver.Chrome()
-driver.get("http://localhost:4040/")
+driver = webdriver.Chrome(options=chrome_options)
+driver.get("https://35.196.38.34:4040/")
 
 #Inicio sesion
 ejecutarClick("div.login")
@@ -50,11 +54,11 @@ ejecutarClick("button[type='submit']")
 ejecutarClick("a[href='/eventos']")
 time.sleep(2)
 #Selecciono 1 evento
-ejecutarClick("a[href='/evento/108']")
+ejecutarClick("a[href='/evento/1']")
 time.sleep(2)
 #Selecciono tipo de entrada
 ejecutarClick("select[id='tipoEntrada']")
-ejecutarClick("option[value='STANDARD']")
+ejecutarClick("option[value='PLATINIUM']")
 
 #Cantidad entrdas
 modificarCampo("1", "input[id='cantidadEntradas']")
@@ -64,7 +68,7 @@ time.sleep(2)
 #Comprar
 ejecutarClick("button")
 
-time.sleep(2)
+time.sleep(3)
 
 #MP
 ejecutarClick("button[aria-label='Pagar con Mercado Pago']")
@@ -72,7 +76,7 @@ ejecutarClick("button[aria-label='Pagar con Mercado Pago']")
 time.sleep(2)
  
 #Cuenta MP
-ejecutarClick("div[class='title']") 
+#ejecutarClick("div[class='title']") 
 
 time.sleep(4)
 
@@ -83,21 +87,21 @@ time.sleep(2)
 modificarCampo(contraseñaMP,"input[type='password']")
 ejecutarClick("button[type='submit']")
 
-time.sleep(2)
+time.sleep(3)
 
 #Pagar
-ejecutarClick("button[type='submit']")
+ejecutarClick("button#\\:rb\\:")
 time.sleep(2)
 # Ingresar código de verificación de Mercado Pago
 
 #-----------------COMENTAR SI DEJA DE PEDIR LA VERIFICACION-----------------
-""" for i in range(len(verificacionMP)):
+for i in range(len(verificacionMP)):
     selector = f"input[id=':R6muh:-digit-{i}']"
     modificarCampo(verificacionMP[i], selector)
 
 # Intenta ejecutar el click, y maneja la excepción si no se encuentra el botón
 ejecutarClick("button[data-testid='submit_button']")
- """
+ 
 #--------------------------------------------------------------------------- 
 
 time.sleep(15)

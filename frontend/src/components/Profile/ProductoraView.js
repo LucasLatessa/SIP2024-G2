@@ -9,7 +9,6 @@ export const ProductoraView = ({ rol, id }) => {
   useEffect(() => {
     const fetchEventos = async () => {
       try {
-        //console.log(id)
         const response = await getEventosByProductora(id);
         setEventos(response.data);
       } catch (error) {

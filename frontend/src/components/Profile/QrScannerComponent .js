@@ -5,74 +5,100 @@ import { useParams } from "react-router";
 import "./styles/escanearQR.css";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { cambiarEstadoTicket, getTicket } from "../../services/tickets.service";
+import { getEvento } from "../../services/eventos.service";
 
-//Escaner QR para las entradas
 export const QrScannerComponent = () => {
-  const { id } = useParams(); //Obtengo el id del evento
-  const [idt, setidt] = useState(null);
-  const [ide, setide] = useState(null);
-  const [dni, setDni] = useState(null);
+  const { id } = useParams();
+  const [ticketInfo, setTicketInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [scanActivo, setScanActivo] = useState(true);
 
-  //Analizo la entrada para ver si corresponde a ese evento y no esta usada
   const analizarEntrada = async (data) => {
-    if (data) {
-      const [ide, idt, dni] = data.split("-"); //Formato de los datos IDT-IDE-DNI
+    if (!data || !scanActivo) return;
 
-      setidt(idt);
-      setide(ide);
-      //Si es una entrada de ese evento
+    setScanActivo(false);
+    const [ide, idt, dni] = data.split("-");
+    try {
+      const resEvento = await getEvento(ide);
       if (id === ide) {
-        //Pertenece al evento, pero puede ser que este usada
-        const ticketData = await obtenerTicket(idt);
-        if (ticketData && !ticketData.usada) {
-          setDni(dni);
-          //Cambio el estado a usado
-          cambiarEstado(idt);
+        const ticketData = await getTicket(idt);
+        if (ticketData) {
+          setTicketInfo({
+            tipo_ticket: ticketData.data.tipo_ticket,
+            ide: resEvento.data.nombre,
+            dni: ticketData.data.propietario,
+            mensaje: ticketData.data.usada
+              ? "La entrada ya fue usada"
+              : "Entrada válida, que lo disfrute!",
+          });
+          if (!ticketData.data.usada) {
+            await cambiarEstadoTicket(idt);
+          }
+          setError(null);
         } else {
-          setError("La entrada ya fue usada");
+          setTicketInfo(null);
+          setError("No se encontró el ticket");
         }
       } else {
         setError("La entrada no pertenece a este evento");
       }
+    } catch (e) {
+      setError("Error procesando la entrada");
     }
   };
 
-  //Obtengo el ticket en cuestion
-  const obtenerTicket = async (idt) => {
-    try {
-      const res = await getTicket(idt);
-      return res.data;
-    } catch (error) {
-      console.error("Error obteniendo el ticket:", error);
-      setError("Error obteniendo el ticket");
-      return null;
-    }
-  };
-
-  //Realizo una peticion para cambiar el estado, asi no puede volver a usarla
-  const cambiarEstado = async (idt) => {
-    await cambiarEstadoTicket(idt);
+  const cerrarModal = () => {
+    setTicketInfo(null);
+    setError(null);
+    setScanActivo(true);
   };
 
   return (
     <>
       <Header />
-      <main>
+      <main className="qr-main">
         <h1 className="escanearQRTitulo">Validar entrada</h1>
-        {!dni && (
-          <Scanner onScan={(result) => analizarEntrada(result[0].rawValue)} />
+        {scanActivo && (
+          <div className="scanner-box">
+            <Scanner
+              onScan={(result) => {
+                if (result?.[0]?.rawValue) {
+                  analizarEntrada(result[0].rawValue);
+                }
+              }}
+              options={{
+                constraints: { facingMode: "environment" },
+              }}
+            />
+          </div>
         )}
-        {error && <h2 className="escanearQR">{error}</h2>}
-        {dni && (
-          <section>
-            <h2 className="escanearQR">Entrada valida, que lo disfrute!</h2>
-            <ul className="datosEntradaQR">
-              <li>Ticket: {idt}</li>
-              <li>Evento: {ide}</li>
-              <li>DNI: {dni}</li>
-            </ul>
-          </section>
+        {/* Modal */}
+        {!scanActivo && (ticketInfo || error) && (
+          <div className="modal-qr-overlay">
+            <div className="modal-qr-content">
+              {ticketInfo ? (
+                <>
+                  <h2
+                    className={
+                      ticketInfo.mensaje === "Entrada válida, que lo disfrute!"
+                        ? "escanearQR"
+                        : "errorQR"
+                    }
+                  >
+                    {ticketInfo.mensaje}
+                  </h2>
+                  <ul className="datosEntradaQR">
+                    <li>Ticket: {ticketInfo.tipo_ticket}</li>
+                    <li>Evento: {ticketInfo.ide}</li>
+                    <li>DNI: {ticketInfo.dni}</li>
+                  </ul>
+                </>
+              ) : error ? (
+                <h2 className="errorQR">{error}</h2>
+              ) : null}
+              <button onClick={cerrarModal}>Cerrar</button>
+            </div>
+          </div>
         )}
       </main>
       <Footer />

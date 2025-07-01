@@ -22,29 +22,31 @@ export const Eventos = () => {
       const datosEventoCompleto = await Promise.all(
         res.data.map(async (evento) => {
           const precios = await getTicketByEventPrecio(evento.id_Evento)
+          const fechaFormateada = new Date(evento.fecha).toLocaleDateString('es-AR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
           return {
             id: evento.id_Evento,
             nombre: evento.nombre,
             imagen: evento.imagen,
-            precioMin: precios.data.precios[0].precioMinimo,
-            precioMax: precios.data.precios[0].precioMaximo,
-            fecha: evento.fecha,
+            precioMin: precios.data.precios.precioMinimo,
+            precioMax: precios.data.precios.precioMaximo,
+            fecha: fechaFormateada,
             hora: evento.hora
           }
           
         })
       )
-      //console.log(datosEventoCompleto[0].precioMin)
       setEventos(datosEventoCompleto);
       setFilteredEventos(datosEventoCompleto);
     }
-
     async function ticketsEventos(){
       const res = await getTicketByEventPrecio(res.data)
     }
 
     cargarEventos();
-    
   }, []);
 
   /* --------------------

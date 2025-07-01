@@ -54,66 +54,11 @@ def get_usuario_by_nickname(request, nickname):
             'apellido': usuario.apellido,
             'correo': usuario.correo,
             'dni': dni,
-            'public_key': usuario.Public_Key,
-            'access_token': usuario.Access_Token,
+            'Public_Key': usuario.Public_Key,
+            'Access_Token': usuario.Access_Token,
             'rol': usuario.rol
         }
         return JsonResponse({'usuario': usuario_data})
-    except Usuario.DoesNotExist:
-        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
-
-@csrf_exempt
-@api_view(['PUT'])
-def update_cliente(request, cliente_id):
-    # Obtener el cliente existente por su ID
-    try:
-        cliente = Cliente.objects.get(user_id=cliente_id)
-    except Cliente.DoesNotExist:
-        return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
-    
-    # Obtener los datos actualizados del cliente del cuerpo de la solicitud
-    my_data = request.data.get("informacion", {})
-    nickname = my_data.get("nickname", cliente.nickname)
-    nombre = my_data.get("nombre", cliente.nombre)
-    apellido = my_data.get("apellido", cliente.apellido)
-    correo = my_data.get("correo", cliente.correo)
-    dni = my_data.get("dni", cliente.dni)
-
-    print(dni)
-    print(apellido)
-    # Actualizar los campos del cliente con los nuevos datos
-    cliente.user_id = cliente_id
-    cliente.nickname = nickname
-    cliente.nombre = nombre
-    cliente.apellido = apellido
-    cliente.correo = correo
-    cliente.dni = dni
-
-    # Guardar los cambios en la base de datos
-    cliente.save()
-    # Devolver la respuesta con el cliente actualizado
-    cliente_data = {
-        'id': cliente_id,
-        'nickname': cliente.nickname,
-        'nombre': cliente.nombre,
-        'apellido': cliente.apellido,
-        'correo': cliente.correo,
-        'dni': cliente.dni
-    }
-    return JsonResponse({'cliente': cliente_data})
-
-
-@api_view(['PUT'])
-def updateMP(request, nn):
-    try:
-        user = Usuario.objects.get(nickname=nn)
-        public_key = request.data.get('public_key')
-        access_token = request.data.get('access_token')
-
-        user.Public_Key = public_key
-        user.Access_Token = access_token
-        user.save()
-        return JsonResponse({'mensaje': 'Claves cargadas con exito'}, status=200)
     except Usuario.DoesNotExist:
         return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
 
@@ -224,7 +169,6 @@ def crear_usuario(request):
     user = json.loads(request.body)
     # Obtiene el nuevo rol del cuerpo de la solicitud
     role = request.data.get('rol')
-    #print(role)
     try:
         if role=="productora":
             # Crear un nuevo administrador con los datos del Usuario

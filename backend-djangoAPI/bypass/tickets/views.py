@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
+
 from rest_framework import viewsets
 from .serializer import (
     TicketSerializer,
@@ -20,8 +21,9 @@ from datetime import datetime
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 from utils.mercadopago import preferencia, entregartoken
 import sys
-
-
+import time
+import threading
+from django.db.models import Min, Max
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
@@ -129,6 +131,16 @@ def entregarTicketTpublicacion(request):
     
     else:
         return JsonResponse({"cliente": None})
+@api_view(["PUT"])
+def transferirTicket(request):
+    body = json.loads(request.body)
+    id_ticket = body.get("id_ticket")
+    nuevoPropietario = body.get("nuevoPropietario")
+    Ticket.transferir(str(id_ticket), nuevoPropietario)
+    publicacion = Publicacion.objects.get(ticket = id_ticket)
+    Publicacion.modificarPublicado(publicacion.id_Publicacion)
+    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
+
 
 # Funcion para obtener todos los tickets de un evento
 # @authorized
@@ -150,31 +162,20 @@ def get_tickets_by_evento(request, evento_id):
     return JsonResponse({"tickets": ticket_data})
 
 def get_tickets_by_evento_min_max(request, evento_id):
-# Obtengo todos los tickets de ese evento
-    tickets = Ticket.objects.filter(evento_id=evento_id,usada=False)
+    # Obtengo los valores mínimo y máximo de los tickets no usados de ese evento
+    precios = Ticket.objects.filter(evento_id=evento_id, usada=False).aggregate(
+        precioMinimo=Min('precioInicial'),
+        precioMaximo=Max('precioInicial')
+    )
 
-    valorMax = 10000000000
-    min = valorMax
-    max = 0
-    for ticket_no_usados in  tickets:
-        if ticket_no_usados.precioInicial >= max:
-            max = ticket_no_usados.precioInicial
-        elif  ticket_no_usados.precioInicial <= min:
-            min = ticket_no_usados.precioInicial
+    # Si no hay tickets, establecer precios en 0
+    precios_data = {
+        "precioMaximo": precios["precioMaximo"] or 0,
+        "precioMinimo": precios["precioMinimo"] or 0
+    }
 
-    if valorMax == min:
-        min = 0
-
-    # Creo el JSON  
-    precios_data = [
-        {
-            "precioMaximo": max,
-            "precioMinimo": min
-        }
-    ]
-
-    # Devuelve los tickets como una respuesta JSON
-    return JsonResponse({"precios":precios_data})
+    # Devuelve la respuesta en formato JSON
+    return JsonResponse({"precios": precios_data})
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
@@ -186,12 +187,33 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
     tickets_evento = Ticket.objects.filter(evento=evento_id)
     ticket_id = None
     for ticket in tickets_evento:
-        if (ticket.propietario is None) and (ticket.tipo_ticket.tipo == tipo_ticket):
+        if (ticket.propietario is None) and (not ticket.reservado) and (ticket.tipo_ticket.tipo == tipo_ticket):
             ticket_id = ticket.id_Ticket
             if contador < int(quantity):
                 contador += 1
                 ticket_id_list.append(ticket_id)
     return JsonResponse({"ticket_id_list": ticket_id_list})
+
+def reservar_ticket(request: HttpRequest):
+    data_ticket_id_list = request.GET.get("ticket_id").split(",")
+    for ticket_id in data_ticket_id_list :
+        ticket = Ticket.objects.get(id_Ticket=ticket_id)
+        ticket.reservado=True
+        ticket.save()
+
+    hilo=threading.Thread(target=timer_desreservar,args=(data_ticket_id_list,), daemon=False)
+    hilo.start()
+
+    return JsonResponse({"ticket_id_list": "data_ticket_id_list"})
+
+def timer_desreservar(data_ticket_id_list):
+    time.sleep(300)#5 minutos
+    for ticket_id in data_ticket_id_list :
+        ticket = Ticket.objects.get(id_Ticket=ticket_id)
+        ticket.reservado=False
+        ticket.save()
+    
+    print("Se completo el timer el ticket")
 
 
 @csrf_exempt
@@ -202,22 +224,46 @@ def prueba_mercadopago(request):
     data_ticket_id_list = body.get("ticket_id")
     data_unit_price = body.get("unit_price")
     data_unit_description = body.get("description")
-
-    respuesta= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
-    return JsonResponse({"id":respuesta})
+    resultado= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
+    if resultado.get("ok"):
+        # si se creo la preferencia correctamente
+        return JsonResponse({
+            "success": True,
+            "preference_id": resultado.get("preference_id"),
+            "init_point": resultado.get("init_point")
+        })
+    else:
+        # si hubo error, devolver info para debug
+        return JsonResponse({
+            "success": False,
+            "error": resultado.get("error"),
+            "status": resultado.get("status"),
+        }, status=resultado.get("status", 400))
 
 
 @csrf_exempt
 @api_view(["POST"])
 def entregarToken(request):
-    payment_id = request.query_params.get("data.id")
-    merchant_order = request.query_params.get("topic")
-    if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "evento")    
-        Ticket.modificarPropietario(data["additional_info"]["items"][0]["id"], data["additional_info"]["items"][0]["description"], "evento")
-        return JsonResponse({"cliente": "cliente_data"})
-    
+    payment_id = request.query_params.get("id")
+    topic = request.query_params.get("topic")
+    # Solo procesar pagos, no merchant orders
+    if topic == "payment" and payment_id:
+        data = entregartoken(payment_id, "evento")
+
+        # Verificar que pago esté aprobado antes de seguir
+        if data.get("status") == "approved":
+            try:
+                ticket_id = data["additional_info"]["items"][0]["id"]
+                cliente_nickname = data["additional_info"]["items"][0]["description"]
+                Ticket.modificarPropietario(ticket_id, cliente_nickname, "evento")
+                return JsonResponse({"cliente": "cliente_data"})
+            except Exception as e:
+                print(f"Error procesando ticket: {e}")
+                return JsonResponse({"error": "Error procesando ticket"}, status=500)
+        else:
+            return JsonResponse({"error": "Pago no aprobado aún"}, status=400)
     else:
+        # No procesar merchant_order o notificaciones no deseadas
         return JsonResponse({"cliente": None})
 
 
@@ -234,10 +280,3 @@ def cambiar_estado_ticket(request, id_Ticket):
     ticket.save()
     return JsonResponse({"mensaje": "Cambio de estado a usado!"}, status=200)
 
-@api_view(["PUT"])
-def transferirTicket(request):
-    body = json.loads(request.body)
-    id_ticket = body.get("id_ticket")
-    nuevoPropietario = body.get("nuevoPropietario")
-    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario)  
-    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)

@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Ticket, Precio, Publicacion, TipoTickets
 
 class TicketSerializer(serializers.ModelSerializer):
+    tipo_ticket = serializers.StringRelatedField()
+    propietario = serializers.CharField(source='propietario.dni')
     class Meta:
         model = Ticket
         fields = '__all__'

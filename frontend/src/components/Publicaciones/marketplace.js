@@ -28,14 +28,20 @@ export const Marketplace = () => {
             const ticketRes = await getTicket(publicacion.ticket_id);
             const eventoRes = await getEvento(ticketRes.data.evento);
             const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
+            const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
             return {
               id: publicacion.id_Publicacion,
               precio: publicacion.precio,
               fecha: publicacion.fecha,
+              precio_original: ticketRes.data.precioInicial,
               tipo: tipoRes.data.tipo,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
-              eventoFecha: eventoRes.data.fecha,
+              eventoFecha: fechaFormateada,
               eventoHora: eventoRes.data.hora,
             };
           })
@@ -146,6 +152,7 @@ export const Marketplace = () => {
               id={publicacion.id}
               foto={publicacion.foto}
               precio={publicacion.precio}
+              precio_original={publicacion.precio_original}
               eventoNombre={publicacion.eventoNombre}
               eventoFecha={publicacion.eventoFecha}
               eventoHora={publicacion.eventoHora}

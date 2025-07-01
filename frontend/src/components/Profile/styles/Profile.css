@@ -1,6 +1,3 @@
-body,main {
-  background-color: var(--color-secundario);
-}
 
 
 .profile{
@@ -16,12 +13,6 @@ body,main {
   justify-content: center;
   align-items: center;
 }
-
-
-
-
-
-
 .datosContainer {
   display: flex;
   flex-direction: column;
@@ -36,51 +27,49 @@ body,main {
 .datos, .noLogin, .chargeClient {
   color: aliceblue;
 }
+.MP{
+  color: #009ee3;
+}
 .error-message {
   color: black;
 }
 
-
-
 .formulario-edicion {
-  background-color: #f55555;
+  background-color: var(--color-principal-claro);
   padding: 20px;
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .formulario-edicion label {
   display: block;
-  margin-bottom: 5px;
-  color:black
+  margin-bottom: 4px;
+  color: black;
+  text-align: center;
 }
 
 .formulario-edicion input {
+  display: block;
+  margin: 0 auto 10px auto;
   width: 100%;
+  max-width: 220px;
   padding: 10px;
+  background-color: var(--color-secundario);
+  color: var(--color-letras-secundario);
   border-radius: 5px;
   border: 2px solid #ccc;
+  text-align: center;
 }
 .formulario-edicion button {
   display: block;
   margin: 0 auto; 
 }
-.formulario-edicion button:hover {
-  color: var(--color-secundario);
-  border: 1px solid black;
-}
-button {
-  background-color: var(--color-letras-cuaternario);
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  padding: 10px 20px;
-  margin:5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 .logout{
   background-color: var(--color-letras-terceario);
 }
@@ -136,9 +125,7 @@ button {
   background-color: var(--color-secundario);
   color: aliceblue;
 }
-label{
-  display: block;
-}
+
 /*--------------REPORTE EVENTO-------------- */
 
 .reporteEvento {
@@ -160,10 +147,6 @@ label{
   margin-right: 20px;
 }
 
-h1 {
-  font-size: 24px;
-  margin: 0;
-}
 
 .stats {
   display: flex;
@@ -324,4 +307,48 @@ h1 {
 .asistencia-baja p:nth-child(2) {
   color: red !important;  
   font-weight: bold;
+}
+
+/* Restore: */
+.restore-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restore-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+.restore-content h2 {
+  margin-bottom: 20px;
+}
+
+.restore-content input[type="file"] {
+  margin-bottom: 10px;
+}
+
+.restore-content button {
+  padding: 10px 20px;
+  background-color: var(--color-letras-cuaternario);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.restore-content button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }

@@ -3,65 +3,66 @@ import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
 import "../Eventos/styles/EventoPage.css";
 import { useEffect, useState } from "react";
-import { getPublicacion,crearPreferenciaEvento } from "../../services/publicacion.service";
+import { getPublicacion, crearPreferenciaEvento } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
-import { getTicket } from "../../services/tickets.service";
+import { getTicket, getTipoTicket } from "../../services/tickets.service";
 import { getUser, getUserNick } from "../../services/usuarios.service";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-//Pagina donde se puede ver la publicacion en si
 export const PublicacionPage = () => {
-
-  const { id } = useParams(); //Obtengo el id del evento
+  const { id } = useParams();
   const [publicacion, setPublicacion] = useState(null);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [ticketId, setTicketId] = useState(null);
-  const { user,getAccessTokenSilently } = useAuth0();
-  const [userNoAuth0,setUserNoAuth0 ] = useState(null);
-  const [token, setToken] = useState();
-  const [userVendedor, setUserVendedor] = useState(null)
+  const [userNoAuth0, setUserNoAuth0] = useState(null);
+  const [userVendedor, setUserVendedor] = useState(null);
 
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
+  // Cargar datos de la publicación y ticket
   useEffect(() => {
-    async function cargarPublicacion() {
+    const cargarPublicacion = async () => {
       try {
         const res = await getPublicacion(id);
-        const publicacionConInfoCompleta = res.data;
-        const ticketRes = await getTicket(publicacionConInfoCompleta.ticket);
+        const publicacionData = res.data;
+        const ticketRes = await getTicket(publicacionData.ticket);
         setTicketId(ticketRes);
+        const tipoTicket = await getTipoTicket(ticketRes.data.tipo_ticket);
         const vendedorRes = await getUser(ticketRes.data.propietario);
-        setUserVendedor(vendedorRes); // Aquí se establece el userVendedor
+        setUserVendedor(vendedorRes);
         const eventoRes = await getEvento(ticketRes.data.evento);
-        const publicacionCompleta = {
-          id: publicacionConInfoCompleta.id_Publicacion,
-          precio: publicacionConInfoCompleta.precio,
-          fecha: publicacionConInfoCompleta.fecha,
+
+        const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+
+        setPublicacion({
+          id: publicacionData.id_Publicacion,
+          precio: publicacionData.precio,
+          tipo: tipoTicket.data.tipo,
+          fecha: publicacionData.fecha,
           foto: eventoRes.data.imagen,
           vendedorNombre: vendedorRes.data.nickname,
           eventoNombre: eventoRes.data.nombre,
-          eventoFecha: eventoRes.data.fecha,
+          eventoDesc: eventoRes.data.descripcion,
+          eventoFecha: fechaFormateada,
           eventoHora: eventoRes.data.hora,
-        };
-        setPublicacion(publicacionCompleta);
+        });
       } catch (error) {
         console.error("Error al cargar la publicación:", error);
       }
-    }
-
-    async function obtenerToken() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-
+    };
     cargarPublicacion();
-    obtenerToken();
-  }, [id, getAccessTokenSilently]);
+  }, [id]);
 
+  // Cargar datos del usuario vendedor
   useEffect(() => {
-    async function getUsuario() {
+    const getUsuario = async () => {
       if (userVendedor) {
         try {
           const res = await getUserNick(userVendedor.data.nickname);
@@ -70,80 +71,116 @@ export const PublicacionPage = () => {
           console.error("Error al obtener el usuario:", error);
         }
       }
-    }
-    
+    };
     getUsuario();
   }, [userVendedor]);
 
+  // Comprar entrada
   const handleBuy = async () => {
     setButtonClicked(true);
     setLoading(true);
-    console.log(userNoAuth0);
-    if (userNoAuth0.data.usuario.public_key !== null){
-      console.log(user.nickname)
-      initMercadoPago(userNoAuth0.data.usuario.public_key, {
-        locale: "es-AR",
-      });
-      const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
-      const res_id = await crearPreferenciaEvento(ticket_publi_id,publicacion.precio, user.nickname, publicacion.vendedorNombre);
-      if (res_id.data.id) {
-        setPreferenceId(res_id.data.id);
-        console.log(res_id.data.id);
+    try {
+      if (userNoAuth0?.data?.usuario?.Public_Key) {
+        initMercadoPago(userNoAuth0.data.usuario.Public_Key, { locale: "es-AR" });
+        const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
+        const res_id = await crearPreferenciaEvento(
+          ticket_publi_id,
+          publicacion.precio,
+          user.nickname,
+          publicacion.vendedorNombre
+        );
+        if (res_id.data.id) setPreferenceId(res_id.data.id);
+      } else {
+        console.error("El vendedor no tiene cuenta de MercadoPago");
       }
-      
+    } catch (error) {
+      console.error("Error al iniciar la compra:", error);
     }
-    else{
-      console.log("no tiene cuenta de mp el vendedor");
-    }
-    
     setLoading(false);
-  }
-
+  };
 
   return (
     <>
       <Header />
-      <main className="App">
+      <main className="App eventoPage">
         {publicacion ? (
-          <section className="informacionEvento">
-            <h2 className="titulo">{publicacion.eventoNombre}</h2>
-            <figure className="figuraEvento">
+          <div className="publicacion-container">
+            <header className="headerEvento">
               <img
                 className="imagen"
                 src={publicacion.foto}
-                alt={"Imagen " + publicacion.eventoNombre}
+                alt={`Imagen ${publicacion.eventoNombre}`}
               />
-              <figcaption className="descripcion"> Lorem</figcaption>
-              <figcaption className="fechas">
-                {" "}
-                Fecha del evento: {publicacion.eventoFecha} -{" "}
-                {publicacion.eventoHora}{" "}
-              </figcaption>
-              <p>Precio: ${publicacion.precio}</p>
-              <p>Publicada por: {publicacion.vendedorNombre} </p>
-            </figure>
-          </section>
-        ) : (
-          <p>No existe el evento</p>
-        )}
-        <section className="comprarEntradas">
-        <button onClick={handleBuy}>Comprar</button>
-                    {buttonClicked &&
-                      (loading ? (
-                        <div>Cargando...</div>
+            </header>
+            <article className="informacionEvento">
+                <h1 className="titulo">{publicacion.eventoNombre}</h1>
+                <p className="fecha">
+                  Fecha del evento: {publicacion.eventoFecha} - {publicacion.eventoHora}
+                </p>
+
+              <section className="comprarEntrada">
+                <h3>Compra tu entrada de reventa</h3>
+                <div className="formComprarEntrada">
+                  <div className="info-list">
+                    <div className="info-row">
+                      <span className="info-label">Tipo de entrada:</span>
+                      <span className="info-value">{publicacion.tipo}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Precio de la entrada:</span>
+                      <span className="info-value">${publicacion.precio}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Publicada por:</span>
+                      <span className="info-value">{publicacion.vendedorNombre}</span>
+                    </div>
+                  </div>
+                  <div className="comprarTicketsButton">
+                    {isAuthenticated && (!buttonClicked || !preferenceId) && (
+                      <button className="comprarEntradaBtn" onClick={handleBuy}>
+                        Comprar
+                      </button>
+                    )}
+                    {!isAuthenticated && (
+                      <div className="login-message">
+                        <p>
+                          Para comprar entradas, por favor{" "}
+                          <a href="#" onClick={e => { e.preventDefault(); loginWithRedirect(); }}>
+                            inicia sesión
+                          </a>.
+                        </p>
+                      </div>
+                    )}
+                    {buttonClicked && (
+                      loading ? (
+                        <div className="loading">Cargando...</div>
                       ) : preferenceId ? (
-                        <div>
-                          <Wallet
-                            initialization={{ preferenceId: preferenceId }}
-                          />
+                        <div className="wallet-container">
+                          <Wallet initialization={{ preferenceId }} />
                         </div>
                       ) : (
-                        <div>
-                          No se pudo cargar la billetera porque el ID de
-                          preferencia es nulo
+                        <div className="error-message">
+                          No se pudo cargar la billetera porque el ID de preferencia es nulo
                         </div>
-                      ))}
-        </section>
+                      )
+                    )}
+                  </div>
+                </div>
+              </section>
+
+              <section className="acercaDelEvento">
+                <h3>Acerca del evento</h3>
+                <p>{publicacion.eventoDesc}</p>
+              </section>
+              <section className="comoLLegar">
+                <h3>Cómo llegar</h3>
+                {/* Aquí puedes agregar un mapa de Google Maps si lo deseas */}
+              </section>
+            </article>
+          </div>
+        ) : (
+          <p className="parrafo">Cargando...</p>
+        )}
       </main>
       <Footer />
     </>

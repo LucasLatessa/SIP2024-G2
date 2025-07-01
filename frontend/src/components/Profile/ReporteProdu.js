@@ -53,11 +53,10 @@ export const ReporteProdu = () => {
   }
 
   const calcularPorcentaje = (valor, total) => {
-    return total === 0 ? "0.00" : ((valor / total) * 100).toFixed(2);
+    return total === 0 ? 0 : Number(((valor / total) * 100).toFixed(2));
   };
 
   const asistenciaClase = (porcentaje) => {
-    console.log(porcentaje)
     return porcentaje < 30.00 ? "asistencia-baja" : "";
   };
 

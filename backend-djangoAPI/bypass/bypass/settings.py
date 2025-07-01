@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+import pymysql
+
 
 # Cargo las variables de entorno del archivo .env
 load_dotenv()
@@ -21,14 +23,13 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
-
+CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 # ALLOWED_HOSTS = [
 #     'localhost',
 #     '127.0.0.1',  # Incluye estas entradas básicas
@@ -50,9 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'eventos',
-    'tickets',
     'usuarios',
+    'tickets',
+    'eventos',
     'Transferencia',
     'coreapi',
     'beneficios'
@@ -94,11 +95,18 @@ WSGI_APPLICATION = 'bypass.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -146,7 +154,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4040",
+    "https://localhost:4040",
+    "https://192.168.0.111:4040",
+    CLIENT_ORIGIN_URL
+    ]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -161,7 +174,7 @@ CORS_ALLOW_HEADERS = [
     "content-type",
 ]
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
@@ -169,8 +182,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Añade el host local si lo necesitas
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
-    # Agrega otros dominios confiables si es necesario
-    # Aca tendriamos que poner la ip que le va a asginar el K8s
+    "http://35.196.38.34:8000/", #ip vm de google
+    "https://bypass-events.vercel.app",
+    "https://bypass-events.vercel.app",
+    "https://bypass-7lu9.onrender.com"
 ]
 
 REST_FRAMEWORK = {

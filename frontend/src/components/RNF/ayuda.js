@@ -15,13 +15,13 @@ export const Ayuda = () => {
         {logearse && (
           <ul className="login-list">
             <li className="login-1">Clickear logo de usuario
-              <img className="ayuda-img"src="/assets/ayuda/login1.png"/>
+              <img className="ayuda-img"src="/assets/ayuda/Login1.png"/>
             </li>
             <li className="login-2">Ingresar con su cuenta
             </li>
             <li className="login-3">En caso de ser su primera vez en el sitio, aceptar los términos y condiciones
-            <img className="ayuda-img"src="/assets/ayuda/login2.png"/>
-            <img className="ayuda-img"src="/assets/ayuda/login3.png"/></li>
+            <img className="ayuda-img"src="/assets/ayuda/Login2.png"/>
+            <img className="ayuda-img"src="/assets/ayuda/Login3.png"/></li>
             <li className="login-4">Listo, ya esta logueado en ByPass</li>
           </ul>
         )}

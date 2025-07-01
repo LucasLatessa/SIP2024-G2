@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.support.ui import Select
 
@@ -42,10 +43,12 @@ def subirImagen(ruta_archivo, selector):
 
 usuario = "testprodu@example.com"
 contraseña = "Produ123"
+chrome_options = Options()
+chrome_options.add_argument('--ignore-certificate-errors')
 
 # Abrir página
-driver = webdriver.Chrome()
-driver.get("http://localhost:4040/")
+driver = webdriver.Chrome(options=chrome_options)
+driver.get("https://35.196.38.34:4040/")
 
 # Inicio de sesión
 ejecutarClick("div.login")
@@ -64,7 +67,7 @@ ejecutarClick("a[href='/crearBeneficio']")
 time.sleep(5)
 
 # Cargar los datos del beneficio
-seleccionarOpcion("Milei", "select[name='evento-select']")
+seleccionarOpcion("Emilia Mernes", "select[name='evento-select']")
 modificarCampo("Coca Cola", "input[name='nombre']")
 modificarCampo("Descuento en bebida Coca Cola", "input[name='descripcion']")
 modificarCampo("50", "input[name='porcentajeDescuento']")

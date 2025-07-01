@@ -138,17 +138,7 @@ export const TermsAndConditions = () => {
       </label>
       <fieldset>
         <legend>Seleccione su rol:</legend>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="productora"
-              checked={role === "productora"}
-              onChange={handleRoleChange}
-            />
-            Productora
-          </label>
-        </div>
+        
         <div>
           <label>
             <input
@@ -158,6 +148,17 @@ export const TermsAndConditions = () => {
               onChange={handleRoleChange}
             />
             Cliente
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="productora"
+              checked={role === "productora"}
+              onChange={handleRoleChange}
+            />
+            Productora
           </label>
         </div>
       </fieldset>

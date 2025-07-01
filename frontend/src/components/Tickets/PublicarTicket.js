@@ -1,13 +1,15 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useLocation } from "react-router-dom";
-import { useForm,useWatch  } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useState, useEffect } from "react";
 import "../Eventos/styles/EventoPage.css";
 import { crearPublicacion } from '../../services/publicacion.service';
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserNick } from '../../services/usuarios.service';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Publicacion de tickets dentro del sitio
 export const PublicarTicket = () => {
@@ -16,9 +18,8 @@ export const PublicarTicket = () => {
   const { register, control } = useForm();
   const [costos, setCostos] = useState(null);
   const navigate = useNavigate();
-  const [mensajeError, setMensaje] = useState(null);
-  const { user,getAccessTokenSilently } = useAuth0();
-  const [userNoAuth0,setUserNoAuth0 ] = useState(null);
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [userNoAuth0, setUserNoAuth0] = useState(null);
   const [token, setToken] = useState();
   
  // Observar el campo de precio
@@ -57,18 +58,17 @@ export const PublicarTicket = () => {
       ticket: ticket.id_ticket,
       precio: costos.precio
   }
-   if (userNoAuth0.data.usuario.public_key !== null){
+   if (userNoAuth0.data.usuario.Public_Key !== null){
     try {
       await crearPublicacion(publicacion);
       navigate("/mercado");
      } catch (error) {
-      setMensaje('No se puede volver a publicar el mismo ticket')
-       console.log("Error al crear publicacion:", error);
+      toast.error('No se puede volver a publicar el mismo ticket')
+       console.error("Error al crear publicacion:", error);
      }
    }
   else{
-    setMensaje('No tiene una cuenta de mercado pago')
-    console.log("No cuenta mp");
+    toast.error('No tiene una cuenta de mercado pago')
   }
  
   }
@@ -76,9 +76,9 @@ export const PublicarTicket = () => {
   return (
     <>
       <Header />
-      <main className="App">
-        {ticket ? ( // Si existe el ticket muestro los datos
-          <>
+      <main className="App eventoPage">
+        {ticket ? (
+          <div className="publicacion-container">
             <header className="headerEvento">
               <img
                 className="imagen"
@@ -94,40 +94,40 @@ export const PublicarTicket = () => {
                 </p>
               </section>
 
-              <section className="publicarEntrada">
+              <section className="comprarEntrada">
                 <h3>Vende tu entrada</h3>
-                <section className="formPublicarEntrada">
-                  <form>
-                    <p>Tipo de ticket: {ticket.tipo_ticket}</p>
-                    <label>
-                      Precio para publicar:
-                      <input
-                        type="number"
-                        {...register("precio", { required: true })}
-                        className="no-spin"
-                      />
-                    </label>
-                  </form>
+                <form className="formComprarEntrada" onSubmit={e => e.preventDefault()}>
+                  <p>Tipo de ticket: {ticket.tipo_ticket}</p>
+                  <label>
+                    Precio para publicar:
+                    <input
+                      type="number"
+                      {...register("precio", { required: true })}
+                      className="no-spin"
+                    />
+                  </label>
                   {costos && (
                     <section className="costos">
                       <p>Precio: ${costos.precio}</p>
                       <p>Costo de servicio: ${costos.costo}</p>
                       <p>Ganancia: ${costos.ganancia}</p>
-                      {mensajeError && <p className="mensajeError">{mensajeError}</p>}
-                      <section className="publicarTicketButton">
-                        <button onClick={handlePublicar}>Publicar</button>
-                      </section>
+                      <div className="comprarTicketsButton">
+                        <button type="button" className="comprarEntradaBtn" onClick={handlePublicar}>
+                          Publicar
+                        </button>
+                      </div>
                     </section>
                   )}
-                </section>
+                </form>
               </section>
             </article>
-          </>
+          </div>
         ) : (
-          <p>No existe el evento</p> // NO ANDA POR EL MOMENTO
+          <p>No existe el evento</p>
         )}
       </main>
       <Footer />
+      <ToastContainer />
     </>
   );
 };

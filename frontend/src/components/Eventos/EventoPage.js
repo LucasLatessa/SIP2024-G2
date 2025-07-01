@@ -1,15 +1,15 @@
 import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { useParams } from "react-router";
-import {
-  getEvento,
-} from "../../services/eventos.service";
+import { getEvento } from "../../services/eventos.service";
 import "./styles/EventoPage.css";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
 export const EventoPage = () => {
@@ -17,31 +17,32 @@ export const EventoPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [tipoTicket, setTipoTicket] = useState(null);
+  const [error, setError] = useState(null);
   const [precioEntrada, setPrecioEntrada] = useState(null);
-  const { user,getAccessTokenSilently } = useAuth0();
-  const [cantTickets, setcantTickets] = useState(null);
+  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
+    useAuth0();
   const { id } = useParams(); //Obtengo el id del evento
-  const {
-    getValues,
-    register,
-  } = useForm();
-  const [eventos, setEventos] = useState([]);
+  const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
+  const { getValues, register } = useForm();
+  const [evento, setEvento] = useState(null);
   const [token, setToken] = useState();
-
+  const [maxCantidadTickets, setMaxCantidadTickets] = useState(null); // cantidad maxima segun tipo
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
-    
+
   //Obtengo los tickets que seran procesados
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
+      const token = await getAccessTokenSilently();
+      setToken(token);
       const response = await axios.get(
-        "http://localhost:8000/tickets/obtener_ticket_evento/",
+        `${backendUrl}/tickets/obtener_ticket_evento/`,
         {
           params: {
             evento_id: id,
             quantity: quantity,
-            tipo_ticket: tipoTicket,
+            tipo_ticket: tipo_ticket,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ export const EventoPage = () => {
   const createPreference = async (ticket_id_list, quantity) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/tickets/prueba_mercadopago/",
+        `${backendUrl}/tickets/prueba_mercadopago/`,
         {
           quantity: quantity,
           ticket_id: ticket_id_list,
@@ -66,9 +67,9 @@ export const EventoPage = () => {
           description: user.nickname,
         }
       );
-      return response.data.id;
+      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   };
@@ -76,55 +77,94 @@ export const EventoPage = () => {
   //Realizo la peticion para obtener el evento y mostrar sus datos en pantalla
   useEffect(() => {
     async function cargarEventos() {
-      const resEvento = await getEvento(id); //Solo eventos válidos, si no existe hay que arreglarlo
-      setEventos(resEvento.data);
+      const resEvento = await getEvento(id);
+      console.log("Evento obtenido:", resEvento);
+      const evento = resEvento.data;
+      const fechaFormateada = new Date(evento.fecha).toLocaleDateString(
+        "es-AR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }
+      );
+
+      setEvento({
+        ...evento,
+        fecha: fechaFormateada,
+      });
     }
-  
-    async function obtenerToken() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-  
     cargarEventos();
-    obtenerToken();
   }, [id, getAccessTokenSilently]);
 
   //Realizo la compra de tickets
   const handleBuy = async () => {
-    setButtonClicked(true);
-    setLoading(true);
-    const quantity = parseInt(getValues("cantidadEntradas"));
+  setButtonClicked(true);
+  setLoading(true);
+  setError("");
 
-    const ticket_id_list = await obtenerTicket(quantity, id);
-    if (ticket_id_list.length === quantity) {
-      const id = await createPreference(ticket_id_list, quantity);
-      if (id) {
-        setPreferenceId(id);
-      }
+  const quantity = parseInt(getValues("cantidadEntradas"));
+  // Validar tipo de ticket
+  if (!tipoTicket) {
+    setError("Seleccioná un tipo de entrada.");
+    setLoading(false);
+    return;
+  }
+  // Validar cantidad
+  if (isNaN(quantity) || quantity < 1) {
+    setError("Ingresá una cantidad válida de entradas.");
+    setLoading(false);
+    return;
+  }
+  
+  const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
+
+  if (ticket_id_list.length === quantity) {
+    const result = await createPreference(ticket_id_list, quantity);
+    console.log("Resultado de la preferencia:", result);
+    if (result?.success) {
+      setPreferenceId(result.preference_id);
+
+      await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
+        params: {
+          ticket_id: ticket_id_list.join(","),
+        },
+      });
+    } else {
+      setError("Hubo un error al crear la preferencia de pago.");
     }
-    else {
-      setcantTickets(ticket_id_list.length)
-    }
-    
-    setLoading(false); // Indicar que la carga ha terminado
-  };
+
+  } else {
+    setError(`Hay ${ticket_id_list.length} tickets disponibles.`);
+  }
+
+  setLoading(false);
+};
 
   const handleTipoEntradaChange = async (e) => {
-    setTipoTicket(e.target.value);
+    const tipo = e.target.value;
+    setTipoTicket(tipo);
+
+    // buscar la cantidad disponible del tipo elegido
+    const entradaSeleccionada = evento.tickets_por_tipo.find(
+      (t) => t.tipo_ticket__tipo === tipo
+    );
+    setMaxCantidadTickets(entradaSeleccionada?.cantidad || null); // actualiza el max del input
+
+    // pedir el precio al backend
     try {
       const response = await axios.get(
-        "http://localhost:8000/tickets/obtener_precio_entrada/",
+        `${backendUrl}/tickets/obtener_precio_entrada/`,
         {
           params: {
-            tipo_ticket: e.target.value,
+            tipo_ticket: tipo,
             evento: id,
           },
         }
       );
-
       setPrecioEntrada(response.data.precio_ticket);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -132,93 +172,130 @@ export const EventoPage = () => {
     <>
       <Header />
       <main className="App eventoPage">
-        {eventos ? ( // Si existe el evento muestro los datos
-          <>
+        {evento ? (
+          <div className="publicacion-container">
             <header className="headerEvento">
               <img
                 className="imagen"
-                src={eventos.imagen}
-                alt={"Imagen " + eventos.nombre}
+                src={evento.imagen}
+                alt={"Imagen " + evento.nombre}
               />
             </header>
             <article className="informacionEvento">
-              <section className="titulo-fecha">
-                <h1 className="titulo">{eventos.nombre}</h1>
-                <p className="fecha">
-                  Fecha del evento: {eventos.fecha} - {eventos.hora}
-                </p>
-              </section>
+              <h1 className="titulo">{evento.nombre}</h1>
+              <p className="fecha">
+                Fecha del evento: {evento.fecha} - {evento.hora}
+              </p>
 
               <section className="comprarEntrada">
                 <h3>Compra tu entrada</h3>
-                <section className="formComprarEntrada">
-                  {/* COMPRAR ENTRADA FORM */}
-                  <label >
-                    {" "}
+                <form
+                  className="formComprarEntrada"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleBuy();
+                  }}
+                >
+                  <label>
                     Tipo de entrada
-                    <select id="tipoEntrada"  onChange={handleTipoEntradaChange} defaultValue="">
+                    <select
+                      id="tipoEntrada"
+                      onChange={handleTipoEntradaChange}
+                      defaultValue=""
+                      disabled={!!preferenceId}
+                    >
                       <option value="" disabled>
-                        Selecciona una opción
+                        Selecciona una opcion
                       </option>
-                      <option value="STANDARD">STANDARD</option>
-                      <option value="PLATINIUM">PLATINIUM</option>
-                      <option value="VIP">VIP</option>
+                      {evento?.tickets_por_tipo.map((tipo) => (
+                        <option
+                          key={tipo.tipo_ticket__tipo}
+                          value={tipo.tipo_ticket__tipo}
+                        >
+                          {tipo.tipo_ticket__tipo} (Disponibles: {tipo.cantidad}
+                          )
+                        </option>
+                      ))}
                     </select>
                   </label>
 
-                  {precioEntrada && (
-                    <p>Precio de la entrada: {precioEntrada}</p>
-                  )}
-
-                  <label >
-                    Cantidad Entrada
+                  <label>
+                    Cantidad Entradas
                     <input
                       type="number"
                       id="cantidadEntradas"
                       name="cantidadEntradas"
                       {...register("cantidadEntradas", {
                         required: true,
+                        validate: (value) =>
+                          value > 0 || "Debe ser un numero positivo",
                       })}
+                      disabled={!!preferenceId}
+                      min="1"
+                      max={maxCantidadTickets || undefined}
+                      onInput={(e) => {
+                        if (e.target.value < 1) {
+                          e.target.value = "";
+                        }
+                      }}
                     />
                   </label>
-                  <section className="comprarTicketsButton">
-                    <button onClick={handleBuy}>Comprar</button>
-                    {buttonClicked &&
-                      (loading ? (
-                        <div>Cargando...</div>
-                      ) : preferenceId ? (
-                        <div>
-                          preferenceId
-                          <Wallet
-                            initialization={{ preferenceId: preferenceId }}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          Cantidad tickets disponibles: {cantTickets}
-                        </div>
-                      ))}
-                  </section>
-                </section>
+                  {precioEntrada && (
+                    <p className="parrafo">
+                      Precio por entrada: {precioEntrada}
+                    </p>
+                  )}
+                  <div className="comprarTicketsButton">
+                    {isAuthenticated && (!buttonClicked || !preferenceId) && (
+                      <button className="comprarEntradaBtn" type="submit">
+                        Comprar
+                      </button>
+                    )}
+                    {!isAuthenticated && (
+                      <div className="login-message">
+                        <p>
+                          Para comprar entradas, por favor{" "}
+                          <a href="" onClick={loginWithRedirect}>
+                            inicia sesión
+                          </a>
+                          .
+                        </p>
+                      </div>
+                    )}
+                    <ToastContainer />
+                    {buttonClicked && (
+                      <>
+                        {loading ? (
+                          <div className="loading">Cargando...</div>
+                        ) : preferenceId ? (
+                          <div className="wallet-container">
+                            <Wallet
+                              initialization={{ preferenceId: preferenceId }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="error-message">
+                            {error}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </form>
               </section>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
-                <p>
-                  {eventos.descripcion}
-                </p>
+                <p>{evento.descripcion}</p>
               </section>
               <section className="comoLLegar">
                 <h3>Como llegar</h3>
                 {/* Mapita de Google Maps*/}
               </section>
             </article>
-          </>
+          </div>
         ) : (
-          <p>No existe el evento</p> // NO ANDA POR EL MOMENTO
+          <p>No existe el evento</p>
         )}
-        <section className="comprarEntradas">
-          <form>{/* En proceso */}</form>
-        </section>
       </main>
       <Footer />
     </>

@@ -16,7 +16,6 @@ export const ProductorasList = () => {
     try {
       const response = await getAllProdu();
       setProductoras(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de productoras:", error);
     }

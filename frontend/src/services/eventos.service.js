@@ -13,10 +13,12 @@ export const getAllEventosAprobados = () => eventosAPI.get('/eventosAprobados/')
 
 export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}/`);
 
-export const crearEvento = (evento) => eventosAPI.post('/crearEvento/',evento,{
+export const crearEvento = (evento) => eventosAPI.post('/crearEvento/', evento, {
   headers: {
-    'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
-  }});
+    'Content-Type': 'multipart/form-data' // Estamos trabajando con imágenes
+  },
+  timeout: 10000 // Establecer el timeout a 10 segundos (10000 ms)
+});
 export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_event}/update-state/`, { state: newState });
 
 export const getEventReport = (id) => eventosAPI.get(`/Evento/${id}/report/`);

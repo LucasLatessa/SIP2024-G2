@@ -6,8 +6,7 @@ import {
   updateCliente,
   updateAdministrador,
   updateProductora,
-  getUserNick,
-  updateClienteMP
+  getUserNick
 } from "../../services/usuarios.service";
 import { UpdateProfileButton } from "./updateProfileButton";
 import { LogoutButton } from "./logoutButton";
@@ -16,6 +15,8 @@ import { Header } from "../header-footer/header";
 import { Footer } from "../header-footer/footer";
 import { ProductoraView } from "./ProductoraView";
 import { AdministradorView } from "./AdministradorView";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Perfil de los usuarios
 export const Profile = () => {
@@ -24,7 +25,6 @@ export const Profile = () => {
   const [usuarioData, setusuarioData] = useState(null);
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
-  const [editingUserDataMP, setEditingUserDataMP] = useState(null);
   const [error, setError] = useState(null);
 
   // const handleLoginClick = () => {
@@ -83,6 +83,7 @@ export const Profile = () => {
       setusuarioData(editingUserData);
       setEditingUserData(null);
       setError(null);
+      toast.success("Datos actualizados con éxito!"); // Notificación
     } catch (error) {
       setError(
         "Error al actualizar el perfil. El DNI que intenta ingresar ya existe."
@@ -92,20 +93,12 @@ export const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-     if ((name == "public_key") || (name == "access_token")){
-      setEditingUserDataMP((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-    else {
+     
       setEditingUserData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
-    console.log(value)
-  };
 
   if (loadingCliente) {
     return (
@@ -115,15 +108,6 @@ export const Profile = () => {
     );
   }
 
-  const handleButton = async () => {
-    const json_data = {
-        public_key : editingUserDataMP['public_key'],
-        access_token : editingUserDataMP['access_token'],
-        user_nn : user.nickname,
-    };
-    console.log(json_data)
-    const response = await updateClienteMP(json_data);
-  }
 
   return (
     <main>
@@ -135,8 +119,6 @@ export const Profile = () => {
             <h2 className="infoClienteProfile">
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>
-            
-            {console.log(usuarioData.rol)}
             {!(usuarioData.rol === "PRODUCTORA") && (
                 <p className="datos">DNI: {usuarioData.dni} </p>
             )}
@@ -144,6 +126,9 @@ export const Profile = () => {
             <p className="datos">Apellido: {usuarioData.apellido}</p>
             <p className="datos">Nickname: {usuarioData.nickname}</p>
             <p className="datos">Correo: {usuarioData.correo}</p>
+            <p className="MP" style={{ textDecoration: 'underline' }}>Mercado Pago:</p>
+            <p className="MP">Public Key: {usuarioData.Public_Key}</p>
+            <p className="MP">Access Token: Oculto</p>
           </div>
         )}
         {editingUserData && (
@@ -178,46 +163,32 @@ export const Profile = () => {
                 onChange={handleInputChange}
               />
             </label>
+            <label>
+              Public Key:
+              <input
+                type="text"
+                name="Public_Key"
+                value={editingUserData.Public_Key || ""}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Access Token:
+              <input
+                type="text"
+                name="Access_Token"
+                value={editingUserData.Access_Token || ""}
+                onChange={handleInputChange}
+              />
+            </label>
             {error && <p className="error-message">{error}</p>}
             <button onClick={handleUpdateProfile}>Guardar cambios</button>
           </div>
-        )}
-        {editingUserDataMP && (
-           <div className="formulario-edicion">
-            <label>
-            public_key:
-            <input
-                type="text"
-                name="public_key"
-                onChange={handleInputChange}
-            />
-            </label>
-            <label>
-            access_token:
-            <input
-                type="text"
-                name="access_token"
-                onChange={handleInputChange}
-            />
-           </label>
-           <div className="botonAgregarMP">
-                    <button className="Agregar Cuenta" onClick={handleButton}>
-                        Agregar Cuenta MP 
-                    </button>
-                </div>
-         </div>                 
         )}
         {!editingUserData && (
           <UpdateProfileButton
             onClick={() => setEditingUserData(usuarioData)}
           />
-        )}
-        {!editingUserDataMP && (
-            <div className="botonDesplegarMP">
-              <button className="des" onClick={() => setEditingUserDataMP(usuarioData)}>
-                  Cuenta Mercadopago
-              </button>
-          </div>
         )}
 
         <div className="botones-container">
@@ -231,6 +202,7 @@ export const Profile = () => {
       <ProductoraView rol={usuarioData.rol} id={usuarioData.user_id} />
       <AdministradorView rol={usuarioData.rol} id={usuarioData.user_id} />
       <Footer />
+      <ToastContainer />
     </main>
   );
 };

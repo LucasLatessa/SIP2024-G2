@@ -7,6 +7,7 @@
 .ayuda-main ul li{
     color:var(--color-letras-secundario);
 }
+
 .ayuda-boton{
   background-color: var(--color-letras-cuaternario);
   color: #fff;

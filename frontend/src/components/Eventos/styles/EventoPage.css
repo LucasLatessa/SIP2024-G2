@@ -1,29 +1,43 @@
-.headerEvento img {
-  width: 90%;
-  height: 60vh;
-  margin: 0 auto;
-
-}
-.headerEvento{
-    display: flex;
-    justify-content: center;
-    background-color: var(--color-fondo);
-}
-.titulo-fecha {
+.headerEvento {
   display: flex;
-  width: 100%;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   padding: 0;
 }
 
+.headerEvento .imagen, .headerEvento img {
+  max-width: 70%;
+  aspect-ratio: 362 / 199;
+  height: auto;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: #eee;
+  display: block;
+}
+
+/* Para pantallas chicas */
+@media (max-width: 400px) {
+  .headerEvento .imagen, .headerEvento img {
+    max-width: 100vw;
+    aspect-ratio: 362 / 199;
+    height: auto;
+    margin: 1rem 0 0.5rem 0;
+  }
+}
+
+.parrafo {
+  font-size: 1.2rem;
+  text-align: center;   
+  margin: 0 auto;
+}
 .informacionEvento .titulo {
-  padding: 1rem;
-  margin: 0;
-  text-align: right;
-  font-size: 4rem;
+  text-align: left;
+  font-size: 2.5rem;
   color: var(--color-letras-secundario);
-  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
 }
 
 .informacionEvento .fecha {
@@ -34,18 +48,14 @@
     rgba(1, 161, 152, 1) 0%,
     rgba(251, 24, 24, 1) 100%
   );
-  padding: 1rem;
   margin: 0;
   margin-right: 2rem;
   color: var(--color-letras-secundario);
   font-size: 1.5rem;
+  display: inline-block;
+  margin-left: auto; /* empuja a la derecha */
 }
 
-.mensajeError {
-    background-color: black;
-    border-radius: 8px;
-    padding: 8px;
-}
 
 .comprarEntrada, .publicarEntrada, .transferirEntrada {
     margin: 0 2rem;
@@ -74,8 +84,8 @@
     align-items: center;
 }
 
-.formComprarEntrada label, .formComprarEntrada label {
-    font-size: 2rem;
+.formComprarEntrada label {
+    font-size: 1.5rem;
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
@@ -95,13 +105,21 @@
     align-items: center;
 }
 
-.comprarTicketsButton > button, .publicarTicketButton > button, .TransferirTicketButton > button {
-    width: 10rem;
-    height: 3rem;
-    font-size: 1.5rem;
-    background-color: var(--color-letras-terceario);
-    color: var(--color-letras-secundario);
-    border-radius: 30px;
+.comprarTicketsButton > button,
+.publicarTicketButton > button,
+.TransferirTicketButton > button {
+  width: auto; /* se ajusta al contenido */
+  min-width: 10rem; /* mantiene un tamaño minimo */
+  height: 3rem;
+  padding: 0 1.5rem; /* espacio horizontal interno */
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
 }
 .calcular{
     background-color: var(--color-letras-terceario);
@@ -111,21 +129,18 @@
     background-color: var(--color-letras-secundario);
     color:var(--color-letras-terceario);
 }
-.comprarTicketsButton > button:hover {
-    width: 11rem;
-    height: 4rem;
-    font-size: 1.8rem;
+.comprarTicketsButton > button:hover,
+.publicarTicketButton > button:hover,
+.TransferirTicketButton > button:hover {
+    transform: scale(1.02);
     background-color: var(--color-letras-secundario);
     color:var(--color-letras-terceario);
 }
 
 .formComprarEntrada label > input, .formComprarEntrada label > select{
     display: block;
-    font-size: 1.5rem;
-}
-.formPublicarEntrada label > input{
-    display: block;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    width: 15rem; 
 }
 
 .formTransferirEntrada label > input{
@@ -159,59 +174,6 @@
     font-style: italic;
     font-weight: 600;
 }
-/* .informacionEvento{
-    padding-top: 2rem;
-    width: 100%;
-}
-Datos del evento
-
-.datosEvento label > input, .datosEvento label > select {
-    display: block; /*Label arriba del input
-    width: 100%;
-}
-
-.informacionEvento .titulo{
-    padding: 0.6rem;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0;
-    color: var(--color-letras-secundario);
-}
-
-.figuraEvento{
-    display: grid;
-    grid-template-areas:    "imagen fecha"
-                            "imagen descripcion";
-    grid-template-columns: 50% auto;
-    grid-template-rows: 20% auto;
-    align-items: center;
-    justify-items: center;
-    padding: 0.5rem;
-    margin: 0 auto;
-    background-color: var(--color-letras-secundario);
-}
-
-.informacionEvento .fechas{
-    font-size: 2rem;
-    font-weight: bold;
-    grid-area: fecha;
-    color: var(--color-letras-primario);
-}
-
-.informacionEvento .descripcion{
-    grid-area: descripcion;
-    color: var(--color-color-primario);
-}
-
-.informacionEvento .imagen{
-    grid-area: imagen;
-    width: 100%;
-    border-radius: 10px;
-}
-p{
-    color:#3b3737
-} */
 
 /* PUBLICAR TICKET ESTILOS */
 .costos > p{
@@ -245,4 +207,153 @@ p{
 .no-spin {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+/* Mejoras visuales para la página de publicación/reventa */
+
+.publicacion-container {
+  max-width: 1000px;
+  margin: 1rem auto;
+  border-radius: 16px;
+}
+
+.headerEvento .imagen, .headerEvento img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.informacionEvento {
+  margin-top: 2rem;
+}
+
+.comprarEntrada {
+  margin: 2rem 0;
+  background: var(--color-letras-cuaternario);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(49,130,206,0.07);
+  padding: 2rem 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.comprarEntrada h3 {
+  text-align: left;
+  color: var(--color-letras-secundario);
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.formComprarEntrada {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.info-list {
+  flex: 2;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 1.15rem;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--color-letras-secundario);
+  font-weight: 500;
+}
+
+.info-value {
+  color: var(--color-letras-primario);
+  font-weight: bold;
+}
+
+.comprarTicketsButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  min-width: 180px;
+}
+
+.comprarEntradaBtn {
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 1px 4px rgba(49,130,206,0.10);
+}
+
+.comprarEntradaBtn:hover {
+  background: #225ea8;
+  transform: scale(1.04);
+}
+
+.login-message, .error-message, .loading {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+.wallet-container {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .publicacion-container {
+    padding: 0.5rem;
+  }
+  .headerEvento .imagen, .headerEvento img {
+    max-height: 200px;
+  }
+  .acercaDelEvento > h3, .comoLLegar > h3 {
+    font-size: 2rem;
+    padding: 1rem 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .formComprarEntrada {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .comprarTicketsButton {
+    align-items: stretch;
+    min-width: unset;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .comprarEntradaBtn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.8rem 0;
+  }
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+  }
 }

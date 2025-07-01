@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.support.ui import Select
 
@@ -34,10 +35,13 @@ def subirArchivo(ruta_archivo, selector):
 
 usuario = "testprodu@example.com"
 contraseña = "Produ123"
+chrome_options = Options()
+chrome_options.add_argument('--ignore-certificate-errors')
+chrome_options.add_argument('--force-device-scale-factor=1.1')
 
 #Abrir pagina
-driver = webdriver.Chrome()
-driver.get("http://localhost:4040/")
+driver = webdriver.Chrome(options=chrome_options)
+driver.get("https://35.196.38.34:4040/")
 
 #Inicio sesion
 ejecutarClick("div.login")
@@ -59,20 +63,24 @@ ejecutarClick("a[href='/programarEvento']")
 time.sleep(2)
 #Modifico datos evento
 modificarCampo("Selenium","input[name='nombre']")
+time.sleep(2)
 seleccionarOpcion("Monumental", "select[name='lugar']")
+time.sleep(2)
 setearFecha("14-12-2024", "input[name='fecha']")
+time.sleep(2)
 modificarCampo("DescripcionSelenium","input[name='descripcion']")
+time.sleep(2)
 setearHora("15:30", "input[name='hora']")
 # Subir una imagen
-subirArchivo("C:/prueba.png", "input[name='imagen']")
+subirArchivo("C:/evento.png", "input[name='imagen']")
 #Entradas
-modificarCampo(2, "input[name='cantidadEntradasVIP']")
+modificarCampo(1, "input[name='cantidadEntradasVIP']")
 modificarCampo(150, "input[name='precioVIP']")
-
-modificarCampo(2, "input[name='cantidadEntradasPLATINIUM']")
+time.sleep(2)
+modificarCampo(1, "input[name='cantidadEntradasPLATINIUM']")
 modificarCampo(250, "input[name='precioPLATINIUM']")
-
-modificarCampo(2, "input[name='cantidadEntradasSTANDARD']")
+time.sleep(2)
+modificarCampo(1, "input[name='cantidadEntradasSTANDARD']")
 modificarCampo(350, "input[name='precioSTANDARD']")
 time.sleep(2)
 # Hacer clic en el botón de enviar

@@ -24,7 +24,6 @@ export const getUserNick = (nickname) => usersAPI.get(`/nick/${nickname}/`);
 
 export const crearUsuario = (user) => usersAPI.post('/create',user);
 
-export const updateClienteMP = (claves) => usersAPI.put(`/updateMP/${claves.user_nn}/`,claves);
 export const updateCliente = (user) => clientAPI.put(`/${user.user_id}/`,user);
 export const updateAdministrador = (user) =>  adminAPI.put(`/${user.user_id}/`,user);
 export const updateProductora = (user) => producAPI.put(`/${user.user_id}/`,user);

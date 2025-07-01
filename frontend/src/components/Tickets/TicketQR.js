@@ -1,12 +1,13 @@
 import "./styles/ticketQR.css";
-import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { parse, format } from "date-fns";
 
 export const TicketQR = ({ nombre, fecha, hora, qr, lugar }) => {
   /*Cambio el formato de fecha-hora*/
   const formatoFecha = (fechaOriginal) => {
-    return format(new Date(fechaOriginal), "d 'de' MMMM", { locale: es });
-  };
+  const fecha = parse(fechaOriginal, "dd/MM/yyyy", new Date());
+  return format(fecha, "d 'de' MMMM 'de' yyy", { locale: es });
+};
 
   const formatoHora = (horaOriginal) => {
     const partes = horaOriginal.split(":");

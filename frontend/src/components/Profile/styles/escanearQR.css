@@ -1,14 +1,102 @@
-.escanearQRTitulo{
-    text-align: center;
-    text-transform: uppercase;
-    color: var(--color-letras-secundario)
+/* Título */
+.escanearQRTitulo {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-letras-cuaternario);
+  text-align: center;
 }
 
-.escanearQR, .datosEntradaQR li{
-    text-align: center;
-    color: var(--color-letras-secundario)
+/* Contenedor principal */
+main {
+  justify-content: center;
+  padding: 2rem 0;
+}
+.qr-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
 }
 
-.datosEntradaQR{
-    list-style: none;
+/* Estilo para el scanner */
+.qr-scanner-container {
+  background: #f7fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Info y errores */
+.escanearQR {
+  color: var(--color-letras-cuaternario);
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.errorQR{
+  color: #e53e3e; /* Rojo para errores */
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+
+}
+
+.datosEntradaQR {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.datosEntradaQR li {
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background: var(--color-letras-cuaternario);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #01786F;
+}
+/* Modal */
+.modal-qr-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modal-qr-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 16px rgba(49,130,206,0.18);
+  text-align: center;
+}
+
+/* Animacion de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

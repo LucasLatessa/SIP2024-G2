@@ -9,6 +9,7 @@ from eventos.models import Evento
 from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
+import os
 # Create your models here.
 
 
@@ -30,8 +31,9 @@ class Ticket(models.Model):
     tipo_ticket = models.ForeignKey(
         TipoTickets, on_delete=models.CASCADE, blank=True, null=True
     )
-    qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
+    qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True, default=None)
     usada = models.BooleanField(default=False)
+    reservado = models.BooleanField(default=False)
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
     #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
     # PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
@@ -39,25 +41,23 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         # Cada vez que hay update
         #super().save(*args, **kwargs)
-        self.generar_qr()
         super().save(*args, **kwargs)
 
     def modificarPropietario(ticket_id_str, propietario, tipo):
         try:
             ticket_id_list = ticket_id_str.split(",")
-            print(ticket_id_str)
             for ticket_id in ticket_id_list:
-                print(ticket_id)
-                print(propietario)
                 ticket = Ticket.objects.get(id_Ticket=ticket_id)
-                print("aaaaaaaaaaaaaaa-1")
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
-                print("aaaaaaaaaaaaaaa0")
                 evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
 
                 #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles
                 ticket.propietario = nuevo_propietario
+                # Generar QR
                 ticket.save()
+                ticket.generar_qr()
+                ticket.save()
+                
                 if (tipo == "evento"):
                     evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
                     evento.cantTickets -= 1
@@ -66,6 +66,18 @@ class Ticket(models.Model):
         except Exception as e:
             print(e)
             print("No se pudo cargar el ticket")
+
+    def transferir(ticket_id, propietario):
+        try:
+           ticket = Ticket.objects.get(id_Ticket=ticket_id)
+           nuevo_propietario = Cliente.objects.get(nickname=propietario)
+           #Otorgo el ticket al propietario
+           ticket.propietario = nuevo_propietario
+           ticket.save()
+        except Exception as e:
+            print(e)
+            print("No se pudo transferir el ticket")
+
 
     def obtener_ticket_precio(tipo_ticket, evento):
         tipo_ticket = TipoTickets.objects.get(tipo=tipo_ticket)
@@ -115,11 +127,16 @@ class Ticket(models.Model):
                 new_data.append(item)  # Dejar los píxeles blancos intactos
 
         img.putdata(new_data)
+        filename = f"ticket_{self.id_Ticket}.png"
+        # Eliminar el archivo existente si ya está guardado
+        if self.qr:
+            if os.path.isfile(self.qr.path):
+                os.remove(self.qr.path)
 
         # Guardo en el modelo
         buffer = BytesIO()
         img.save(buffer, format="PNG")
-        filename = f"ticket_{Ticket.id_Ticket}.png"
+
         self.qr.save(filename, File(buffer), save=False)
 
     def __str__(self):
@@ -141,7 +158,7 @@ class Precio(models.Model):
 class Publicacion(models.Model):
     id_Publicacion = models.AutoField(primary_key=True)
     precio = models.FloatField()
-    fecha = models.DateField(default=date.today, blank=True, null=True) 
+    fecha = models.DateField(default=date.today, blank=True, null=True)
     publica = models.BooleanField(default=True)
     ticket = models.ForeignKey(
         Ticket, models.DO_NOTHING, db_column="ticket", blank=True, null=True
