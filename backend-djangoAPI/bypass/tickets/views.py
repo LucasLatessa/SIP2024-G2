@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
 from rest_framework import viewsets
 from .serializer import (
@@ -119,7 +120,7 @@ def entregarTicketTpublicacion(request):
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
     if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "vendedor")
+        data = entregartoken(payment_id, "evento")
             
         ticket_publi_id = data["additional_info"]["items"][0]["id"]
         nick_name = data["additional_info"]["items"][0]["description"]
@@ -131,16 +132,73 @@ def entregarTicketTpublicacion(request):
     
     else:
         return JsonResponse({"cliente": None})
-@api_view(["PUT"])
-def transferirTicket(request):
-    body = json.loads(request.body)
-    id_ticket = body.get("id_ticket")
-    nuevoPropietario = body.get("nuevoPropietario")
-    Ticket.transferir(str(id_ticket), nuevoPropietario)
-    publicacion = Publicacion.objects.get(ticket = id_ticket)
-    Publicacion.modificarPublicado(publicacion.id_Publicacion)
-    return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
 
+def get_or_none(model, **kwargs):
+    try:
+        return model.objects.get(**kwargs)
+    except (ObjectDoesNotExist, MultipleObjectsReturned):
+        return None
+
+@csrf_exempt
+@api_view(["POST"])
+def transferirTicket(request):
+    payment_id = request.query_params.get("id")
+    topic = request.query_params.get("topic")
+
+    if topic == "payment" and payment_id:
+        # Obtener info del pago desde MercadoPago
+        data = entregartoken(payment_id, "evento")
+        if data.get("status") == "approved":
+            try:
+                ticket_id = data["additional_info"]["items"][0]["id"]
+                nuevo_propietario = data["additional_info"]["items"][0]["description"]
+                print(nuevo_propietario)
+                Ticket.transferir(ticket_id, nuevo_propietario)
+
+                return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
+            except Exception as e:
+                print(f"Error en transferencia: {e}")
+                return JsonResponse({"error": "Error al transferir ticket"}, status=500)
+        else:
+            return JsonResponse({"error": "Pago no aprobado aun"}, status=400)
+    else:
+        return JsonResponse({"error": "Notificacion no valida"}, status=400)
+@api_view(["PUT"])
+def preferenciaTransferir(request):
+    data = request.data  # no uses json.loads si usas DRF
+
+    id_ticket = data.get("id_ticket")
+    costo_transferencia = data.get("costoTransferencia")
+    nuevo_propietario = data.get("nuevoPropietario")
+
+    if not id_ticket or not costo_transferencia or not nuevo_propietario:
+        return JsonResponse({
+            "success": False,
+            "error": "Faltan datos obligatorios"
+        }, status=400)
+
+    # Llamar a la funcion preferencia (de MercadoPago)
+    resultado = preferencia(
+        1,                          # quantity
+        [id_ticket],               # lista de IDs de tickets
+        costo_transferencia,       # precio
+        nuevo_propietario, # descripcion
+        "tickets/Ticket/transferir",# success URL
+        ""                         # failure URL
+    )
+
+    if resultado.get("ok"):
+        return JsonResponse({
+            "success": True,
+            "preference_id": resultado.get("preference_id"),
+            "init_point": resultado.get("init_point")
+        })
+    else:
+        return JsonResponse({
+            "success": False,
+            "error": resultado.get("error"),
+            "status": resultado.get("status"),
+        }, status=resultado.get("status", 400))
 
 # Funcion para obtener todos los tickets de un evento
 # @authorized

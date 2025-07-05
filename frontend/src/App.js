@@ -7,7 +7,6 @@ import { Beneficios } from "./components/Beneficios/Beneficios";
 import { EventoPage } from "./components/Eventos/EventoPage";
 import { PublicacionPage } from "./components/Publicaciones/PublicacionPage";
 import { ProgramarEvento } from "./components/Eventos/ProgramarEvento";
-import { Mercadopago } from "./components/Eventos/mercadopago";
 import { CrearBeneficio } from "./components/Beneficios/CrearBeneficio";
 import { TermsAndConditions } from "./components/RNF/term_cond";
 import { Ayuda } from "./components/RNF/ayuda";
@@ -36,7 +35,6 @@ function App() {
         <Route path="/evento/:id" element={<EventoPage />} />
         <Route path="/publicacion/:id" element={<PublicacionPage />} />
         <Route path="/programarEvento" element={<ProgramarEvento />} />
-        <Route path="/mercadopago" element={<Mercadopago />} />
         <Route path="/crearBeneficio" element={<CrearBeneficio />} />
         <Route path="/publicar-ticket" element={<PublicarTicket />} />
         <Route path="/transferirTicket" element={<TransferirTicket />} />

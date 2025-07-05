@@ -4,9 +4,10 @@ import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import "../Eventos/styles/EventoPage.css";
-import { transferir } from '../../services/tickets.service';
+import { preferenciaTransferencia } from '../../services/tickets.service';
 import { getUserNick } from '../../services/usuarios.service';
 import { useNavigate } from "react-router-dom";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 //Publicacion de tickets dentro del sitio
 export const TransferirTicket = () => {
@@ -15,38 +16,37 @@ export const TransferirTicket = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [usuarioData, setUsuarioData] = useState(null);
+  const porcTransferencia = 30;
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [preferenceId, setPreferenceId] = useState(null);
+  initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
+    locale: "es-AR",
+  });
 
   useEffect(() => {
+    if (ticket) {
+    ticket.costoTransferencia = ticket.precio * porcTransferencia/100;
+  }
   }, [location.state, ticket]);
 
-  const handleTransferir = async (data) => {
-    try {
-      const transferencia = {
-        ticket: ticket.id_ticket,
-        nickname: data.nickname
-      };
-      const response = await getUserNick(transferencia.nickname);
-      setUsuarioData(response.data.usuario);
-    } catch (error) {
-      console.error("Error during transfer:", error);
-    }
-  };
+  const handleVerificar = async (data) => {
+  try {
+    setButtonClicked(true);
+    console.log("Datos del ticket:", ticket);
+    const response = await getUserNick(data.nickname);
+    const usuario = response.data.usuario; // usuario obtenido directamente
+    setUsuarioData(usuario); // guardamos en estado por si quieres mostrar
 
-  const handleConfirmarTransferencia = async () => {
-    try {
-      if (usuarioData) {
-        const transferencia = {
-          ticket: ticket.id_ticket,
-          nickname: usuarioData.nickname
-        };
-        const response = await transferir(transferencia.ticket,transferencia.nickname);
-        // Redirigir o mostrar mensaje de éxito
-        navigate("/perfil");
+    if (usuario) {
+      const responsePref = await preferenciaTransferencia(ticket.id_ticket, ticket.costoTransferencia, usuario.nickname);
+      if (responsePref?.data.success) {
+        setPreferenceId(responsePref.data.preference_id);
       }
-    } catch (error) {
-      console.error("Error al confirmar transferencia:", error);
     }
-  };
+  } catch (error) {
+    console.error("Error durante la transferencia:", error);
+  }
+};
 
   return (
     <>
@@ -72,8 +72,9 @@ export const TransferirTicket = () => {
               <section className="transferirEntrada">
                 <h3>Transferí tu entrada</h3>
                 <section className="formTransferirEntrada">
-                  <form onSubmit={handleSubmit(handleTransferir)}>
+                  <form onSubmit={handleSubmit(handleVerificar)}>
                     <p>Tipo de ticket: {ticket.tipo_ticket}</p>
+                    <p>Costo de transferencia({porcTransferencia}%): ${ticket.costoTransferencia}</p>
                     <label>
                       Nombre de usuario:
                       <input
@@ -84,7 +85,7 @@ export const TransferirTicket = () => {
                       />
                     </label>
                     <section className="TransferirTicketButton">
-                      <button type="submit">Transferir</button>
+                      <button type="submit">Verificar destinatario</button>
                     </section>
                   </form>
                   {usuarioData && (
@@ -97,7 +98,15 @@ export const TransferirTicket = () => {
                       <p className="datos">Nickname: {usuarioData.nickname}</p>
                       <p className="datos">Correo: {usuarioData.correo}</p>
                       <section className="TransferirTicketButton">
-                        <button onClick={handleConfirmarTransferencia}>Confirmar</button>
+                        {buttonClicked && (
+                      <>
+                        {preferenceId ? (
+                          <div className="wallet-container">
+                            <Wallet initialization={{ preferenceId: preferenceId }} />
+                          </div>
+                        ) : null}
+                      </>
+                    )}
                       </section>
                     </section>
                   )}
