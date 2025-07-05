@@ -311,9 +311,16 @@ def entregarToken(request):
         # Verificar que pago esté aprobado antes de seguir
         if data.get("status") == "approved":
             try:
-                ticket_id = data["additional_info"]["items"][0]["id"]
+                ticket_ids = data["additional_info"]["items"][0]["id"]
                 cliente_nickname = data["additional_info"]["items"][0]["description"]
-                Ticket.modificarPropietario(ticket_id, cliente_nickname, "evento")
+                Ticket.modificarPropietario(ticket_ids, cliente_nickname, "evento")
+                # Tomo el primer ticket para acceder al evento
+                primer_id = ticket_ids.split(",")[0].strip()
+                primer_ticket = Ticket.objects.get(id_Ticket=primer_id)
+
+                # Llamo al metodo del evento
+                evento = primer_ticket.evento
+                evento.revalorizar_tickets_restantes()
                 return JsonResponse({"cliente": "cliente_data"})
             except Exception as e:
                 print(f"Error procesando ticket: {e}")
@@ -323,7 +330,6 @@ def entregarToken(request):
     else:
         # No procesar merchant_order o notificaciones no deseadas
         return JsonResponse({"cliente": None})
-
 
 def obtener_precio_entrada(request):
     tipo_ticket = request.GET.get("tipo_ticket")

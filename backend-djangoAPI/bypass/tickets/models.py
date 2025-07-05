@@ -60,7 +60,6 @@ class Ticket(models.Model):
                 
                 if (tipo == "evento"):
                     evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
-                    evento.cantTickets -= 1
                     Evento.guardar(evento)
 
         except Exception as e:

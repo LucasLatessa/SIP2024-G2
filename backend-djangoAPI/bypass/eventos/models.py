@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.apps import apps
 from usuarios.models import Productora
+import math
 
 # Create your models here.
 
@@ -39,34 +40,47 @@ class Evento(models.Model):
         return self.nombre
     
     def save(self, *args, **kwargs):
+        from tickets.models import Ticket
+        disponibles = Ticket.objects.filter(evento=self, propietario__isnull=True)
         # Asigna el estado "AGOTADO" si no hay más tickets disponibles
-        if self.cantTickets == 0:
+        if disponibles == 0:
             estado_agotado = EstadoEvento.objects.get(estado='AGOTADO')
             self.estado = estado_agotado
         super(Evento, self).save(*args, **kwargs)
         # Revaloriza tickets según la demanda y temporalidad
-        self.revalorizar_ticket()
-        self.revalorizar_por_temporalidad()
+        #self.revalorizar_ticket()
+        #self.revalorizar_por_temporalidad()
 
-    #EVENTO DE REVALORIZACION POR DISPONIBILIDAD
-    def revalorizar_ticket(self):
-        from tickets.models import Ticket  # Importación diferida
-        # Umbrales y porcentaje de aumento
-        umbral_bajo = self.cantTickets * 25 / 100 #Umbral, a partir del 25%
-        porcentaje_aumento = 0.10  # 10%
+    
+    """Metodo que aumenta el precio de los tickets restantes de un evento a medida que disminuye la disponibilidad de entradas"""
+    def revalorizar_tickets_restantes(self):
+        from tickets.models import Ticket
 
-        #Si supera el umbral aumento los precios
-        if self.cantTickets <= umbral_bajo:
-            tickets = Ticket.objects.filter(evento=self)
-            for ticket in tickets:
-                if ticket.precioInicial and ticket.propietario is None: 
-                    #Aumento del porcentaje dado
-                    print("EVENTO DE REVALORIZACION - Ticket: ", ticket.id_Ticket)
-                    nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
-                    print("precio viejo",ticket.precioInicial)
-                    print("precio nuevo",nuevo_precio)
-                    ticket.precioInicial = nuevo_precio
-                    ticket.save()
+        max_aumento = 0.35  # porcentaje maximo de aumento (35%)
+
+        # Obtener todos los tickets del evento que aun no tienen propietario
+        disponibles = Ticket.objects.filter(evento=self, propietario__isnull=True)
+        total = self.cantTickets
+        disponibles_count = disponibles.count()
+
+        # Si no quedan disponibles, no hacer nada
+        if disponibles_count == 0:
+            return
+
+        # Calcular el aumento dinamico segun la proporcion de entradas vendidas
+        # Cuanto menos disponibles, mayor el aumento
+        porcentaje_aumento = (1 - (disponibles_count / total)) * max_aumento
+        porcentaje_aumento = round(porcentaje_aumento, 2)  # redondear 
+
+        print(f"Aumento aplicado: {porcentaje_aumento*100}%")
+
+        # Aplicar el aumento a cada ticket sin propietario
+        for ticket in disponibles:
+            if ticket.precioInicial:
+                ticket.precioInicial *= (1 + porcentaje_aumento)
+                ticket.save()
+
+
 
     #EVENTO DE REVALORIZACION POR TEMPORALIDAD
     def guardar(evento):

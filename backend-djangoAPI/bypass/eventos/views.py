@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.utils import timezone
 from django.db.models import Count
+from django.db import transaction
 
 class EventoView(viewsets.ModelViewSet):
     serializer_class = EventoSerializer
@@ -102,29 +103,29 @@ def get_eventos_productora(request, productora_nickname):
 @api_view(["POST"])
 def crear_evento(request):
     try:
-        # Serializo el evento con los datos del POST
-        serializer = EventoSerializer(data=request.data)
-        productora = Productora.objects.get(nickname=request.data.get("id_productora"))
-        if serializer.is_valid():
-            serializer.save(productora=productora)  # Creo el evento
+        with transaction.atomic():  # inicio de la transacción
+            serializer = EventoSerializer(data=request.data)
+            productora = Productora.objects.get(nickname=request.data.get("id_productora"))
 
-            # Creado el evento, creo los tickets por tipo
-            for tipo_ticket in TipoTickets.objects.all():
-                cantEntradas = request.data.get(
-                    "cantidadEntradas" + tipo_ticket.tipo, ""
-                )
-                precioEntrada = request.data.get("precio" + tipo_ticket.tipo, "")
-                
-                if (cantEntradas and precioEntrada):  # Asegúrate de que estos valores existen y son válidos
-                    # Creacio de las entradas del evento, segun el tipo
-                    crearTicketConTipo(int(cantEntradas),tipo_ticket,serializer.instance,precioEntrada)
+            if serializer.is_valid():
+                serializer.save(productora=productora)  # Creo el evento
 
-            return JsonResponse({"mensaje": "Evento creado con éxito!"}, status=201)
-        else:
-            print(serializer.errors)  # Logging para ver errores de serialización
-            return JsonResponse({"error": serializer.errors}, status=400)
+                # Creo los tickets por tipo
+                for tipo_ticket in TipoTickets.objects.all():
+                    cantEntradas = request.data.get("cantidadEntradas" + tipo_ticket.tipo, "")
+                    precioEntrada = request.data.get("precio" + tipo_ticket.tipo, "")
+                    
+                    if cantEntradas and precioEntrada:
+                        crearTicketConTipo(int(cantEntradas), tipo_ticket, serializer.instance, precioEntrada)
+
+                return JsonResponse({"mensaje": "Evento creado con exito!"}, status=201)
+
+            else:
+                print(serializer.errors)
+                return JsonResponse({"error": serializer.errors}, status=400)
+
     except Exception as e:
-        print(str(e))  # Logging para cualquier excepción que ocurra
+        print("Error en crear_evento:", str(e))
         return JsonResponse({"error": str(e)}, status=400)
 
 

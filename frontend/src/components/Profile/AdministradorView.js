@@ -14,9 +14,10 @@ export const AdministradorView = ({ rol }) => {
     const handleBackup = async () => {
         try {
             const response = await crearBackup();
-
             // Si la respuesta contiene un archivo, proceder a descargarlo
             if (response.status === 200) {
+                /*
+                //Descomentar si queremos descargar el archivo de backup  
                 const blob = new Blob([response.data], { type: 'application/sql' });
                 const url = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
@@ -24,7 +25,7 @@ export const AdministradorView = ({ rol }) => {
                 link.setAttribute('download', `backup_${new Date().toISOString()}.sql`);
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
+                document.body.removeChild(link); */
                 toast.success('Backup realizado con éxito');
             } else {
                 toast.error('Error al realizar el backup');
