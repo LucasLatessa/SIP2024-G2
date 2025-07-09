@@ -31,7 +31,7 @@ export const ClienteView = ({ rol, user_id }) => {
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: fechaFormateada,
               eventoHora: eventoRes.data.hora,
-              eventoLugarNombre: eventoRes.data.lugar,
+              eventoLugarNombre: ticket.eventoNombre,
             };
           })
         );

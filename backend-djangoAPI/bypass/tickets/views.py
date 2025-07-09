@@ -76,13 +76,15 @@ def get_tickets_by_cliente(request, cliente_id):
             "id_Ticket": ticket.id_Ticket,
             "precioInicial": ticket.precioInicial,
             "evento": ticket.evento.id_Evento if ticket.evento else None,
+            "eventoNombre": ticket.evento.nombre if ticket.evento else None,
             "tipo_ticket": ticket.tipo_ticket.tipo if ticket.tipo_ticket else None,
             "qr": request.build_absolute_uri(ticket.qr.url) if ticket.qr else None,
             "usada": ticket.usada
         }  # Construye una URL absoluta para el campo QR
         for ticket in tickets
     ]
-
+    for t in ticket_data:
+        print(f"Evento: {t['evento']}")
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 

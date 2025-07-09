@@ -78,7 +78,6 @@ export const EventoPage = () => {
   useEffect(() => {
     async function cargarEventos() {
       const resEvento = await getEvento(id);
-      console.log("Evento obtenido:", resEvento);
       const evento = resEvento.data;
       const fechaFormateada = new Date(evento.fecha).toLocaleDateString(
         "es-AR",
@@ -121,7 +120,6 @@ export const EventoPage = () => {
 
   if (ticket_id_list.length === quantity) {
     const result = await createPreference(ticket_id_list, quantity);
-    console.log("Resultado de la preferencia:", result);
     if (result?.success) {
       setPreferenceId(result.preference_id);
 

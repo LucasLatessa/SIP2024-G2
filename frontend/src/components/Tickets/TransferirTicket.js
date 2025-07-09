@@ -32,7 +32,6 @@ export const TransferirTicket = () => {
   const handleVerificar = async (data) => {
   try {
     setButtonClicked(true);
-    console.log("Datos del ticket:", ticket);
     const response = await getUserNick(data.nickname);
     const usuario = response.data.usuario; // usuario obtenido directamente
     setUsuarioData(usuario); // guardamos en estado por si quieres mostrar
