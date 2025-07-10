@@ -18,16 +18,7 @@ export const EventsList = () => {
   const fetchEvents = async () => {
     try {
       const response = await getAllEventos();
-      const eventosModificados = await Promise.all(
-        response.data.map(async (evento) => {
-          const estado = await getEstadoEvento(evento.estado);
-          return {
-            ...evento,
-            estado: estado.data.estado,
-          };
-        })
-      );
-      setEvents(eventosModificados);
+      setEvents(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);
     }

@@ -8,6 +8,7 @@ from tickets.models import Ticket, TipoTickets, Ticket, TipoTickets
 from usuarios.models import Productora
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from django.db.models import Min, Max
 from django.utils import timezone
 from django.db.models import Count
 from django.db import transaction
@@ -46,33 +47,41 @@ class LugarView(viewsets.ModelViewSet):
 
 
 def get_eventos_aprobados(request):
-    # Obtener la fecha y hora actual
     now = timezone.now()
 
-    # Recupera todos los eventos aprobados de la base de datos
-    events = Evento.objects.filter(estado=EstadoEvento.objects.get(estado="APROBADO"), fecha__gte=now.date())
+    # Eventos aprobados a futuro
+    events = Evento.objects.filter(
+        estado=EstadoEvento.objects.get(estado="APROBADO"),
+        fecha__gte=now.date()
+    )
 
-    # Filtra los eventos cuya fecha sea mayor o igual a la fecha actual y hora mayor o igual a la hora actual si la fecha es hoy
+    # Filtra por hora si es el mismo dia
     upcoming_events = [
         event for event in events
         if (event.fecha > now.date()) or (event.fecha == now.date() and event.hora >= now.time())
     ]
 
-    # Convierte los eventos a un formato JSON
-    event_data = [
-        {
+    # Serializar eventos con precios
+    event_data = []
+    for event in upcoming_events:
+        # Filtrar tickets del evento (ignorando los reservados/usados si queres)
+        tickets = Ticket.objects.filter(evento=event)
+
+        precios = tickets.aggregate(
+            precioMinimo=Min('precioInicial'),
+            precioMaximo=Max('precioInicial')
+        )
+
+        event_data.append({
             "id_Evento": event.id_Evento,
             "nombre": event.nombre,
             "fecha": event.fecha,
             "hora": event.hora,
-            "imagen": (
-                request.build_absolute_uri(event.imagen.url) if event.imagen else None
-            ),
-        }
-        for event in upcoming_events
-    ]
+            "imagen": request.build_absolute_uri(event.imagen.url) if event.imagen else None,
+            "precioMin": precios["precioMinimo"],
+            "precioMax": precios["precioMaximo"],
+        })
 
-    # Devuelve los eventos como una respuesta JSON
     return JsonResponse(event_data, safe=False)
 
 

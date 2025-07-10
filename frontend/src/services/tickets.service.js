@@ -25,7 +25,6 @@ export const preferenciaTransferencia = (id_ticket,costoTransferencia,nuevoPropi
   costoTransferencia:costoTransferencia,
   nuevoPropietario:nuevoPropietario
 });
-export const getTicketByEventPrecio = (id_evento) => tickets_cliAPI.get(`/byEvento/precios/${id_evento}`);
 
 export const cambiarEstadoTicket = (id) => tickets_cliAPI.put(`/cambiar_estado_ticket/${id}/`);
 

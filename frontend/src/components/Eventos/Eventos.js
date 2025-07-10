@@ -4,8 +4,6 @@ import "./styles/Eventos.css";
 import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { EventosBox } from "./EventosBox";
-import { getTicketByEventPrecio } from "../../services/tickets.service";
-import axios from "axios";
 
 //Pagina donde se mostraran todos los eventos posibles
 export const Eventos = () => {
@@ -19,31 +17,8 @@ export const Eventos = () => {
   useEffect(() => {
     async function cargarEventos() {
       const res = await getAllEventosAprobados();
-      const datosEventoCompleto = await Promise.all(
-        res.data.map(async (evento) => {
-          const precios = await getTicketByEventPrecio(evento.id_Evento)
-          const fechaFormateada = new Date(evento.fecha).toLocaleDateString('es-AR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          });
-          return {
-            id: evento.id_Evento,
-            nombre: evento.nombre,
-            imagen: evento.imagen,
-            precioMin: precios.data.precios.precioMinimo,
-            precioMax: precios.data.precios.precioMaximo,
-            fecha: fechaFormateada,
-            hora: evento.hora
-          }
-          
-        })
-      )
-      setEventos(datosEventoCompleto);
-      setFilteredEventos(datosEventoCompleto);
-    }
-    async function ticketsEventos(){
-      const res = await getTicketByEventPrecio(res.data)
+      setEventos(res.data);
+      setFilteredEventos(res.data);
     }
 
     cargarEventos();
@@ -118,7 +93,7 @@ export const Eventos = () => {
             (eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
               <EventosBox
                 key={eventos.id}
-                id={eventos.id}
+                id={eventos.id_Evento}
                 nombre={eventos.nombre}
                 foto={eventos.imagen}
                 precioMin={eventos.precioMin}

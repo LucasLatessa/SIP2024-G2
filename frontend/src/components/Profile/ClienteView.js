@@ -13,29 +13,7 @@ export const ClienteView = ({ rol, user_id }) => {
       try {
         //Obtengo todos los ticket de un cliente con la informacion completa
         const res = await getAllTicketsByCli(user_id);
-        const ticketsConInfoCompleta = await Promise.all(
-          res.data.tickets.map(async (ticket) => {
-            const eventoRes = await getEvento(ticket.evento);
-            const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
-            });
-            return {
-              id_ticket: ticket.id_Ticket,
-              precio: ticket.precioInicial,
-              tipo_ticket: ticket.tipo_ticket,
-              qr: ticket.qr,
-              usada: ticket.usada,
-              foto: eventoRes.data.imagen,
-              eventoNombre: eventoRes.data.nombre,
-              eventoFecha: fechaFormateada,
-              eventoHora: eventoRes.data.hora,
-              eventoLugarNombre: ticket.eventoNombre,
-            };
-          })
-        );
-        setTickets(ticketsConInfoCompleta);
+        setTickets(res.data.tickets);
       } catch (error) {
         console.error("Error al cargar los tickets:", error);
       }

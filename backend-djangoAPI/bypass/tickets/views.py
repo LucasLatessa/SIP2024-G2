@@ -2,6 +2,7 @@ import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.utils.dateformat import format as django_format_date
 
 from rest_framework import viewsets
 from .serializer import (
@@ -70,22 +71,28 @@ def get_tickets_by_cliente(request, cliente_id):
     # Filtra los tickets pertenecientes al cliente especificado
     tickets = Ticket.objects.filter(propietario_id=cliente_id)
 
-    # Convierte los tickets a un formato JSON
-    ticket_data = [
-        {
-            "id_Ticket": ticket.id_Ticket,
-            "precioInicial": ticket.precioInicial,
-            "evento": ticket.evento.id_Evento if ticket.evento else None,
-            "eventoNombre": ticket.evento.nombre if ticket.evento else None,
+    ticket_data = []
+    for ticket in tickets:
+        evento = ticket.evento
+
+        # Formatea la fecha si existe
+        fecha_formateada = (
+            django_format_date(evento.fecha, "d/m/Y") if evento and evento.fecha else None
+        )
+
+        ticket_data.append({
+            "id_ticket": ticket.id_Ticket,
+            "precio": ticket.precioInicial,
             "tipo_ticket": ticket.tipo_ticket.tipo if ticket.tipo_ticket else None,
             "qr": request.build_absolute_uri(ticket.qr.url) if ticket.qr else None,
-            "usada": ticket.usada
-        }  # Construye una URL absoluta para el campo QR
-        for ticket in tickets
-    ]
-    for t in ticket_data:
-        print(f"Evento: {t['evento']}")
-    # Devuelve los tickets como una respuesta JSON
+            "usada": ticket.usada,
+            "foto": request.build_absolute_uri(evento.imagen.url) if evento and evento.imagen else None,
+            "eventoNombre": evento.nombre if evento else None,
+            "eventoFecha": fecha_formateada,
+            "eventoHora": str(evento.hora) if evento and evento.hora else None,
+            "eventoLugarNombre": evento.lugar.nombre if evento and evento.lugar else None,
+        })
+
     return JsonResponse({"tickets": ticket_data})
 
 @api_view(["POST"])
@@ -220,22 +227,6 @@ def get_tickets_by_evento(request, evento_id):
     ]
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
-
-def get_tickets_by_evento_min_max(request, evento_id):
-    # Obtengo los valores mínimo y máximo de los tickets no usados de ese evento
-    precios = Ticket.objects.filter(evento_id=evento_id, usada=False).aggregate(
-        precioMinimo=Min('precioInicial'),
-        precioMaximo=Max('precioInicial')
-    )
-
-    # Si no hay tickets, establecer precios en 0
-    precios_data = {
-        "precioMaximo": precios["precioMaximo"] or 0,
-        "precioMinimo": precios["precioMinimo"] or 0
-    }
-
-    # Devuelve la respuesta en formato JSON
-    return JsonResponse({"precios": precios_data})
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
