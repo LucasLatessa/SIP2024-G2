@@ -24,12 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production! OJO, SI PONEMOS EN FALSE NO SIRVE /MEDIA (para imagenes)
 DEBUG = True
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
+BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
 # ALLOWED_HOSTS = [
 #     'localhost',
 #     '127.0.0.1',  # Incluye estas entradas básicas
@@ -145,7 +146,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/' #Donde estara ubicada mi media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
@@ -183,9 +184,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
     "http://35.196.38.34:8000/", #ip vm de google
-    "https://bypass-events.vercel.app",
-    "https://bypass-events.vercel.app",
-    "https://bypass-7lu9.onrender.com"
+    CLIENT_ORIGIN_URL,
+    BACKEND_ORIGIN_URL
 ]
 
 REST_FRAMEWORK = {

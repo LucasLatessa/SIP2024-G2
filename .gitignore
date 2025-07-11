@@ -10,8 +10,8 @@
 /coverage
 
 # production
-/build
-
+frontend/build
+backend-djangoAPI/bypass/staticfiles
 # misc
 .DS_Store
 .env.local

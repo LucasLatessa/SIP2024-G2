@@ -4,12 +4,19 @@ FROM python:3.12.3-slim
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia el archivo de requisitos y luego instala las dependencias
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y build-essential netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
-# Copia el resto del código de tu aplicación
+# Copiar los requirements e instalar
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copiar todo el proyecto
 COPY . .
 
-# Comando para ejecutar las migraciones y luego la aplicación
-CMD ["sh", "-c", "python bypass/manage.py migrate && python bypass/manage.py runserver 0.0.0.0:8000"]
+# Copiar el entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Comando por defecto
+ENTRYPOINT ["/entrypoint.sh"]
