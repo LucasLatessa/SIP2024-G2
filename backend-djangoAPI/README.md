@@ -70,3 +70,39 @@ Antes de ejecutar el proyecto, asegúrate de tener Python 3.x y MySQL instalados
 5. **Ejecutar el servidor** usando `python manage.py runserver 0.0.0.0:8000` para que sea accesible desde la red.
 
 ---
+
+
+# Despliegue con Docker
+
+
+## 📋 Requisitos previos
+
+- [Docker](https://docs.docker.com/get-docker/) instalado
+- Opcional: [Docker Compose](https://docs.docker.com/compose/install/) si querés usar `docker-compose.yml`
+
+---
+
+## 🚀 Paso 1: Configurar variables de entorno
+
+En el directorio raíz crea un archivo `.env` con al menos:
+
+```env
+# Para Django
+DJANGO_SECRET_KEY
+DB_NAME
+DB_USER
+DB_PASSWORD
+DB_HOST=db # alias de servicio en docker-compose
+DB_PORT=3306
+DB_ROOT_PASSWORD
+```
+
+---
+
+## 🐍 Paso 2: Usar Docker Compose
+
+1. Desde "backend-djangoAPI":
+
+```bash
+docker-compose up -d --build
+```
