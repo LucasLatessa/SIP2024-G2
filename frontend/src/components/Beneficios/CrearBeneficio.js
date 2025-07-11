@@ -15,14 +15,12 @@ export const CrearBeneficio = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const { user } = useAuth0();
-  const [usuarioData, setUsuarioData] = useState(null);
 
   useEffect(() => {
     async function obtenerDatos() {
       try {
         // Obtener la productora
         const productora = await getUserNick(user.nickname);
-        setUsuarioData(productora.data.usuario);
 
         // Obtener los eventos de la productora
         if (productora.data.usuario && productora.data.usuario.user_id) {

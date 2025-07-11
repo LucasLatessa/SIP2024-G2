@@ -20,18 +20,6 @@ export const ProductorasList = () => {
       console.error("Error al obtener la lista de productoras:", error);
     }
   };
-
-  // Actualiza las productoras
-  const handleReport = async (id_User, newState) => {
-    try {
-      // FALTA UPDATE STATE await updateState(id_User, newState);
-      // Actualizar la lista de productoras después de cambiar el estado
-      await fetchProdu();
-    } catch (error) {
-      console.error("Error al cambiar el estado de la productora:", error);
-    }
-  };
-
   return (
     <>
       <h2 className="produsProfile">Lista de Productoras</h2>

@@ -10,7 +10,6 @@ export const Eventos = () => {
   const [eventos, setEventos] = useState([]);
   const [search, setSearch] = useState("");
   const [date, setDate] = useState("");
-  const [entryType, setEntryType] = useState("");
   const [filteredEventos, setFilteredEventos] = useState([]);
 
   //Realizo la peticion para obtener todos los eventos
@@ -44,7 +43,7 @@ export const Eventos = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [search, date, entryType, eventos]);
+  }, [search, date, eventos]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
@@ -25,7 +25,6 @@ export const EventoPage = () => {
   const backendUrl = process.env.REACT_APP_DJANGO_BACKEND;
   const { getValues, register } = useForm();
   const [evento, setEvento] = useState(null);
-  const [token, setToken] = useState();
   const [maxCantidadTickets, setMaxCantidadTickets] = useState(null); // cantidad maxima segun tipo
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
@@ -35,7 +34,6 @@ export const EventoPage = () => {
   const obtenerTicket = async (quantity, id, tipo_ticket) => {
     try {
       const token = await getAccessTokenSilently();
-      setToken(token);
       const response = await axios.get(
         `${backendUrl}/tickets/obtener_ticket_evento/`,
         {

@@ -20,7 +20,6 @@ export const PublicarTicket = () => {
   const navigate = useNavigate();
   const { user, getAccessTokenSilently } = useAuth0();
   const [userNoAuth0, setUserNoAuth0] = useState(null);
-  const [token, setToken] = useState();
   
  // Observar el campo de precio
  const precio = useWatch({
@@ -35,18 +34,13 @@ export const PublicarTicket = () => {
     if (precio) {
       calcularCostos(Number(precio));
     }
-    async function obtenerToken() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
     async function getUsuario() {
       const res = await getUserNick(user.nickname);
       setUserNoAuth0(res);      
     }
-    obtenerToken();
     getUsuario();
 
-  }, [precio,getAccessTokenSilently]);
+  }, [user,precio,getAccessTokenSilently]);
 
   const calcularCostos = (precio) => {
     const costo = precio * 0.15; // costo fijo del 15%

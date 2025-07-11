@@ -14,7 +14,6 @@ export const TransferirTicket = () => {
   const location = useLocation();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router
   const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
   const [usuarioData, setUsuarioData] = useState(null);
   const porcTransferencia = 30;
   const [buttonClicked, setButtonClicked] = useState(false);

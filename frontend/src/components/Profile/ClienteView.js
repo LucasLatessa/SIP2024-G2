@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TicketBox } from "../Tickets/TicketBox";
 import { getAllTicketsByCli } from "../../services/tickets.service";
-import { getEvento } from "../../services/eventos.service";
-import { getLugar } from "../../services/lugar.service";
 
 //Mostrar los tickets de un cliente
 export const ClienteView = ({ rol, user_id }) => {

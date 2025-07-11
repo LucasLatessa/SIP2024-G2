@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   getAllEventos,
-  updateState,
-  getEstadoEvento,
+  updateState
 } from "../../services/eventos.service";
 
 //Componente para modificar el estado de los eventos, solamente si es administrador

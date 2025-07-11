@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { restore } from "../../services/backup.service";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 const Restore = ({ onClose }) => {
