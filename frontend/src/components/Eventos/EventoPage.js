@@ -9,6 +9,7 @@ import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { ToastContainer } from "react-toastify";
+import {CountdownTimer} from "./CountdownTimer";
 import "react-toastify/dist/ReactToastify.css";
 
 //Pagina donde se mostrara datos del evento y la posibilidad de comprar entradas
@@ -26,6 +27,7 @@ export const EventoPage = () => {
   const { getValues, register } = useForm();
   const [evento, setEvento] = useState(null);
   const [maxCantidadTickets, setMaxCantidadTickets] = useState(null); // cantidad maxima segun tipo
+  const [expiresAt, setExpiresAt] = useState(null);
   initMercadoPago("APP_USR-c2efa0aa-3b60-4f2e-9d59-2e6922b0d2b2", {
     locale: "es-AR",
   });
@@ -121,11 +123,15 @@ export const EventoPage = () => {
     if (result?.success) {
       setPreferenceId(result.preference_id);
 
-      await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
+      const response= await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
         params: {
           ticket_id: ticket_id_list.join(","),
         },
       });
+      if (response.data.expires_at) {
+        console.log("Expires at:", response.data.expires_at);
+        setExpiresAt(response.data.expires_at);
+      }
     } else {
       setError("Hubo un error al crear la preferencia de pago.");
     }
@@ -177,7 +183,12 @@ export const EventoPage = () => {
                 alt={"Imagen " + evento.nombre}
               />
             </header>
+            
             <article className="informacionEvento">
+              {expiresAt && <CountdownTimer expiresAt={expiresAt} onExpire={() => {
+              setError("Tu reserva ha expirado");
+              window.location.reload(); // recargamos la pagina
+            }} />}
               <h1 className="titulo">{evento.nombre}</h1>
               <p className="fecha">
                 Fecha del evento: {evento.fecha} - {evento.hora}
@@ -192,93 +203,72 @@ export const EventoPage = () => {
                     handleBuy();
                   }}
                 >
-                  <label>
-                    Tipo de entrada
-                    <select
-                      id="tipoEntrada"
-                      onChange={handleTipoEntradaChange}
-                      defaultValue=""
-                      disabled={!!preferenceId}
-                    >
-                      <option value="" disabled>
-                        Selecciona una opcion
-                      </option>
-                      {evento?.tickets_por_tipo.map((tipo) => (
-                        <option
-                          key={tipo.tipo_ticket__tipo}
-                          value={tipo.tipo_ticket__tipo}
+                  <div className="formColumns">
+                    {/* Columna 1: Tipo */}
+                    <div className="formColumn">
+                      <label>
+                        Tipo de entrada
+                        <select
+                          id="tipoEntrada"
+                          onChange={handleTipoEntradaChange}
+                          defaultValue=""
+                          disabled={!!preferenceId}
                         >
-                          {tipo.tipo_ticket__tipo} (Disponibles: {tipo.cantidad}
-                          )
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                          <option value="" disabled>
+                            Selecciona una opcion
+                          </option>
+                          {evento?.tickets_por_tipo.map((tipo) => (
+                            <option
+                              key={tipo.tipo_ticket__tipo}
+                              value={tipo.tipo_ticket__tipo}
+                            >
+                              {tipo.tipo_ticket__tipo} (Disponibles: {tipo.cantidad})
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
 
-                  <label>
-                    Cantidad Entradas
-                    <input
-                      type="number"
-                      id="cantidadEntradas"
-                      name="cantidadEntradas"
-                      {...register("cantidadEntradas", {
-                        required: true,
-                        validate: (value) =>
-                          value > 0 || "Debe ser un numero positivo",
-                      })}
-                      disabled={!!preferenceId}
-                      min="1"
-                      max={maxCantidadTickets || undefined}
-                      onInput={(e) => {
-                        if (e.target.value < 1) {
-                          e.target.value = "";
-                        }
-                      }}
-                    />
-                  </label>
-                  {precioEntrada && (
-                    <p className="parrafo">
-                      Precio por entrada: {precioEntrada}
-                    </p>
-                  )}
-                  <div className="comprarTicketsButton">
-                    {isAuthenticated && (!buttonClicked || !preferenceId) && (
-                      <button className="comprarEntradaBtn" type="submit">
-                        Comprar
-                      </button>
-                    )}
-                    {!isAuthenticated && (
-                      <div className="login-message">
-                        <p>
-                          Para comprar entradas, por favor{" "}
-                          <a href="" onClick={loginWithRedirect}>
-                            inicia sesión
-                          </a>
-                          .
-                        </p>
-                      </div>
-                    )}
-                    <ToastContainer />
-                    {buttonClicked && (
-                      <>
-                        {loading ? (
-                          <div className="loading">Cargando...</div>
-                        ) : preferenceId ? (
-                          <div className="wallet-container">
-                            <Wallet
-                              initialization={{ preferenceId: preferenceId }}
-                            />
-                          </div>
+                    {/* Columna 2: Cantidad */}
+                    <div className="formColumn">
+                      <label>
+                        Cantidad de entradas
+                        <input
+                          type="number"
+                          id="cantidadEntradas"
+                          name="cantidadEntradas"
+                          {...register("cantidadEntradas", {
+                            required: true,
+                            validate: (value) => value > 0 || "Debe ser un numero positivo",
+                          })}
+                          disabled={!!preferenceId}
+                          min="1"
+                          max={maxCantidadTickets || undefined}
+                        />
+                      </label>
+                    </div>
+
+                    {/* Columna 3: Precio y boton */}
+                    <div className="formColumn">
+                      {precioEntrada && (
+                        <p className="precioEntrada">Precio por entrada: ${precioEntrada}</p>
+                      )}
+                      <div className="botonera">
+                        {!preferenceId ? (
+                          <button className="comprarEntradaBtn" type="submit">
+                            Comprar
+                          </button>
                         ) : (
-                          <div className="error-message">
-                            {error}
+                          <div className="wallet-container">
+                            <Wallet initialization={{ preferenceId: preferenceId }} />
                           </div>
                         )}
-                      </>
-                    )}
+                      </div>
+                    </div>
                   </div>
                 </form>
               </section>
+              <div className="error-message"> {error} </div>
               <section className="acercaDelEvento">
                 <h3>Acerca del evento</h3>
                 <p>{evento.descripcion}</p>

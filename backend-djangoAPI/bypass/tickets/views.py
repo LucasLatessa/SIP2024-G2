@@ -15,17 +15,13 @@ from .models import Ticket, Publicacion, Precio, TipoTickets
 from usuarios.models import Usuario
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-import mercadopago
 import json
-from dotenv import load_dotenv
-import requests
-from datetime import datetime
-from utils.authorization import RequestToken, authorized, can, getRequestToken
+from django.utils import timezone
+from datetime import timedelta
+from utils.authorization import RequestToken, authorized
 from utils.mercadopago import preferencia, entregartoken
-import sys
 import time
 import threading
-from django.db.models import Min, Max
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
@@ -251,11 +247,14 @@ def reservar_ticket(request: HttpRequest):
         ticket = Ticket.objects.get(id_Ticket=ticket_id)
         ticket.reservado=True
         ticket.save()
-
+    expiration_time = timezone.now() + timedelta(minutes=5)
     hilo=threading.Thread(target=timer_desreservar,args=(data_ticket_id_list,), daemon=False)
     hilo.start()
 
-    return JsonResponse({"ticket_id_list": "data_ticket_id_list"})
+    return JsonResponse({
+        "ticket_id_list": data_ticket_id_list,
+        "expires_at": expiration_time.isoformat()
+    })
 
 def timer_desreservar(data_ticket_id_list):
     time.sleep(300)#5 minutos

@@ -57,7 +57,7 @@
 }
 
 
-.comprarEntrada, .publicarEntrada, .transferirEntrada {
+.publicarEntrada, .transferirEntrada {
     margin: 0 2rem;
     background-color: var(--color-letras-cuaternario);
 }
@@ -72,7 +72,7 @@
     margin:0;
 }
 
-.formComprarEntrada, .formPublicarEntrada {
+.formPublicarEntrada {
     display: flex;
     justify-content: space-between;
     align-items: center;   
@@ -84,26 +84,109 @@
     align-items: center;
 }
 
-.formComprarEntrada label {
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    flex-grow: 1;
-    width: calc(33.33%); /*Porque se parte en 3*/
-}
 
 .comprarTicketsButton, .publicarTicketButton {
     flex-grow: 1;
-    width: calc(33.33%); /*Porque se parte en 3*/
+    width: calc(33.33%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.formComprarEntrada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.formColumns {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 250px;
+  flex: 1;
+}
+
+.formColumn label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.formColumn select,
+.formColumn input {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+.formColumn select:disabled,
+.formColumn input:disabled {
+  background-color: #ffffff; 
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.precioEntrada {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.botonera {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comprarEntradaBtn {
+  padding: 0.8rem 1.5rem;
+  background-color: var(--color-letras-terceario);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.comprarEntradaBtn:hover {
+   background-color: #c0392b; 
+}
+
+.wallet-container {
+  margin-top: 0.5rem;
+}
+
+.parrafo {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+
+
+.loading {
+  color: #f5f5f5;
+  font-style: italic;
+}
+
+.wallet-container {
+  margin-top: 1rem;
+}
+
+
+
+
+
 
 .comprarTicketsButton > button,
 .publicarTicketButton > button,
@@ -137,11 +220,6 @@
     color:var(--color-letras-terceario);
 }
 
-.formComprarEntrada label > input, .formComprarEntrada label > select{
-    display: block;
-    font-size: 1rem;
-    width: 15rem; 
-}
 
 .formTransferirEntrada label > input{
     display: block;
@@ -228,13 +306,14 @@
   margin-top: 2rem;
 }
 
+
 .comprarEntrada {
-  margin: 2rem 0;
-  background: var(--color-letras-cuaternario);
+  background-color: var(--color-letras-cuaternario);
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(49,130,206,0.07);
-  padding: 2rem 1.5rem;
-  transition: box-shadow 0.2s;
+  margin-top: 2rem;
+  color: #f0f0f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .comprarEntrada h3 {
@@ -247,13 +326,6 @@
   letter-spacing: 1px;
 }
 
-.formComprarEntrada {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-}
 
 .info-list {
   flex: 2;
@@ -286,27 +358,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
   min-width: 180px;
-}
-
-.comprarEntradaBtn {
-  background: #3182ce;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.8rem 2rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.2s, transform 0.2s;
-  box-shadow: 0 1px 4px rgba(49,130,206,0.10);
-}
-
-.comprarEntradaBtn:hover {
-  background: #225ea8;
-  transform: scale(1.04);
 }
 
 .login-message, .error-message, .loading {
@@ -317,6 +371,14 @@
 
 .wallet-container {
   margin-top: 1.5rem;
+}
+
+.countdownTimer {
+  color: #eee;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.5rem;
 }
 
 @media (max-width: 800px) {
