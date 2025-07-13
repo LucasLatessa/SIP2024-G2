@@ -135,11 +135,7 @@ export const EventoPage = () => {
     } else {
       setError("Hubo un error al crear la preferencia de pago.");
     }
-
-  } else {
-    setError(`Hay ${ticket_id_list.length} tickets disponibles.`);
   }
-
   setLoading(false);
 };
 
