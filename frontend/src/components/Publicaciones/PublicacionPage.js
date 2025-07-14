@@ -16,7 +16,6 @@ export const PublicacionPage = () => {
   const [loading, setLoading] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
-  const [ticketId, setTicketId] = useState(null);
   const [userNoAuth0, setUserNoAuth0] = useState(null);
   const [userVendedor, setUserVendedor] = useState(null);
 
@@ -27,32 +26,9 @@ export const PublicacionPage = () => {
     const cargarPublicacion = async () => {
       try {
         const res = await getPublicacion(id);
-        const publicacionData = res.data;
-        const ticketRes = await getTicket(publicacionData.ticket);
-        setTicketId(ticketRes);
-        const tipoTicket = await getTipoTicket(ticketRes.data.tipo_ticket);
-        const vendedorRes = await getUser(ticketRes.data.propietario);
-        setUserVendedor(vendedorRes);
-        const eventoRes = await getEvento(ticketRes.data.evento);
-
-        const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        });
-
-        setPublicacion({
-          id: publicacionData.id_Publicacion,
-          precio: publicacionData.precio,
-          tipo: tipoTicket.data.tipo,
-          fecha: publicacionData.fecha,
-          foto: eventoRes.data.imagen,
-          vendedorNombre: vendedorRes.data.nickname,
-          eventoNombre: eventoRes.data.nombre,
-          eventoDesc: eventoRes.data.descripcion,
-          eventoFecha: fechaFormateada,
-          eventoHora: eventoRes.data.hora,
-        });
+        console.log("Publicación cargada:", res.data);
+        setPublicacion(res.data);
+        setUserVendedor(res.data.vendedorNombre);
       } catch (error) {
         console.error("Error al cargar la publicación:", error);
       }
@@ -65,8 +41,8 @@ export const PublicacionPage = () => {
     const getUsuario = async () => {
       if (userVendedor) {
         try {
-          const res = await getUserNick(userVendedor.data.nickname);
-          setUserNoAuth0(res);
+          const res = await getUserNick(userVendedor);
+          setUserNoAuth0(res.data.usuario);
         } catch (error) {
           console.error("Error al obtener el usuario:", error);
         }
@@ -80,16 +56,18 @@ export const PublicacionPage = () => {
     setButtonClicked(true);
     setLoading(true);
     try {
-      if (userNoAuth0?.data?.usuario?.Public_Key) {
-        initMercadoPago(userNoAuth0.data.usuario.Public_Key, { locale: "es-AR" });
-        const ticket_publi_id = [ticketId.data.id_Ticket, publicacion.id];
+      console.log(userNoAuth0)
+      if (userNoAuth0?.Public_Key) {
+        initMercadoPago(userNoAuth0.Public_Key, { locale: "es-AR" });
+        const ticket_publi_id = [publicacion.id];
         const res_id = await crearPreferenciaEvento(
           ticket_publi_id,
           publicacion.precio,
           user.nickname,
           publicacion.vendedorNombre
         );
-        if (res_id.data.id) setPreferenceId(res_id.data.id);
+        console.log("hola",res_id.data.preference_id)
+        if (res_id?.data.success) setPreferenceId(res_id.data.preference_id);
       } else {
         console.error("El vendedor no tiene cuenta de MercadoPago");
       }
@@ -108,14 +86,14 @@ export const PublicacionPage = () => {
             <header className="headerEvento">
               <img
                 className="imagen"
-                src={publicacion.foto}
+                src={publicacion.imagen}
                 alt={`Imagen ${publicacion.eventoNombre}`}
               />
             </header>
             <article className="informacionEvento">
                 <h1 className="titulo">{publicacion.eventoNombre}</h1>
                 <p className="fecha">
-                  Fecha del evento: {publicacion.eventoFecha} - {publicacion.eventoHora}
+                  Fecha del evento: {publicacion.evento_fecha} - {publicacion.evento_hora}
                 </p>
 
               <section className="comprarEntrada">
@@ -156,7 +134,7 @@ export const PublicacionPage = () => {
                         <div className="loading">Cargando...</div>
                       ) : preferenceId ? (
                         <div className="wallet-container">
-                          <Wallet initialization={{ preferenceId }} />
+                          <Wallet initialization={{ preferenceId: preferenceId }} />
                         </div>
                       ) : (
                         <div className="error-message">

@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.utils.dateformat import format as django_format_date
-
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework import viewsets
 from .serializer import (
     TicketSerializer,
@@ -30,6 +31,37 @@ class TicketView(viewsets.ModelViewSet):
 class PublicacionView(viewsets.ModelViewSet):
     serializer_class = PublicacionSerializer
     queryset = Publicacion.objects.all()
+    def retrieve(self, request, pk=None):
+        try:
+            publicacion = Publicacion.objects.select_related(
+                'ticket', 'ticket__evento', 'ticket__tipo_ticket'
+            ).get(pk=pk)
+
+            evento = publicacion.ticket.evento if publicacion.ticket else None
+            tipo = publicacion.ticket.tipo_ticket if publicacion.ticket else None
+            ticket=publicacion.ticket if publicacion.ticket else None
+            # Formatea la fecha si existe
+            fecha_formateada = (
+                django_format_date(evento.fecha, "d/m/Y") if evento and evento.fecha else None
+            )
+            data = {
+                "id": publicacion.id_Publicacion,
+                "id_ticket": ticket.id_Ticket if ticket else None,
+                "precio": publicacion.precio,
+                "fecha": publicacion.fecha,
+                "precio_original": publicacion.ticket.precioInicial if publicacion.ticket else None,
+                "evento_nombre": evento.nombre if evento else None,
+                "evento_fecha": fecha_formateada,
+                "evento_hora": evento.hora if evento else None,
+                "vendedorNombre": publicacion.ticket.propietario.nickname if publicacion.ticket and publicacion.ticket.propietario else None,
+                "tipo": tipo.tipo if tipo else None,
+                'imagen': (request.build_absolute_uri(evento.imagen.url) if evento.imagen else None)
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Publicacion.DoesNotExist:
+            return Response({"error": "Publicacion no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class PrecioView(viewsets.ModelViewSet):
@@ -69,6 +101,8 @@ def get_all_publication(request):
 
     return JsonResponse({"publicaciones": publication_data})
 
+def get_publicacion_by_id(request, id):
+    return JsonResponse({"tickets"})
 
 def get_tickets_by_cliente(request, cliente_id):
     # Filtra los tickets pertenecientes al cliente especificado
@@ -115,35 +149,51 @@ def crearPublicacion(request):
 
 @api_view(["POST"])
 def comprarPublicacion(request):
-    body = json.loads(request.body)
-    data_ticket_publi_id= body.get("ticket_publi_id")
-    data_unit_price= body.get("unit_price")
-    data_description= body.get("description")
-    data_vendedor_nickname= body.get("vendedor_nickname")
+    data = request.data
+    data_ticket_publi_id= data.get("ticket_publi_id")
+    data_unit_price= data.get("unit_price")
+    data_description= data.get("description")
+    data_vendedor_nickname= data.get("vendedor_nickname")
     data_ticket_publi_id.append(-1)
-
     access_token = Usuario.objects.get(nickname=data_vendedor_nickname).Access_Token
 
     respuesta= preferencia(1,data_ticket_publi_id,data_unit_price,data_description,"tickets/Publicacion/entregarTicketTpublicacion", access_token)
-    return JsonResponse({"id":respuesta})
+    if respuesta.get("ok"):
+        return JsonResponse({
+            "success": True,
+            "preference_id": respuesta.get("preference_id"),
+            "init_point": respuesta.get("init_point")
+        })
+    else:
+        return JsonResponse({
+            "success": False,
+            "error": respuesta.get("error"),
+            "status": respuesta.get("status"),
+        }, status=respuesta.get("status", 400))
 
 @api_view(["POST"])
 def entregarTicketTpublicacion(request):
-    payment_id = request.query_params.get("data.id")
-    merchant_order = request.query_params.get("topic")
-    if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "evento")
-            
-        ticket_publi_id = data["additional_info"]["items"][0]["id"]
-        nick_name = data["additional_info"]["items"][0]["description"]
-        ticket_publi_id_split = ticket_publi_id.split(",")
-
-        Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publi")
-        Publicacion.modificarPublicado(ticket_publi_id_split[1])
-        return JsonResponse({"cliente": "cliente_data"})
-    
+    payment_id = request.query_params.get("id")
+    topic = request.query_params.get("topic")
+    if topic == "payment" and payment_id:
+        # Obtener info del pago desde MercadoPago
+        data = entregartoken(payment_id, "")
+        if data.get("status") == "approved":
+            try:
+                publi_id = data["additional_info"]["items"][0]["id"]
+                publicacion = Publicacion.obtenerPorId(publi_id) 
+                nuevo_propietario = data["additional_info"]["items"][0]["description"]
+                ticket_id=publicacion.ticket.id_Ticket
+                Ticket.transferir(ticket_id, nuevo_propietario)
+                Publicacion.modificarPublicado(publi_id)
+                return JsonResponse({"mensaje": "Ticket comprado con exito!"}, status=200)
+            except Exception as e:
+                print(f"Error en compra: {e}")
+                return JsonResponse({"error": "Error al comprar ticket"}, status=500)
+        else:
+            return JsonResponse({"error": "Pago no aprobado aun"}, status=400)
     else:
-        return JsonResponse({"cliente": None})
+        return JsonResponse({"error": "Notificacion no valida"}, status=400)
 
 def get_or_none(model, **kwargs):
     try:
@@ -164,7 +214,6 @@ def transferirTicket(request):
             try:
                 ticket_id = data["additional_info"]["items"][0]["id"]
                 nuevo_propietario = data["additional_info"]["items"][0]["description"]
-                print(nuevo_propietario)
                 Ticket.transferir(ticket_id, nuevo_propietario)
 
                 return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)

@@ -10,6 +10,7 @@ from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
 import os
+from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 
 
@@ -166,7 +167,11 @@ class Publicacion(models.Model):
     def __str__(self):
         return "Publicacion " + str(self.id_Publicacion)
 
-
+    def obtenerPorId(id_publicacion):
+        try:
+            return Publicacion.objects.get(id_Publicacion=id_publicacion)
+        except ObjectDoesNotExist:
+            return None
     def modificarPublicado(publi_id):
         try:
             publicacion = Publicacion.objects.get(id_Publicacion=publi_id)
