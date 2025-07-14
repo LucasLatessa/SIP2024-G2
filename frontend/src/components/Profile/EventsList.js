@@ -4,16 +4,13 @@ import {
   updateState
 } from "../../services/eventos.service";
 
-//Componente para modificar el estado de los eventos, solamente si es administrador
 export const EventsList = () => {
   const [events, setEvents] = useState([]);
 
-  //Solamente si es administrador muestra los eventos
   useEffect(() => {
-      fetchEvents();
+    fetchEvents();
   }, []);
 
-  //Trae todos los eventos y junto con los estados
   const fetchEvents = async () => {
     try {
       const response = await getAllEventos();
@@ -23,41 +20,42 @@ export const EventsList = () => {
     }
   };
 
-  //Actualiza los eventos
   const handleStateChange = async (id_event, newState) => {
     try {
       await updateState(id_event, newState);
-      // Actualizar la lista de eventos después de cambiar el estado
       await fetchEvents();
     } catch (error) {
       console.error("Error al cambiar el estado de evento:", error);
     }
   };
 
-  //Encargado de obtener el estado cada vez que cambia y enviarle al handleStateChange para que lo actualize
   const handleEventStateChange = (id_event, event) => {
     const newState = event.target.value;
     handleStateChange(id_event, newState);
   };
 
-    return (
-      <div>
-        <h2 className="eventsProfile">Lista de Eventos</h2>
-        <ul>
-          {events.map((event) => (
-            <li className="eventProfile" key={event.id_Evento}>
-              {event.nombre} -
+  return (
+    <div className="eventos-admin-container">
+      <h2 className="events-title">Gestión de Estados de Eventos</h2>
+      <div className="event-cards">
+        {events.map((event) => (
+          <div className={`event-card estado-${event.estado.toLowerCase()}`} key={event.id_Evento}>
+            <h3 className="event-nombre">{event.nombre}</h3>
+            <label className="estado-label">
+              Estado:
               <select
+                className="estado-select"
                 value={event.estado}
-                onChange={(e) => handleEventStateChange(event.id_Evento, e)} //Siempre que cambia se actualiza
+                onChange={(e) => handleEventStateChange(event.id_Evento, e)}
               >
                 <option value="PENDIENTE">PENDIENTE</option>
                 <option value="CANCELADO">CANCELADO</option>
                 <option value="APROBADO">APROBADO</option>
               </select>
-            </li>
-          ))}
-        </ul>
+            </label>
+          </div>
+        ))}
       </div>
-    );
+    </div>
+  );
 };

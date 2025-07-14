@@ -10,6 +10,9 @@ export const ReporteProdu = () => {
   const [reporte, setReporte] = useState(null);
   const [eventoSeleccionado, setEventoSeleccionado] = useState("");
   const [ordenSeleccionado, setOrdenSeleccionado] = useState("");
+  const [lugarSeleccionado, setLugarSeleccionado] = useState("");
+  const [fechaDesde, setFechaDesde] = useState("");
+  const [fechaHasta, setFechaHasta] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -25,18 +28,23 @@ export const ReporteProdu = () => {
     fetchReporte();
   }, [id]);
 
-  const handleEventoChange = (e) => {
-    setEventoSeleccionado(e.target.value);
-  };
-
-  const handleOrdenChange = (e) => {
-    setOrdenSeleccionado(e.target.value);
-  };
+  const handleEventoChange = (e) => setEventoSeleccionado(e.target.value);
+  const handleOrdenChange = (e) => setOrdenSeleccionado(e.target.value);
+  const handleLugarChange = (e) => setLugarSeleccionado(e.target.value);
+  const handleFechaDesdeChange = (e) => setFechaDesde(e.target.value);
+  const handleFechaHastaChange = (e) => setFechaHasta(e.target.value);
 
   const eventosFiltrados = reporte?.eventos
-    .filter((evento) =>
-      eventoSeleccionado ? evento.evento === eventoSeleccionado : true
-    )
+    .filter((evento) => {
+      const cumpleEvento = eventoSeleccionado ? evento.evento === eventoSeleccionado : true;
+      const cumpleLugar = lugarSeleccionado ? evento.lugar === lugarSeleccionado : true;
+
+      const cumpleFecha =
+        (!fechaDesde || evento.fecha >= fechaDesde) &&
+        (!fechaHasta || evento.fecha <= fechaHasta);
+
+      return cumpleEvento && cumpleLugar && cumpleFecha;
+    })
     .sort((a, b) => {
       if (ordenSeleccionado === "tickets") {
         return b.entradas_totales - a.entradas_totales;
@@ -57,8 +65,10 @@ export const ReporteProdu = () => {
   };
 
   const asistenciaClase = (porcentaje) => {
-    return porcentaje < 30.00 ? "asistencia-baja" : "";
+    return porcentaje < 30.0 ? "asistencia-baja" : "";
   };
+
+  const lugaresUnicos = [...new Set(reporte.eventos.map((e) => e.lugar))];
 
   return (
     <main>
@@ -67,6 +77,7 @@ export const ReporteProdu = () => {
         <header className="header">
           <h1>Reporte de Productora: {reporte.productora}</h1>
         </header>
+
         <section className="stats">
           <article className="stat">
             <h2>ENTRADAS TOTALES VENDIDAS</h2>
@@ -81,60 +92,114 @@ export const ReporteProdu = () => {
             <p>{reporte.total_asistencia}</p>
           </article>
         </section>
+
         <section className="events">
           <h2>Eventos de la Productora</h2>
+
           <section className="filtros">
             <h3>Filtros:</h3>
-            <select id="evento-select" value={eventoSeleccionado} onChange={handleEventoChange}>
-              <option value="">Todos los eventos</option>
-              {reporte.eventos.map((evento, index) => (
-                <option key={index} value={evento.evento}>
-                  {evento.evento}
-                </option>
-              ))}
-            </select>
-            <select id="orden-select" value={ordenSeleccionado} onChange={handleOrdenChange}>
-              <option value="">Ordenar por</option>
-              <option value="tickets">Más tickets vendidos</option>
-              <option value="recaudado">Más recaudado</option>
-              <option value="asistencia">Mayor asistencia</option>
-            </select>
+
+            <label>
+              Evento:
+              <select value={eventoSeleccionado} onChange={handleEventoChange}>
+                <option value="">Todos los eventos</option>
+                {reporte.eventos.map((evento, index) => (
+                  <option key={index} value={evento.evento}>
+                    {evento.evento}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Lugar:
+              <select value={lugarSeleccionado} onChange={handleLugarChange}>
+                <option value="">Todos los lugares</option>
+                {lugaresUnicos.map((lugar, index) => (
+                  <option key={index} value={lugar}>
+                    {lugar}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Desde:
+              <input
+                type="date"
+                value={fechaDesde}
+                onChange={handleFechaDesdeChange}
+              />
+            </label>
+
+            <label>
+              Hasta:
+              <input
+                type="date"
+                value={fechaHasta}
+                onChange={handleFechaHastaChange}
+              />
+            </label>
+
+            <label>
+              Ordenar:
+              <select value={ordenSeleccionado} onChange={handleOrdenChange}>
+                <option value="">Ordenar por</option>
+                <option value="tickets">Más tickets vendidos</option>
+                <option value="recaudado">Más recaudado</option>
+                <option value="asistencia">Mayor asistencia</option>
+              </select>
+            </label>
           </section>
-          {eventosFiltrados.map((evento, index) => {
-            const entradasPorcentaje = calcularPorcentaje(evento.entradas_totales, reporte.total_entradas_vendidas);
-            const gananciaPorcentaje = calcularPorcentaje(evento.ganancia_total, reporte.total_ganancia);
-            const asistenciaPorcentaje = calcularPorcentaje(evento.asistencia_total, reporte.total_asistencia);
-           
-            return (
-              <div key={index} className="event">
-                <div className="event-info">
-                  <h3>{evento.evento}</h3>
-                  <div className="event-stats">
-                    <div>
-                      <p>Entradas Totales</p>
-                      <p>{evento.entradas_totales} ({entradasPorcentaje}%)</p>
-                    </div>
-                    <div>
-                      <p>Ganancia Total</p>
-                      <p>${evento.ganancia_total} ({gananciaPorcentaje}%)</p>
-                    </div>
-                    <div className={asistenciaClase(parseFloat(asistenciaPorcentaje))}>
-                      <p>Asistencia Total</p>
-                      <p>{evento.asistencia_total} ({asistenciaPorcentaje}%)</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="entradas-tipo">
-                  <h4>Entradas por Tipo:</h4>
-                  <ul className="event-entradas-list">
-                    {Object.entries(evento.entradas_por_tipo).map(([tipo, cantidad]) => (
-                      <li key={tipo} className="event-entradas-item">{tipo}: {cantidad}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
+
+          <table className="tabla-eventos">
+            <thead>
+              <tr>
+                <th>Evento</th>
+                <th>Lugar</th>
+                <th>Fecha</th>
+                <th>Entradas Totales</th>
+                <th>Ganancia Aportada</th>
+                <th>Asistencia</th>
+                <th>Entradas por Tipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {eventosFiltrados.map((evento, index) => {
+                const entradasPct = calcularPorcentaje(evento.entradas_totales, reporte.total_entradas_vendidas);
+                const gananciaPct = calcularPorcentaje(evento.ganancia_total, reporte.total_ganancia);
+                const asistenciaPct = calcularPorcentaje(evento.asistencia_total, reporte.total_asistencia);
+
+                return (
+                  <tr key={index} className={asistenciaClase(asistenciaPct)}>
+                    <td>{evento.evento}</td>
+                    <td>{evento.lugar}</td>
+                    <td>{evento.fecha}</td>
+                    <td>
+                      {evento.entradas_totales} ({entradasPct}%)
+                    </td>
+                    <td>
+                      ${evento.ganancia_total} ({gananciaPct}%)
+                    </td>
+                    <td>
+                      {evento.asistencia_total} ({asistenciaPct}%)
+                    </td>
+                    <td>
+                      <ul>
+                        {Object.entries(evento.entradas_por_tipo).map(
+                          ([tipo, cantidad]) => (
+                            <li key={tipo}>
+                              {tipo}: {cantidad}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </section>
       </div>
       <Footer />

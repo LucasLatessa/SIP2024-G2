@@ -9,7 +9,6 @@
 /* Contenedor principal */
 main {
   justify-content: center;
-  padding: 2rem 0;
 }
 .qr-main {
   display: flex;

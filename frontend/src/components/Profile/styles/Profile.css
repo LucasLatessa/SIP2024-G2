@@ -1,18 +1,17 @@
-
-
-.profile{
+.profile {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-.infoClienteProfile, .tusTickets, .users, .eventsProfile{
+.infoClienteProfile, .tusTickets, .users, .eventsProfile {
   color: var(--color-letras-cuaternario);
   margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .datosContainer {
   display: flex;
   flex-direction: column;
@@ -27,9 +26,11 @@
 .datos, .noLogin, .chargeClient {
   color: aliceblue;
 }
-.MP{
+
+.MP {
   color: #009ee3;
 }
+
 .error-message {
   color: black;
 }
@@ -65,17 +66,19 @@
   border: 2px solid #ccc;
   text-align: center;
 }
+
 .formulario-edicion button {
   display: block;
   margin: 0 auto; 
 }
 
-.logout{
+.logout {
   background-color: var(--color-letras-terceario);
 }
-.back{
+
+.back {
   background-color: var(--color-letras-secundario);
-  color:black
+  color: black;
 }
 
 .botones-container {
@@ -87,10 +90,8 @@
   margin: 0 5px;
 }
 
-
-
 .loading-container {
-  text-align: center; /* Alinear el texto al centro */
+  text-align: center;
 }
 
 .loading-container .noLogin {
@@ -98,7 +99,7 @@
 }
 
 .loading-container button {
-  background-color: var(--color-letras-cuaternario);;
+  background-color: var(--color-letras-cuaternario);
   color: white;
   border: none;
   border-radius: 5px;
@@ -110,12 +111,15 @@
 .loading-container button:hover {
   background-color: #016868;
 }
- .usuario, .eventProfile{
+
+.usuario, .eventProfile {
   color: white;
 }
-.title_terms{
+
+.title_terms {
   color: var(--color-letras-cuaternario);
 }
+
 .terms {
   height: 370px;
   overflow-y: auto;
@@ -126,7 +130,7 @@
   color: aliceblue;
 }
 
-/*--------------REPORTE EVENTO-------------- */
+/* ========== REPORTE EVENTO ========== */
 
 .reporteEvento {
   font-family: Arial, sans-serif;
@@ -147,32 +151,20 @@
   margin-right: 20px;
 }
 
-
 .stats {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 
 .stat {
-  background: var(--color-principal-claro);
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
   flex: 1;
   margin: 0 10px;
-}
-
-.stat h2 {
-  margin: 0;
-  font-size: 18px;
-  color: var(--color-letras-primario);
-}
-
-.stat p {
-  margin: 5px 0 0;
-  font-size: 24px;
-  color:var(--color-letras-primario);
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .entries {
@@ -202,34 +194,14 @@
   border-radius: 4px;
   border: 1px solid #ddd;
 }
-/*----- Estilos reporte productora----- */
+
+/* ========== REPORTE PRODUCTORA ========== */
 
 .reporteProdu {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
-  color:var(--color-letras-cuaternario);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.stat {
-  flex: 1;
-  margin: 0 10px;
-  text-align: center;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: var(--color-letras-cuaternario);
 }
 
 .events {
@@ -239,77 +211,93 @@
   align-items: center;
 }
 
-.event {
-  background-color: var(--color-principal-claro);
-  border: 1px solid var(--color-letras-primario);
-  border-radius: 10px;
-  padding: 0rem 1rem;
+.filtros {
   display: flex;
-  margin: 1rem 0;
-  text-align: left;
-  color: var(--color-letras-cuaternario);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-.event-info {
-  flex: 1;
-}
-
-.entradas-tipo {
-  margin-left: 80px; 
-  flex: 1;
-  margin-top: 50px; 
-}
-
-.event h3 {
-  color: var(--color-letras-cuaternario);
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
-
-.event p {
-  margin: 0.5rem 0;
-}
-
-.event-entradas-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0 0;
-}
-
-.event-entradas-item {
-  margin-bottom: 5px;
-  color:black;
-  padding: 0.2rem 0;
-  font-size: 0.9rem;
-}
-
-.event-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.event-stats div {
-  flex: 1 1 calc(33.333% - 1rem);
-  background-color: var(--color-fondo-secundario);
+.filtros select {
+  padding: 8px;
   border-radius: 5px;
-  padding: 0.5rem;
-  text-align: center;
+  border: 1px solid #ccc;
 }
 
-.event-stats div p {
-  margin: 0.2rem 0;
-  font-size: 1rem;
+/* ========== TABLA DE EVENTOS ========== */
+
+.tabla-eventos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: var(--color-principal-claro);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-eventos th,
+.tabla-eventos td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
   color: var(--color-letras-primario);
 }
 
-.asistencia-baja p:nth-child(2) {
-  color: red !important;  
-  font-weight: bold;
+.tabla-eventos th {
+  background-color: var(--color-letras-cuaternario);
+  color: white;
 }
 
-/* Restore: */
+.tabla-eventos ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+
+.nota-explicativa {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* ========== FILTROS ========== */
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  align-items: flex-end;
+}
+
+.filtros label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  min-width: 160px;
+}
+
+.filtros select,
+.filtros input[type="date"] {
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.3rem;
+  background-color: #fff;
+}
+
+.filtros h3 {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #444;
+}
+
+/* ========== RESTORE ========== */
+
 .restore-overlay {
   position: fixed;
   top: 0;
@@ -351,4 +339,133 @@
 .restore-content button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+/* ========== LISTADO DE EVENTOS ========== */
+
+.events-title {
+  text-align: center;
+  color: var(--color-letras-cuaternario);
+  margin-bottom: 20px;
+}
+
+.event-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.event-card {
+  background-color: var(--color-principal-claro);
+  border-radius: 12px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.event-nombre {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--color-letras-primario);
+}
+
+.estado-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.estado-select {
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+
+/* Colores según estado */
+.estado-pendiente {
+  border-left: 6px solid orange;
+}
+
+.estado-aprobado {
+  border-left: 6px solid green;
+}
+
+.estado-cancelado {
+  border-left: 6px solid crimson;
+}
+
+/* ========== LISTADO DE USUARIOS Y PRODUCTORAS ========== */
+
+.usuarios-admin-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.users-title, .produs-title {
+  text-align: center;
+  color: var(--color-letras-cuaternario);
+  margin-bottom: 20px;
+}
+
+.user-cards, .productora-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.user-card, .productora-card {
+  background-color: var(--color-principal-claro);
+  border-radius: 12px;
+  padding: 20px;
+  width: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.user-nickname, .productora-nickname {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--color-letras-primario);
+}
+
+.rol-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.rol-select {
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.no-productoras {
+  text-align: center;
+  color: #888;
+  margin-top: 20px;
+}
+
+.ver-reporte-btn {
+  padding: 8px 16px;
+  background-color: var(--color-letras-cuaternario);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
 }

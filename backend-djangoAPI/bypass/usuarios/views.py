@@ -148,6 +148,8 @@ def produ_report(request, pk):
         
         eventos_data.append({
             'evento': evento.nombre,
+            'lugar': evento.lugar.nombre,
+            'fecha': evento.fecha,
             'entradas_totales': entradas_totales,
             'entradas_por_tipo': entradas_por_tipo,
             'ganancia_total': ganancia_total,
