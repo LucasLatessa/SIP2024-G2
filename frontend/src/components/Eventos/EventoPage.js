@@ -79,14 +79,13 @@ export const EventoPage = () => {
     async function cargarEventos() {
       const resEvento = await getEvento(id);
       const evento = resEvento.data;
-      console.log(evento);
       const [year, month, day] = evento.fecha.split('-');
-const fechaLocal = new Date(year, month - 1, day); // month va de 0 a 11
-const fechaFormateada = fechaLocal.toLocaleDateString("es-AR", {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-});
+      const fechaLocal = new Date(year, month - 1, day); 
+      const fechaFormateada = fechaLocal.toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
 
       setEvento({
         ...evento,
@@ -129,7 +128,6 @@ const fechaFormateada = fechaLocal.toLocaleDateString("es-AR", {
         },
       });
       if (response.data.expires_at) {
-        console.log("Expires at:", response.data.expires_at);
         setExpiresAt(response.data.expires_at);
       }
     } else {
