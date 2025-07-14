@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.utils.dateformat import format as django_format_date
 from .serializer import EventoSerializer, EstadoEventoSerializer, LugarSerializer
 from .models import Evento, EstadoEvento, Lugar
 from tickets.models import Ticket, TipoTickets, Ticket, TipoTickets
@@ -71,11 +72,15 @@ def get_eventos_aprobados(request):
             precioMinimo=Min('precioInicial'),
             precioMaximo=Max('precioInicial')
         )
+        # Formatea la fecha si existe
+        fecha_formateada = (
+            django_format_date(event.fecha, "d/m/Y") if event and event.fecha else None
+        )
 
         event_data.append({
             "id_Evento": event.id_Evento,
             "nombre": event.nombre,
-            "fecha": event.fecha,
+            "fecha": fecha_formateada,
             "hora": event.hora,
             "imagen": request.build_absolute_uri(event.imagen.url) if event.imagen else None,
             "precioMin": precios["precioMinimo"],

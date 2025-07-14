@@ -41,25 +41,32 @@ class TipoTicketView(viewsets.ModelViewSet):
     serializer_class = TipoTicketSerializer
     queryset = TipoTickets.objects.all()
 
+def get_all_publication(request):
+    publicaciones = Publicacion.objects.filter(publica=True).select_related(
+        'ticket__evento', 'ticket__tipo_ticket'
+    )
 
-def get_all_publication(request,l):
-    # Filtra las publicaciones que estén marcadas como publicas
-    publications = Publicacion.objects.filter(publica=True)
+    publication_data = []
+    for pub in publicaciones:
+        ticket = pub.ticket
+        evento = ticket.evento if ticket else None
+        tipo = ticket.tipo_ticket if ticket else None
+        fecha_formateada = (
+            django_format_date(evento.fecha, "d/m/Y") if evento and evento.fecha else None
+        )
+        publication_data.append({
+            "id_Publicacion": pub.id_Publicacion,
+            "precio": pub.precio,
+            "fecha": pub.fecha,
+            "ticket_id": ticket.id_Ticket if ticket else None,
+            "precio_original": ticket.precioInicial if ticket else None,
+            "tipo": tipo.tipo if tipo else None,
+            "eventoNombre": evento.nombre if evento else None,
+            "eventoFecha": fecha_formateada,
+            "eventoHora": evento.hora if evento else None,
+            "foto": request.build_absolute_uri(evento.imagen.url) if evento.imagen else None,
+        })
 
-    # Convierte las publicaciones a un formato JSON
-    publication_data = [
-        {
-            "id_Publicacion": publication.id_Publicacion,
-            "precio": publication.precio,
-            "fecha": publication.fecha,
-            "ticket_id": publication.ticket.id_Ticket if publication.ticket else None,
-            "nombre_evento": (
-                publication.ticket.evento.nombre if publication.ticket else None
-            ),
-        }
-        for publication in publications
-    ]
-    # Devuelve las publicaciones como una respuesta JSON
     return JsonResponse({"publicaciones": publication_data})
 
 

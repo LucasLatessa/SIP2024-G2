@@ -7,7 +7,7 @@ const publicacionAPI = axios.create({
   baseURL: `${axios.defaults.baseURL}/tickets/Publicacion`
 })
 
-export const getAllPublicacion1 = () => publicacionAPI.get('/publicas/1');
+export const getAllPublicacion1 = () => publicacionAPI.get('/publicas');
 
 export const getPublicacion = (id) => publicacionAPI.get(`/${id}`);
 

@@ -22,31 +22,29 @@ export const Marketplace = () => {
     async function cargarPublicaciones() {
       try {
         const res = await getAllPublicacion1();
-        const publicacionesConInfoCompleta = await Promise.all(
-          res.data.publicaciones.map(async (publicacion) => {
-            const ticketRes = await getTicket(publicacion.ticket_id);
-            const eventoRes = await getEvento(ticketRes.data.evento);
-            const tipoRes = await getTipoTicket(ticketRes.data.tipo_ticket);
-            const fechaFormateada = new Date(eventoRes.data.fecha).toLocaleDateString('es-AR', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
-            });
-            return {
-              id: publicacion.id_Publicacion,
-              precio: publicacion.precio,
-              fecha: publicacion.fecha,
-              precio_original: ticketRes.data.precioInicial,
-              tipo: tipoRes.data.tipo,
-              foto: eventoRes.data.imagen,
-              eventoNombre: eventoRes.data.nombre,
-              eventoFecha: fechaFormateada,
-              eventoHora: eventoRes.data.hora,
-            };
-          })
-        );
-        setPublicaciones(publicacionesConInfoCompleta);
-        setFilteredTickets(publicacionesConInfoCompleta);
+
+        const publicaciones = res.data.publicaciones.map((publicacion) => {
+          const fechaFormateada = new Date(publicacion.eventoFecha).toLocaleDateString('es-AR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+
+          return {
+            id: publicacion.id_Publicacion,
+            precio: publicacion.precio,
+            fecha: publicacion.fecha,
+            precio_original: publicacion.precio_original,
+            tipo: publicacion.tipo,
+            foto: publicacion.foto,
+            eventoNombre: publicacion.eventoNombre,
+            eventoFecha: fechaFormateada,
+            eventoHora: publicacion.eventoHora,
+          };
+        });
+
+        setPublicaciones(publicaciones);
+        setFilteredTickets(publicaciones);
       } catch (error) {
         console.error("Error al cargar las publicaciones:", error);
       }
