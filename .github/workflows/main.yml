@@ -42,9 +42,27 @@ jobs:
           push: true
           tags: enzobianchi8/backend:latest
 
-      - name: Build and push frontend image
-        uses: docker/build-push-action@v5
+      - name: Autenticación Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          context: ./frontend
-          push: true
-          tags: enzobianchi8/frontend:latest
+          credentials_json: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+
+      - name: Instalar gcloud y kubectl
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: '>= 363.0.0'
+          install_components: 'kubectl'
+
+      - name: Obtener credenciales de GKE
+        run: |
+          gcloud container clusters get-credentials gke-cluster --region=us-east4 --project=psychic-expanse-465922-f0
+
+      - name: Deploy backend to Kubernetes
+        run: kubectl apply -f k8s-backend.yaml
+
+
+      - name: Deploy database to Kubernetes
+        run: kubectl apply -f k8s-db.yaml
+
+      - name: Deploy frontend to Kubernetes
+        run: kubectl apply -f k8s-frontend.yaml
