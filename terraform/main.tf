@@ -24,6 +24,3 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-output "kubernetes_cluster_name" {
-  value = google_container_cluster.primary.name
-}
