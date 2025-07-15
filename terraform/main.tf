@@ -1,6 +1,7 @@
 provider "google" {
   project = var.project_id
   region  = var.region
+  zone    = var.zona
 }
 
 resource "google_container_cluster" "primary" {
@@ -9,7 +10,9 @@ resource "google_container_cluster" "primary" {
   initial_node_count = 1
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type  = var.tipo_maquina
+    disk_size_gb  = 50
+    disk_type     = "pd-standard"
   }
 }
 
@@ -20,7 +23,9 @@ resource "google_container_node_pool" "primary_nodes" {
   node_count = 2
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type  = var.tipo_maquina
+    disk_size_gb  = 50
+    disk_type     = "pd-standard"
   }
 }
 
