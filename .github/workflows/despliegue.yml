@@ -108,7 +108,7 @@ jobs:
 
             #Creacion del Cluster
             - name: Terraform init
-              working-directory: ./TP4final/H3/Terraform
+              working-directory: .\Terraform
               env:
                 GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
               run: |
