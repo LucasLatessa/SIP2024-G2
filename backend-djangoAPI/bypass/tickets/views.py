@@ -180,6 +180,7 @@ def entregarTicketTpublicacion(request):
         data = entregartoken(payment_id, "")
         if data.get("status") == "approved":
             try:
+                print("Efectuando compra...")
                 publi_id = data["additional_info"]["items"][0]["id"]
                 publicacion = Publicacion.obtenerPorId(publi_id) 
                 nuevo_propietario = data["additional_info"]["items"][0]["description"]
@@ -199,7 +200,7 @@ def entregarTicketTpublicacion(request):
         else:
             return JsonResponse({"error": "Pago no aprobado aun"}, status=400)
     else:
-        return JsonResponse({"error": "Notificacion no valida"}, status=400)
+        return JsonResponse({"error": "Notificacion no valida"}, status=200)
 
 def get_or_none(model, **kwargs):
     try:
