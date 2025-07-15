@@ -27,7 +27,7 @@ export const TicketBox = ({id_ticket,nombre,foto,tipo_ticket,precio,fecha,hora,q
       <article className={`ticket ${usada ? 'usado' : 'no-usado'}`}>
         <h2>{nombre}</h2>
         <img src={foto} alt="Imagen del evento" />
-        <p className="precio"> ${precio} </p>
+        <p className="precio"> Precio pagado ${precio} </p>
         <p className="tipo"> {tipo_ticket}</p>
         <p className="fecha">
           {fecha} - {hora}

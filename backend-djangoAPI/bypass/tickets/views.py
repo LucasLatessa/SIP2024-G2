@@ -183,8 +183,14 @@ def entregarTicketTpublicacion(request):
                 publi_id = data["additional_info"]["items"][0]["id"]
                 publicacion = Publicacion.obtenerPorId(publi_id) 
                 nuevo_propietario = data["additional_info"]["items"][0]["description"]
-                ticket_id=publicacion.ticket.id_Ticket
-                Ticket.transferir(ticket_id, nuevo_propietario)
+                
+                ticket = publicacion.ticket
+
+                # Guardar el precio de venta en el ticket
+                ticket.precioInicial = publicacion.precio
+                ticket.save()
+
+                Ticket.transferir(ticket.id_Ticket, nuevo_propietario)
                 Publicacion.modificarPublicado(publi_id)
                 return JsonResponse({"mensaje": "Ticket comprado con exito!"}, status=200)
             except Exception as e:
