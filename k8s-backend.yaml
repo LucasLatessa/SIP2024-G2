@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  labels:
-    app: backend
 spec:
   replicas: 1
   selector:
@@ -15,19 +13,20 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
-          image: enzobianchi8/back-bypass
-          ports:
-            - containerPort: 8000
-
+      - name: backend
+        image: enzobianchi8/backend:latest
+        ports:
+        - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: backend-service
 spec:
-  ports:
-    - port: 8000
   selector:
     app: backend
-  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP

@@ -1,123 +1,101 @@
-name: K8s actions github
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Set KUBECONFIG from secret
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+
+      - name: Deploy backend to Kubernetes
+        run: kubectl apply -f k8s-backend.yaml
+
+      - name: Deploy frontend to Kubernetes
+        run: kubectl apply -f k8s-frontend.yaml
+name: Build and Deploy to GKE
 
 on:
-    push:
-        branches: ['main']
-        paths: ['*']
+  push:
+    branches: [ despliegue ]
+
 jobs:
-    build-images:
-        name: Build y Push de imagenes Docker (Front-Back)
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GAR_LOCATION: us-central1
+      BACKEND_IMAGE: ${{ secrets.GCP_PROJECT_ID }}/backend:latest
+      FRONTEND_IMAGE: ${{ secrets.GCP_PROJECT_ID }}/frontend:latest
+      CLUSTER_NAME: gke-cluster
+      CLUSTER_REGION: us-central1
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-            - name: Login en Docker Hub
-              uses: docker/login-action@v3
-              with:
-                  username: ${{ secrets.DOCKER_HUB_USERNAME }}
-                  password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-            - name: Build-push back
-              uses: docker/build-push-action@v5
-              with:
-                context: ./backend-djangoAPI
-                push: true
-                tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-bypass:latest
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
 
-            # - name: Build-push front
-            #   uses: docker/build-push-action@v5
-            #   with:
-            #       context: ./frontend
-            #       push: true
-            #       tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend-bypass:latest
-    infra:
-        name: Build K8S infra
-        if: startsWith(github.event.head_commit.message, '(go)')
-        runs-on: ubuntu-latest
-        steps:
-            - name: Ckeckout
-              uses: actions/checkout@v4
+    - name: Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
 
-            #Instalo Terraform
-            - name: Terraform setup
-              uses: hashicorp/setup-terraform@v3
+    - name: Build and push backend image
+      run: |
+        docker build -t $GAR_LOCATION-docker.pkg.dev/$BACKEND_IMAGE ./backend-djangoAPI
+        docker push $GAR_LOCATION-docker.pkg.dev/$BACKEND_IMAGE
 
-            #Creacion del Cluster
-            - name: Terraform init
-              working-directory: ./Terraform
-              env:
-                GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
-              run: |
-                echo '${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}' > credentials.json
+    - name: Build and push frontend image
+      run: |
+        docker build -t $GAR_LOCATION-docker.pkg.dev/$FRONTEND_IMAGE ./frontend
+        docker push $GAR_LOCATION-docker.pkg.dev/$FRONTEND_IMAGE
 
-                ls -lah
+    - name: Get GKE credentials
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION
 
-                terraform init --reconfigure
+    - name: Deploy backend to GKE
+      run: |
+        kubectl set image deployment/backend backend=$GAR_LOCATION-docker.pkg.dev/$BACKEND_IMAGE --record || kubectl apply -f k8s-backend.yaml
 
-                terraform validate
+    - name: Deploy frontend to GKE
+      run: |
+        kubectl set image deployment/frontend frontend=$GAR_LOCATION-docker.pkg.dev/$FRONTEND_IMAGE --record || kubectl apply -f k8s-frontend.yaml
 
-                terraform plan -lock=false
+name: Build and Push Docker Images to Docker Hub
 
-                terraform apply -lock=false --auto-approve
+on:
+  push:
+    branches: [ despliegue ]
 
-    deploy-apps:
-        name: Despliegue de servicios y aplicaciones
-        needs: infra
-        if: startsWith(github.event.head_commit.message, '(go)')
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-            # Conf GCloud
-            - name: Google Cloud authentication
-              uses: google-github-actions/auth@v2
-              with:
-                  credentials_json: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-            - name: Google Cloud kubectl plugin
-              uses: google-github-actions/setup-gcloud@v2
-              with:
-                  version: '>= 363.0.0'
-                  install_components: 'kubectl'
-            
-            - name: GCloud Kubectl credentials
-              run: |
-                    REGION="us-east4-b"
-                    gcloud info
-                    gcloud components list
-                    gcloud container clusters get-credentials primary --region=${REGION}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: Deploy y Services app
-              working-directory: ./K8s
-              run: |
-                kubectl apply -f back-services.yaml
-                kubectl apply -f front-services.yaml
-    
-    infra-down:
-        name: Eliminar K8s Infra
-        if: startsWith(github.event.head_commit.message, '(down)')
-        runs-on: ubuntu-latest
-        steps:
-            - name: Ckeckout
-              uses: actions/checkout@v4
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend-djangoAPI
+          push: true
+          tags: enzobianchi8/backend:latest
 
-            #Instalo Terraform
-            - name: Terraform setup
-              uses: hashicorp/setup-terraform@v3
-
-            #Creacion del Cluster
-            - name: Terraform init
-              working-directory: .\Terraform
-              env:
-                GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
-              run: |
-                echo '${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}' > credentials.json
-
-                ls -lah
-
-                terraform init --reconfigure
-
-                terraform plan
-
-                terraform destroy -lock=false --auto-approve
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: enzobianchi8/frontend:latest
