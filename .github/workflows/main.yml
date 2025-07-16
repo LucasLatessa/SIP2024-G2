@@ -66,8 +66,17 @@ jobs:
       - name: Deploy frontend to Kubernetes
         run: kubectl apply -f k8s/frontend.yaml
 
-      - name: Deploy Managed Certificate
-        run: kubectl apply -f k8s/managed-cert.yaml
+      - name: Eliminar antiguo Ingress GCE (si existe)
+        run: kubectl delete ingress frontend-ingress || true
 
-      - name: Deploy Ingress with TLS
-        run: kubectl apply -f k8s/ingress.yaml
+      - name: Deploy Ingress NGINX Controller
+        run: kubectl apply -f k8s/ingress-nginx.yaml
+
+      - name: Deploy cert-manager
+        run: kubectl apply -f k8s/cert-manager.yaml
+
+      - name: Deploy ClusterIssuer
+        run: kubectl apply -f k8s/cluster-issuer.yaml
+
+      - name: Deploy frontend Ingress (NGINX + TLS)
+        run: kubectl apply -f k8s/frontend-ingress.yaml
