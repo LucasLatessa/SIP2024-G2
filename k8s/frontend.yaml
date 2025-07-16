@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: enzobianchi8/frontend:latest
+        image: lucaslatessa/bypass-frontend:latest
         ports:
         - containerPort: 80
 ---
