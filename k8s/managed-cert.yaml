@@ -4,4 +4,4 @@ metadata:
   name: my-cert
 spec:
   domains:
-    - unlucoin.info
+    - www.unlucoin.info
