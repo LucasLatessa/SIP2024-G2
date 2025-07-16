@@ -66,9 +66,6 @@ jobs:
       - name: Deploy frontend to Kubernetes
         run: kubectl apply -f k8s/frontend.yaml
 
-      - name: Eliminar antiguo Ingress GCE (si existe)
-        run: kubectl delete ingress frontend-ingress || true
-
       - name: Deploy Ingress NGINX Controller
         run: kubectl apply -f k8s/ingress-nginx.yaml
 
