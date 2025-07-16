@@ -31,7 +31,7 @@ spec:
         - name: CLIENT_ORIGIN_URL
           value: "https://www.unlucoin.info"
         - name: BACKEND_ORIGIN_URL
-          value: "https://www.unlucoin.info"
+          value: "https://api.unlucoin.info"
         - name: AUTH0_DOMAIN
           value: "dev-tkm11ny0scl8iufa.us.auth0.com"
         - name: AUTH0_API_IDENTIFIER

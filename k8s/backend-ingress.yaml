@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     networking.gke.io/managed-certificates: "backend-cert" # Nuevo certificado para la API
+    kubernetes.io/ingress.global-static-ip-name: "backend-static-ip"
 spec:
   rules:
     - host: api.unlucoin.info # <--- ¡Nuevo subdominio para tu API!

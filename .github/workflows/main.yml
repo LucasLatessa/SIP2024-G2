@@ -42,6 +42,13 @@ jobs:
           push: true
           tags: enzobianchi8/backend:latest
 
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: enzobianchi8/frontend:latest
+
       - name: Autenticación Google Cloud
         uses: google-github-actions/auth@v2
         with:
