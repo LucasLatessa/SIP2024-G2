@@ -1,7 +1,7 @@
 name: Build y Push Docker Images a Docker Hub
 
 on:
-  push: #rama
+  push:
     branches: [ despliegue ]
 
 jobs:
