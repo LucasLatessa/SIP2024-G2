@@ -1,32 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: bypass-frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: frontend
+      app: bypass-frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app: bypass-frontend
     spec:
       containers:
-      - name: frontend
-        image: enzobianchi8/frontend:latest
-        ports:
-        - containerPort: 80
+        - name: bypass-frontend
+          image: lucaslatessa/bypass-frontend:latest
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
 spec:
-  selector:
-    app: frontend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
   type: ClusterIP
+  selector:
+    app: bypass-frontend
+  ports:
+    - port: 80
+      targetPort: 80
