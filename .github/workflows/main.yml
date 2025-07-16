@@ -67,7 +67,13 @@ jobs:
         run: kubectl apply -f k8s/frontend.yaml
 
       - name: Deploy Managed Certificate
-        run: kubectl apply -f k8s/managed-cert.yaml
+        run: kubectl apply -f k8s/frontend-managed-cert.yaml
 
       - name: Deploy Ingress with TLS
-        run: kubectl apply -f k8s/ingress.yaml
+        run: kubectl apply -f k8s/frontend-ingress.yaml
+
+      - name: Deploy Managed Certificate
+        run: kubectl apply -f k8s/backend-managed-cert.yaml
+
+      - name: Deploy Ingress with TLS
+        run: kubectl apply -f k8s/backend-ingress.yaml
