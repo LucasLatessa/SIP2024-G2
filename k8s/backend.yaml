@@ -23,21 +23,20 @@ spec:
         - name: DB_PORT
           value: "3306"
         - name: DB_NAME
-          value: "mydb"
+          value: "bypass"
         - name: DB_USER
-          value: "myuser"
+          value: "django_user"
         - name: DB_PASSWORD
-          value: "mypassword"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 8000
-      targetPort: 8000
-  type: ClusterIP
+          value: "django_pass"
+        - name: CLIENT_ORIGIN_URL
+          value: "https://www.unlucoin.info"
+        - name: BACKEND_ORIGIN_URL
+          value: "https://www.unlucoin.info"
+        - name: AUTH0_DOMAIN
+          value: "dev-tkm11ny0scl8iufa.us.auth0.com"
+        - name: AUTH0_API_IDENTIFIER
+          value: "https://bypassAPI.com"
+        - name: DJANGO_SECRET_KEY
+          value: "django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59"
+        - name: PROD_ACCESS_TOKEN
+          value: "TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"

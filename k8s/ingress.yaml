@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     networking.gke.io/managed-certificates: "my-cert"
+    kubernetes.io/ingress.global-static-ip-name: "frontend-static-ip"
 spec:
   rules:
     - host: www.unlucoin.info
