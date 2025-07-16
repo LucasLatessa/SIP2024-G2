@@ -3,46 +3,14 @@ name: Build y Push Docker Images a Docker Hub
 on:
   push: #rama
     branches: [ despliegue ]
-
 jobs:
-  build-and-push:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.8.5
-
-      - name: Terraform Init
-        working-directory: ./terraform
-        run: terraform init
-
-      - name: Terraform Apply
-        working-directory: ./terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
-        run: terraform apply -auto-approve
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend-djangoAPI
-          push: true
-          tags: enzobianchi8/backend:latest
-
-      - name: Autenticación Google Cloud
+      - name: Autenticacion Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
@@ -57,17 +25,17 @@ jobs:
         run: |
           gcloud container clusters get-credentials gke-cluster --region=us-east4 --project=psychic-expanse-465922-f0
 
-      - name: Deploy backend to Kubernetes
-        run: kubectl apply -f k8s/backend.yaml
+      - name: Aplicar cert-manager (si no existe)
+        run: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml
 
-      - name: Deploy database to Kubernetes
-        run: kubectl apply -f k8s/db.yaml
+      - name: Crear ClusterIssuer (Let's Encrypt)
+        run: kubectl apply -f k8s/cluster-issuer.yaml
 
-      - name: Deploy frontend to Kubernetes
+      - name: Asignar IP estatica al Ingress NGINX
+        run: kubectl apply -f k8s/nginx-service-patch.yaml
+
+      - name: Desplegar frontend (Deployment + Service)
         run: kubectl apply -f k8s/frontend.yaml
 
-      - name: Deploy Managed Certificate
-        run: kubectl apply -f k8s/managed-cert.yaml
-
-      - name: Deploy Ingress with TLS
-        run: kubectl apply -f k8s/ingress.yaml
+      - name: Crear Ingress para frontend con cert-manager
+        run: kubectl apply -f k8s/frontend-ingress.yaml
