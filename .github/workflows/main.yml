@@ -57,20 +57,6 @@ jobs:
         run: |
           gcloud container clusters get-credentials gke-cluster --region=us-east4 --project=psychic-expanse-465922-f0
 
-      - name: Instalar cert-manager CRDs
-        run: |
-          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.crds.yaml
-
-      - name: Agregar repo Helm Jetstack
-        run: |
-          helm repo add jetstack https://charts.jetstack.io
-          helm repo update
-
-      - name: Instalar cert-manager con Helm
-        run: |
-          helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
-
-
       - name: Deploy backend to Kubernetes
         run: kubectl apply -f k8s/backend.yaml
 
@@ -80,14 +66,8 @@ jobs:
       - name: Deploy frontend to Kubernetes
         run: kubectl apply -f k8s/frontend.yaml
 
-      - name: Deploy Ingress NGINX Controller
-        run: kubectl apply -f k8s/ingress-nginx.yaml
+      - name: Deploy Managed Certificate
+        run: kubectl apply -f k8s/managed-cert.yaml
 
-      - name: Deploy cert-manager
-        run: kubectl apply -f k8s/cert-manager.yaml
-
-      - name: Deploy ClusterIssuer
-        run: kubectl apply -f k8s/cluster-issuer.yaml
-
-      - name: Deploy frontend Ingress (NGINX + TLS)
-        run: kubectl apply -f k8s/frontend-ingress.yaml
+      - name: Deploy Ingress with TLS
+        run: kubectl apply -f k8s/ingress.yaml

@@ -3,15 +3,10 @@ kind: Ingress
 metadata:
   name: frontend-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: "my-cert"
+    kubernetes.io/ingress.global-static-ip-name: "frontend-static-ip"
 spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - www.unlucoin.info
-      secretName: unlucoin-tls
   rules:
     - host: www.unlucoin.info
       http:
