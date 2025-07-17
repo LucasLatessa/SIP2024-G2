@@ -25,17 +25,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production! OJO, SI PONEMOS EN FALSE NO SIRVE /MEDIA (para imagenes)
-DEBUG = True
+DEBUG = False
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
-""" ALLOWED_HOSTS = [
-    "localhost",
+ALLOWED_HOSTS = [
+    "api.unlucoin.info",
+    "backend",
     "127.0.0.1",
-] """
-ALLOWED_HOSTS = ["*"]
+    "localhost",
+    "api.unlucoin.info",
+    "www.unlucoin.info",
+]
 
 if BACKEND_ORIGIN_URL:
     backend_host = urlparse(BACKEND_ORIGIN_URL).hostname
