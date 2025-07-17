@@ -5,7 +5,7 @@ FROM python:3.12.3-slim
 WORKDIR /app
 
 # Instalar dependencias del sistema
-RUN apt-get update && apt-get install -y build-essential netcat-openbsd && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y build-essential netcat-openbsd default-mysql-client && rm -rf /var/lib/apt/lists/*
 
 # Copiar los requirements e instalar
 COPY requirements.txt .

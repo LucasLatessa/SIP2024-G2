@@ -12,28 +12,31 @@ export const AdministradorView = ({ rol }) => {
     const [showRestore, setShowRestore] = useState(false);
 
     const handleBackup = async () => {
-        try {
-            const response = await crearBackup();
-            // Si la respuesta contiene un archivo, proceder a descargarlo
-            if (response.status === 200) {
-                /*
-                //Descomentar si queremos descargar el archivo de backup  
-                const blob = new Blob([response.data], { type: 'application/sql' });
-                const url = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `backup_${new Date().toISOString()}.sql`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link); */
-                toast.success('Backup realizado con éxito');
-            } else {
-                toast.error('Error al realizar el backup');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al conectar con el servidor');
+    try {
+        const response = await crearBackup();
+        if (response.status === 200) {
+            const blob = new Blob([response.data], { type: 'application/sql' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+
+            // Nombre de archivo con fecha
+            const now = new Date();
+            const dateStr = now.toISOString().replace(/[:.]/g, "-"); // Evita caracteres invalidos
+            link.setAttribute('download', `backup_${dateStr}.sql`);
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            toast.success('Backup descargado con exito');
+        } else {
+            toast.error('Error al realizar el backup');
         }
+    } catch (error) {
+        console.error('Error:', error);
+        toast.error('Error al conectar con el servidor');
+    }
     };
 
     const handleRestore = () => {

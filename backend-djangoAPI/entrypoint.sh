@@ -9,7 +9,7 @@ echo "Base de datos disponible, continuando..."
 
 # Migraciones y collectstatic
 cd bypass
-python manage.py migrate
+python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 # Ejecutar gunicorn

@@ -34,11 +34,7 @@ def privateScoped(request: HttpRequest, token: RequestToken) -> JsonResponse:
     )
 
 def backup(request):
-    backupaux = backup_db()
-    if (backupaux == 'realizado'):
-        return JsonResponse({"backup": 'realizado'})
-    else:
-        return JsonResponse({"backup": 'fallido'})
+    return backup_db()
 
 @api_view(["POST"])
 def restore(request):
