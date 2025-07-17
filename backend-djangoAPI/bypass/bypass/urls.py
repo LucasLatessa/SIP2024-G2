@@ -11,11 +11,10 @@ def health_check(request):
     return HttpResponse("OK", status=200)
 
 urlpatterns: list[URLPattern] = [
-    path(
-        route="",
-        view=RedirectView.as_view(permanent=False, url="/api/public"),
-        name="index",
-    ),
+    path('healthz/', health_check), # Opción segura y dedicada
+    path('healthz', health_check), # Con o sin barra final
+    path('', health_check), # ESTA LÍNEA DEBE IR ANTES DE CUALQUIER OTRA QUE MANEJE LA RAÍZ
+
     path(route="api/public", view=views.public, name="public"),
     path(route="api/private", view=views.private, name="private"),
     path(route="api/private-scoped", view=views.privateScoped, name="private_scoped"),
