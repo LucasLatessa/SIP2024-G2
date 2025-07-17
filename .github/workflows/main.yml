@@ -35,19 +35,19 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build and push backend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend-djangoAPI
-          push: true
-          tags: enzobianchi8/backend:latest
+      # - name: Build and push backend image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./backend-djangoAPI
+      #     push: true
+      #     tags: enzobianchi8/backend:latest
 
-      - name: Build and push frontend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: enzobianchi8/frontend:latest
+      # - name: Build and push frontend image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./frontend
+      #     push: true
+      #     tags: enzobianchi8/frontend:latest
 
       - name: Autenticación Google Cloud
         uses: google-github-actions/auth@v2
@@ -79,11 +79,11 @@ jobs:
       - name: Deploy Ingress with TLS
         run: kubectl apply -f k8s/frontend-ingress.yaml
 
-      - name: Deploy Managed Certificate
-        run: kubectl apply -f k8s/backend-managed-cert.yaml
+      # - name: Deploy Managed Certificate
+      #   run: kubectl apply -f k8s/backend-managed-cert.yaml
 
-      - name: Deploy Backend Config
-        run: kubectl apply -f k8s/backend-config.yaml
+      # - name: Deploy Backend Config
+      #   run: kubectl apply -f k8s/backend-config.yaml
 
-      - name: Deploy Ingress with TLS
-        run: kubectl apply -f k8s/backend-ingress.yaml
+      # - name: Deploy Ingress with TLS
+      #   run: kubectl apply -f k8s/backend-ingress.yaml
