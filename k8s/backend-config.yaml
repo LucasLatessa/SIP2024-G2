@@ -11,4 +11,3 @@ spec:
     port: 8000 # El puerto de tu aplicación
     type: HTTP
     requestPath: /healthz # La ruta que creaste en Django
-    host: api.unlucoin.info

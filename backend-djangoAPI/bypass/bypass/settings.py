@@ -32,12 +32,16 @@ NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
 ALLOWED_HOSTS = [
-    "api.unlucoin.info",
-    "backend",
-    "127.0.0.1",
-    "localhost",
-    "api.unlucoin.info",
-    "www.unlucoin.info",
+    "api.unlucoin.info",      # Tu dominio del backend
+    "www.unlucoin.info",      # Tu dominio del frontend (si se conecta directamente)
+
+    # Agrega el rango CIDR de tus pods de GKE:
+    "10.48.0.0/14", # <--- ¡Este es el valor que obtuviste!
+
+    # También añade los rangos de IPs que Google Cloud usa para sus Load Balancers y Health Checks.
+    # Estas IPs son bien conocidas y seguras de incluir.
+    "130.211.0.0/22",
+    "35.191.0.0/16",
 ]
 
 if BACKEND_ORIGIN_URL:
