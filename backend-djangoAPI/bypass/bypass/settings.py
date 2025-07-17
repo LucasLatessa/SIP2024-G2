@@ -25,25 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production! OJO, SI PONEMOS EN FALSE NO SIRVE /MEDIA (para imagenes)
-DEBUG = False
+DEBUG = True
 
 # Guardo la url del ngrok
 NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
-ALLOWED_HOSTS = [
-    "api.unlucoin.info",      # Tu dominio del backend
-    "www.unlucoin.info",      # Tu dominio del frontend (si se conecta directamente)
-
-    # Agrega el rango CIDR de tus pods de GKE:
-    "10.48.0.0/14", # <--- ¡Este es el valor que obtuviste!
-
-    # También añade los rangos de IPs que Google Cloud usa para sus Load Balancers y Health Checks.
-    # Estas IPs son bien conocidas y seguras de incluir.
-    "130.211.0.0/22",
-    "35.191.0.0/16",
-    ".", # Este comodín permite hosts que son direcciones IP.
-]
+""" ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+] """
+ALLOWED_HOSTS = ["*"]
 
 if BACKEND_ORIGIN_URL:
     backend_host = urlparse(BACKEND_ORIGIN_URL).hostname
