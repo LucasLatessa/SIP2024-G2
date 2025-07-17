@@ -115,7 +115,12 @@
 .loading-container button:hover {
   background-color: #016868;
 }
-
+.logout:hover {
+  background-color: #c62828;
+}
+.back:hover {
+  background-color: #bdbdbd;
+}
 .usuario, .eventProfile {
   color: white;
 }

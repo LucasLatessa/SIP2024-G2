@@ -72,20 +72,10 @@ def restore_db(backup_file):
         return 'error'
 
 def get_mysql_path():
-    base_path = r"C:\Program Files\MySQL"
-    mysql_folders = glob.glob(os.path.join(base_path, "MySQL Server *"))
-
-    if not mysql_folders:
-        raise FileNotFoundError("No se encontró una instalación de MySQL Server en 'C:\\Program Files\\MySQL'.")
-
-    # Tomar la versión más reciente (última en la lista ordenada)
-    mysql_folders.sort(reverse=True)  
-    mysql_bin_path = os.path.join(mysql_folders[0], "bin", "mysql.exe")
-
-    if not os.path.exists(mysql_bin_path):
-        raise FileNotFoundError(f"No se encontró mysql.exe en '{mysql_bin_path}'.")
-
-    return mysql_bin_path
+    mysql_path = shutil.which("mysql")
+    if not mysql_path:
+        raise FileNotFoundError("No se encontro el ejecutable 'mysql' en el PATH del sistema.")
+    return mysql_path
 
 
 """
