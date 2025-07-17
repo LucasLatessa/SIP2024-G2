@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
     # Estas IPs son bien conocidas y seguras de incluir.
     "130.211.0.0/22",
     "35.191.0.0/16",
+    ".", # Este comodín permite hosts que son direcciones IP.
 ]
 
 if BACKEND_ORIGIN_URL:

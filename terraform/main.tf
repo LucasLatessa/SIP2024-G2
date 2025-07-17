@@ -5,7 +5,7 @@ provider "google" {
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "gke-cluster"
+  name     = "bypass-cluster"
   location = var.region
   initial_node_count = 1
 
