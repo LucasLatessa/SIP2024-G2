@@ -1,0 +1,13 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: backend-health-check-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    timeoutSec: 5
+    healthyThreshold: 1
+    unhealthyThreshold: 2
+    port: 8000 # El puerto de tu aplicación
+    type: HTTP
+    requestPath: /healthz # La ruta que creaste en Django

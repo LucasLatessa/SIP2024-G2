@@ -4,7 +4,7 @@ metadata:
   name: frontend-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "my-cert"
+    networking.gke.io/managed-certificates: "frontend-cert"
     kubernetes.io/ingress.global-static-ip-name: "frontend-static-ip"
 spec:
   rules:

@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: my-cert
+  name: frontend-cert
 spec:
   domains:
     - www.unlucoin.info
