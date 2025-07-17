@@ -3,8 +3,12 @@ from django.views.generic import RedirectView
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse # Importa HttpResponse
 
 from . import views
+
+def health_check(request):
+    return HttpResponse("OK", status=200)
 
 urlpatterns: list[URLPattern] = [
     path(
