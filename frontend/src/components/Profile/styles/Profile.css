@@ -35,6 +35,10 @@
   color: black;
 }
 
+.blanco {
+  color: white; /* texto en blanco */
+}
+
 .formulario-edicion {
   background-color: var(--color-principal-claro);
   padding: 20px;

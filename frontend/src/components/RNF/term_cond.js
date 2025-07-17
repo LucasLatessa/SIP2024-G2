@@ -128,7 +128,7 @@ export const TermsAndConditions = () => {
           nuestro sitio web.
         </p>
       </article>
-      <label>
+      <label className="blanco">
         <input
           type="checkbox"
           checked={termsAccepted}
@@ -136,9 +136,9 @@ export const TermsAndConditions = () => {
         />
         Acepto los Términos y Condiciones
       </label>
-      <fieldset>
+      <fieldset className="blanco">
         <legend>Seleccione su rol:</legend>
-        
+
         <div>
           <label>
             <input

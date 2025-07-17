@@ -31,10 +31,11 @@ DEBUG = True
 NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
-ALLOWED_HOSTS = [
+""" ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-]
+] """
+ALLOWED_HOSTS = ["*"]
 
 if BACKEND_ORIGIN_URL:
     backend_host = urlparse(BACKEND_ORIGIN_URL).hostname
