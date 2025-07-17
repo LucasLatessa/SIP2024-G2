@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 import pymysql
 
@@ -31,15 +31,15 @@ DEBUG = True
 NGROK_URL = os.environ.get('NGROK_URL')
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
-# ALLOWED_HOSTS = [
-#     'localhost',
-#     '127.0.0.1',  # Incluye estas entradas básicas
-#     'localhost:4040',
-#     '192.168.0.111:4040',
-#     NGROK_URL,
-#     ]
-#     # agregar host de ngrok cada vez que es levantado
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
+
+if BACKEND_ORIGIN_URL:
+    backend_host = urlparse(BACKEND_ORIGIN_URL).hostname
+    if backend_host:
+        ALLOWED_HOSTS.append(backend_host)
 
 # Application definition
 
@@ -157,8 +157,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4040",
-    "https://localhost:4040",
-    "https://192.168.0.111:4040",
     CLIENT_ORIGIN_URL
     ]
 
@@ -178,12 +176,8 @@ CORS_ALLOW_HEADERS = [
 CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
-    "http://localhost:8000",  # Añade el host local si lo necesitas
-    "https://localhost:8000",  # Añade el host local si lo necesitas
-    "http://localhost:80",  # Añade el host local si lo necesitas
-    "https://localhost:80",  # Añade el host local si lo necesitas
-    "http://35.196.38.34:8000/", #ip vm de google
+    f"https://{NGROK_URL}",
+    "http://localhost:8000",
     CLIENT_ORIGIN_URL,
     BACKEND_ORIGIN_URL
 ]
