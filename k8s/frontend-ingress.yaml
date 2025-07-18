@@ -18,13 +18,3 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-
-          # ¡NUEVO PATH: Para las notificaciones de Mercado Pago!
-          # Este path va DIRECTO al backend-service, sin pasar por el Nginx del frontend.
-          - path: /mercadopago/webhook/ # <--- La ruta EXACTA de tu endpoint de webhook en Django
-            pathType: Prefix # Usa Prefix para que capture /mercadopago/webhook/ y cualquier parámetro después
-            backend:
-              service:
-                name: backend-service # <--- ¡IMPORTANTE! Apunta al servicio INTERNO de tu backend
-                port:
-                  number: 8000 # El puerto de tu backend (Gunicorn)
