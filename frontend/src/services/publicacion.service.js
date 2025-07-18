@@ -9,7 +9,11 @@ const publicacionAPI = axios.create({
 
 export const getAllPublicacion1 = () => publicacionAPI.get('/publicas');
 
-export const getPublicacion = (id) => publicacionAPI.get(`/${id}`);
+export const getPublicacion = (id, token) => publicacionAPI.get(`/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
 export const crearPublicacion = (publicacion) => publicacionAPI.post('/crear',publicacion);
 

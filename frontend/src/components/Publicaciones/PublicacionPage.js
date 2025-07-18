@@ -4,8 +4,6 @@ import { useParams } from "react-router";
 import "../Eventos/styles/EventoPage.css";
 import { useEffect, useState } from "react";
 import { getPublicacion, crearPreferenciaEvento } from "../../services/publicacion.service";
-import { getEvento } from "../../services/eventos.service";
-import { getTicket, getTipoTicket } from "../../services/tickets.service";
 import {  getUserNick } from "../../services/usuarios.service";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,6 +16,7 @@ export const PublicacionPage = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [userNoAuth0, setUserNoAuth0] = useState(null);
   const [userVendedor, setUserVendedor] = useState(null);
+  const { getAccessTokenSilently } = useAuth0()
 
   const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -25,7 +24,10 @@ export const PublicacionPage = () => {
   useEffect(() => {
     const cargarPublicacion = async () => {
       try {
-        const res = await getPublicacion(id);
+        const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+        const res = await getPublicacion(id,token);
         console.log("Publicación cargada:", res.data);
         setPublicacion(res.data);
         setUserVendedor(res.data.vendedorNombre);

@@ -9,10 +9,12 @@ from eventos.models import Evento
 from usuarios.models import Cliente
 from usuarios.models import Productora
 from tickets.models import Ticket
+from utils.permissions import IsAuthenticatedCustom, HasScopePermission
 
 class BeneficioView(viewsets.ModelViewSet):
     serializer_class = BeneficioSerializer
     queryset = Beneficio.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 @csrf_exempt
 @api_view(['POST'])

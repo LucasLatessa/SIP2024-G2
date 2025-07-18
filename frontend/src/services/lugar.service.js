@@ -7,8 +7,8 @@ const lugarAPI = axios.create({
   baseURL: `${axios.defaults.baseURL}/eventos/Lugar`
 })
 
-export const getAllLugares = () => lugarAPI.get('/');
-
-export const getLugar = (id) => lugarAPI.get(`/${id}`);
-
-export const crearLugar = (lugar) => lugarAPI.post('/',lugar);
+export const getAllLugares = (token) => lugarAPI.get('/', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })

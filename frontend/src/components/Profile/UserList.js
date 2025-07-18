@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const UserList = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { getAccessTokenSilently } = useAuth0()
+  const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     fetchUsers();
   }, []);

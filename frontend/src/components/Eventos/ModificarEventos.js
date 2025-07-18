@@ -5,6 +5,7 @@ import { getEvento, actualizarEvento } from "../../services/eventos.service";
 import { getAllLugares } from "../../services/lugar.service";
 import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const ModificarEventos = () => {
   const [evento, setEvento] = useState([]);
@@ -12,20 +13,29 @@ export const ModificarEventos = () => {
   const {register,handleSubmit,setValue} = useForm();
   const { id } = useParams();
   const [lugar, setLugar] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
-  useEffect(() => {
-    async function cargarEvento() {
-      const resEvento = await getEvento(id);
+useEffect(() => {
+  const cargarDatos = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      });
+      const [resEvento, resLugar] = await Promise.all([
+        getEvento(id, token),
+        getAllLugares(token),
+      ]);
+
       setEvento(resEvento.data);
-    }
-    cargarEvento();
+      setLugar(resLugar.data);
 
-    async function cargarLugar() {
-      const res = await getAllLugares();
-      setLugar(res.data);
+    } catch (error) {
+      console.error("Error al cargar datos:", error);
     }
-    cargarLugar();
-  }, [id,setEvento]);
+  };
+
+  cargarDatos();
+}, [id]);
 
   useEffect(() => {
     setValue("nombre", evento.nombre); // Establecer el valor predefinido

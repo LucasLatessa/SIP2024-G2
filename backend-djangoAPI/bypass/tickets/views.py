@@ -23,14 +23,19 @@ from utils.authorization import RequestToken, authorized
 from utils.mercadopago import preferencia, entregartoken
 import time
 import threading
+from utils.permissions import IsAuthenticatedCustom, HasScopePermission
+
+
 class TicketView(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 
 class PublicacionView(viewsets.ModelViewSet):
     serializer_class = PublicacionSerializer
     queryset = Publicacion.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
     def retrieve(self, request, pk=None):
         try:
             publicacion = Publicacion.objects.select_related(
@@ -67,11 +72,13 @@ class PublicacionView(viewsets.ModelViewSet):
 class PrecioView(viewsets.ModelViewSet):
     serializer_class = PrecioSerializer
     queryset = Precio.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 
 class TipoTicketView(viewsets.ModelViewSet):
     serializer_class = TipoTicketSerializer
     queryset = TipoTickets.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 def get_all_publication(request):
     publicaciones = Publicacion.objects.filter(publica=True).select_related(

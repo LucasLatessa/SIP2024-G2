@@ -15,6 +15,7 @@ export const CrearBeneficio = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const { user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     async function obtenerDatos() {
@@ -48,7 +49,10 @@ export const CrearBeneficio = () => {
     data.imagen = data.imagen[0]; // Para guardar la imagen
     data.evento = eventoSeleccionado; // Añadir el evento seleccionado al formulario
     data.vigente = true;
-    await crearBeneficio(data);
+    const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+    await crearBeneficio(data,token);
     navigate("/beneficios");
   };
 

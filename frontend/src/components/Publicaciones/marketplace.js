@@ -3,8 +3,6 @@ import { Footer } from "../header-footer/footer";
 import { PublicacionesBox } from "./PublicacionesBox";
 import "../Eventos/styles/Eventos.css";
 import { getAllPublicacion1} from "../../services/publicacion.service";
-import { getEvento } from "../../services/eventos.service";
-import { getTicket, getTipoTicket } from "../../services/tickets.service";
 import { useEffect, useState } from "react";
 import "./styles/marketplace.css";
 

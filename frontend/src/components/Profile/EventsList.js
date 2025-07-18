@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { getAllEventos, updateState } from "../../services/eventos.service";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const EventsList = () => {
   const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
     try {
-      const response = await getAllEventos();
+      const token = await getAccessTokenSilently({
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      });
+      const response = await getAllEventos(token);
       setEvents(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);

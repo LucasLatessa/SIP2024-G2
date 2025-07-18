@@ -6,12 +6,14 @@ import "./styles/escanearQR.css";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { cambiarEstadoTicket, getTicket } from "../../services/tickets.service";
 import { getEvento } from "../../services/eventos.service";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const QrScannerComponent = () => {
   const { id } = useParams();
   const [ticketInfo, setTicketInfo] = useState(null);
   const [error, setError] = useState(null);
   const [scanActivo, setScanActivo] = useState(true);
+  const { getAccessTokenSilently } = useAuth0()
 
   const analizarEntrada = async (data) => {
     if (!data || !scanActivo) return;
@@ -19,9 +21,13 @@ export const QrScannerComponent = () => {
     setScanActivo(false);
     const [ide, idt, dni] = data.split("-");
     try {
-      const resEvento = await getEvento(ide);
+      const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+      const resEvento = await getEvento(ide,token);
       if (id === ide) {
-        const ticketData = await getTicket(idt);
+        
+        const ticketData = await getTicket(idt,token);
         if (ticketData) {
           setTicketInfo({
             tipo_ticket: ticketData.data.tipo_ticket,

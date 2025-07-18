@@ -16,10 +16,11 @@ export const getBeneficiosByProductora = (nickname) => beneficiosCliAPI.get(`/ni
 
 export const deleteBeneficio = (id) => beneficiosCliAPI.put(`/delete/${id}/`);
 
-export const getBeneficio = (id) => beneficiosAPI.get(`/${id}`);
 
-export const crearBeneficio = (beneficio) => beneficiosAPI.post('/',beneficio,{
-  headers: {
-    'Content-Type': 'multipart/form-data' //Estamos trabajando con imagenes
-  }});
-
+export const crearBeneficio = (beneficio, token) =>
+  beneficiosAPI.post('/', beneficio, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
+    },
+  });

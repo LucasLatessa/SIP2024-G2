@@ -7,11 +7,19 @@ const eventosAPI = axios.create({
   baseURL: `${axios.defaults.baseURL}/eventos`
 })
 
-export const getAllEventos = () => eventosAPI.get('/Eventos/');
+export const getAllEventos = (token) => eventosAPI.get('/Eventos/', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
 export const getAllEventosAprobados = () => eventosAPI.get('/eventosAprobados/');
 
-export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}/`);
+export const getEvento = (id,token) => eventosAPI.get(`/Eventos/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
 export const crearEvento = (evento) => eventosAPI.post('/crearEvento/', evento, {
   headers: {
@@ -22,8 +30,6 @@ export const crearEvento = (evento) => eventosAPI.post('/crearEvento/', evento, 
 export const updateState = (id_event, newState) => eventosAPI.put(`/Evento/${id_event}/update-state/`, { state: newState });
 
 export const getEventReport = (id) => eventosAPI.get(`/Evento/${id}/report/`);
-
-export const getEstadoEvento = (id) => eventosAPI.get(`/EstadoEvento/${id}/`);
 
 export const getEventosByProductora = (id_productora) => eventosAPI.get(`/byProductora/${id_productora}`);
 

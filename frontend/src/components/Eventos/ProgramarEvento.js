@@ -12,6 +12,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const ProgramarEvento =() => {
   const { user } = useAuth0();
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
   const {
     register,
     handleSubmit,
@@ -22,7 +23,10 @@ export const ProgramarEvento =() => {
   //Realizo la peticion para cargar los lugares disponibles donde se puede realizar el evento
   useEffect(() => {
     async function cargarLugar() {
-      const res = await getAllLugares();
+      const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+      const res = await getAllLugares(token);
       setLugares(res.data);
     }
     cargarLugar();

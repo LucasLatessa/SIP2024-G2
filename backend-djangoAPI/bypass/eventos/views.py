@@ -13,10 +13,12 @@ from django.db.models import Min, Max
 from django.utils import timezone
 from django.db.models import Count
 from django.db import transaction
+from utils.permissions import IsAuthenticatedCustom, HasScopePermission
 
 class EventoView(viewsets.ModelViewSet):
     serializer_class = EventoSerializer
     queryset = Evento.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
     #para obtener tambien la cantidad de tickets por tipo 
     def retrieve(self, request, *args, **kwargs):
@@ -39,13 +41,13 @@ class EventoView(viewsets.ModelViewSet):
 class EstadoEventoView(viewsets.ModelViewSet):
     serializer_class = EstadoEventoSerializer
     queryset = EstadoEvento.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 
 class LugarView(viewsets.ModelViewSet):
     serializer_class = LugarSerializer
     queryset = Lugar.objects.all()
-
-
+    permission_classes = [IsAuthenticatedCustom]
 
 def get_eventos_aprobados(request):
     now = timezone.now()

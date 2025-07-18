@@ -77,7 +77,10 @@ export const EventoPage = () => {
   //Realizo la peticion para obtener el evento y mostrar sus datos en pantalla
   useEffect(() => {
     async function cargarEventos() {
-      const resEvento = await getEvento(id);
+      const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
+      const resEvento = await getEvento(id,token);
       const evento = resEvento.data;
       const [year, month, day] = evento.fecha.split('-');
       const fechaLocal = new Date(year, month - 1, day); 

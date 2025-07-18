@@ -1,9 +1,9 @@
 from django.http import HttpRequest, JsonResponse
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 from utils.backup import backup_db,restore_db
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.core.files.storage import default_storage
-
+from utils.permissions import IsAuthenticatedCustom 
 
 def public(request: HttpRequest) -> JsonResponse:
 
@@ -33,9 +33,14 @@ def privateScoped(request: HttpRequest, token: RequestToken) -> JsonResponse:
         }
     )
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticatedCustom])
 def backup(request):
     return backup_db()
 
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticatedCustom])
 @api_view(["POST"])
 def restore(request):
     backup_file = request.FILES['backup_file']
