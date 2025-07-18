@@ -116,9 +116,9 @@ export const Profile = () => {
     <main>
       <Header />
       <div className="datosContainer">
-        <img src={user.picture} alt={user.name} />
+        <img className="userImg" src={user.picture} alt={user.name} />
         {usuarioData && (
-          <div>
+          <div className="user-info-box">
             <h2 className="infoClienteProfile">
               Información del {usuarioData.rol.toLowerCase()}{" "}
             </h2>

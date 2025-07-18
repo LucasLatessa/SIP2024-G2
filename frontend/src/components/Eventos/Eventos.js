@@ -59,7 +59,7 @@ export const Eventos = () => {
     <>
       <Header />
       <main>
-        <header className="tituloEventos">
+        <header className="tituloEventosAll">
           <h1>Eventos</h1>
         </header>
 

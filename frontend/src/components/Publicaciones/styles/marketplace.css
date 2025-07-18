@@ -1,31 +1,88 @@
-.sectionFiltros{
-    background-color: var(--color-letras-secundario);
-    border-radius: 10px;
-    margin: 1rem;
+.tituloMarket {
+  margin: 0;
+  padding: 4rem;
+  background-image: url(../../../images/ViviLaExperiencia.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;              /* centrado con flex */
+  justify-content: center;    /* horizontal */
+  align-items: center;        /* vertical */
+  text-align: center;
 }
 
-.tituloFiltros{
-    color: var(--color-letras-primario);
-    text-transform: uppercase;
-    text-align: center;
-    padding: 0;
-    margin: 0;
+.tituloMarket h1 {
+  font-size: 3.5rem;
+  color: var(--color-letras-secundario);
+  text-shadow: 2px 2px 4px var(--color-letras-primario);
+  margin: 0;
 }
 
-.formFiltros{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.sectionFiltros {
+  background-color: var(--color-letras-secundario);
+  border-radius: 10px;
+  margin: 0 auto;               /* centrar horizontalmente */
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;             /* evita que sea muy ancho en desktop */
+  margin-top: 10px;
 }
 
-.formFiltros label{
-    font-weight: bolder;
-    color: var(--color-letras-primario);
-    text-transform: uppercase;
-    text-align: center;
+.tituloFiltros {
+  color: var(--color-letras-primario);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25rem 0;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
 }
 
-.formFiltros input{
-    margin: 1rem;
+.formFiltros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 0.5rem;
 }
 
+.formFiltros label {
+  font-weight: bolder;
+  color: var(--color-letras-primario);
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  flex: 1 1 45%;        /* dos por fila dentro del 50% total */
+  min-width: 100px;
+}
+
+.formFiltros input,
+.formFiltros select {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* MOBILE - vertical */
+@media (max-width: 768px) {
+  .sectionFiltros {
+    max-width: 100%;
+  }
+
+  .formFiltros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .formFiltros label {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}

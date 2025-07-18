@@ -6,6 +6,9 @@ export const EventsList = () => {
   const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { getAccessTokenSilently } = useAuth0();
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 10; // Ajusta la cantidad de eventos por página
+
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -17,6 +20,7 @@ export const EventsList = () => {
       });
       const response = await getAllEventos(token);
       setEvents(response.data);
+      setCurrentPage(1); // Reiniciar a página 1 al actualizar datos
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);
     }
@@ -36,9 +40,31 @@ export const EventsList = () => {
     handleStateChange(id_event, newState);
   };
 
+  // Filtrar eventos por término de búsqueda
   const filteredEvents = events.filter((event) =>
     event.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Calcular eventos a mostrar en la página actual
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+
+  // Calcular número total de páginas
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+
+  // Funciones para manejar paginación
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <div className="admin-table-container">
@@ -58,7 +84,7 @@ export const EventsList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredEvents.map((event) => (
+          {currentEvents.map((event) => (
             <tr key={event.id_Evento}>
               <td>{event.nombre}</td>
               <td>
@@ -74,8 +100,27 @@ export const EventsList = () => {
               </td>
             </tr>
           ))}
+          {currentEvents.length === 0 && (
+            <tr>
+              <td colSpan="2" style={{ textAlign: "center" }}>
+                No se encontraron eventos.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
+
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => goToPage(i + 1)}
+            className={currentPage === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

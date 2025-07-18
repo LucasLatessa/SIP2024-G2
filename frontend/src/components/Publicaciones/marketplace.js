@@ -92,7 +92,7 @@ export const Marketplace = () => {
     <>
       <Header />
       <main>
-        <header className="tituloEventos">
+        <header className="tituloMarket">
           <h1>Mercado</h1>
         </header>
 

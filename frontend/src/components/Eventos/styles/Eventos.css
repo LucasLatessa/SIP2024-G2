@@ -1,19 +1,21 @@
-.tituloEventos {
+.tituloEventosAll {
   margin: 0;
   padding: 4rem;
   background-image: url(../../../images/ViviLaExperiencia.jpg);
   background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
   background-size: cover;
-  height: 10vh; 
+  background-position: center;
+  display: flex;              /* centrado con flex */
+  justify-content: center;    /* horizontal */
+  align-items: center;        /* vertical */
+  text-align: center;
 }
 
-.tituloEventos h1 {
-  text-align: center;
-  font-size: 3.5rem; 
+.tituloEventosAll h1 {
+  font-size: 3.5rem;
   color: var(--color-letras-secundario);
   text-shadow: 2px 2px 4px var(--color-letras-primario);
+  margin: 0;
 }
 
 .allListaEventosa {

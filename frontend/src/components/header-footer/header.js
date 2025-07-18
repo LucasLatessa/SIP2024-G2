@@ -1,21 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import React, { useState } from "react";
 import "./styles/header.css";
 import { Link } from "react-router-dom";
 
-
 //Header del sitio
 export const Header = () => {
-  const { user, isAuthenticated } = useAuth0();
-  const { loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLoginClick = () => {
-    //navigate("/login")
     loginWithRedirect();
   };
+
   const handleProfileClick = () => {
     navigate("/perfil");
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -29,7 +34,13 @@ export const Header = () => {
           />
         </Link>
       </h1>
-      <nav className="navegacion">
+
+      {/* Botón hamburguesa */}
+      <button className="hamburger" onClick={toggleMenu}>
+        ☰
+      </button>
+
+      <nav className={`navegacion ${menuOpen ? "open" : ""}`}>
         <li>
           <Link to="/eventos">Eventos</Link>
         </li>
@@ -40,7 +51,7 @@ export const Header = () => {
           <Link to="/beneficios">Beneficios</Link>
         </li>
         <li>
-          {!isAuthenticated && (
+          {!isAuthenticated ? (
             <div className="login" onClick={handleLoginClick}>
               <img
                 src="/assets/user.png"
@@ -48,8 +59,7 @@ export const Header = () => {
                 className="icono-usuario"
               />
             </div>
-          )}
-          {isAuthenticated && (
+          ) : (
             <div className="profile" onClick={handleProfileClick}>
               <img
                 src={user.picture}

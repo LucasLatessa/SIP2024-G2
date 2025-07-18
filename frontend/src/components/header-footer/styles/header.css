@@ -1,44 +1,58 @@
-
-
+/* Estilos generales */
 .header-principal {
   background-color: var(--color-principal);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
-.logoHeader{
+.logoHeader {
   margin: 0.7rem;
-}
-
-.navegacion{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
-
-.navegacion li{
-    list-style: none;
-    padding: 0rem 1.2rem;
-}
-
-.navegacion li a{
-    text-decoration: none;
-    color: var(--color-letras-secundario);
-    font-size: 1.2rem;
-    text-transform: uppercase;
-}
-
-.navegacion li a:hover{
-  color: var(--color-letras-cuaternario);
-  border-bottom: 5px solid var(--color-letras-cuaternario);
-  transition: all 100ms ease-in-out;
 }
 
 .logo {
   width: 5rem;
+}
+
+/* Navegación general */
+.navegacion {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* CENTRADO EN DESKTOP */
+@media (min-width: 769px) {
+  .header-principal {
+    justify-content: space-between;
+  }
+
+  .navegacion {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.navegacion li {
+  list-style: none;
+  padding: 0rem 1.2rem;
+}
+
+.navegacion li a {
+  text-decoration: none;
+  color: var(--color-letras-secundario);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.navegacion li a:hover {
+  color: var(--color-letras-cuaternario);
+  border-bottom: 5px solid var(--color-letras-cuaternario);
+  transition: all 100ms ease-in-out;
 }
 
 .icono-usuario {
@@ -51,4 +65,56 @@
   width: 3.8rem;
   border-radius: 50px;
   cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navegacion {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    width: 200px;
+    background-color: var(--color-principal);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    z-index: 15;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: none;
+  }
+
+  .navegacion.open {
+    display: flex;
+  }
+
+  .navegacion li {
+    width: 100%;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-letras-secundario);
+  }
+
+  .navegacion li:last-child {
+    border-bottom: none;
+  }
+
+  .navegacion li a {
+    width: 100%;
+    display: block;
+  }
 }
