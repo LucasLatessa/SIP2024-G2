@@ -5,14 +5,13 @@ import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { EventosBox } from "./EventosBox";
 
-//Pagina donde se mostraran todos los eventos posibles
+// Página donde se mostraran todos los eventos posibles
 export const Eventos = () => {
   const [eventos, setEventos] = useState([]);
   const [search, setSearch] = useState("");
   const [date, setDate] = useState("");
   const [filteredEventos, setFilteredEventos] = useState([]);
 
-  //Realizo la peticion para obtener todos los eventos
   useEffect(() => {
     async function cargarEventos() {
       const res = await getAllEventosAprobados();
@@ -23,9 +22,11 @@ export const Eventos = () => {
     cargarEventos();
   }, []);
 
-  /* --------------------
-          FILTROS
-  --------------------*/
+  // Convertir "dd/mm/yyyy" a Date
+  const parseFecha = (strFecha) => {
+    const [dia, mes, anio] = strFecha.split("/");
+    return new Date(`${anio}-${mes}-${dia}`);
+  };
 
   const applyFilters = () => {
     let filtered = eventos;
@@ -35,9 +36,15 @@ export const Eventos = () => {
         evento.nombre.toLowerCase().includes(search.toLowerCase())
       );
     }
+
     if (date) {
-      filtered = filtered.filter((evento) => evento.fecha >= date);
+      const fechaFiltro = new Date(date); // "yyyy-mm-dd"
+      filtered = filtered.filter((evento) => {
+        const fechaEvento = parseFecha(evento.fecha);
+        return fechaEvento >= fechaFiltro;
+      });
     }
+
     setFilteredEventos(filtered);
   };
 
@@ -47,7 +54,6 @@ export const Eventos = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "search") {
       setSearch(value);
     } else if (name === "date") {
@@ -88,8 +94,8 @@ export const Eventos = () => {
         </section>
 
         <section className="allListaEventosa">
-          {filteredEventos?.map(
-            (evento) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
+          {filteredEventos.length > 0 ? (
+            filteredEventos.map((evento) => (
               <EventosBox
                 key={evento.id_Evento}
                 id={evento.id_Evento}
@@ -100,7 +106,11 @@ export const Eventos = () => {
                 fecha={evento.fecha}
                 hora={evento.hora}
               />
-            )
+            ))
+          ) : (
+            <p style={{ textAlign: "center" }}>
+              No se encontraron eventos con los filtros seleccionados.
+            </p>
           )}
         </section>
       </main>
