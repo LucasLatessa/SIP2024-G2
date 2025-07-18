@@ -7,7 +7,7 @@ export const EventsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { getAccessTokenSilently } = useAuth0();
   const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 10; // Ajusta la cantidad de eventos por página
+  const eventsPerPage = 3; // Ajusta la cantidad de eventos por página
 
   useEffect(() => {
     fetchEvents();

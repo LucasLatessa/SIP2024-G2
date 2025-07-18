@@ -8,7 +8,13 @@ const lugarAPI = axios.create({
 })
 
 export const getAllLugares = (token) => lugarAPI.get('/', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+
+export const crearLugar = (lugar, token) => lugarAPI.get('/', {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}) 

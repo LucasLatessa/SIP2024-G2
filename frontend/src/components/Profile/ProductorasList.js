@@ -8,7 +8,7 @@ export const ProductorasList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { getAccessTokenSilently } = useAuth0();
   const [currentPage, setCurrentPage] = useState(1);
-  const productorasPerPage = 10; // Ajusta aquí el tamaño de página
+  const productorasPerPage = 3; // Ajusta aquí el tamaño de página
 
   useEffect(() => {
     fetchProdu();

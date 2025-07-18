@@ -3,6 +3,7 @@ import "./styles/productoraView.css";
 import { UserList } from "./UserList";
 import { EventsList } from "./EventsList";
 import { ProductorasList } from "./ProductorasList";
+import { LugarList } from "./LugarList";
 import Restore from './Restore';
 import { crearBackup } from "../../services/backup.service";
 import { ToastContainer, toast } from 'react-toastify';
@@ -50,6 +51,7 @@ export const AdministradorView = ({ rol }) => {
                 <UserList />
                 <EventsList />
                 <ProductorasList />
+                <LugarList />
 
                 <div style={{ margin: '20px' }}>
                     <button onClick={handleBackup} style={{ marginRight: '10px' }}>
