@@ -12,22 +12,30 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from eventos.models import Evento
 from tickets.models import  Ticket, TipoTickets
+from utils.permissions import IsAuthenticatedCustom, HasScopePermission
 
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     queryset = Usuario.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
+
 
 class ClienteView(viewsets.ModelViewSet):
     serializer_class = ClienteSerializer
     queryset = Cliente.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
+
 
 class AdministradorView(viewsets.ModelViewSet):
     serializer_class = AdministradorSerializer
     queryset = Administrador.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
+
 
 class ProductoraView(viewsets.ModelViewSet):
     serializer_class = ProductoraSerializer
     queryset = Productora.objects.all()
+    permission_classes = [IsAuthenticatedCustom]
 
 
 def get_usuario_by_nickname(request, nickname):

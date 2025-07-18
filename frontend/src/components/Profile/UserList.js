@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { getAllUsers, updateRole } from "../../services/usuarios.service";
 
-export const UserList = () => {
+
+export const UserList = (token) => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
-    try {
-      const response = await getAllUsers();
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error al obtener la lista de usuarios:", error);
-    }
-  };
+      try {
+        const response = await getAllUsers(token);
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error al obtener la lista de usuarios:", error);
+      }
+    };
 
   const handleRoleChange = async (userId, newRole) => {
     try {

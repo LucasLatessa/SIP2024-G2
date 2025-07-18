@@ -17,7 +17,6 @@ import { ProductoraView } from "./ProductoraView";
 import { AdministradorView } from "./AdministradorView";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 //Perfil de los usuarios
 export const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -26,6 +25,7 @@ export const Profile = () => {
   const [loadingCliente, setLoadingCliente] = useState(true);
   const [editingUserData, setEditingUserData] = useState(null);
   const [error, setError] = useState(null);
+  const { getAccessTokenSilently } = useAuth0()
 
   // const handleLoginClick = () => {
   //   loginWithRedirect();
@@ -78,8 +78,11 @@ export const Profile = () => {
           setError("Rol de usuario no reconocido");
           return;
       }
+      const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
       // Ejecuta la funcion de actualización correspondiente
-      await updateFunction(editingUserData);
+      await updateFunction(editingUserData,token);
       setusuarioData(editingUserData);
       setEditingUserData(null);
       setError(null);

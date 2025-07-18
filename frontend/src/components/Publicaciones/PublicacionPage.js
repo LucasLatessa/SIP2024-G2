@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getPublicacion, crearPreferenciaEvento } from "../../services/publicacion.service";
 import { getEvento } from "../../services/eventos.service";
 import { getTicket, getTipoTicket } from "../../services/tickets.service";
-import { getUser, getUserNick } from "../../services/usuarios.service";
+import {  getUserNick } from "../../services/usuarios.service";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useAuth0 } from "@auth0/auth0-react";
 

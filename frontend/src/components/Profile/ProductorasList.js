@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAllProdu } from "../../services/usuarios.service";
 import { Link } from "react-router-dom";
 
-export const ProductorasList = () => {
+export const ProductorasList = (token) => {
   const [productoras, setProductoras] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -12,7 +12,7 @@ export const ProductorasList = () => {
 
   const fetchProdu = async () => {
     try {
-      const response = await getAllProdu();
+      const response = await getAllProdu(token);
       setProductoras(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de productoras:", error);
