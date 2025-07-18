@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { getAllUsers, updateRole } from "../../services/usuarios.service";
+import { useAuth0 } from "@auth0/auth0-react";
 
-
-export const UserList = (token) => {
+export const UserList = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { getAccessTokenSilently } = useAuth0()
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
       try {
+        const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
         const response = await getAllUsers(token);
         setUsers(response.data);
       } catch (error) {

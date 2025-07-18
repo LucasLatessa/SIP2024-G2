@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getAllProdu } from "../../services/usuarios.service";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export const ProductorasList = (token) => {
+export const ProductorasList  = () => {
   const [productoras, setProductoras] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { getAccessTokenSilently } = useAuth0()
 
   useEffect(() => {
     fetchProdu();
@@ -12,6 +14,9 @@ export const ProductorasList = (token) => {
 
   const fetchProdu = async () => {
     try {
+      const token = await getAccessTokenSilently({
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        });
       const response = await getAllProdu(token);
       setProductoras(response.data);
     } catch (error) {

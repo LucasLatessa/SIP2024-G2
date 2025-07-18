@@ -7,28 +7,9 @@ import Restore from './Restore';
 import { crearBackup } from "../../services/backup.service";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useAuth0 } from "@auth0/auth0-react"
-
 export const AdministradorView = ({ rol }) => {
     const [showRestore, setShowRestore] = useState(false);
     const [token, setToken] = useState(null);
-    const { getAccessTokenSilently } = useAuth0();
-
-    useEffect(() => {
-        const fetchToken = async () => {
-            try {
-                const accessToken = await getAccessTokenSilently({
-                    audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-                });
-                setToken(accessToken);
-            } catch (error) {
-                console.error("Error obteniendo token:", error);
-                toast.error("Error al obtener token de autenticacion");
-            }
-        };
-
-        fetchToken();
-    }, [getAccessTokenSilently]);
 
     const handleBackup = async () => {
         try {
@@ -66,9 +47,9 @@ export const AdministradorView = ({ rol }) => {
             <>
                 <ToastContainer />
                 {/* Pasamos el token como prop */}
-                <UserList token={token} />
+                <UserList />
                 <EventsList />
-                <ProductorasList token={token} />
+                <ProductorasList />
 
                 <div style={{ margin: '20px' }}>
                     <button onClick={handleBackup} style={{ marginRight: '10px' }}>
