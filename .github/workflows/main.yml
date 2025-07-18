@@ -36,19 +36,19 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      # - name: Build and push backend image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./backend-djangoAPI
-      #     push: true
-      #     tags: lucaslatessa/backend:latest
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend-djangoAPI
+          push: true
+          tags: lucaslatessa/backend:latest
 
-      # - name: Build and push frontend image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./frontend
-      #     push: true
-      #     tags: lucaslatessa/frontend:latest
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: lucaslatessa/frontend:latest
 
       - name: Autenticación Google Cloud
         uses: google-github-actions/auth@v2
