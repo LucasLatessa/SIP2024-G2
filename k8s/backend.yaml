@@ -47,15 +47,13 @@ kind: Service
 metadata:
   name: backend-service
   annotations:
-    # ¡Esta anotación es la CLAVE para que sea un Balanceador de Carga Interno!
     networking.gke.io/load-balancer-type: "Internal"
-    # Anotación alternativa más antigua si la de arriba da problemas (menos probable):
-    # service.beta.kubernetes.io/gcp-load-balancer-internal: "true"
+   
 spec:
   selector:
     app: backend
   ports:
     - protocol: TCP
       port: 8000
-      targetPort: 8000 # El puerto de tu contenedor (Gunicorn)
-  type: LoadBalancer # Importante: Cambiar de ClusterIP a LoadBalancer
+      targetPort: 8000
+  type: LoadBalancer
