@@ -1,69 +1,91 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import LazyLoad from "react-lazy-load";
 import { Link } from "react-router-dom";
 import "./styles/carousel.css";
 
-//Carrousel para mostrar 3 eventos
 const Carousel = ({ eventos }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState([]);
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
 
-  //Cada vez que se renderize la pagina, cargaremos los eventos (por ahora, trae 3)
   useEffect(() => {
-    async function cargarEventosCarrousel() {
-      if (eventos && eventos.length > 0) {
-        const nuevasImagenes = eventos?.slice(4, 7).map((evento) => ({
-          imagen: evento.imagen,
-          id: evento.id_Evento,
-        }));
-
-        setImages((prevImages) => [...prevImages, ...nuevasImagenes]);
-      }
+    if (eventos?.length > 0) {
+      const nuevasImagenes = eventos.map((evento) => ({
+        imagen: evento.imagen,
+        id: evento.id_Evento,
+      }));
+      setImages(nuevasImagenes);
+      setCurrentIndex(0);
     }
-    cargarEventosCarrousel();
   }, [eventos]);
 
-  //Movimiento con flechas de izq a derecha
+  useEffect(() => {
+    if (images.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images]);
+
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, images.length - 1));
+    setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setCurrentIndex((prev) =>
+      (prev - 1 + images.length) % images.length
+    );
   };
 
-  if (images.length > 0) {
-    return (
-      <div className="carousel">
-        <LazyLoad>
-          <Link className="slide" to={`/evento/${images[currentIndex].id}`}>
-            <img
-              src={images[currentIndex].imagen}
-              alt="carousel image"
-              aria-label="carousel image"
-              aria-hidden={currentIndex !== 0}
-            />
-          </Link>
-        </LazyLoad>
-        <button
-          className="arrow left"
-          onClick={handlePrev}
-          aria-label="previous image"
-          aria-hidden={currentIndex === 0}
-        >
-          {"<"}
-        </button>
-        <button
-          className="arrow right"
-          onClick={handleNext}
-          aria-label="next image"
-          aria-hidden={currentIndex === images.length - 1}
-        >
-          {">"}
-        </button>
+  const goToSlide = (index) => setCurrentIndex(index);
+
+  // Swipe events
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    const delta = touchStartX.current - touchEndX.current;
+    const threshold = 50; // px mínimo para detectar swipe
+    if (delta > threshold) handleNext();
+    else if (delta < -threshold) handlePrev();
+  };
+
+  if (images.length === 0) return null;
+
+  return (
+    <div
+      className="carousel"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <button className="arrow left" onClick={handlePrev}>
+        &#10094;
+      </button>
+
+      <div className="slides-wrapper">
+        {images.map((img, index) => (
+          <div
+            key={img.id}
+            className={`slide ${index === currentIndex ? "active" : ""}`}
+            aria-hidden={index !== currentIndex}
+          >
+            <LazyLoad offset={100} threshold={0.95}>
+              <Link to={`/evento/${img.id}`}>
+                <img src={img.imagen} alt={`Evento ${img.id}`} />
+              </Link>
+            </LazyLoad>
+          </div>
+        ))}
       </div>
-    );
-  }
+
+      <button className="arrow right" onClick={handleNext}>
+        &#10095;
+      </button>
+    </div>
+  );
 };
 
 export default Carousel;

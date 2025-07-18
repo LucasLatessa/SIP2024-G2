@@ -1,44 +1,90 @@
 .carousel {
-  width: 100%;
-  height: 70vh;
   position: relative;
-  background-color: var(--color-fondo);
+  max-width: 1200px;
+  width: 100%;
+  margin: 2rem auto;
+  overflow: hidden;
+  box-sizing: border-box; /* 👈 muy importante */
 }
 
-.carousel .slide {
+.slides-wrapper {
+  position: relative;
   width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: #000;
 }
 
-.carousel .slide img {
-  width: 90%;
-  height: 70vh;
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.carousel .arrow {
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Arrows */
+.arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
   border: none;
-  color: #333;
-  font-size: 3rem;
-  padding: 1rem;
-  cursor: pointer;
+  font-size: 1.8rem;
+  padding: 0.4rem 0.6rem;
   border-radius: 50%;
-  opacity: 0.5;
-  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+  z-index: 10;
 }
 
-.carousel .arrow:hover {
-  opacity: 1;
+.arrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.carousel .arrow.left {
-  left: 2rem;
+.arrow.left {
+  left: 12px;
 }
 
-.carousel .arrow.right {
-  right: 2rem;
+.arrow.right {
+  right: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .carousel {
+    padding: 0 0.5rem;
+  }
+
+  .arrow {
+    font-size: 1.4rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .arrow {
+    font-size: 1.2rem;
+    padding: 0.3rem;
+  }
 }
