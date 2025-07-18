@@ -100,45 +100,49 @@ export const EventoPage = () => {
 
   //Realizo la compra de tickets
   const handleBuy = async () => {
-  setButtonClicked(true);
-  setLoading(true);
-  setError("");
+    if (preferenceId) return;
 
-  const quantity = parseInt(getValues("cantidadEntradas"));
-  // Validar tipo de ticket
-  if (!tipoTicket) {
-    setError("Seleccioná un tipo de entrada.");
-    setLoading(false);
-    return;
-  }
-  // Validar cantidad
-  if (isNaN(quantity) || quantity < 1) {
-    setError("Ingresá una cantidad válida de entradas.");
-    setLoading(false);
-    return;
-  }
-  
-  const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
+    setButtonClicked(true);
+    setLoading(true);
+    setError("");
 
-  if (ticket_id_list.length === quantity) {
-    const result = await createPreference(ticket_id_list, quantity);
-    if (result?.success) {
-      setPreferenceId(result.preference_id);
-
-      const response= await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
-        params: {
-          ticket_id: ticket_id_list.join(","),
-        },
-      });
-      if (response.data.expires_at) {
-        setExpiresAt(response.data.expires_at);
-      }
-    } else {
-      setError("Hubo un error al crear la preferencia de pago.");
+    const quantity = parseInt(getValues("cantidadEntradas"));
+    if (!tipoTicket) {
+      setError("Selecciona un tipo de entrada.");
+      setLoading(false);
+      return;
     }
-  }
-  setLoading(false);
-};
+
+    if (isNaN(quantity) || quantity < 1) {
+      setError("Cantidad invalida.");
+      setLoading(false);
+      return;
+    }
+
+    const ticket_id_list = await obtenerTicket(quantity, id, tipoTicket);
+
+    if (ticket_id_list.length === quantity) {
+      const result = await createPreference(ticket_id_list, quantity);
+      if (result?.success) {
+        setPreferenceId(result.preference_id);
+
+        const response = await axios.get(`${backendUrl}/tickets/reservar_ticket/`, {
+          params: {
+            ticket_id: ticket_id_list.join(","),
+          },
+        });
+
+        if (response.data.expires_at) {
+          setExpiresAt(response.data.expires_at);
+        }
+      } else {
+        setError("Hubo un error al crear la preferencia de pago.");
+      }
+    }
+
+    setLoading(false);
+  };
+
 
   const handleTipoEntradaChange = async (e) => {
     const tipo = e.target.value;

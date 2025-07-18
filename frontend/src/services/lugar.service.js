@@ -13,8 +13,9 @@ export const getAllLugares = (token) => lugarAPI.get('/', {
   },
 })
 
-export const crearLugar = (lugar, token) => lugarAPI.get('/', {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-}) 
+export const crearLugar = (lugar, token) =>lugarAPI.post("/", lugar, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });

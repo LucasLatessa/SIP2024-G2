@@ -3,7 +3,7 @@ import "./styles/productoraView.css";
 import { UserList } from "./UserList";
 import { EventsList } from "./EventsList";
 import { ProductorasList } from "./ProductorasList";
-import { LugarList } from "./LugarList";
+import { LugaresList } from "./LugaresList";
 import Restore from './Restore';
 import { crearBackup } from "../../services/backup.service";
 import { ToastContainer, toast } from 'react-toastify';
@@ -47,11 +47,10 @@ export const AdministradorView = ({ rol }) => {
         return (
             <>
                 <ToastContainer />
-                {/* Pasamos el token como prop */}
                 <UserList />
                 <EventsList />
                 <ProductorasList />
-                <LugarList />
+                <LugaresList />
 
                 <div style={{ margin: '20px' }}>
                     <button onClick={handleBackup} style={{ marginRight: '10px' }}>
