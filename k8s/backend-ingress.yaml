@@ -4,19 +4,36 @@ metadata:
   name: backend-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "backend-cert" # Nuevo certificado para la API
+    networking.gke.io/managed-certificates: "backend-cert"
     kubernetes.io/ingress.global-static-ip-name: "backend-static-ip"
-    # Agrega esta anotación para el BackendConfig
     ingress.gcp.kubernetes.io/backend-config: '{"backend-service": "backend-health-check-config"}'
 spec:
+  tls:
+  - secretName: backend-cert # Asegúrate de que el certificado exista y tenga api.unlucoin.info
+    hosts:
+      - api.unlucoin.info
   rules:
-    - host: api.unlucoin.info # <--- ¡Nuevo subdominio para tu API!
+    - host: api.unlucoin.info
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          # --- Rutas Públicas (Solo las necesarias para Mercado Pago y APIs públicas) ---
+          - path: /api/mercadopago/webhook # <--- Ruta específica para notificaciones de Mercado Pago
+            pathType: Prefix # O 'Exact' si la URL de MP no varía después del webhook
             backend:
               service:
                 name: backend-service
                 port:
                   number: 8000
+          # Si tienes otras APIs que DEBEN ser públicas (ej. /api/productos/publicos), agrégalas aquí.
+          # - path: /api/public/products
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: backend-service
+          #       port:
+          #         number: 8000
+          # --- FIN de Rutas Públicas ---
+
+          # Asegúrate de NO incluir "path: /" aquí.
+          # Todas las demás rutas, como /admin/, /auth/, etc.,
+          # NO deben ser expuestas por este Ingress público.

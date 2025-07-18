@@ -32,23 +32,37 @@ spec:
         - name: CLIENT_ORIGIN_URL
           value: "https://www.unlucoin.info"
         - name: BACKEND_ORIGIN_URL
-          value: "https://www.unlucoin.info/api" 
+          value: "https://api.unlucoin.info" # <--- ¡CAMBIO CLAVE AQUÍ! Nuevo dominio público para tu API
         - name: AUTH0_DOMAIN
           value: "dev-tkm11ny0scl8iufa.us.auth0.com"
         - name: AUTH0_API_IDENTIFIER
           value: "https://bypassAPI.com"
+        # --- ¡RECOMENDADO: Mover estos secretos a un Kubernetes Secret! ---
+        # No poner valores sensibles directamente en el archivo YAML de Deployment.
+        # Aquí te muestro cómo se vería si ya tuvieras un Secret llamado 'backend-secrets'
+        # con las claves 'DJANGO_SECRET_KEY' y 'PROD_ACCESS_TOKEN'.
+        # Para crear el Secret, ejecuta:
+        # kubectl create secret generic backend-secrets \
+        #   --from-literal=DJANGO_SECRET_KEY="tu-super-clave-secreta-de-django" \
+        #   --from-literal=PROD_ACCESS_TOKEN="tu-token-de-mercadopago-produccion"
         - name: DJANGO_SECRET_KEY
-          value: "django-insecure-5s&mlcful&2d3pa-z(l#)1vx%(--iss_%*@g62j6c*6jqylx59"
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: DJANGO_SECRET_KEY
         - name: PROD_ACCESS_TOKEN
-          value: "TEST-614744135521445-050414-2d9b1d04724212f02c2f8e3615f70b4c-1793151899"
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: PROD_ACCESS_TOKEN
+        # --- FIN de la recomendación de Secretos ---
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
-  annotations:
-    networking.gke.io/load-balancer-type: "Internal"
-   
+  # Elimina esta anotación, ya no es un LoadBalancer interno.
+  # networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     app: backend
@@ -56,4 +70,4 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 8000
-  type: LoadBalancer
+  type: ClusterIP # <--- ¡CAMBIO CLAVE AQUÍ! Ahora es un servicio interno
