@@ -7,9 +7,13 @@ class LugarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class EventoSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(required=False)
-    estado = serializers.StringRelatedField()
-    lugar = LugarSerializer(read_only=True, allow_null=True)
+    imagen = serializers.ImageField(required=False)
+    estado = serializers.StringRelatedField(read_only=True)
+    lugar = serializers.PrimaryKeyRelatedField(
+        queryset=Lugar.objects.all(),
+        allow_null=True
+    )
+
     class Meta:
         model = Evento
         fields = '__all__'
