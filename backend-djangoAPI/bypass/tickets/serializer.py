@@ -3,7 +3,13 @@ from .models import Ticket, Precio, Publicacion, TipoTickets
 
 class TicketSerializer(serializers.ModelSerializer):
     tipo_ticket = serializers.StringRelatedField()
-    propietario = serializers.CharField(source='propietario.dni')
+    propietario = serializers.SerializerMethodField()
+
+    def get_propietario(self, obj):
+        if obj.propietario and obj.propietario.dni:
+            return obj.propietario.dni
+        return None
+
     class Meta:
         model = Ticket
         fields = '__all__'

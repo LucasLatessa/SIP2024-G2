@@ -89,16 +89,16 @@ export const Eventos = () => {
 
         <section className="allListaEventosa">
           {filteredEventos?.map(
-            (eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
+            (evento) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
               <EventosBox
-                key={eventos.id}
-                id={eventos.id_Evento}
-                nombre={eventos.nombre}
-                foto={eventos.imagen}
-                precioMin={eventos.precioMin}
-                precioMax={eventos.precioMax}
-                fecha={eventos.fecha}
-                hora={eventos.hora}
+                key={evento.id_Evento}
+                id={evento.id_Evento}
+                nombre={evento.nombre}
+                foto={evento.imagen}
+                precioMin={evento.precioMin}
+                precioMax={evento.precioMax}
+                fecha={evento.fecha}
+                hora={evento.hora}
               />
             )
           )}

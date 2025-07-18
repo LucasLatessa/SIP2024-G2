@@ -59,7 +59,7 @@ export const EventsList = () => {
               <td>{event.nombre}</td>
               <td>
                 <select
-                  value={event.estado}
+                  value={event.estado || "PENDIENTE"}
                   onChange={(e) => handleEventStateChange(event.id_Evento, e)}
                   className="estado-select"
                 >

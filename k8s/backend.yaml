@@ -31,8 +31,8 @@ spec:
           value: "django_pass"
         - name: CLIENT_ORIGIN_URL
           value: "https://www.unlucoin.info"
-        # - name: BACKEND_ORIGIN_URL
-        #   value: "https://api.unlucoin.info" # Esta URL ya no se usará públicamente para el backend
+        - name: BACKEND_ORIGIN_URL
+          value: "https://www.unlucoin.info/api" 
         - name: AUTH0_DOMAIN
           value: "dev-tkm11ny0scl8iufa.us.auth0.com"
         - name: AUTH0_API_IDENTIFIER

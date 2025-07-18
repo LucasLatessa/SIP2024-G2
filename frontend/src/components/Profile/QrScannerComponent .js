@@ -26,7 +26,7 @@ export const QrScannerComponent = () => {
           setTicketInfo({
             tipo_ticket: ticketData.data.tipo_ticket,
             ide: resEvento.data.nombre,
-            dni: ticketData.data.propietario,
+            dni: ticketData.data.propietario?.dni || 'Desconocido',
             mensaje: ticketData.data.usada
               ? "La entrada ya fue usada"
               : "Entrada válida, que lo disfrute!",
