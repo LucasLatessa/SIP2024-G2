@@ -350,109 +350,14 @@
   cursor: not-allowed;
 }
 
-/* ========== LISTADO DE EVENTOS ========== */
 
-.events-title {
+.events-title, .users-title, .produs-title  {
   text-align: center;
   color: var(--color-letras-cuaternario);
   margin-bottom: 20px;
 }
 
-.event-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.event-card {
-  background-color: var(--color-principal-claro);
-  border-radius: 12px;
-  padding: 20px;
-  width: 280px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease;
-}
-
-.event-nombre {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: var(--color-letras-primario);
-}
-
-.estado-label {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.95rem;
-}
-
-.estado-select {
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  border: 1px solid #ccc;
-  background-color: white;
-  transition: border-color 0.2s;
-}
-
-
-/* Colores según estado */
-.estado-pendiente {
-  border-left: 6px solid orange;
-}
-
-.estado-aprobado {
-  border-left: 6px solid green;
-}
-
-.estado-cancelado {
-  border-left: 6px solid crimson;
-}
-
-/* ========== LISTADO DE USUARIOS Y PRODUCTORAS ========== */
-
-.usuarios-admin-container {
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.users-title, .produs-title {
-  text-align: center;
-  color: var(--color-letras-cuaternario);
-  margin-bottom: 20px;
-}
-
-.user-cards, .productora-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.user-card, .productora-card {
-  background-color: var(--color-principal-claro);
-  border-radius: 12px;
-  padding: 20px;
-  width: 250px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease;
-}
-
-.user-nickname, .productora-nickname {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: var(--color-letras-primario);
-}
-
-.rol-label {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.95rem;
-}
-
-.rol-select {
+.estado-select, .rol-select {
   padding: 8px;
   margin-top: 5px;
   border-radius: 6px;
@@ -477,4 +382,51 @@
   text-decoration: none;
   transition: background-color 0.3s ease;
   font-size: 0.95rem;
+}
+
+.admin-table-container {
+  width: 50%;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.buscador {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.tabla-eventos {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-principal-claro);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-eventos th,
+.tabla-eventos td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--color-letras-primario);
+}
+
+.tabla-eventos th {
+  background-color: var(--color-letras-cuaternario);
+  color: white;
+}
+
+.tabla-eventos th:nth-child(1),
+.tabla-eventos td:nth-child(1) {
+  width: 60%;
+}
+
+.tabla-eventos th:nth-child(2),
+.tabla-eventos td:nth-child(2) {
+  width: 40%;
 }

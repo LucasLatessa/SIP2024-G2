@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  getAllEventos,
-  updateState
-} from "../../services/eventos.service";
+import { getAllEventos, updateState } from "../../services/eventos.service";
 
 export const EventsList = () => {
   const [events, setEvents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchEvents();
@@ -34,28 +32,46 @@ export const EventsList = () => {
     handleStateChange(id_event, newState);
   };
 
+  const filteredEvents = events.filter((event) =>
+    event.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="eventos-admin-container">
+    <div className="admin-table-container">
       <h2 className="events-title">Gestión de Estados de Eventos</h2>
-      <div className="event-cards">
-        {events.map((event) => (
-          <div className={`event-card estado-${event.estado.toLowerCase()}`} key={event.id_Evento}>
-            <h3 className="event-nombre">{event.nombre}</h3>
-            <label className="estado-label">
-              Estado:
-              <select
-                className="estado-select"
-                value={event.estado}
-                onChange={(e) => handleEventStateChange(event.id_Evento, e)}
-              >
-                <option value="PENDIENTE">PENDIENTE</option>
-                <option value="CANCELADO">CANCELADO</option>
-                <option value="APROBADO">APROBADO</option>
-              </select>
-            </label>
-          </div>
-        ))}
-      </div>
+      <input
+        type="text"
+        placeholder="Buscar por nombre de evento"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="buscador"
+      />
+      <table className="tabla-eventos">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEvents.map((event) => (
+            <tr key={event.id_Evento}>
+              <td>{event.nombre}</td>
+              <td>
+                <select
+                  value={event.estado}
+                  onChange={(e) => handleEventStateChange(event.id_Evento, e)}
+                  className="estado-select"
+                >
+                  <option value="PENDIENTE">PENDIENTE</option>
+                  <option value="CANCELADO">CANCELADO</option>
+                  <option value="APROBADO">APROBADO</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
