@@ -5,6 +5,9 @@ import json
 import requests
 CLIENT_ORIGIN_URL = os.environ.get('CLIENT_ORIGIN_URL')
 BACKEND_ORIGIN_URL = os.environ.get('BACKEND_ORIGIN_URL')
+MERCADOPAGO_NOTIFICATION_BASE_URL = os.environ.get('MERCADOPAGO_NOTIFICATION_BASE_URL')
+
+
 def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, url, token):
     sdk = mercadopago.SDK("APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899")
 
@@ -30,7 +33,8 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": CLIENT_ORIGIN_URL,
             },
             "auto_return": "approved",
-            "notification_url": f"{BACKEND_ORIGIN_URL}/{url}",
+            # ¡AHORA USA LA NUEVA VARIABLE PARA LA URL DE NOTIFICACIÓN!
+            "notification_url": f"{MERCADOPAGO_NOTIFICATION_BASE_URL}/{url}",
         }
         preference_response = sdk.preference().create(preference_data)
         status = preference_response.get("status", 500)
