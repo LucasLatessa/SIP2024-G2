@@ -101,6 +101,7 @@
 
   .navegacion.open {
     display: flex;
+    text-align: center;
   }
 
   .navegacion li {
