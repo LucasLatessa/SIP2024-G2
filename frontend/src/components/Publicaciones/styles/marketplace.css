@@ -25,7 +25,7 @@
   padding: 0.5rem 1rem;
   box-sizing: border-box;
   width: 100%;
-  max-width: 900px;             /* evita que sea muy ancho en desktop */
+  max-width: 800px;             /* evita que sea muy ancho en desktop */
   margin-top: 10px;
 }
 
@@ -41,12 +41,12 @@
 .formFiltros {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
   padding: 0;
   box-sizing: border-box;
   width: 100%;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 .formFiltros label {
@@ -56,7 +56,6 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  flex: 1 1 45%;        /* dos por fila dentro del 50% total */
   min-width: 100px;
 }
 
