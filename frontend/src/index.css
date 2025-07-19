@@ -23,6 +23,16 @@
   font-size: 16px;
 }
 
+#root {
+  min-height: 100vh;              /* Ocupar toda la altura de la ventana */
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;                         /* Empuja el footer hacia abajo */
+}
+
 html, body {
   margin: 0;
 }
