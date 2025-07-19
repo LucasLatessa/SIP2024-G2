@@ -73,7 +73,7 @@
 /* MOBILE - vertical */
 @media (max-width: 768px) {
   .sectionFiltros {
-    max-width: 100%;
+    max-width: 90%;
   }
 
   .formFiltros {
