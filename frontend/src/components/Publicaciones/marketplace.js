@@ -22,12 +22,6 @@ export const Marketplace = () => {
         const res = await getAllPublicacion1();
 
         const publicaciones = res.data.publicaciones.map((publicacion) => {
-          const fechaFormateada = new Date(publicacion.eventoFecha).toLocaleDateString('es-AR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          });
-
           return {
             id: publicacion.id_Publicacion,
             precio: publicacion.precio,
@@ -36,7 +30,7 @@ export const Marketplace = () => {
             tipo: publicacion.tipo,
             foto: publicacion.foto,
             eventoNombre: publicacion.eventoNombre,
-            eventoFecha: fechaFormateada,
+            eventoFecha: publicacion.eventoFecha,
             eventoHora: publicacion.eventoHora,
           };
         });

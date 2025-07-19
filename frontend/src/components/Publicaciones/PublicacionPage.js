@@ -159,7 +159,22 @@ export const PublicacionPage = () => {
             </article>
           </div>
         ) : (
-          <p className="parrafo">Cargando...</p>
+           <div
+            className="login-message"
+            style={{
+              textAlign: "center",
+              marginTop: "20px",
+              color: "#ffff",
+            }}
+          >
+            <p>
+              Para ver publicacion, por favor{" "}
+              <a href="" onClick={loginWithRedirect}>
+                inicia sesión
+              </a>
+              .
+            </p>
+          </div>
         )}
       </main>
       <Footer />

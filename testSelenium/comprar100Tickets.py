@@ -39,7 +39,7 @@ chrome_options.add_argument('--ignore-certificate-errors')
 chrome_options.add_argument("--incognito")
 #Abrir pagina
 driver = webdriver.Chrome(options=chrome_options)
-driver.get("http://localhost:4040/")
+driver.get("https://www.unlucoin.info/")
 
 #Inicio sesion
 ejecutarClick("div.login")

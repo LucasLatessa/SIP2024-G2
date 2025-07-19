@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 //Publicacion de tickets dentro del sitio
 export const PublicarTicket = () => {
   const location = useLocation();
+  const { loginWithRedirect } = useAuth0();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router
   const { register, control } = useForm();
   const [costos, setCostos] = useState(null);
@@ -117,7 +118,15 @@ export const PublicarTicket = () => {
             </article>
           </div>
         ) : (
-          <p>No existe el evento</p>
+          <div className="login-message" style={{ textAlign: 'center', marginTop: '20px', color: '#ffff' }}>
+            <p>
+              Para publicar ticket, por favor{" "}
+              <a href="" onClick={loginWithRedirect}>
+                inicia sesión
+              </a>
+              .
+            </p>
+          </div>
         )}
       </main>
       <Footer />

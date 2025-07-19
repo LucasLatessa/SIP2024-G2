@@ -48,7 +48,7 @@ chrome_options.add_argument('--ignore-certificate-errors')
 
 # Abrir página
 driver = webdriver.Chrome(options=chrome_options)
-driver.get("https://35.196.38.34:4040/")
+driver.get("https://www.unlucoin.info/")
 
 # Inicio de sesión
 ejecutarClick("div.login")
@@ -67,7 +67,7 @@ ejecutarClick("a[href='/crearBeneficio']")
 time.sleep(5)
 
 # Cargar los datos del beneficio
-seleccionarOpcion("Emilia Mernes", "select[name='evento-select']")
+seleccionarOpcion("Emilia", "select[name='evento-select']")
 modificarCampo("Coca Cola", "input[name='nombre']")
 modificarCampo("Descuento en bebida Coca Cola", "input[name='descripcion']")
 modificarCampo("50", "input[name='porcentajeDescuento']")

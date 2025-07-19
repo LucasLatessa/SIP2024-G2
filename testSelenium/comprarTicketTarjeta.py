@@ -24,7 +24,7 @@ tipo_identificacion = "DNI"
 numero_identificacion = "12345678"
 # Inicializar el navegador
 driver = webdriver.Chrome()
-driver.get("https://35.196.38.34:4040/")
+driver.get("https://www.unlucoin.info/")
 
 try:
     # Iniciar sesión

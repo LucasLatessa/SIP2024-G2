@@ -41,7 +41,7 @@ chrome_options.add_argument('--force-device-scale-factor=1.1')
 
 #Abrir pagina
 driver = webdriver.Chrome(options=chrome_options)
-driver.get("https://35.196.38.34:4040/")
+driver.get("https://www.unlucoin.info/")
 
 #Inicio sesion
 ejecutarClick("div.login")

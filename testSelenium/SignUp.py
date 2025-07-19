@@ -30,7 +30,7 @@ chrome_options.binary_location = brave_path
 driver = webdriver.Chrome(options=chrome_options)
 
 # Abrir página
-driver.get("https://35.196.38.34:4040/")
+driver.get("https://www.unlucoin.info/")
 
 # Inicio sesion
 ejecutarClick("div.login")

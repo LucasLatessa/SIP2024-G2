@@ -158,8 +158,8 @@ export const ReporteProdu = () => {
                 <th>Evento</th>
                 <th>Lugar</th>
                 <th>Fecha</th>
-                <th>Entradas Totales</th>
-                <th>Ganancia Aportada</th>
+                <th>Entradas Vendidas</th>
+                <th>Ganancia (aportada)</th>
                 <th>Asistencia</th>
                 <th>Entradas por Tipo</th>
               </tr>
@@ -171,18 +171,18 @@ export const ReporteProdu = () => {
                 const asistenciaPct = calcularPorcentaje(evento.asistencia_total, reporte.total_asistencia);
 
                 return (
-                  <tr key={index} className={asistenciaClase(asistenciaPct)}>
+                  <tr key={index}>
                     <td>{evento.evento}</td>
                     <td>{evento.lugar}</td>
                     <td>{evento.fecha}</td>
                     <td>
-                      {evento.entradas_totales} ({entradasPct}%)
+                      {evento.entradas_totales}
                     </td>
                     <td>
                       ${evento.ganancia_total} ({gananciaPct}%)
                     </td>
                     <td>
-                      {evento.asistencia_total} ({asistenciaPct}%)
+                      {evento.asistencia_total}
                     </td>
                     <td>
                       <ul>

@@ -8,10 +8,12 @@ import { preferenciaTransferencia } from '../../services/tickets.service';
 import { getUserNick } from '../../services/usuarios.service';
 import { useNavigate } from "react-router-dom";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useAuth0 } from '@auth0/auth0-react';
 
 //Publicacion de tickets dentro del sitio
 export const TransferirTicket = () => {
   const location = useLocation();
+  const { loginWithRedirect } = useAuth0();
   const { ticket } = location.state || {}; // Obtener el ticket del estado del router
   const { register, handleSubmit } = useForm();
   const [usuarioData, setUsuarioData] = useState(null);
@@ -113,7 +115,15 @@ export const TransferirTicket = () => {
             </article>
           </>
         ) : (
-          <p>No existe el evento</p>
+          <div className="login-message" style={{ textAlign: 'center', marginTop: '20px', color: '#ffff' }}>
+            <p>
+              Para transferir ticket, por favor{" "}
+              <a href="" onClick={loginWithRedirect}>
+                inicia sesión
+              </a>
+              .
+            </p>
+          </div>
         )}
       </main>
       <Footer />

@@ -281,7 +281,15 @@ export const EventoPage = () => {
             </article>
           </div>
         ) : (
-          <p>No existe el evento</p>
+           <div className="login-message" style={{ textAlign: 'center', marginTop: '20px', color: '#ffff' }}>
+            <p>
+              Para ver evento, por favor{" "}
+              <a href="" onClick={loginWithRedirect}>
+                inicia sesión
+              </a>
+              .
+            </p>
+          </div>
         )}
       </main>
       <Footer />
