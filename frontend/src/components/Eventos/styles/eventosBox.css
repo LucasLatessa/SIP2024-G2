@@ -8,16 +8,18 @@ article.evento {
   justify-content: center;
   align-items: center;
   justify-items: center;
-  grid-template-rows: auto 5% 10% auto;
+  grid-template-rows: auto auto auto auto;
   grid-template-columns: 1fr 1fr;
   background-color: var(--color-letras-secundario);
   border-radius: 10px;
   margin: 1rem;
-  width: 399px; /*Valor fijo, con responsive funciona tambien*/
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px; /* en lugar de ancho fijo */
+  box-sizing: border-box;
 }
 
-/*Animacion arriba del evento*/
-article.evento:hover{
+article.evento:hover {
   margin-top: 0rem;
   height: auto;
   transition: all 0.35s ease-in-out;
@@ -25,29 +27,31 @@ article.evento:hover{
 
 article.evento h2 {
   grid-area: nombre;
-  height: auto;
   text-transform: uppercase;
   color: var(--color-letras-primario);
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 article.evento img {
   grid-area: imagen;
-  /*365 × 210 px*/
-  /*width: 95%;
-  height: 90%;*/
-  width: 95%;
-  height: 210px;
+  width: 100%;
+  height: 200px;
   border-radius: 5px;
   object-fit: cover;
 }
 
 article.evento .precio {
   grid-area: precio;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-letras-primario);
 }
 
 article.evento .fecha {
   grid-area: fecha;
-  height: auto;
+  font-size: 0.9rem;
+  color: var(--color-letras-primario);
 }
 
 article.evento a {
@@ -58,11 +62,45 @@ article.evento a {
   border-radius: 30px;
   background-color: var(--color-letras-terceario);
   color: var(--color-letras-secundario);
-  width: 7rem;
+  width: 6rem;
+  font-size: 0.9rem;
 }
 
-article.evento a:hover{
+article.evento a:hover {
   background-color: var(--color-letras-secundario);
   color: var(--color-letras-terceario);
   border: 1px solid var(--color-letras-terceario);
+}
+
+/* 📱 Mobile first adjustments */
+@media (max-width: 600px) {
+  article.evento {
+    grid-template-areas:
+      "imagen"
+      "nombre"
+      "fecha"
+      "precio"
+      "comprar";
+    grid-template-columns: 1fr;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  article.evento img {
+    height: 180px;
+  }
+
+  article.evento h2 {
+    font-size: 1rem;
+  }
+
+  article.evento .fecha,
+  article.evento .precio {
+    font-size: 0.9rem;
+  }
+
+  article.evento a {
+    width: 100%;
+    font-size: 1rem;
+  }
 }
