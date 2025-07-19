@@ -1,12 +1,13 @@
-.viviLaExperiencia{
+.viviLaExperiencia {
     background-image: url("../../../images/ViviLaExperiencia.jpg");
     background-repeat: no-repeat;
-    width: auto;
-    height: 30%;
+    background-size: cover;
+    background-position: center;
+    padding: 2rem 1rem; /* mejor usar padding en lugar de height fija */
+    overflow-x: hidden; /* Previene desbordes */
 }
 
-.viviLaExperiencia .titulo{
-    padding: 1rem 0rem 0rem 0rem;
+.viviLaExperiencia .titulo {
     text-align: center;
     text-transform: uppercase;
     font-size: 2rem;
@@ -14,10 +15,12 @@
     text-shadow: 2px 2px 4px var(--color-letras-primario);
 }
 
-.experiencias{
+.experiencias {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    flex-wrap: wrap; /* Permite que se ajusten en pantallas pequeñas */
+    justify-content: center;
+    gap: 1rem; /* Espaciado entre figuras */
+    margin-top: 2rem;
 }
 
 .experiencias figure {
@@ -25,18 +28,42 @@
     border-radius: 5px;
     background-color: rgba(11, 39, 57, 0.64);
     display: flex;
-    flex-direction: column; /* Alinear elementos uno debajo del otro */
-    align-items: center; /* Alinear elementos horizontalmente al centro */
-    text-align: center; /* Alinear contenido de figcaption al centro */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1 1 150px; /* Responsive: crece o encoge pero tiene un mínimo */
+    max-width: 200px;
+    justify-content: center;
 }
 
-.experiencias figure img{
-    width: 20%;
+.experiencias figure img {
+    width: 60px; /* tamaño fijo o relativo al contenedor */
+    height: auto;
     padding: 0.5rem;
 }
 
-.experiencias figure figcaption{
+.experiencias figure figcaption {
     text-transform: uppercase;
     color: var(--color-letras-secundario);
     font-weight: bold;
+}
+
+/* Media query opcional para mejorar aún más en pantallas pequeñas */
+@media (max-width: 600px) {
+    .viviLaExperiencia .titulo {
+        font-size: 1.5rem;
+    }
+
+    .experiencias {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .experiencias figure {
+        width: 90%;
+    }
+
+    .experiencias figure img {
+        width: 40px;
+    }
 }
