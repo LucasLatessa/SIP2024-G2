@@ -1,0 +1,51 @@
+.header {
+  /*background-color: var(--color-oscuro);*/
+  background: 
+    linear-gradient(77deg, rgba(237, 70, 144, 0.9) 0%, rgba(85, 34, 204, 0.9) 100%),
+    url("../../../assets/images/header-bg1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.logoHeader {
+  margin: 0.7rem;
+}
+
+.logoImgHeader {
+  width: 5rem;
+  padding: 0.5rem 0;
+}
+
+.navHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.navHeader li {
+  list-style: none;
+  padding: 0rem 1.2rem;
+}
+
+.navHeader li a {
+  text-decoration: none;
+  color: var(--color-letras-secundario);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/*.navHeader li a:hover {
+  color: var(--color-letras-cuaternario);
+  border-bottom: 5px solid var(--color-letras-cuaternario);
+  transition: all 100ms ease-in-out;
+}*/
+
+.login{
+}

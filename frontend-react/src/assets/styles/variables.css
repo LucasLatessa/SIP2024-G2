@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  /* Colores */
+
+  --color-oscuro: #000;
+  --color-claro: #f0f0f0;
+  --color-secundario: #231f20;
+  --color-fondo: #181617;
+
+
+  /* Colores tipografia */
+  --color-letras-primario: #000;
+  --color-letras-secundario: #ffffff;
+  --color-letras-terceario: red;
+  --color-letras-cuaternario: #01A198;
+
+
+  /* Fuente */
+  font-family: "Poppins", "Black regular";
+  font-size: 16px;
+
+
+  /* Dispositivos */
+  --mobile: 480px;
+  --tablet: 768px;
+  --desktop: 1024px;
+}
