@@ -1,0 +1,18 @@
+.footer{
+  background-color: var(--color-footer);
+  min-height: 35vh;
+  display: flex;
+  justify-content: center;
+}
+
+.copyright{
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding: 1rem 1.5rem;
+}
+
+.copyright em{
+  font-size: 0.7rem;
+  color: var(--color-letras-secundario);
+}

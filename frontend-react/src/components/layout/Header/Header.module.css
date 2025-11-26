@@ -1,16 +1,44 @@
 .header {
   /*background-color: var(--color-oscuro);*/
-  background: 
-    linear-gradient(77deg, rgba(237, 70, 144, 0.9) 0%, rgba(85, 34, 204, 0.9) 100%),
+  background: linear-gradient(
+      77deg,
+      rgba(237, 70, 144, 0.9) 0%,
+      rgba(85, 34, 204, 0.9) 100%
+    ),
     url("../../../assets/images/header-bg1.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  
+  font-family: var(--fuente-primaria);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.headerNavbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100%;
+}
+
+.headerTitle {
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+
+.headerTitle h2 {
+  font-size: 3.5rem;
+  text-align: center;
+  color: var(--color-letras-secundario);
+  font-family: var(--fuente-secundaria);
+  font-weight: bold;
 }
 
 .logoHeader {
@@ -29,9 +57,17 @@
   text-decoration: none;
 }
 
-.navHeader li {
+.navHeader li:not(:last-child) {
   list-style: none;
   padding: 0rem 1.2rem;
+}
+
+.navHeaderLogin{
+  list-style: none;
+  border-radius: 2rem;
+  padding: 0.7rem 1.7rem;
+  margin: 0rem 1.2rem;
+  border: 0.1rem solid var(--color-claro);
 }
 
 .navHeader li a {
@@ -47,5 +83,5 @@
   transition: all 100ms ease-in-out;
 }*/
 
-.login{
+.login {
 }
