@@ -171,7 +171,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:80",  # Añade el host local si lo necesitas
     "https://localhost:80",  # Añade el host local si lo necesitas
     "http://backend-services",
-    "{CLIENT_ORIGIN_URL}"
+    CLIENT_ORIGIN_URL
     # Agrega otros dominios confiables si es necesario
     # Aca tendriamos que poner la ip que le va a asginar el K8s
 ]
