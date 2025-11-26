@@ -147,7 +147,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040",CLIENT_ORIGIN_URL]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040",CLIENT_ORIGIN_URL,"http://localhost:5173","https://localhost:5173"]
 
 CORS_ALLOW_METHODS = [
     "GET",

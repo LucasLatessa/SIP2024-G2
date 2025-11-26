@@ -1,0 +1,62 @@
+.eventCard{
+  display: grid;
+  grid-template-areas:
+    "imagen imagen"
+    "nombre nombre"
+    "fecha fecha"
+    "precio comprar";
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: auto 5% 10% auto;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--color-claro);
+  border-radius: 10px;
+  margin: 1rem;
+  width: 399px;
+}
+
+.nombreEventCard{
+  grid-area: nombre;
+  height: auto;
+  text-transform: uppercase;
+  color: var(--color-letras-primario);
+  font-family: var(--fuente-primaria);
+}
+
+.imgEventCard{
+  grid-area: imagen;
+  /*365 × 210 px*/
+  /*width: 95%;
+  height: 90%;*/
+  width: 95%;
+  height: 210px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.precioEventCard{
+  grid-area: precio;
+}
+
+.fechaEventCard{
+  grid-area: fecha;
+  height: auto;
+}
+
+.eventCard a {
+  grid-area: comprar;
+  padding: 0.5rem;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 30px;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-letras-secundario);
+  width: 7rem;
+}
+
+.eventCard a:hover{
+  background-color: var(--color-letras-secundario);
+  color: var(--color-letras-terceario);
+  border: 1px solid var(--color-letras-terceario);
+}
