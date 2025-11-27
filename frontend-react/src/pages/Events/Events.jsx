@@ -31,6 +31,7 @@ export default function Events(){
                 id={eventos.id}
                 nombre={eventos.nombre}
                 foto={eventos.imagen}
+                descripcion={eventos.descripcion}
                 precioMin={eventos.precioMin}
                 precioMax={eventos.precioMax}
                 fecha={eventos.fecha}
