@@ -4,8 +4,7 @@ import styles from "./EventCard.module.css";
 
 import { formatearFechaParaCard } from "../../utils/dateFormatter";
 
-export const EventCard = ({
-  id,
+export const EventCard = ({ id,
   nombre,
   foto,
   descripcion,
@@ -21,8 +20,10 @@ export const EventCard = ({
     hora: horaVisual,
   } = formatearFechaParaCard(fechaHoraCompleta);
 
+  console.log(id);
+
   return (
-    <Link className={styles.eventCard} to={`/evento/${id}`}>
+    <Link className={styles.eventCard} to={`/eventos/${id}`}>
       <h2 className={styles.nombreEventCard}>{nombre}</h2>
       <img className={styles.imgEventCard} src={foto} alt="Imagen del evento" />
       <p className={styles.descripcionEventCard}>{descripcion}</p>

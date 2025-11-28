@@ -16,6 +16,10 @@
   --color-letras-cuaternario: #01A198;
 
 
+  /* Color botones */
+  --color-botones: #ffe047;
+
+
   /* Fuentes */
   --fuente-primaria: "Poppins", sans-serif;
   --fuente-secundaria: "Roboto", sans-serif;

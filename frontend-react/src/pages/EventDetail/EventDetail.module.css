@@ -1,0 +1,188 @@
+.eventDetail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+}
+
+.headerEventDetail{
+  width: 100%;
+  height: 40vh;
+  display: flex;
+  padding: 2rem 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagenEventDetail{
+  width: 90%;
+  height: 100%;
+  object-fit: fill; /* Cover */
+  padding: 2rem 0;
+  border-radius: 5vh;
+}
+
+.infEventDetail{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  justify-content: left;
+}
+
+.titleEventDetail{
+  font-size: 7vh;
+  font-weight: bold;
+  font-family: var(--fuente-primaria);
+}
+
+.fechaTicketsEventDetail{
+  display: flex;
+  justify-content: space-between;
+  align-items: safe;
+  padding: 2rem 0;
+}
+
+.titleFecha{
+  font-size: 3.5vh;
+  font-family: var(--fuente-secundaria);
+  font-weight: 600;
+}
+
+.fechaHora, .listaTicket{
+  font-size: 2.5vh;
+  font-weight: 400;
+  font-family: var(--fuente-primaria);
+  padding: 1vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fechaHora li, .listaTicket li{
+  padding: 0.5vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fechaHora svg, .fechaHora svg {
+  padding-right: 1vh;
+}
+
+.ticketEventDetail{
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 2rem;
+}
+
+.ticketEventDetail button{
+  order: -1;
+  padding: 1rem 3rem ;
+  background-color: var(--color-botones);
+  border-radius: 0.5rem;
+  font-family: var(--fuente-secundaria);
+  font-weight: 500;
+  font-size: 2.5vh;
+  border: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.informationTicket{
+  font-size: 3vh;
+  font-family: var(--fuente-secundaria);
+  font-weight: 600;
+  padding: 1.5rem 0;
+}
+
+.descriptionEventDetail{
+}
+
+.titleDescription{
+  font-size: 3.5vh;
+  font-family: var(--fuente-secundaria);
+  font-weight: 600;
+  
+}
+
+.descriptionEventDetail .description{
+  font-size: 2.5vh;
+  font-family: var(--fuente-secundaria);
+  padding: 2rem 0;
+}
+
+/* Responsive */
+
+/* Desktop */
+
+@media (min-width: 1024px) {
+  .ticketEventDetail button:hover{
+    background-color: var(--color-claro);
+    transition: 0.35s all ease-in-out;
+    cursor: pointer;
+  }
+}
+
+/* --------- TABLET Y MÓVIL (menor a 1024px) --------- */
+@media (max-width: 1024px) {
+
+  /* Banner */
+  .headerEventDetail {
+    height: 30vh;
+    padding: 1.5rem 0;
+  }
+
+  .imagenEventDetail {
+    width: 95%;
+    height: 100%;
+    border-radius: 3vh;
+  }
+
+  /* Info general */
+  .infEventDetail {
+    width: 95%;
+  }
+
+  .titleEventDetail {
+    font-size: 5vh;
+  }
+
+  /* FECHA - TICKETS → de fila a columna */
+  .fechaTicketsEventDetail {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    align-items: flex-start;
+  }
+
+  .titleFecha,
+  .informationTicket {
+    font-size: 3vh;
+  }
+
+  .fechaHora,
+  .listaTicket {
+    font-size: 2.2vh;
+  }
+
+  .ticketEventDetail {
+    padding: 0;
+    width: 100%;
+  }
+
+  .ticketEventDetail button {
+    width: fit-content;
+    font-size: 2.3vh;
+    padding: 0.8rem 2rem;
+  }
+
+  /* Descripción */
+  .titleDescription {
+    font-size: 3vh;
+  }
+
+  .descriptionEventDetail .description {
+    font-size: 2.2vh;
+  }
+}

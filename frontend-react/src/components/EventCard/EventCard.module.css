@@ -94,9 +94,14 @@
   font-weight: bold;
 }
 
+/* Desktop */
 
-.eventCard:hover {
-  background-color: var(--color-fondo);
-  color: var(--color-claro);
-  transition: 0.35s all ease-in-out;
+@media (min-width: 1024px) {
+  .eventCard:hover {
+    background-color: var(--color-fondo);
+    color: var(--color-claro);
+    transition: 0.35s all ease-in-out;
+  }
 }
+
+

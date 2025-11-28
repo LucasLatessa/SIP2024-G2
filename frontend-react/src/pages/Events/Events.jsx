@@ -8,7 +8,7 @@ export default function Events(){
 
   useEffect(() => {
     async function cargarEventos(){
-      const res = await getAllEventos();
+      const res = await getAllEventosAprobados();
       //console.log(res.data);
       setEventos(res.data);
     }
@@ -25,10 +25,10 @@ export default function Events(){
       <section>Filtros</section>
       <section className={styles.listEvents}>
           {eventos?.map(
-            (eventos) => ( //Obtengo todos los eventos y utilizo el componente para mostrarlos
+            (eventos) => (
               <EventCard
-                key={eventos.id}
-                id={eventos.id}
+                key={eventos.id_Evento}
+                id={eventos.id_Evento}
                 nombre={eventos.nombre}
                 foto={eventos.imagen}
                 descripcion={eventos.descripcion}

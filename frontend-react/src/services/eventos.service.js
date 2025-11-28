@@ -8,8 +8,13 @@ const eventosAPI = axios.create({
 
 export const getAllEventos = () => eventosAPI.get("/Eventos/");
 
+/* Dejar este cuando se actualizen los eventos
 export const getAllEventosAprobados = () =>
   eventosAPI.get("/eventosAprobados/");
+* */
+
+export const getAllEventosAprobados = () =>
+  eventosAPI.get("/Eventos/");
 
 export const getEvento = (id) => eventosAPI.get(`/Eventos/${id}/`);
 
