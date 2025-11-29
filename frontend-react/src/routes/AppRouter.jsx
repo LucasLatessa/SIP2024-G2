@@ -19,7 +19,6 @@ export default function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
         <Route path="/eventos/:id" element={<EventDetail />} />
-        <Route path="/login" element={<Login />} />
       </Routes>
 
       <Footer />
