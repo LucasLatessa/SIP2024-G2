@@ -3,6 +3,7 @@ import styles from "./Home.module.css";
 import { NextEvents } from '../../components/ProximosEventos/NextEvents';
 import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
+import { ViviLaExperiencia } from '../../components/ViviLaExperiencia/ViviLaExperiencia';
 
 export default function Home(){
   const [eventos, setEventos] = useState([]);
@@ -24,6 +25,7 @@ export default function Home(){
     <>
       <main className="App">
         <NextEvents eventos={eventos}/>
+        <ViviLaExperiencia/>
       </main>
     </>
   );
