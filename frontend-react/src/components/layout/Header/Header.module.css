@@ -2,8 +2,8 @@
   /*background-color: var(--color-oscuro);*/
   background: linear-gradient(
       77deg,
-      rgba(237, 70, 144, 0.9) 0%,
-      rgba(85, 34, 204, 0.9) 100%
+      var(--color-header1) 0%,
+      var(--color-header2) 100%
     ),
     url("../../../assets/images/header-bg1.png");
   background-size: cover;

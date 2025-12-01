@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Events from "../pages/Events/Events";
 import EventDetail from "../pages/EventDetail/EventDetail";
+import NotFound from "../pages/NotFound/NotFound";
 
 // Layouts
 import { Header } from "../components/layout/Header/Header";
@@ -18,6 +19,9 @@ export default function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
         <Route path="/eventos/:id" element={<EventDetail />} />
+
+        {/* ← Ruta 404 al final */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />

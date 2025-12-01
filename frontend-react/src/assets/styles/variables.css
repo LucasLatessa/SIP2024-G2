@@ -16,6 +16,10 @@
   --color-letras-terceario: red;
   --color-letras-cuaternario: #01A198;
 
+  /* Header */
+  --color-header1: #ed4690e6;
+  --color-header2: #5522cce6;
+
 
   /* Color botones */
   --color-botones: #ffe047;
