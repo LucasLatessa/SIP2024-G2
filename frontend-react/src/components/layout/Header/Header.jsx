@@ -1,17 +1,31 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../../assets/images/LogoBlanco.png";
 import styles from "./Header.module.css";
 
 export const Header = () => {
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
   const location = useLocation();
+
+  /* ------ Logeo ------ */
+  
+  const handleLoginClick = () => {
+    //navigate("/login")
+    loginWithRedirect();
+  };
+
+  const handleProfileClick = () => {
+    navigate("/perfil");
+  };
 
   // Manejo de titulos
   const titles = {
     "/eventos": "Eventos",
     "/mercado": "Mercado",
-    "/beneficios": "Beneficios"
+    "/beneficios": "Beneficios",
   };
   const title = titles[location.pathname];
 
@@ -34,26 +48,19 @@ export const Header = () => {
           <li>
             <Link to="/beneficios">Beneficios</Link>
           </li>
-          <li className={styles.navHeaderLogin}>
-            {/**{!isAuthenticated && (
-            <div className="login" onClick={handleLoginClick}>
-              <img
-                src="/assets/user.png"
-                alt="Usuario"
-                className="icono-usuario"
-              />
-            </div>
-          )}
-          {isAuthenticated && (
-            <div className="profile" onClick={handleProfileClick}>
-              <img
-                src={user.picture}
-                alt="Usuario"
-                className="icono-usuario-auth0"
-              />
-            </div>
-          )}**/}
-            <Link to="/login">Login</Link>
+          <li>
+            {!isAuthenticated && 
+              <span className={styles.navHeaderLogin} onClick={handleLoginClick}>Login</span>
+            }
+            {isAuthenticated && (
+              <div onClick={handleProfileClick} className={styles.loginAuth0}>
+                <img
+                  src={user.picture}
+                  alt="Usuario"
+                  className={styles.imgLoginAuth0}
+                />
+              </div>
+            )}
           </li>
         </nav>
       </div>
