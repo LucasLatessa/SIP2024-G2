@@ -4,10 +4,26 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 60vh;
+  height: 70vh;
+  z-index: 1;
+}
+
+.mainNotFound::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url(../../assets/images/confetti.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  opacity: 0.30;
+  z-index: -1; 
 }
 
 .titleNotFound{
+  opacity: 1;
   color: var(--color-letras-terceario);
   padding: 1rem;
   font-size: 3rem;
@@ -20,11 +36,21 @@
   color: var(--color-header1);
   text-decoration: none;
   font-weight: bolder;
+  transition: font-size 0.35s ease-in-out;
 }
 
 @media (min-width: 1024px) {
   .linkNotFound:hover{
     font-size: 2.7rem;
-    transition: 0.35s all ease-in;
+  }
+}
+
+/* --------- TABLET Y MÓVIL (menor a 1024px) --------- */
+@media (max-width: 1024px) {
+  .titleNotFound{
+    font-size: 2rem;
+  }
+  .linkNotFound{
+    font-size: 1.5rem;
   }
 }
