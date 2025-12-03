@@ -1,0 +1,23 @@
+.navProfile{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--fuente-primaria);
+  background-color: var(--fondo-gris);
+  align-items: center;
+}
+
+.navProfile h2{
+  font-size: 1.6rem;
+  padding: 2rem 0;
+  font-weight: 500;
+}
+
+.navProfile nav{
+  list-style: none;
+}
+
+.navProfile nav li{
+  padding: 0.8rem 0;
+  font-size: 1.3rem;
+}

@@ -1,0 +1,22 @@
+.accountInfo{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--fuente-primaria);
+}
+
+.accountInfo h1{
+  font-size: 1.8rem;
+  padding: 2rem 0 1rem 0;
+  font-weight: 500;
+}
+
+.accountInfo hr{
+  color: var(--color-oscuro);
+  height: 0.1rem;
+  width: 100%;
+}
+
+.userAccountInfo{
+  
+}

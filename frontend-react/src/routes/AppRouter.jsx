@@ -7,11 +7,12 @@ import Home from "../pages/Home/Home";
 import Events from "../pages/Events/Events";
 import EventDetail from "../pages/EventDetail/EventDetail";
 import NotFound from "../pages/NotFound/NotFound";
+import Profile from "../pages/Profile/Profile";
 
 // Layouts
 import { Header } from "../components/layout/Header/Header";
 import { Footer } from "../components/layout/Footer/Footer";
-import { Profile } from "../pages/Profile/Profile";
+
 
 export default function AppRouter() {
   return (
