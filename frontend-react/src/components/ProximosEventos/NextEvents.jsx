@@ -1,33 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./NextEvents.module.css";
 import { EventCard } from '../EventCard/EventCard';
+
+import styles from "./NextEvents.module.css";
 
 export const NextEvents = ({ eventos }) => {
   return (
-    <section>
-      <header className="proximosEventos">
+    <section className={styles.nextEvents}>
+      <header className={styles.headerNextEvents}>
         <h2>Próximos eventos</h2>
       </header>
-      <section className="listaEventos">
+      <section className={styles.listaNextEvents}>
         {eventos?.slice(0, 3).map(
           (evento // Itera sobre los primeros 3 eventos
           ) => (
             <EventCard
-              key={eventos.id}
-              id={eventos.id}
-              nombre={eventos.nombre}
-              foto={eventos.imagen}
-              descripcion={eventos.descripcion}
-              precioMin={eventos.precioMin}
-              precioMax={eventos.precioMax}
-              fecha={eventos.fecha}
-              hora={eventos.hora}
+              key={evento.id}
+              id={evento.id}
+              nombre={evento.nombre}
+              foto={evento.imagen}
+              descripcion={evento.descripcion}
+              precioMin={evento.precioMin}
+              precioMax={evento.precioMax}
+              fecha={evento.fecha}
+              hora={evento.hora}
             />
           )
         )}
       </section>
-      <Link className="allEventos" to="/eventos">
+      <Link className={styles.allEventosNextEvents} to="/eventos">
         Todos los eventos
       </Link>
     </section>

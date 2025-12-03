@@ -84,8 +84,7 @@
   margin: 0rem 1.2rem;
   border: 0.1rem solid var(--color-claro);
   cursor: pointer;
-  transition: background-color 0.35s ease-in-out;
-  transition: color 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 
 .navHeaderLogin {
@@ -111,6 +110,13 @@
 
 /* Desktop */
 @media (min-width: 1024px) {
+  .navHeader li:not(:last-child) a:hover  {
+    color: var(--color-letras-secundario);
+    font-weight: bolder;
+    border-bottom: 5px solid var(--color-letras-secundario);
+    transition: all 0.3s ease-in-out;
+  }
+
   .navHeaderLogin:hover {
     background-color: var(--color-claro);
     color: var(--color-letras-primario);
