@@ -1,0 +1,65 @@
+.hero {
+  width: 95%;
+  height: 50vh;
+  padding: 1rem 0 3rem 0;
+  position: relative;
+}
+
+.heroSwiper{
+  border-radius: 2rem;
+}
+
+.heroSlide {
+  width: 100%;
+  height: 50vh;
+  position: relative;
+}
+
+.heroSlide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(60%);
+}
+
+.info {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  max-width: 70%;
+}
+
+.info h2 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.info p {
+  font-size: 1.2rem;
+}
+
+.info a {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* ====== Estilos de las flechas ====== */
+
+.heroSwiper :global(.swiper-button-next),
+.heroSwiper :global(.swiper-button-prev) {
+  color: var(--color-claro);           
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.heroSwiper :global(.swiper-button-next:hover),
+.heroSwiper :global(.swiper-button-prev:hover) {
+  opacity: 1;
+}
+
+.heroSwiper :global(.swiper-button-next)::after,
+.heroSwiper :global(.swiper-button-prev)::after {
+  font-size: 2rem;       
+}
+

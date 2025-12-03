@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../../assets/images/LogoBlanco.png";
 import styles from "./Header.module.css";
+import { Carrousel } from "../../Carrousel/Carrousel";
 
 export const Header = () => {
   const { user, isAuthenticated, loginWithRedirect } = useAuth0();
@@ -69,6 +70,10 @@ export const Header = () => {
           <h2>{title}</h2>
         </div>
       )}
+      { // Carrusel
+      (location.pathname == "/") 
+        ? <Carrousel/> : ""
+      }
     </header>
   );
 };
