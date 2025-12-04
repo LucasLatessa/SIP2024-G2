@@ -1,8 +1,19 @@
 .footer{
   background-color: var(--color-footer);
-  min-height: 35vh;
+  padding: 2rem;
+  padding-bottom: 0;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer img{
+  width: 5%;
+  padding-bottom: 1rem;
+}
+
+.footer hr{
+  width: 50%;
 }
 
 .copyright{
@@ -15,4 +26,11 @@
 .copyright em{
   font-size: 0.7rem;
   color: var(--color-letras-secundario);
+}
+
+/* --------- TABLET Y MÓVIL (menor a 1024px) --------- */
+@media (max-width: 1024px) {
+  .footer img{
+    width: 20%;
+  }
 }

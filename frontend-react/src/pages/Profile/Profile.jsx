@@ -1,9 +1,9 @@
-import AccountInfo from "../../components/Profile/Common/AccountInfo"
+import AccountInfo from "../../components/Profile/Common/AccountInfo/AccountInfo"
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUserRole } from "../../utils/useUserRole"
 import { useNavigate } from "react-router-dom";
-import NavProfile from "../../components/Profile/Common/NavProfile";
+import NavProfile from "../../components/Profile/NavProfile/NavProfile";
 import {getUserNick} from "../../services/usuarios.service"
 
 import styles from "./Profile.module.css";
