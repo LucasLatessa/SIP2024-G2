@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../../assets/images/LogoBlanco.png";
 import styles from "./Header.module.css";
@@ -34,20 +34,20 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.headerNavbar}>
         <h1 className={styles.logoHeader}>
-          <Link to="/">
+          <NavLink to="/">
             {" "}
             <img src={logo} alt="ByPass" className={styles.logoImgHeader} />
-          </Link>
+          </NavLink>
         </h1>
         <nav className={styles.navHeader}>
           <li>
-            <Link to="/eventos">Eventos</Link>
+            <NavLink to="/eventos" className={({ isActive }) => isActive ? styles.activeLink : ""}>Eventos</NavLink>
           </li>
           <li>
-            <Link to="/mercado">Mercado</Link>
+            <NavLink to="/mercado" className={({ isActive }) => isActive ? styles.activeLink : ""}>Mercado</NavLink>
           </li>
           <li>
-            <Link to="/beneficios">Beneficios</Link>
+            <NavLink to="/beneficios" className={({ isActive }) => isActive ? styles.activeLink : ""}>Beneficios</NavLink>
           </li>
           <li>
             {!isAuthenticated && 

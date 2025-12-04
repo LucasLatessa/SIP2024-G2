@@ -108,6 +108,12 @@
   width: 60%;
 }
 
+.activeLink {
+  color: var(--color-letras-secundario);
+  font-weight: bolder;
+  border-bottom: 5px solid var(--color-letras-secundario);
+}
+
 /* Desktop */
 @media (min-width: 1024px) {
   .navHeader li:not(:last-child) a:hover  {
