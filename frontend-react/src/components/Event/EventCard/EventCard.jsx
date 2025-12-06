@@ -33,7 +33,7 @@ export const EventCard = ({ id,
         <p>{horaVisual}</p>
       </div>
       <p className={styles.precioEventCard}>
-          Rango de precios: ${precioMin} a ${precioMax}
+          Rango de precios: ${precioMin}-${precioMax}
       </p>
     </Link>
   );

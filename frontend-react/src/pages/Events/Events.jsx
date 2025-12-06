@@ -8,7 +8,7 @@ import { getTicketByEventPrecio } from "../../services/tickets.service";
 
 import styles from "./Events.module.css";
 import { EventCard } from "../../components/Event/EventCard/EventCard";
-import { EventFiltro } from "../../components/Event/EventFiltro/EventFiltro";
+import { EventFiltro } from "../../components/Filtros/EventFiltro";
 
 export default function Events() {
   const [eventos, setEventos] = useState([]);

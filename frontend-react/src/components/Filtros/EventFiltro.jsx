@@ -1,5 +1,7 @@
 import React from "react";
-import styles from "./EventFiltro.module.css";
+
+import "./Filter.css"
+
 import { useEffect, useState } from "react";
 
 export const EventFiltro = ({ eventos, setFilteredEventos }) => {
@@ -26,9 +28,9 @@ export const EventFiltro = ({ eventos, setFilteredEventos }) => {
   }, [search, date, eventos]);
 
   return (
-    <section className={styles.filter}>
-      <h3 className={styles.tituloFilter}>Filtros</h3>
-      <form className={styles.formFilter}>
+    <section className="filter">
+      <h3 className="tituloFilter">Filtros</h3>
+      <form className="formFilter formFilterEvent">
         <label>
           Nombre
           <input

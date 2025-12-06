@@ -15,8 +15,8 @@ export const NextEvents = ({ eventos }) => {
           (evento // Itera sobre los primeros 3 eventos
           ) => (
             <EventCard
-              key={evento.id}
-              id={evento.id}
+              key={evento.id_Evento}
+              id={evento.id_Evento}
               nombre={evento.nombre}
               foto={evento.imagen}
               descripcion={evento.descripcion}
