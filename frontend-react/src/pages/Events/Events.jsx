@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+
 import {
   getAllEventosAprobados,
   getAllEventos,
 } from "../../services/eventos.service";
+import { getTicketByEventPrecio } from "../../services/tickets.service";
+
 import styles from "./Events.module.css";
 import { EventCard } from "../../components/EventCard/EventCard";
 import { EventFiltro } from "../../components/EventFiltro/EventFiltro";
@@ -14,9 +17,32 @@ export default function Events() {
   useEffect(() => {
     async function cargarEventos() {
       const res = await getAllEventosAprobados();
-      setEventos(res.data);
-      setEventosFiltrados(res.data); //Por defecto muestro todo sin filtro
+      const datosEventoCompleto = await Promise.all(
+        res.data.map(async (evento) => {
+          const precios = await getTicketByEventPrecio(evento.id_Evento)
+          return {
+            id: evento.id_Evento,
+            nombre: evento.nombre,
+            descripcion: evento.descripcion, //No llega la descripcion (TO-DO)
+            imagen: evento.imagen,
+            precioMin: precios.data.precios[0].precioMinimo,
+            precioMax: precios.data.precios[0].precioMaximo,
+            fecha: evento.fecha,
+            hora: evento.hora
+          }
+          
+        })
+      )
+
+
+      setEventos(datosEventoCompleto);
+      setFilteredEventos(datosEventoCompleto); //Por defecto muestro todo sin filtro
     }
+
+    async function ticketsEventos(){
+      const res = await getTicketByEventPrecio(res.data)
+    }
+
     cargarEventos();
   }, []);
 
