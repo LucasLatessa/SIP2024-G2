@@ -27,17 +27,8 @@ class LugarView(viewsets.ModelViewSet):
 
 
 def get_eventos_aprobados(request):
-    # Obtener la fecha y hora actual
-    now = timezone.now()
-
     # Recupera todos los eventos aprobados de la base de datos
-    events = Evento.objects.filter(estado=EstadoEvento.objects.get(estado="APROBADO"), fecha__gte=now.date())
-
-    # Filtra los eventos cuya fecha sea mayor o igual a la fecha actual y hora mayor o igual a la hora actual si la fecha es hoy
-    upcoming_events = [
-        event for event in events
-        if (event.fecha > now.date()) or (event.fecha == now.date() and event.hora >= now.time())
-    ]
+    events = Evento.objects.filter(estado=EstadoEvento.objects.get(estado="APROBADO"))
 
     # Convierte los eventos a un formato JSON
     event_data = [
@@ -50,9 +41,9 @@ def get_eventos_aprobados(request):
                 request.build_absolute_uri(event.imagen.url) if event.imagen else None
             ),
         }
-        for event in upcoming_events
+        for event in events
     ]
-
+    print(event_data)
     # Devuelve los eventos como una respuesta JSON
     return JsonResponse(event_data, safe=False)
 

@@ -9,7 +9,6 @@ export default function Events(){
   useEffect(() => {
     async function cargarEventos(){
       const res = await getAllEventosAprobados();
-      //console.log(res.data);
       setEventos(res.data);
     }
     cargarEventos();
@@ -18,7 +17,6 @@ export default function Events(){
   useEffect(() => {
    console.log("Eventos cargados:", eventos);
   }, [eventos]);
-
 
   return (
     <>
