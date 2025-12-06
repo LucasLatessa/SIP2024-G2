@@ -7,8 +7,8 @@ import {
 import { getTicketByEventPrecio } from "../../services/tickets.service";
 
 import styles from "./Events.module.css";
-import { EventCard } from "../../components/EventCard/EventCard";
-import { EventFiltro } from "../../components/EventFiltro/EventFiltro";
+import { EventCard } from "../../components/Event/EventCard/EventCard";
+import { EventFiltro } from "../../components/Event/EventFiltro/EventFiltro";
 
 export default function Events() {
   const [eventos, setEventos] = useState([]);
@@ -56,8 +56,8 @@ export default function Events() {
       <section className={styles.listEvents}>
         {eventosFiltrados?.map((eventos) => (
           <EventCard
-            key={eventos.id_Evento}
-            id={eventos.id_Evento}
+            key={eventos.id}
+            id={eventos.id}
             nombre={eventos.nombre}
             foto={eventos.imagen}
             descripcion={eventos.descripcion}

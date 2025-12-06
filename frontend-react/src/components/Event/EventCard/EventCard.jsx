@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./EventCard.module.css";
 
-import { formatearFechaParaCard } from "../../utils/dateFormatter";
+import { formatearFechaParaCard } from "../../../utils/dateFormatter";
 
 export const EventCard = ({ id,
   nombre,
