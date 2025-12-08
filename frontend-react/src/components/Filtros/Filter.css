@@ -46,6 +46,7 @@
   align-items: flex-start;
   flex-direction: column;
   padding: 0.5rem;
+  font-weight: 600;
 }
 
 .formFilter input {
