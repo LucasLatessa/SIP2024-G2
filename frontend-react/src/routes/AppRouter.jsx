@@ -13,6 +13,7 @@ import Profile from "../pages/Profile/Profile";
 import { Header } from "../components/layout/Header/Header";
 import { Footer } from "../components/layout/Footer/Footer";
 import { Mercado } from "../pages/Mercado/Mercado";
+import Beneficios from "../pages/Beneficios/Beneficios";
 
 
 export default function AppRouter() {
@@ -26,6 +27,7 @@ export default function AppRouter() {
         <Route path="/eventos/:id" element={<EventDetail />} />
         <Route path="/perfil" element={<Profile />} />
         <Route path="/mercado" element={<Mercado />} />
+        <Route path="/beneficios" element={<Beneficios/>} /> 
 
         {/* ← Ruta 404 al final */}
         <Route path="*" element={<NotFound />} />
