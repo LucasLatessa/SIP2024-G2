@@ -35,7 +35,9 @@ export default function NavProfile({ usuario, role }) {
         <ul>
           {items.map((item) => (
             <li key={item.path}>
-              <NavLink to={`/perfil${item.path}`} className={({ isActive }) => isActive ? styles.activeLink : ""}>{item.label}</NavLink>
+              <NavLink to={`/perfil${item.path}`}
+              end={item.path === ""}
+              className={({ isActive }) => isActive ? styles.activeLink : ""}>{item.label}</NavLink>
             </li>
           ))}
         </ul>

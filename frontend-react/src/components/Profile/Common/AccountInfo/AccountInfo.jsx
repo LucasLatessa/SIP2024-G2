@@ -6,9 +6,11 @@ import {
   updateProductora,
 } from "../../../../services/usuarios.service";
 import styles from "./AccountInfo.module.css";
+import { useOutletContext } from "react-router-dom";
 
-export default function AccountInfo({ usuario, photo }) {
+export default function AccountInfo() {
   const { logout } = useAuth0();
+  const { usuario, role, photo } = useOutletContext();
 
   console.log(usuario);
 

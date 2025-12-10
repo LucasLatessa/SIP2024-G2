@@ -1,19 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
-
 // Pages
 import Home from "../pages/Home/Home";
 import Events from "../pages/Events/Events";
 import EventDetail from "../pages/EventDetail/EventDetail";
 import NotFound from "../pages/NotFound/NotFound";
-import Profile from "../pages/Profile/Profile";
 
 // Layouts
 import { Header } from "../components/layout/Header/Header";
 import { Footer } from "../components/layout/Footer/Footer";
 import { Mercado } from "../pages/Mercado/Mercado";
 import Beneficios from "../pages/Beneficios/Beneficios";
+
+/* Perfil */
+import ProfileLayout from "../pages/Profile/ProfileLayout";
+import AccountInfo from "../components/Profile/Common/AccountInfo/AccountInfo";
 
 /* Perfil cliente */
 import CliEventos from "../pages/Profile/Cliente/CliEventos/CliEventos";
@@ -30,37 +31,49 @@ import AdmProductoras from "../pages/Profile/Administrador/AdmProductoras/AdmPro
 import AdmUsuarios from "../pages/Profile/Administrador/AdmUsuarios/AdmUsuarios";
 
 
-
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Header />
-    
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
         <Route path="/eventos/:id" element={<EventDetail />} />
         <Route path="/mercado" element={<Mercado />} />
-        <Route path="/beneficios" element={<Beneficios/>} /> 
+        <Route path="/beneficios" element={<Beneficios />} />
 
-        { /* Perfil */}
-        <Route path="/perfil" element={<Profile />} />
+        {/* Perfil */}
+        <Route path="/perfil" element={<ProfileLayout />}>
+        
+          <Route path="/perfil" element={<AccountInfo />} />
 
-        { /* Perfil Cliente*/}
-        <Route path="/perfil/mis-eventos" element={<CliEventos />} />
-        <Route path="/perfil/mercado-pago" element={<CliMercadoPago />} />
+          {/* Perfil Cliente*/}
+          <Route path="/perfil/mis-eventos" element={<CliEventos />} />
+          <Route path="/perfil/mercado-pago" element={<CliMercadoPago />} />
 
-        { /* Perfil Productora*/}
-        <Route path="/perfil/productora-eventos" element={<ProductEventos />} />
-        <Route path="/perfil/productora-beneficios" element={<ProductBeneficios />} />
-        <Route path="/perfil/productora-metricas" element={<ProductMetricas />} />
+          {/* Perfil Productora*/}
+          <Route
+            path="/perfil/productora-eventos"
+            element={<ProductEventos />}
+          />
+          <Route
+            path="/perfil/productora-beneficios"
+            element={<ProductBeneficios />}
+          />
+          <Route
+            path="/perfil/productora-metricas"
+            element={<ProductMetricas />}
+          />
 
-        { /* Perfil Admin*/}
-        <Route path="/perfil/admin/eventos" element={<AdmEventos />} />
-        <Route path="/perfil/admin/usuarios" element={<AdmUsuarios />} />
-        <Route path="/perfil/admin/productoras" element={<AdmProductoras />} />
-
-
+          {/* Perfil Admin*/}
+          <Route path="/perfil/admin/eventos" element={<AdmEventos />} />
+          <Route path="/perfil/admin/usuarios" element={<AdmUsuarios />} />
+          <Route
+            path="/perfil/admin/productoras"
+            element={<AdmProductoras />}
+          />
+        </Route>
 
         {/* ← Ruta 404 al final */}
         <Route path="*" element={<NotFound />} />

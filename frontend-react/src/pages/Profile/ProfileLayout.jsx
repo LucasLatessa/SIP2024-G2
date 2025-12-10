@@ -5,10 +5,11 @@ import { useUserRole } from "../../utils/useUserRole";
 import { useNavigate } from "react-router-dom";
 import NavProfile from "../../components/Profile/NavProfile/NavProfile";
 import { getUserNick } from "../../services/usuarios.service";
+import { Outlet } from "react-router-dom";
 
 import styles from "./Profile.module.css";
 
-export default function Profile() {
+export default function ProfileLayout() {
   const { user, logout, isAuthenticated } = useAuth0();
   const [usuarioData, setusuarioData] = useState(null);
 
@@ -32,11 +33,13 @@ export default function Profile() {
   const role = useUserRole(usuarioData);
 
   return (
-        <main className={styles.profile}>
+    <main className={styles.profile}>
       {usuarioData && role ? (
         <>
           <NavProfile usuario={usuarioData} role={role} />
-          <AccountInfo usuario={usuarioData} photo={user?.picture} role={role} />
+
+          {/*TODAS LAS PÁGINAS INTERNAS RECIBEN ESTOS DATOS */}
+          <Outlet context={{ usuario: usuarioData, role, photo:user?.picture }} />
         </>
       ) : (
         <p>Cargando...</p>
