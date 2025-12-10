@@ -32,9 +32,15 @@ def privateScoped(request: HttpRequest, token: RequestToken) -> JsonResponse:
     )
 
 def backup(request):
-    backupaux = backup_db()
-    if (backupaux == 'realizado'):
-        return JsonResponse({"backup": 'realizado'})
+    passw = request.GET.get("passw", "")
+    if ( passw == '402051f4be0cc3aad33bcf3ac3d6532b' ):
+        backupaux = backup_db()
+
+        if (backupaux == 'realizado'):
+            return JsonResponse({"backup": 'realizado'})
+        else:
+            return JsonResponse({"backup": 'fallido'})
     else:
-        return JsonResponse({"backup": 'fallido'})
+        return JsonResponse({"backup": 'Contrasena incorrecta'})
+        
     

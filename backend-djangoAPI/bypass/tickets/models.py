@@ -5,7 +5,6 @@ from io import BytesIO
 from django.core.files import File
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from eventos.models import Evento
 from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
@@ -23,7 +22,9 @@ class TipoTickets(models.Model):
 class Ticket(models.Model):
     id_Ticket = models.AutoField(primary_key=True)
     precioInicial = models.IntegerField(blank=True, null=True)
-    evento = models.ForeignKey(Evento, models.DO_NOTHING, db_column="evento", null=True)
+    evento = models.ForeignKey(
+        "eventos.Evento", models.DO_NOTHING,db_column="evento",null=True,blank=True,
+    )
     propietario = models.ForeignKey(
         Cliente, on_delete=models.CASCADE, blank=True, null=True, default=None
     )  # Relación con Cliente
@@ -46,22 +47,28 @@ class Ticket(models.Model):
         try:
             ticket_id_list = ticket_id_str.split(",")
             print(ticket_id_str)
+
             for ticket_id in ticket_id_list:
+                ticket_id = ticket_id.strip()
+                if not ticket_id:
+                    continue
+
                 print(ticket_id)
                 print(propietario)
-                ticket = Ticket.objects.get(id_Ticket=ticket_id)
-                print("aaaaaaaaaaaaaaa-1")
-                nuevo_propietario = Cliente.objects.get(nickname=propietario)
-                print("aaaaaaaaaaaaaaa0")
-                evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
 
-                #Otorgo el ticket al propietario y disminuyo la cantida de tickets disponibles
+                ticket = Ticket.objects.get(id_Ticket=ticket_id)
+                nuevo_propietario = Cliente.objects.get(nickname=propietario)
+
+                # Asigno el propietario
                 ticket.propietario = nuevo_propietario
                 ticket.save()
-                if (tipo == "evento"):
-                    evento = Evento.objects.get(id_Evento = ticket.evento.id_Evento)
+
+                # Si es tipo "evento", descuento un ticket disponible del evento asociado
+                if tipo == "evento" and ticket.evento:
+                    evento = ticket.evento
                     evento.cantTickets -= 1
-                    Evento.guardar(evento)
+                    # Usamos save del modelo, no Evento.guardar(...)
+                    evento.save(update_fields=["cantTickets"])
 
         except Exception as e:
             print(e)

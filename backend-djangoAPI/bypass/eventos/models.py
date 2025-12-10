@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.apps import apps
 from usuarios.models import Productora
+from tickets.models import Precio
+from django.utils import timezone
+
 
 # Create your models here.
 
@@ -71,6 +74,13 @@ class Evento(models.Model):
                     nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
                     print("precio viejo",ticket.precioInicial)
                     print("nuevo viejo",nuevo_precio)
+
+                    Precio.objects.create(
+                      ticket=ticket,
+                      precio=ticket.precioInicial,
+                      fechaInicial=timezone.now()
+                    )
+
                     ticket.precioInicial = nuevo_precio
                     ticket.save()
 
@@ -100,6 +110,13 @@ class Evento(models.Model):
                 nuevo_precio = ticket.precioInicial * (1 + porcentaje_aumento)
                 print("precio viejo",ticket.precioInicial)
                 print("nuevo viejo",nuevo_precio)
+
+                Precio.objects.create(
+                      ticket=ticket,
+                      precio=ticket.precioInicial,
+                      fechaInicial=timezone.now()
+                    )
+                
                 ticket.precioInicial = nuevo_precio
                 ticket.save()
 
