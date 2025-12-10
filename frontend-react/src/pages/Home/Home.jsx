@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./Home.module.css";
-import { NextEvents } from '../../components/ProximosEventos/NextEvents';
+import { NextEvents } from '../../components/Event/NextEvents/NextEvents';
 import { getAllEventosAprobados } from "../../services/eventos.service";
 import { useEffect, useState } from "react";
 import { ViviLaExperiencia } from '../../components/ViviLaExperiencia/ViviLaExperiencia';

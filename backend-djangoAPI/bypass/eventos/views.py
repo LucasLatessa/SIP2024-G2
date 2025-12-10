@@ -35,6 +35,7 @@ def get_eventos_aprobados(request):
         {
             "id_Evento": event.id_Evento,
             "nombre": event.nombre,
+            "descripcion": event.descripcion,
             "fecha": event.fecha,
             "hora": event.hora,
             "imagen": (

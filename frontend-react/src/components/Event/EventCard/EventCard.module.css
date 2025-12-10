@@ -60,7 +60,7 @@
 
 .precioEventCard {
   grid-area: precio;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: center;
   font-family: var(--fuente-primaria);
   font-weight: 500;

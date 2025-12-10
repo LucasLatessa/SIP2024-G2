@@ -28,8 +28,8 @@ export default function EventDetail(){
   }, [id]);
 
   useEffect(() => {
-    console.log(id);
-  }, [id])
+    console.log(eventos);
+  }, [eventos])
 
   return (
     <main className={styles.eventDetail}>

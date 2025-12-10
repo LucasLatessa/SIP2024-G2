@@ -1,0 +1,84 @@
+.filter {
+  display: flex;
+  position: relative;
+  padding: 2rem;
+}
+
+.tituloFilter {
+  display: none;
+}
+
+.formFilterEvent{
+  position: absolute;
+  top: -3rem;
+  left: 50%; 
+  transform: translateX(-50%);
+}
+
+.formFilter {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 0 auto;
+  background-color: var(--color-claro);
+  padding: 1rem;
+  font-family: var(--fuente-primaria);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.formFilterMercado{
+  background: linear-gradient(
+      77deg,
+      var(--color-header1) 0%,
+      var(--color-header2) 100%
+    );
+  border-radius: 1rem;
+  color: var(--color-letras-secundario);
+  box-shadow: 0px 0px 47px 0px rgba(0, 0, 0, 0.2);
+}
+
+.formFilter label {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.formFilter input {
+  all: unset;
+  font-weight: normal;
+  padding: 0.2rem 3rem;
+
+  margin-top: 0.3rem;
+  background-color: var(--fondo-gris);
+  border-radius: 0.1rem;
+}
+
+.formFilterMercado input {
+  padding: 0.2rem 1rem;
+  color: var(--color-letras-primario)
+}
+
+.formFilter select {
+  border: none;
+  font-weight: normal;
+  padding: 0.4rem 4rem;
+
+  margin-top: 0.3rem;
+  background-color: var(--fondo-gris);
+  border-radius: 0.1rem;
+  font-family: var(--fuente-primaria);
+}
+
+
+/* --------- TABLET Y MÓVIL (menor a 1024px) --------- */
+@media (max-width: 1024px) {
+  .filter {
+    padding: 3rem;
+  }
+}

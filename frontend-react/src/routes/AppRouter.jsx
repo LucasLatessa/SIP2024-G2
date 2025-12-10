@@ -12,6 +12,23 @@ import Profile from "../pages/Profile/Profile";
 // Layouts
 import { Header } from "../components/layout/Header/Header";
 import { Footer } from "../components/layout/Footer/Footer";
+import { Mercado } from "../pages/Mercado/Mercado";
+import Beneficios from "../pages/Beneficios/Beneficios";
+
+/* Perfil cliente */
+import CliEventos from "../pages/Profile/Cliente/CliEventos/CliEventos";
+import CliMercadoPago from "../pages/Profile/Cliente/CliMercadoPago/CliMercadoPago";
+
+/* Perfil Productora */
+import ProductBeneficios from "../pages/Profile/Productora/ProductBeneficios/ProductBeneficios";
+import ProductEventos from "../pages/Profile/Productora/ProductEventos/ProductEventos";
+import ProductMetricas from "../pages/Profile/Productora/ProductMetricas/ProductMetricas";
+
+/* Perfil Productora */
+import AdmEventos from "../pages/Profile/Administrador/AdmEventos/AdmEventos";
+import AdmProductoras from "../pages/Profile/Administrador/AdmProductoras/AdmProductoras";
+import AdmUsuarios from "../pages/Profile/Administrador/AdmUsuarios/AdmUsuarios";
+
 
 
 export default function AppRouter() {
@@ -23,7 +40,27 @@ export default function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
         <Route path="/eventos/:id" element={<EventDetail />} />
+        <Route path="/mercado" element={<Mercado />} />
+        <Route path="/beneficios" element={<Beneficios/>} /> 
+
+        { /* Perfil */}
         <Route path="/perfil" element={<Profile />} />
+
+        { /* Perfil Cliente*/}
+        <Route path="/perfil/mis-eventos" element={<CliEventos />} />
+        <Route path="/perfil/mercado-pago" element={<CliMercadoPago />} />
+
+        { /* Perfil Productora*/}
+        <Route path="/perfil/productora-eventos" element={<ProductEventos />} />
+        <Route path="/perfil/productora-beneficios" element={<ProductBeneficios />} />
+        <Route path="/perfil/productora-metricas" element={<ProductMetricas />} />
+
+        { /* Perfil Admin*/}
+        <Route path="/perfil/admin/eventos" element={<AdmEventos />} />
+        <Route path="/perfil/admin/usuarios" element={<AdmUsuarios />} />
+        <Route path="/perfil/admin/productoras" element={<AdmProductoras />} />
+
+
 
         {/* ← Ruta 404 al final */}
         <Route path="*" element={<NotFound />} />
