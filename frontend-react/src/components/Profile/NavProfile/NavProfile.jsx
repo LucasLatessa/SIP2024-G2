@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./NavProfile.module.css";
 
 export default function NavProfile({ usuario, role }) {
@@ -35,7 +35,7 @@ export default function NavProfile({ usuario, role }) {
         <ul>
           {items.map((item) => (
             <li key={item.path}>
-              <Link to={`/perfil${item.path}`}>{item.label}</Link>
+              <NavLink to={`/perfil${item.path}`} className={({ isActive }) => isActive ? styles.activeLink : ""}>{item.label}</NavLink>
             </li>
           ))}
         </ul>

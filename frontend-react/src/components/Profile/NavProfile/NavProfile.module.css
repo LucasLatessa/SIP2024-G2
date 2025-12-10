@@ -4,20 +4,47 @@
   width: 100%;
   font-family: var(--fuente-primaria);
   background-color: var(--fondo-gris);
-  align-items: center;
+  overflow: hidden;
 }
 
 .navProfile h2{
   font-size: 1.6rem;
   padding: 2rem 0;
   font-weight: 500;
+  margin-left: 2rem;
 }
 
 .navProfile nav{
   list-style: none;
+  width: 100%;
+  margin-left: 2rem;
+  display: flex;
+}
+
+.navProfile nav ul{
+  width: 100%;
 }
 
 .navProfile nav li{
-  padding: 0.8rem 0;
+  padding: 0.8rem 0rem;
   font-size: 1.3rem;
+  list-style: none;
+  border: none;
+  width: 100%;
+}
+
+.navProfile nav li a{
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: var(--color-letras-primario);
+  font-weight: 300;
+  padding: 0.8rem 0 0.8rem 2rem;
+  display: block;
+}
+
+.activeLink{
+  background-color: var(--color-claro);
+  width: 100%;
+  color: var(--color-letras-primario);
 }
