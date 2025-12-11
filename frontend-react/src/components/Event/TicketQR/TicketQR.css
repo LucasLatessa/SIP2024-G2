@@ -1,0 +1,70 @@
+.ticketQR {
+  width: 50vh;
+  height: 90vh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-areas: "stack";
+  overflow: hidden;
+  font-family: var(--fuente-secundaria);
+}
+
+.imagenEventoQR {
+  margin: 0 auto;
+  height: 90vh;
+  grid-area: stack;
+  object-fit: cover;
+}
+
+.datosEventoQR {
+  grid-area: stack;
+  color: var(--color-letras-secundario);
+  text-align: center;
+  position: relative;
+}
+
+.datosEventoQRNombre {
+  font-size: 3rem;
+  text-transform: uppercase;
+  position: absolute;
+  top: 9rem;
+  left: 0;
+  right: 0;
+  line-height: 1.1;
+}
+
+.datosEventoQRFecha {
+  font-size: 1.2rem;
+  position: absolute;
+  top: 8rem; /*8rem*/
+  left: 0;
+  right: 0;
+}
+
+.datosEventoQRImagen {
+  width: 60%;
+  margin: 0 auto;
+  position: absolute;
+  top: 18rem;
+  left: 0;
+  right: 0;
+}
+
+.datosEventoQRhora {
+  font-size: 2rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 8.2rem;
+  left: 0;
+  right: 0;
+  color: var(--color-letras-primario);
+}
+
+.datosEventoQRlugar {
+  font-size: 1rem;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 3.3rem;
+  left: 0;
+  right: 0;
+}
