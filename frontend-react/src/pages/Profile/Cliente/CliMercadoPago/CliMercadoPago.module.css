@@ -1,0 +1,108 @@
+.mpContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--fuente-primaria);
+  z-index: 1;
+}
+
+.mpContainer h1{
+  font-size: 1.8rem;
+  padding: 2rem 0 1rem 0;
+  font-weight: 500;
+}
+
+.mpContainer hr{
+  color: var(--color-oscuro);
+  height: 0.1rem;
+  width: 100%;
+}
+
+.userAccountInfo{
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.userAccountInfo img{
+  order: -1;
+  border-radius: 50%;
+}
+
+.userAccountInfo>div{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 2rem;
+  color: var(--color-header2)
+}
+
+.userAccountInfo > div h3{
+  font-size: 1.5rem;
+}
+
+.userAccountInfo > div p{
+  font-size: 1.4rem;
+  padding-top: 0.25rem;
+}
+
+.formMP{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0.5rem 0;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.formMP label{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.5rem;
+  width: 50%;
+  color: var(--color-letras-primario);
+  font-weight: bolder;
+}
+
+.formMP label input{
+  all: unset;
+  padding: 0.1rem;
+  font-weight: normal;
+  
+  margin-top: 0.3rem;
+}
+
+.formMP label input:not(:read-only){
+  border-bottom: 1px solid var(--color-oscuro);
+}
+
+.saveChanges, .logOut{
+  padding: 0.5rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  margin: 0.5rem auto;
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 20%;
+}
+
+.saveChanges{
+  background-color: var(--color-header1);
+  color: var(--color-letras-secundario);
+}
+
+/* Desktop */
+
+@media (min-width: 1024px) {
+  .saveChanges:hover {
+    color: var(--color-header1);
+    background-color: var(--color-letras-secundario);
+    border: 1px solid var(--color-header1);
+    transition: 0.35s all ease-in-out;
+  }
+}
