@@ -50,6 +50,7 @@ function CliEventos() {
     <>
       <article className="cliEventos">
         <h1>Mis eventos</h1>
+        <hr />
         <section className="allListaEventos">
           {tickets?.map((ticket, index) => (
             <EventTicketUser
