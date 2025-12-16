@@ -97,7 +97,7 @@ function CliMercadoPago() {
         {success && <p className={styles.success}>{success}</p>}
 
         <button onClick={handleSaveMP} disabled={loading} className={styles.saveChanges}>
-          {loading ? "Guardando..." : "Guardar cuenta MP"}
+          {loading ? "Actualizando..." : "Actualizar cuenta MP"}
         </button>
       </form>
     </section>
