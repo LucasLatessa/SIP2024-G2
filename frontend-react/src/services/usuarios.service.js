@@ -29,3 +29,5 @@ export const updateCliente = (user) => clientAPI.put(`/${user.user_id}/`,user);
 export const updateAdministrador = (user) =>  adminAPI.put(`/${user.user_id}/`,user);
 export const updateProductora = (user) => producAPI.put(`/${user.user_id}/`,user);
 export const getProduReport = (id) => producAPI.get(`/${id}/report/`);
+
+export const updateRole = (userId, newRole) => usersAPI.put(`/${userId}/update-role/`, { rol: newRole });

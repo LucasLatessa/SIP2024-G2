@@ -1,0 +1,77 @@
+.admProductoras{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--fuente-primaria);
+  z-index: 1;
+}
+
+.admProductoras h1{
+  font-size: 1.8rem;
+  padding: 2rem 0 1rem 0;
+  font-weight: 500;
+}
+
+.admProductoras hr{
+  color: var(--color-oscuro);
+  height: 0.1rem;
+  width: 100%;
+}
+
+.allListaProductorasAdm{
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  list-style: none;
+  gap: 2rem;
+}
+
+/* Productora Card */
+
+.productora{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 16rem;
+  background-color: var(--color-claro);
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.productora:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.productora p {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-oscuro);
+  word-break: break-word;
+}
+
+.verReporteAdmin {
+  text-decoration: none;
+  text-align: center;
+  padding: 0.55rem;
+  border-radius: 0.7rem;
+  font-family: var(--fuente-primaria);
+  font-size: 0.95rem;
+  font-weight: 600;
+  background-color: #3498db;
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.verReporteAdmin:hover {
+  background-color: #2e86c1;
+  transform: scale(1.02);
+}

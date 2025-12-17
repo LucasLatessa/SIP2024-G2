@@ -29,13 +29,12 @@ import ProductMetricas from "../pages/Profile/Productora/ProductMetricas/Product
 import AdmEventos from "../pages/Profile/Administrador/AdmEventos/AdmEventos";
 import AdmProductoras from "../pages/Profile/Administrador/AdmProductoras/AdmProductoras";
 import AdmUsuarios from "../pages/Profile/Administrador/AdmUsuarios/AdmUsuarios";
-
+import { Toaster } from "react-hot-toast";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Header />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
@@ -45,7 +44,6 @@ export default function AppRouter() {
 
         {/* Perfil */}
         <Route path="/perfil" element={<ProfileLayout />}>
-        
           <Route path="/perfil" element={<AccountInfo />} />
 
           {/* Perfil Cliente*/}
@@ -79,6 +77,15 @@ export default function AppRouter() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
+      {/* Notificaciones */}
+      <Toaster
+        toastOptions={{
+          style: {
+            fontFamily: "Poppins",
+          },
+        }}
+      />
+      
       <Footer />
     </BrowserRouter>
   );

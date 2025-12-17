@@ -5,6 +5,7 @@
   font-family: var(--fuente-primaria);
   background-color: var(--fondo-gris);
   overflow: hidden;
+  min-height: 70vh;
 }
 
 .navProfile h2{
