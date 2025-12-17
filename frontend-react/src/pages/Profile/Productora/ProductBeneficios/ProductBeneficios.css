@@ -1,4 +1,4 @@
-.productEventos{
+.productBeneficios{
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -6,19 +6,19 @@
   z-index: 1;
 }
 
-.productEventos h1{
+.productBeneficios h1{
   font-size: 1.8rem;
   padding: 2rem 0 1rem 0;
   font-weight: 500;
 }
 
-.productEventos hr{
+.productBeneficios hr{
   color: var(--color-oscuro);
   height: 0.1rem;
   width: 100%;
 }
 
-.allListaEventosProductora{
+.allListaBeneficiosProductora{
   display: flex;
   justify-content: center;
   flex-wrap: nowrap;
@@ -28,7 +28,7 @@
   padding: 1rem 0;
 }
 
-.crearEventoProductora{
+.crearBeneficioProductora{
   text-decoration: none;
   width: 10rem;
   margin: 2rem auto;
@@ -42,7 +42,7 @@
 }
 
 @media (min-width: 1024px) {
-  .crearEventoProductora:hover{
+  .crearBeneficioProductora:hover{
     background-color: var(--color-header2);
     color: var(--color-claro);
     transition: 0.35s all ease-in-out;
