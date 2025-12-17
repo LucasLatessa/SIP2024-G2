@@ -1,4 +1,5 @@
-import BeneficioCard from "../../components/Beneficios/BeneficioCard";
+import BeneficioCard from "../../components/Beneficios/BeneficioCard/BeneficioCard.jsx";
+
 import { useEffect, useState } from "react";
 import { getBeneficiosByCliente } from "../../services/beneficios.service";
 import { useAuth0 } from "@auth0/auth0-react";

@@ -32,9 +32,11 @@ export const EventCard = ({ id,
         <p>{mes}</p>
         <p>{horaVisual}</p>
       </div>
-      <p className={styles.precioEventCard}>
+      {precioMax && (
+        <p className={styles.precioEventCard}>
           Rango de precios: ${precioMin}-${precioMax}
-      </p>
+        </p>
+      )}
     </Link>
   );
 };

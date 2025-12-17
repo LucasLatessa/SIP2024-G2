@@ -7,6 +7,7 @@ import {
 } from "../../../../services/usuarios.service";
 import styles from "./AccountInfo.module.css";
 import { useOutletContext } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function AccountInfo() {
   const { logout } = useAuth0();
@@ -16,16 +17,16 @@ export default function AccountInfo() {
 
   // Estado local para los campos editables
   const [formData, setFormData] = useState({
-    ...usuario
+    ...usuario,
   });
 
   // Cargar valores iniciales cuando llega usuario
   useEffect(() => {
-  if (usuario) {
-    setFormData({
-      ...usuario
-    });
-  }
+    if (usuario) {
+      setFormData({
+        ...usuario,
+      });
+    }
   }, [usuario]);
 
   // Manejar cambios en inputs editables
@@ -42,31 +43,48 @@ export default function AccountInfo() {
 
   const handleUpdateProfile = async () => {
     console.log(formData);
-    try {
-      let updateFunction;
 
-      switch (usuario?.rol) {
-        case "CLIENTE":
-          updateFunction = updateCliente;
-          break;
-        case "ADMINISTRADOR":
-          updateFunction = updateAdministrador;
-          break;
-        case "PRODUCTORA":
-          updateFunction = updateProductora;
-          break;
-        default:
-          alert("Rol desconocido. No se puede actualizar el perfil.");
-          return;
-      }
+    let updateFunction;
 
-      await updateFunction(formData);
-
-      alert("Perfil actualizado correctamente.");
-    } catch (error) {
-      console.error(error);
-      alert("Error al actualizar el perfil. Puede que el DNI ya exista.");
+    switch (usuario?.rol) {
+      case "CLIENTE":
+        updateFunction = updateCliente;
+        break;
+      case "ADMINISTRADOR":
+        updateFunction = updateAdministrador;
+        break;
+      case "PRODUCTORA":
+        updateFunction = updateProductora;
+        break;
+      default:
+        toast.error("Rol desconocido. No se puede actualizar.");
+        return;
     }
+
+    try {
+      await toast.promise(updateFunction(formData), {
+        loading: "Guardando cambios...",
+        success: "¡Perfil actualizado correctamente!",
+        error: "Error al actualizar.",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    toast.success("Cerrando sesión...", {
+        duration: 2000,
+        icon: '👋',
+    });
+
+    sessionStorage.removeItem('bienvenida_mostrada');
+
+    setTimeout(() => {
+      logout({ 
+        logoutParams: { returnTo: window.location.origin } 
+      });
+    }, 1500); 
   };
 
   return (
@@ -125,9 +143,7 @@ export default function AccountInfo() {
       </button>
       <button
         className={styles.logOut}
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
+        onClick={handleLogout}
       >
         Cerrar sesion
       </button>

@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../../assets/images/LogoBlanco.png";
 import styles from "./Header.module.css";
 import { Carrousel } from "../../Carrousel/Carrousel";
+import toast from "react-hot-toast";
 
 export const Header = () => {
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, user, isLoading } = useAuth0();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,7 +23,27 @@ export const Header = () => {
     navigate("/perfil");
   };
 
-  // Manejo de titulos
+  useEffect(() => {
+    // Esperamos a que Auth0 termine de cargar
+    if (!isLoading && isAuthenticated) {
+      
+      // sessionStorage para que el cartel no salga cada vez que el usuario refresca la página 
+      const yaSalude = sessionStorage.getItem('bienvenida_mostrada');
+
+      if (!yaSalude) {
+        toast.success(`¡Hola de nuevo, ${user?.nickname || user?.name}!`, {
+            icon: '👋',
+            duration: 4000
+        });
+        
+        // Ya realizo el saludo en esta sesion
+        sessionStorage.setItem('bienvenida_mostrada', 'true');
+      }
+    }
+  }, [isAuthenticated, isLoading, user]);
+
+
+  /* ------ Manejo de titulos ------ */
   const titles = {
     "/eventos": "Eventos",
     "/mercado": "Mercado",

@@ -1,4 +1,4 @@
-.admEventos{
+.admEventos {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -6,13 +6,13 @@
   z-index: 1;
 }
 
-.admEventos h1{
+.admEventos h1 {
   font-size: 1.8rem;
   padding: 2rem 0 1rem 0;
   font-weight: 500;
 }
 
-.admEventos hr{
+.admEventos hr {
   color: var(--color-oscuro);
   height: 0.1rem;
   width: 100%;
@@ -27,11 +27,11 @@
   gap: 1.2rem;
   display: flex;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.5rem;
-  padding-bottom: rem;
+  gap: 2rem;
+  padding-top: 2rem;
   padding-bottom: 2rem;
 }
 
@@ -88,4 +88,3 @@
     width: 100%;
   }
 }
-

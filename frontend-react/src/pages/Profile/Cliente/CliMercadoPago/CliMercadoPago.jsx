@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "./CliMercadoPago.module.css";
 import { updateClienteMP } from "../../../../services/usuarios.service";
+import toast from "react-hot-toast";
 
 function CliMercadoPago() {
   const { usuario, role, photo } = useOutletContext();
@@ -12,8 +13,6 @@ function CliMercadoPago() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   // Cargar datos iniciales si existen
   useEffect(() => {
@@ -33,23 +32,48 @@ function CliMercadoPago() {
     }));
   };
 
+  // const handleSaveMP = async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   setSuccess(null);
+
+  //   try {
+  //     const payload = {
+  //       public_key: formData.public_key,
+  //       access_token: formData.access_token,
+  //       user_nn: usuario.nickname,
+  //     };
+
+  //     await updateClienteMP(payload);
+  //     setSuccess("Cuenta de Mercado Pago actualizada correctamente");
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Error al actualizar la cuenta de Mercado Pago");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSaveMP = async () => {
+
     setLoading(true);
-    setError(null);
-    setSuccess(null);
+
+    const payload = {
+      public_key: formData.public_key,
+      access_token: formData.access_token,
+      user_nn: usuario.nickname,
+    };
 
     try {
-      const payload = {
-        public_key: formData.public_key,
-        access_token: formData.access_token,
-        user_nn: usuario.nickname,
-      };
+      // Promesa envuelta en el Toast
+      await toast.promise(updateClienteMP(payload), {
+        loading: "Vinculando cuenta de Mercado Pago...",
+        success: "¡Cuenta de Mercado Pago actualizada correctamente!",
+        error: "Error al actualizar. Verifique sus credenciales.",
+      });
 
-      await updateClienteMP(payload);
-      setSuccess("Cuenta de Mercado Pago actualizada correctamente");
     } catch (err) {
       console.error(err);
-      setError("Error al actualizar la cuenta de Mercado Pago");
     } finally {
       setLoading(false);
     }
@@ -93,10 +117,11 @@ function CliMercadoPago() {
           />
         </label>
 
-        {error && <p className={styles.error}>{error}</p>}
-        {success && <p className={styles.success}>{success}</p>}
-
-        <button onClick={handleSaveMP} disabled={loading} className={styles.saveChanges}>
+        <button
+          onClick={handleSaveMP}
+          disabled={loading}
+          className={styles.saveChanges}
+        >
           {loading ? "Actualizando..." : "Actualizar cuenta MP"}
         </button>
       </form>

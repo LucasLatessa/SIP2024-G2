@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getBeneficiosByProductora } from "../../../../services/beneficios.service";
 import "./ProductBeneficios.css";
-import BeneficioProductView from "../../../Beneficios/BeneficiosClient/BeneficioProductView";
+import BeneficioProductView from "../../../../components/Beneficios/BeneficioProductView/BeneficioProductView";
 
 function ProductBeneficios() {
   const [beneficios, setBeneficios] = useState([]);

@@ -62,13 +62,20 @@ article.ticket .acciones {
   gap: 1rem;
 }
 
-article.ticket button,
-.profileBeneficios {
-  padding: 0.5rem;
+article.ticket button{
   text-decoration: none;
   text-align: center;
-  border-radius: 30px;
-  background-color: var(--color-letras-terceario);
+  padding: 0.55rem;
+  border-radius: 0.7rem;
+  font-family: var(--fuente-primaria);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+article.ticket button,
+.profileBeneficios {
+  background-color: var(--color-letras-cuaternario);
   color: var(--color-letras-secundario);
   width: 7rem;
 }
@@ -76,8 +83,9 @@ article.ticket button,
 article.ticket button:hover,
 .profileBeneficios:hover {
   background-color: var(--color-letras-secundario);
-  color: var(--color-letras-terceario);
-  border: 1px solid var(--color-letras-terceario);
+  color: var(--color-letras-cuaternario);
+  border: 1px solid var(--color-letras-cuaternario);
+  
 }
 
 .ticket.usado::before {
