@@ -48,6 +48,7 @@ export const Header = () => {
     "/eventos": "Eventos",
     "/mercado": "Mercado",
     "/beneficios": "Beneficios",
+    "/crear-evento": "Crear Evento"
   };
   const title = titles[location.pathname];
 

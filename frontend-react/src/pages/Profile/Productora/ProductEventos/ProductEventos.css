@@ -21,7 +21,7 @@
 .allListaEventosProductora{
   display: flex;
   justify-content: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1.5rem;
   padding-bottom: 2rem;

@@ -41,7 +41,7 @@ function ProductEventos() {
             />
           ))}
         </section>
-        <Link className="crearEventoProductora" to="/perfil/productora-eventos/crear">
+        <Link className="crearEventoProductora" to="/crear-evento">
         Crear Evento
         </Link>
       </article>

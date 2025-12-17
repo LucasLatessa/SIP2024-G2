@@ -1,0 +1,81 @@
+.crearEvento {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: var(--fuente-primaria);
+}
+
+.formularioEvento {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--color-claro);
+  padding: 2rem;
+  border-radius: 1.4rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.datosEvento,
+.datosEntradas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 1.5rem;
+}
+
+.formularioEvento label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  gap: 0.35rem;
+}
+
+.formularioEvento input,
+.formularioEvento select {
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.7rem;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formularioEvento input[type="file"] {
+  padding: 0.4rem;
+  font-size: 0.85rem;
+}
+
+/* ---------- ENTRADAS ---------- */
+
+.tipoEntrada {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+}
+
+.buttonCrearEvento {
+  align-self: flex-end;
+  padding: 0.7rem 1.8rem;
+  border-radius: 1.4rem;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.buttonCrearEvento:hover {
+  background-color: #3498db;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}

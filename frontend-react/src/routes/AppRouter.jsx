@@ -30,6 +30,7 @@ import AdmEventos from "../pages/Profile/Administrador/AdmEventos/AdmEventos";
 import AdmProductoras from "../pages/Profile/Administrador/AdmProductoras/AdmProductoras";
 import AdmUsuarios from "../pages/Profile/Administrador/AdmUsuarios/AdmUsuarios";
 import { Toaster } from "react-hot-toast";
+import CrearEvento from "../pages/Profile/Productora/CrearEvento/CrearEvento";
 
 export default function AppRouter() {
   return (
@@ -39,6 +40,7 @@ export default function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/eventos" element={<Events />} />
         <Route path="/eventos/:id" element={<EventDetail />} />
+        <Route path="/crear-evento" element={<CrearEvento />} />
         <Route path="/mercado" element={<Mercado />} />
         <Route path="/beneficios" element={<Beneficios />} />
 
@@ -85,7 +87,7 @@ export default function AppRouter() {
           },
         }}
       />
-      
+
       <Footer />
     </BrowserRouter>
   );
