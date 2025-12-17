@@ -5,6 +5,7 @@ import { TransferirTicketModal } from "../../Tickets/TransferirTicketModal/Trans
 
 import { formatearFechaParaCard } from "../../../utils/dateFormatter";
 import "./EventTicketUser.css";
+import { VenderTicketModal } from "../../Tickets/VenderTicketModal/VenderTicketModal";
 
 const EventTicketUser = ({
   id_ticket,
@@ -78,6 +79,20 @@ const EventTicketUser = ({
 
               {modalType === "transferir" && (
                 <TransferirTicketModal
+                  ticket={{
+                    id_ticket,
+                    nombre,
+                    foto,
+                    tipo_ticket,
+                    fecha,
+                    hora,
+                  }}
+                  onClose={closeModal}
+                />
+              )}
+
+              {modalType === "vender" && (
+                <VenderTicketModal
                   ticket={{
                     id_ticket,
                     nombre,
