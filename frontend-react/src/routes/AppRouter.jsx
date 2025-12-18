@@ -31,6 +31,7 @@ import AdmProductoras from "../pages/Profile/Administrador/AdmProductoras/AdmPro
 import AdmUsuarios from "../pages/Profile/Administrador/AdmUsuarios/AdmUsuarios";
 import { Toaster } from "react-hot-toast";
 import CrearEvento from "../pages/Profile/Productora/CrearEvento/CrearEvento";
+import CrearBeneficio from "../pages/Profile/Productora/CrearBeneficio/CrearBeneficio";
 
 export default function AppRouter() {
   return (
@@ -43,6 +44,7 @@ export default function AppRouter() {
         <Route path="/crear-evento" element={<CrearEvento />} />
         <Route path="/mercado" element={<Mercado />} />
         <Route path="/beneficios" element={<Beneficios />} />
+        <Route path="/crear-beneficio" element={<CrearBeneficio />} />
 
         {/* Perfil */}
         <Route path="/perfil" element={<ProfileLayout />}>

@@ -47,7 +47,7 @@ function ProductBeneficios() {
             />
           ))}
         </section>
-        <Link className="crearBeneficioProductora" to="/perfil/productora-beneficio/crear">
+        <Link className="crearBeneficioProductora" to="/crear-beneficio">
         Crear Beneficio
         </Link>
       </article>
