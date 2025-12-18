@@ -1,0 +1,55 @@
+.validarEntrada{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--fuente-primaria);
+  z-index: 1;
+}
+
+.validarEntrada h1{
+  font-size: 1.8rem;
+  padding: 2rem 0 1rem 0;
+  font-weight: 500;
+}
+
+.validarEntrada hr{
+  color: var(--color-oscuro);
+  height: 0.1rem;
+  width: 100%;
+}
+
+.sectionValidarEntrada{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scanner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 90%;
+}
+
+.entradaValidada{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.entradaValidada .title{
+  font-size: 1.6rem;
+  padding: 2rem 0 1rem 0;
+  font-weight: 500;
+}
+
+.datosEntradaQR li{
+  font-size: 1.4rem;
+  padding: 0.8rem;
+}
+
+.datosEntradaQR li span{
+  font-weight: bolder;
+}

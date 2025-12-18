@@ -33,6 +33,7 @@ import { Toaster } from "react-hot-toast";
 import CrearEvento from "../pages/Profile/Productora/CrearEvento/CrearEvento";
 import CrearBeneficio from "../pages/Profile/Productora/CrearBeneficio/CrearBeneficio";
 import MercadoDetail from "../pages/MercadoDetail/MercadoDetail";
+import ValidarEntrada from "../pages/Profile/Productora/ValidarEntrada/ValidarEntrada";
 
 export default function AppRouter() {
   return (
@@ -60,6 +61,10 @@ export default function AppRouter() {
           <Route
             path="/perfil/productora-eventos"
             element={<ProductEventos />}
+          />
+          <Route
+            path="/perfil/productora-eventos/validar/:id"
+            element={<ValidarEntrada />}
           />
           <Route
             path="/perfil/productora-beneficios"

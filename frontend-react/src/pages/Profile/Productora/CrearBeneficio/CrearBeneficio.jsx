@@ -70,7 +70,6 @@ const CrearBeneficio = () => {
   };
 
   return (
-    <main className="App">
       <section className="crearBeneficio">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -149,7 +148,6 @@ const CrearBeneficio = () => {
           </section>
         </form>
       </section>
-    </main>
   );
 };
 

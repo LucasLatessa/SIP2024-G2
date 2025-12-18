@@ -14,12 +14,12 @@ export const EventProductView = ({ id, nombre, imagen }) => {
       />
 
       <div className={styles.acciones}>
-        <Link
+        {/* <Link
           to={`/perfil/productora-eventos/modificar/${id}`}
           className={styles.modificar}
         >
           Modificar datos
-        </Link>
+        </Link> */}
 
         <Link
           to={`/perfil/productora-eventos/validar/${id}`}
