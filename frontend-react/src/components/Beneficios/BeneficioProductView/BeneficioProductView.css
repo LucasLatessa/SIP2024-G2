@@ -29,3 +29,19 @@
 .beneficioCodigo strong {
   margin-left: 0.4rem;
 }
+
+.beneficioEliminar{
+  background-color: #e74c3c;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  font-family: var(--fuente-primaria);
+  font-weight: bolder;
+  color: var(--color-letras-secundario);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.beneficioEliminar:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}

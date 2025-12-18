@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { getBeneficiosByProductora } from "../../../../services/beneficios.service";
+import { deleteBeneficio, getBeneficiosByProductora } from "../../../../services/beneficios.service";
 import "./ProductBeneficios.css";
 import BeneficioProductView from "../../../../components/Beneficios/BeneficioProductView/BeneficioProductView";
+import toast from "react-hot-toast";
 
 function ProductBeneficios() {
   const [beneficios, setBeneficios] = useState([]);
@@ -31,6 +32,28 @@ function ProductBeneficios() {
     console.log(beneficios);
   }, [beneficios]);
 
+  const handleDelete = async (id) => {
+
+    const promesaEliminar = deleteBeneficio(id);
+
+    try {
+      await toast.promise(promesaEliminar, {
+        loading: 'Eliminando beneficio...',
+        success: '¡Beneficio eliminado correctamente!',
+        error: 'No se pudo eliminar. Intente nuevamente.',
+      });
+
+      //Actualizo la vista
+      setBeneficios((prevBeneficios) => 
+        prevBeneficios.filter(beneficio => beneficio.id_beneficio !== id)
+      );
+
+    } catch (error) {
+      console.error("Error al eliminar beneficio:", error);
+    }
+  }
+
+
   return (
     <>
       <article className="productBeneficios">
@@ -40,10 +63,12 @@ function ProductBeneficios() {
           {beneficios?.map((beneficio) => (
             <BeneficioProductView
               key={beneficio.id_beneficio}
+              id={beneficio.id_beneficio}
               porcentaje={beneficio.porcentajeDescuento}
               nombre={beneficio.nombre}
               codigo={beneficio.codigoDescuento}
               evento={beneficio.evento}
+              onDelete={handleDelete}
             />
           ))}
         </section>

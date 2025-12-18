@@ -2,10 +2,12 @@ import React from "react";
 import "./BeneficioProductView.css"
 
 const BeneficioProductView = ({
+  id,
   nombre,
   porcentaje,
   codigo,
   evento,
+  onDelete
 }) => {
   return (
     <article className="beneficioProductView">
@@ -24,6 +26,8 @@ const BeneficioProductView = ({
           Evento asociado: <strong>{evento}</strong>
         </p>
       </footer>
+
+      <button className="beneficioEliminar" onClick={() => onDelete(id)}>Eliminar</button>
     </article>
   );
 };
