@@ -20,9 +20,10 @@ export const getAllTicketsByCli = (id_cli) => tickets_cliAPI.get(`/byCliente/${i
 
 export const getTicketByEvent = (id_evento) => tickets_cliAPI.get(`/byEvento/${id_evento}`);
 
-export const transferir = (id_ticket,nuevoPropietario) => ticketsAPI.put(`/transferir`, {
+export const transferir = (id_ticket,nuevoPropietario, tipo) => ticketsAPI.put(`/transferir`, {
   id_ticket:id_ticket,
-  nuevoPropietario:nuevoPropietario
+  nuevoPropietario:nuevoPropietario,
+  tipo:tipo
 });
 export const getTicketByEventPrecio = (id_evento) => tickets_cliAPI.get(`/byEvento/precios/${id_evento}`);
 

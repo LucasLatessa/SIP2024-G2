@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { transferir } from "../../../services/tickets.service";
 import { getUserNick } from "../../../services/usuarios.service";
 import "./TTM.css";
+import toast from "react-hot-toast";
 
-export const TransferirTicketModal = ({ ticket, onClose }) => {
+export const TransferirTicketModal = ({ ticket, onClose, onSuccess}) => {
   const { register, handleSubmit, reset } = useForm();
   const [usuarioData, setUsuarioData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -29,10 +30,23 @@ export const TransferirTicketModal = ({ ticket, onClose }) => {
   // Paso 2: confirmar transferencia
   const handleConfirmarTransferencia = async () => {
     try {
-      await transferir(ticket.id_ticket, usuarioData.nickname);
-      onClose(); // cerrar modal al finalizar
+      await toast.promise(
+        transferir(ticket.id_ticket, usuarioData.nickname, ticket.tipo_ticket),
+        {
+          loading: "Procesando transferencia...",
+          success: "¡Ticket transferido con éxito!",
+          error: "Error: No se pudo realizar la transferencia.",
+        }
+      );
+      
+      if (onSuccess) {
+          onSuccess(); 
+      }
+
+      onClose();
+
     } catch (error) {
-      setError("Error al confirmar la transferencia");
+      console.error("Falló la transferencia:", error);
     }
   };
 
@@ -49,14 +63,21 @@ export const TransferirTicketModal = ({ ticket, onClose }) => {
 
       <div className="dataEventoTransferirEntrada">
         <p>{ticket.nombre}</p>
-        <p>Tipo de ticket: <span> {ticket.tipo_ticket} </span></p>
         <p>
-          Fecha: <span>{ticket.fecha} - {ticket.hora}</span>
+          Tipo de ticket: <span> {ticket.tipo_ticket} </span>
+        </p>
+        <p>
+          Fecha:{" "}
+          <span>
+            {ticket.fecha} - {ticket.hora}
+          </span>
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(handleTransferir)}
-       className="formTransferirEntrada">
+      <form
+        onSubmit={handleSubmit(handleTransferir)}
+        className="formTransferirEntrada"
+      >
         <label>
           Nickname del destinatario
           <input
@@ -84,7 +105,12 @@ export const TransferirTicketModal = ({ ticket, onClose }) => {
           <p>Correo: {usuarioData.correo}</p>
 
           <div className="buttonsTransferrirEntrada">
-            <button onClick={handleConfirmarTransferencia}className="confirmar">Confirmar</button>
+            <button
+              onClick={handleConfirmarTransferencia}
+              className="confirmar"
+            >
+              Confirmar
+            </button>
             <button className="cancelar" onClick={handleCancelar}>
               Cancelar
             </button>

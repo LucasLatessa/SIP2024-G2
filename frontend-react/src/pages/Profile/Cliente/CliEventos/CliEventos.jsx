@@ -42,6 +42,12 @@ function CliEventos() {
     cargarTickets();
   }, [role]);
 
+  const eliminarTicketDeLista = (idParaBorrar) => {
+    setTickets((prevTickets) => 
+      prevTickets.filter((t) => t.id_ticket !== idParaBorrar)
+    );
+  };
+
   //console.log(role);
   //console.log(usuario);
   //console.log(tickets);
@@ -65,6 +71,7 @@ function CliEventos() {
               qr={ticket.qr}
               lugar={ticket.eventoLugarNombre}
               usada={ticket.usada}
+              onTicketAction={eliminarTicketDeLista}
             />
           ))}
         </section>

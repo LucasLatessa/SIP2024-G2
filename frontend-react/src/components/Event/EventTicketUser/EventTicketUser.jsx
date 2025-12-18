@@ -18,6 +18,7 @@ const EventTicketUser = ({
   qr,
   lugar,
   usada,
+  onTicketAction
 }) => {
   const [modalType, setModalType] = useState(null); // modalType: "qr" | "transferir" | "vender" | null
   const fechaHoraCompleta = `${fecha} - ${hora}`;
@@ -88,6 +89,7 @@ const EventTicketUser = ({
                     hora,
                   }}
                   onClose={closeModal}
+                  onSuccess={() => onTicketAction(id_ticket)}
                 />
               )}
 
