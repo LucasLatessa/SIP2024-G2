@@ -225,6 +225,8 @@ def entregarToken(request):
 def obtener_precio_entrada(request):
     tipo_ticket = request.GET.get("tipo_ticket")
     evento = request.GET.get("evento")
+    print(tipo_ticket)
+    print(evento)
     precio = Ticket.obtener_ticket_precio(tipo_ticket, evento)
     return JsonResponse({"precio_ticket": precio})
 

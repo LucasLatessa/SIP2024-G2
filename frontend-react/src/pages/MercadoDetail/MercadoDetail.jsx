@@ -128,7 +128,9 @@ const MercadoDetail = () => {
             </figure>
           </section>
         <section className="comprarEntradas">
-          <button onClick={handleBuy}>Comprar</button>
+          {!buttonClicked && (
+            <button onClick={handleBuy}>Comprar</button>
+          )}
           {buttonClicked &&
             (loading ? (
               <div>Cargando...</div>
