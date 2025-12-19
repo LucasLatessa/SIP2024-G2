@@ -21,7 +21,7 @@ spec:
         effect: "NoSchedule"
       containers:
         - name: backend
-          image: josuegaticaodato/backend-bypass:v2
+          image: josuegaticaodato/backend-bypass:v3
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

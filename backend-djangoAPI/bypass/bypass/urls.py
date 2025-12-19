@@ -16,12 +16,12 @@ urlpatterns: list[URLPattern] = [
     path(route="api/private", view=views.private, name="private"),
     path(route="api/private-scoped", view=views.privateScoped, name="private_scoped"),
     path(route="api/backup", view=views.backup, name="backup"),
-    path('admin/', admin.site.urls),
-    path('eventos/',include('eventos.urls')),
-    path('tickets/',include('tickets.urls')),
-    path('usuarios/',include('usuarios.urls')),
-    path('transferencia/',include('Transferencia.urls')),
-    path('beneficios/',include('beneficios.urls')),
+    path('api/admin/', admin.site.urls),
+    path('api/eventos/',include('eventos.urls')),
+    path('api/tickets/',include('tickets.urls')),
+    path('api/usuarios/',include('usuarios.urls')),
+    path('api/transferencia/',include('Transferencia.urls')),
+    path('api/beneficios/',include('beneficios.urls')),
 ]
 
 #SOLO CUANDO ESTAMOS EN DEBUG-DESARROLLO, NO EN PRODUCCION
