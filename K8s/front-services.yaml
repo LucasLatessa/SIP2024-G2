@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: frontend-vite
-          image: josuegaticaodato/frontend-vite:v3
+          image: josuegaticaodato/frontend-vite:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 80
