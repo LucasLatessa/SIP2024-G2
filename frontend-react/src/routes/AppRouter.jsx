@@ -34,6 +34,7 @@ import CrearEvento from "../pages/Profile/Productora/CrearEvento/CrearEvento";
 import CrearBeneficio from "../pages/Profile/Productora/CrearBeneficio/CrearBeneficio";
 import MercadoDetail from "../pages/MercadoDetail/MercadoDetail";
 import ValidarEntrada from "../pages/Profile/Productora/ValidarEntrada/ValidarEntrada";
+import ReporteEvento from "../pages/Reportes/ReporteEvento/ReporteEvento";
 
 export default function AppRouter() {
   return (
@@ -66,6 +67,11 @@ export default function AppRouter() {
             path="/perfil/productora-eventos/validar/:id"
             element={<ValidarEntrada />}
           />
+          <Route
+            path="/perfil/productora-eventos/reporte/:id"
+            element={<ReporteEvento />}
+          />
+          
           <Route
             path="/perfil/productora-beneficios"
             element={<ProductBeneficios />}

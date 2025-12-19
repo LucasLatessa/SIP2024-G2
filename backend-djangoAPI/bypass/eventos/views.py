@@ -139,6 +139,7 @@ def event_report(request, pk):
 
     # Obtener todos los tickets del evento
     tickets = Ticket.objects.filter(evento=evento, propietario__isnull=False)
+    print(tickets)
 
     # Calcular entradas vendidas por tipo
     tipos_de_tickets = TipoTickets.objects.all()
@@ -166,6 +167,8 @@ def event_report(request, pk):
         "ganancia_total": ganancia_total,
         "asistencia_total": asistencia_total,
     }
+
+    print(reporte)
 
     return JsonResponse(reporte)
 
