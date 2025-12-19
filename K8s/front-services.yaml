@@ -1,50 +1,55 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-vite
   labels:
-    app: frontend
+    app: frontend-vite
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-vite
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend-vite
     spec:
+      tolerations:
+      - key: "instance_type"
+        operator: "Equal"
+        value: "app"
+        effect: "NoSchedule"
+
       containers:
-        - name: frontend
-          image: josuegaticaodato/frontend-bypass
+        - name: frontend-vite
+          image: josuegaticaodato/frontend-vite:v2
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
-            - name: REACT_APP_AUTH0_DOMAIN
+            - name: VITE_APP_AUTH0_DOMAIN
               value: "dev-tkm11ny0scl8iufa.us.auth0.com"
-            - name: REACT_APP_AUTH0_CLIENT_ID
+            - name: VITE_APP_AUTH0_CLIENT_ID
               value: "hxD8uEpOkkw9F2cjaVrWfHd1VlseEcJh"
-            - name: REACT_APP_AUTH0_CALLBACK_URL
-              value: "http://frontend-services/perfil"  # Ajusta esto según el nombre del servicio y el puerto correcto
-            - name: REACT_APP_API_SERVER_URL
-              value: "http://backend-services:8000"  # Ajusta esto según el nombre del servicio y el puerto correcto
-            - name: REACT_APP_AUTH0_AUDIENCE
-              value: "https://bypassAPI.com"
-            - name: REACT_APP_TEST_MERCADOPAGO
+            - name: VITE_APP_AUTH0_CALLBACK_URL
+              value: "https://unlucoin.info/perfil"
+            - name: VITE_APP_AUTH0_AUDIENCE
+              value: "http://backend-services:8000"
+            - name: VITE_APP_DJANGO_BACKEND
+              value: "https://unlucoin.info/api"
+            - name: VITE_APP_TEST_MERCADOPAGO
               value: "TEST-ad9af574-3705-4b15-b991-f28af2497f9f"
-            - name: REACT_APP_DJANGO_BACKEND
-              value: "http://backend-services:8000"  # Ajusta esto según el nombre del servicio y el puerto correcto
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-services
+  name: frontend-vite-service
 spec:
   selector:
-    app: frontend
+    app: frontend-vite
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP

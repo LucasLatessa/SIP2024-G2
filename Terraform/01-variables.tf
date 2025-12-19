@@ -5,7 +5,7 @@ variable "numero_instancias" {
 
 variable "nombre_proyecto" {
   type    = string
-  default = "bypass-426404"
+  default = "bypass-450702"
 }
 
 variable "tipo_maquina" {

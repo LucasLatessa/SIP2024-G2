@@ -14,16 +14,22 @@ spec:
       labels:
         app: backend
     spec:
+      tolerations:
+      - key: "instance_type"
+        operator: "Equal"
+        value: "app"
+        effect: "NoSchedule"
       containers:
         - name: backend
-          image: josuegaticaodato/backend-bypass
+          image: josuegaticaodato/backend-bypass:v2
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:
             - name: DJANGO_SECRET_KEY
               value: "f5&7r!_-hm$6zx8&v%g%@+#3tn4%+9!14(2)6ka&y13cj#h-g-"
             - name: CLIENT_ORIGIN_URL
-              value: "http://frontend-services"  # Ajusta esto según el nombre del servicio y el puerto correcto
+              value: "https://unlucoin.info"
             - name: PORT
               value: "8000"
             - name: DEBUG_ENABLE
@@ -46,4 +52,4 @@ spec:
       targetPort: 8000
   selector:
     app: backend
-  type: LoadBalancer
+  type: ClusterIP

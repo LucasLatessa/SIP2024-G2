@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-front
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # AQUÍ NO PONEMOS REWRITE-TARGET
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - unlucoin.info
+      secretName: frontend-tls
+  rules:
+    - host: unlucoin.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-vite-service
+                port:
+                  number: 80

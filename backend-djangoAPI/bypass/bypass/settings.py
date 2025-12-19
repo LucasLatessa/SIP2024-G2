@@ -147,7 +147,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") #Ruta completa a media
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040",CLIENT_ORIGIN_URL,"http://localhost:5173","https://localhost:5173"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4040","https://localhost:4040","https://192.168.0.111:4040",CLIENT_ORIGIN_URL,"http://localhost:5173","https://localhost:5173","https://unlucoin.info","https://www.unlucoin.info"]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -165,15 +165,10 @@ CORS_ALLOW_HEADERS = [
 CSRF_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{NGROK_URL}",  # Añade tu dominio de Ngrok #ACA
-    "http://localhost:8000",  # Añade el host local si lo necesitas
-    "https://localhost:8000",  # Añade el host local si lo necesitas
-    "http://localhost:80",  # Añade el host local si lo necesitas
-    "https://localhost:80",  # Añade el host local si lo necesitas
-    "http://backend-services",
-    CLIENT_ORIGIN_URL
-    # Agrega otros dominios confiables si es necesario
-    # Aca tendriamos que poner la ip que le va a asginar el K8s
+  "https://unlucoin.info",
+  "https://www.unlucoin.info",
+  # Esto permite que lea la variable CLIENT_ORIGIN_URL si la definiste en el YAML
+  os.environ.get("CLIENT_ORIGIN_URL", "https://unlucoin.info"),
 ]
 
 REST_FRAMEWORK = {
