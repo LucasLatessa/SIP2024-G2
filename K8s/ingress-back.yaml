@@ -27,8 +27,17 @@ spec:
         paths:
           - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
-            backend:
+            backend: &mi_backend
               service:
                 name: backend-services
                 port:
                   number: 8000
+          # Ruta para Media (Imágenes subidas)
+          - path: /media(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend: *mi_backend # Usamos el ancla (o copia y pega el bloque service de arriba)
+
+          # Ruta para Static (Estilos del Admin de Django)
+          - path: /static(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend: *mi_backend
