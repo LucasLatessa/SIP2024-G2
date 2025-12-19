@@ -53,3 +53,83 @@
 .datosEntradaQR li span{
   font-weight: bolder;
 }
+
+/* --- RESPONSIVE ESCÁNER (max-width 1024px) --- */
+@media (max-width: 1024px) {
+
+  /* 1. Título y Contenedor */
+  .validarEntrada h1 {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .sectionValidarEntrada {
+    flex-direction: column; /* Asegura flujo vertical */
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+  }
+
+  /* 2. EL ESCÁNER: El cambio más importante */
+  .scanner {
+    width: 100%;       /* Ocupa todo el ancho del celular */
+    max-width: 350px;  /* Límite para que no sea gigante en tablets */
+    height: auto;      /* Altura automática */
+    aspect-ratio: 1/1; /* FORZAMOS QUE SEA CUADRADO */
+    
+    border-radius: 1.5rem; /* Bordes redondeados estéticos */
+    overflow: hidden;      /* Para que el video no se salga de los bordes redondeados */
+    border: 3px solid var(--color-oscuro); /* Un borde ayuda a encuadrar */
+    background-color: #000; /* Fondo negro mientras carga la cámara */
+    
+    /* Centrado */
+    margin: 0 auto;
+  }
+
+  /* Ajuste de video interno (por si la librería lo inyecta raro) */
+  .scanner video {
+    object-fit: cover; /* Asegura que la imagen de la cámara llene el cuadro */
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 3. Mensaje de Error */
+  .escanearQR {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 1rem;
+    color: red;
+  }
+
+  /* 4. Resultado (Entrada Validada) */
+  .entradaValidada {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .entradaValidada .title {
+    font-size: 1.4rem; /* Texto un poco más chico para que no se corte */
+    padding: 1rem 0;
+    color: #16a34a; /* Verde de éxito (opcional) */
+  }
+
+  .datosEntradaQR {
+    width: 100%;
+    background-color: var(--color-claro);
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .datosEntradaQR li {
+    font-size: 1.1rem; /* Letra legible en móvil */
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1); /* Línea separadora sutil */
+    display: flex;
+    justify-content: space-between; /* Etiqueta a la izq, valor a la der */
+  }
+  
+  .datosEntradaQR li:last-child {
+    border-bottom: none;
+  }
+}

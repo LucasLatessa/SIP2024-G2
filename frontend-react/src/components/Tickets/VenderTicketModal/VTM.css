@@ -140,3 +140,75 @@
     transition: 0.35s all ease-in-out;
   }
 }
+
+/* --- RESPONSIVE PUBLICAR ENTRADA (max-width 1024px) --- */
+@media (max-width: 1024px) {
+
+  /* 1. Contenedor: Ancho adaptable y Altura dinámica */
+  .publicarEntrada {
+    max-width: 400px; /* Tope para tablets */
+    height: auto; /* Dejamos que crezca según el contenido */
+    min-height: 45vh; /* Altura mínima base */
+    padding: 1rem 1.5rem 2rem 1.5rem; /* Padding interno */
+    border-width: 0.3rem; /* Borde más sutil */
+    
+    /* Importante para móviles chicos: permitir scroll si se llena */
+    overflow-y: auto; 
+    justify-content: flex-start; /* Alineamos contenido arriba */
+  }
+
+  /* 2. Ajuste de Títulos */
+  .publicarEntrada h3 {
+    font-size: 1.5rem;
+    padding: 1.5rem 0 1rem 0;
+  }
+
+  /* 3. Datos del Evento (Textos un poco más chicos) */
+  .dataEventoPublicarEntrada p:nth-child(1) {
+    font-size: 1.3rem;
+  }
+  
+  .dataEventoPublicarEntrada p:nth-child(2),
+  .dataEventoPublicarEntrada p:nth-child(3) {
+    font-size: 1rem;
+  }
+
+  /* 4. Formulario e Inputs */
+  .formPublicarEntrada {
+    width: 100%;
+  }
+
+  .formPublicarEntrada label {
+    font-size: 1.2rem;
+    width: 100%;
+  }
+  
+  .formPublicarEntrada label input {
+    width: 100%; /* Input ocupa todo el ancho disponible */
+    font-size: 1.1rem;
+  }
+
+  /* 5. Sección de Costos y Ganancia */
+  .costosPublicarEntrada {
+    width: 100%;
+  }
+
+  /* 6. Botones: Uno debajo del otro (Columna) */
+  .buttonsPublicarEntrada {
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  .buttonsPublicarEntrada button {
+    width: 100%; /* Botón full width */
+    padding: 0.8rem;
+    margin: 0; /* Quitamos márgenes laterales si los hubiera */
+  }
+  
+  /* Aseguramos que los botones específicos ocupen todo el espacio */
+  .buttonsPublicarEntrada .confirmar,
+  .buttonsPublicarEntrada .cancelar {
+    width: 100%;
+  }
+}

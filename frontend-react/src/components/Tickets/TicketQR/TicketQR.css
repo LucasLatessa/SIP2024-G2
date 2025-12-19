@@ -68,3 +68,9 @@
   left: 0;
   right: 0;
 }
+
+@media (max-width: 1024px) {
+  .datosEventoQRhora {
+    top: 16.9em; /*8rem*/
+  }
+}

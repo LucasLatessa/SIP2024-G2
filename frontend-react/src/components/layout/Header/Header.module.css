@@ -128,3 +128,87 @@
     color: var(--color-letras-primario);
   }
 }
+
+/* --- Estilos base del Botón Hamburguesa --- */
+.hamburger {
+  display: none; /* Oculto por defecto en Desktop */
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--color-letras-secundario);
+}
+
+/* --- MOBILE & TABLET (Menor a 1024px) --- */
+@media (max-width: 1024px) {
+  
+  .headerNavbar {
+    justify-content: space-between;
+    padding: 0 2rem; 
+    position: relative;
+    z-index: 1000; 
+  }
+
+  /* 2. Mostramos la hamburguesa */
+  .hamburger {
+    display: block;
+    z-index: 1001;
+  }
+
+  /* Animación de la hamburguesa a "X" cuando está activa */
+  .hamburger.isActive .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.isActive .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.isActive .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* 3. Transformamos el NAV en un menú lateral o "Drawer" */
+  .navHeader {
+    position: fixed; /* Fijo para que tape la pantalla */
+    top: 0;
+    right: -100%; /* Escondido a la derecha fuera de pantalla */
+    width: 70%; /* Ocupa el 70% del ancho */
+    height: 100vh;
+    background-color: var(--color-oscuro, #222); /* Color de fondo sólido necesario */
+    /* Si no tenes var(--color-oscuro), poné un color hex oscuro sólido */
+    
+    flex-direction: column; /* Elementos uno abajo del otro */
+    justify-content: center;
+    align-items: center;
+    gap: 2rem; /* Espacio entre items */
+    
+    transition: 0.4s ease-in-out; /* Animación suave al entrar */
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    z-index: 999;
+    backdrop-filter: blur(10px); /* Opcional: efecto vidrio si el fondo tiene transparencia */
+  }
+
+  /* Estado ACTIVO del menú (cuando menuOpen es true) */
+  .navActive {
+    right: 0; /* Lo traemos a la vista */
+  }
+
+  /* Ajustes visuales para los links en mobile */
+  .navHeader li {
+    padding: 1rem 0;
+  }
+  
+  .navHeader li a {
+    font-size: 1.5rem; /* Letra más grande para dedos táctiles */
+  }
+  
+  /* Ajuste del botón de login en mobile */
+  .navHeaderLogin {
+    margin: 0;
+    padding: 1rem 2rem;
+  }
+}

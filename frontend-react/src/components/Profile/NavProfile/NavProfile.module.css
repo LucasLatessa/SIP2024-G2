@@ -1,4 +1,4 @@
-.navProfile{
+.navProfile {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -8,25 +8,25 @@
   min-height: 70vh;
 }
 
-.navProfile h2{
+.navProfile h2 {
   font-size: 1.6rem;
   padding: 2rem 0;
   font-weight: 500;
   margin-left: 2rem;
 }
 
-.navProfile nav{
+.navProfile nav {
   list-style: none;
   width: 100%;
   margin-left: 2rem;
   display: flex;
 }
 
-.navProfile nav ul{
+.navProfile nav ul {
   width: 100%;
 }
 
-.navProfile nav li{
+.navProfile nav li {
   padding: 0.8rem 0rem;
   font-size: 1.3rem;
   list-style: none;
@@ -34,7 +34,7 @@
   width: 100%;
 }
 
-.navProfile nav li a{
+.navProfile nav li a {
   border: none;
   outline: none;
   text-decoration: none;
@@ -44,8 +44,26 @@
   display: block;
 }
 
-.activeLink{
+.activeLink {
   background-color: var(--color-claro);
   width: 100%;
   color: var(--color-letras-primario);
+}
+
+@media (max-width: 1024px) {
+  .navProfile {
+    min-height: 20vh;
+  }
+
+  .navProfile h2 {
+    margin-left: 1rem;
+  }
+
+  .navProfile nav {
+    margin-left: 0rem;
+  }
+
+  .navProfile nav li {
+    padding: 0.5rem 0rem;
+  }
 }

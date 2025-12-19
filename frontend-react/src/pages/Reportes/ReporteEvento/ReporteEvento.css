@@ -102,3 +102,70 @@
   border-left: 4px solid #3b82f6;
   padding-left: 1rem;
 }
+
+/* --- RESPONSIVE REPORTE (max-width 1024px) --- */
+@media (max-width: 1024px) {
+  
+  /* 1. Ajuste del Título */
+  .reporteEvento h1 {
+    font-size: 1.5rem;
+    text-align: center; /* Centrado queda mejor en móvil */
+    padding: 1.5rem 0;
+  }
+
+  /* 2. Sección de Estadísticas (Foto + Datos) */
+  .stats {
+    flex-direction: column; /* Apilamos verticalmente */
+    gap: 1.5rem; /* Espacio entre la foto y los cuadros */
+    margin-bottom: 2rem;
+  }
+
+  /* 3. Imagen del Evento */
+  .imagenEvento {
+    width: 100%;       /* Que ocupe el ancho disponible... */
+    max-width: 250px;  /* ...pero con un límite para que no sea gigante */
+    height: auto;
+    padding: 0;        /* Quitamos el padding excesivo original */
+    border-radius: 1rem; /* Redondeado más suave */
+    object-fit: cover;
+  }
+
+  /* 4. Tarjetas de Estadísticas (Ganancia/Asistencia) */
+  .stat {
+    width: 100%; /* Ocupan todo el ancho */
+    padding: 1.5rem; /* Más espacio interno */
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    border-radius: 1rem;
+    background-color: var(--color-claro, #f9fafb); /* Fondo suave si no tenés var definida */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra sutil para destacar */
+  }
+
+  .stat h2 {
+    font-size: 1.1rem; /* Título un poco más chico */
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .stat p {
+    font-size: 2rem; /* El número sigue siendo grande e importante */
+    font-weight: bold;
+  }
+
+  /* 5. Contenedores de Gráficos */
+  .chartSection {
+    padding: 1.5rem 0.5rem; /* Reducimos padding lateral para que el gráfico sea más ancho */
+    margin-bottom: 1.5rem;
+  }
+  
+  .chartSection h2 {
+    font-size: 1.2rem;
+    text-align: center; /* Título del gráfico centrado */
+    border-left: none; /* Quitamos la línea lateral estética de desktop */
+    border-bottom: 3px solid #3b82f6; /* La pasamos abajo */
+    padding-bottom: 0.5rem;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+    display: inline-block; /* Para que el border-bottom se ajuste al texto */
+    width: 100%;
+  }
+}

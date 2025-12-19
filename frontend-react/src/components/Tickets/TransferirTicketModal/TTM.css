@@ -157,3 +157,62 @@
     transition: 0.35s all ease-in-out;
   }
 }
+
+/* --- RESPONSIVE TRANSFERENCIA (max-width 1024px) --- */
+@media (max-width: 1024px) {
+  
+  /* 1. Contenedor Principal: Adaptable */
+  .transferirEntrada {
+    max-width: 400px; /* Que no se haga gigante en tablets */
+    height: auto; /* La altura se ajusta al contenido */
+    min-height: 50vh; /* Altura mínima estética */
+    padding: 1rem 1.5rem 2rem 1.5rem; /* Relleno interno */
+    border-width: 0.3rem; /* Borde más fino */
+    overflow-y: auto; /* Si el contenido es mucho, permite scrollear */
+  }
+
+  /* 2. Ajuste de Títulos */
+  .transferirEntrada h3 {
+    font-size: 1.5rem;
+    padding: 1.5rem 0;
+  }
+
+  /* 3. Datos del Evento */
+  .dataEventoTransferirEntrada p:nth-child(1) {
+    font-size: 1.3rem; /* Nombre del evento más chico */
+  }
+  
+  .dataEventoTransferirEntrada p:nth-child(2),
+  .dataEventoTransferirEntrada p:nth-child(3) {
+    font-size: 1rem;
+  }
+
+  /* 4. Formulario e Input */
+  .formTransferirEntrada label {
+    font-size: 1.2rem;
+  }
+  
+  .formTransferirEntrada label input {
+    font-size: 1.1rem;
+    width: 100%; /* Asegura que el input ocupe todo el ancho */
+  }
+
+  /* 5. Botones de Acción (Confirmar/Cancelar) */
+  .buttonsTransferrirEntrada {
+    flex-direction: column; /* Botones uno abajo del otro es mejor UX en móvil */
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .buttonsTransferrirEntrada button {
+    width: 100%; /* Botones anchos fáciles de tocar */
+    padding: 0.8rem;
+  }
+  
+  /* Ajuste específico para que no queden pegados */
+  .buttonsTransferrirEntrada .confirmar,
+  .buttonsTransferrirEntrada .cancelar {
+    width: 100%;
+    margin: 0;
+  }
+}

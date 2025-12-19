@@ -5,3 +5,10 @@
   grid-template-columns: auto 70%;
   grid-gap: 2rem;
 }
+
+@media (max-width: 1024px) {
+  .profile{
+    display: flex;
+    flex-direction: column;
+  }
+}

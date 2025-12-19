@@ -1,4 +1,4 @@
-.listMercado{
+.listMercado {
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -7,4 +7,14 @@
   margin: 0 auto;
   padding: 1.5rem;
   background-color: var(--color-claro);
+}
+
+/* --- RESPONSIVE MERCADO (max-width 1024px) --- */
+@media (max-width: 1024px) {
+  .listMercado {
+    width: 100%;
+    padding: 1rem 0.5rem;
+    justify-content: center;
+    gap: 1.5rem;
+  }
 }

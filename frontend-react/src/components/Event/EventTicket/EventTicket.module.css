@@ -87,3 +87,89 @@
   justify-content: center;
   align-items: center;
 }
+
+/* --- RESPONSIVE MERCADO (max-width 1024px) --- */
+@media (max-width: 1024px) {
+
+  /* 1. Contenedor: Centrado */
+  .listMercado {
+    width: 100%;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  /* 2. Tarjeta: Altura FIJA y estructura vertical */
+  .eventTicket {
+    width: 90%; /* Un poco de margen a los costados */
+    max-width: 400px; 
+    height: 14rem; /* <--- CLAVE: Altura fija para todos igual */
+    flex-direction: column;
+    margin: 0;
+    /* Asegura que el contenido no se salga si es gigante */
+    overflow: hidden; 
+  }
+
+  /* 3. Parte Superior (Info): Ocupa todo el espacio disponible */
+  .leftEventTicket {
+    width: 100%;
+    border-right: none;
+    border-bottom: 7px double var(--color-fondo);
+    
+    /* Hacemos que esta parte crezca para empujar el precio abajo */
+    flex: 1; 
+    
+    /* Mantenemos tu Grid pero ajustamos columnas */
+    grid-template-columns: 1fr 90px; /* Imagen fija a la derecha */
+    grid-template-rows: 1fr auto; /* Titulo ocupa espacio, fecha lo minimo */
+    padding-bottom: 0.5rem;
+  }
+
+  /* 4. Título: LIMITAR a 2 líneas (para que no rompa la altura) */
+  .leftEventTicket h2 {
+    font-size: 1.3rem;
+    padding: 0.8rem;
+    align-self: start;
+    
+    /* Magia para cortar texto largo con "..." */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Máximo 2 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Ajuste de fecha */
+  .leftEventTicket p {
+    font-size: 0.9rem;
+    padding: 0 0.8rem 0.5rem 0.8rem;
+    align-self: end; /* Pegado al borde de abajo del corte */
+  }
+
+  /* Ajuste de imagen */
+  .leftEventTicket img {
+    width: 80px;
+    height: 80px;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+    align-self: center; /* Centrada verticalmente en su columna */
+  }
+
+  /* 5. Parte Inferior (Precio): Altura fija */
+  .rightEventTicket {
+    width: 100%;
+    height: 3.5rem; /* Altura fija para la parte de abajo */
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 1.5rem; /* Padding horizontal */
+    box-sizing: border-box; /* Para que el padding no sume ancho */
+  }
+
+  .tipo {
+    font-size: 1rem;
+  }
+
+  .precio {
+    width: auto;
+    font-size: 1.4rem;
+  }
+}
