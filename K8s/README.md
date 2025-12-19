@@ -42,19 +42,19 @@ Ve a Google Cloud Console:
 ##  5. Despliegue con kubernetes
 
 ###  1. Configurar el emisor de certificados
-```kubectl apply -f issuer-prod.yaml```
+```kubectl apply -f certificate.yaml```
 
 ###  2. Levantar el Backend (Django)
-```kubectl apply -f k8s/back-services.yaml```
+```kubectl apply -f back-services.yaml```
 
 ### 3. Levantar el Frontend (React/Vite)
-```kubectl apply -f k8s/front-services.yaml```
+```kubectl apply -f front-services.yaml```
 
 ##  6. Acceso externo
 
 ```
-kubectl apply -f k8s/ingress-front.yaml
-kubectl apply -f k8s/ingress-back.yaml
+kubectl apply -f ingress-front.yaml
+kubectl apply -f ingress-back.yaml
 ```
 
 ##  7. DNS (Squarespace)
@@ -74,3 +74,4 @@ Ve a Squarespace:
 ```kubectl get certificate```
 
 Si dice READY: True, abre tu navegador en https://unlucoin.info
+

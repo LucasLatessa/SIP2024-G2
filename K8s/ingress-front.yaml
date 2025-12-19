@@ -4,7 +4,6 @@ metadata:
   name: ingress-front
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    # AQUÍ NO PONEMOS REWRITE-TARGET
 spec:
   ingressClassName: nginx
   tls:
