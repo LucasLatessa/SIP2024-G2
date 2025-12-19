@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./AdmProductoras.css";
 import { getAllProdu } from "../../../../services/usuarios.service";
 import { Link } from "react-router-dom";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 function AdmProductoras() {
   const [productoras, setProductoras] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   // Solamente si es administrador muestra las productoras
   useEffect(() => {
@@ -19,11 +21,14 @@ function AdmProductoras() {
       console.log(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de productoras:", error);
+    } finally {
+      setCargando(false);
     }
   };
 
   return (
     <>
+    <DataGuard cargando={cargando}>
       <article className="admProductoras">
         <h1>Administracion de Productoras</h1>
         <hr />
@@ -41,6 +46,7 @@ function AdmProductoras() {
           ))}
         </ul>
       </article>
+      </DataGuard>
     </>
   );
 }

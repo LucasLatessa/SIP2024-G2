@@ -7,10 +7,12 @@ import {
   updateState,
 } from "../../../../services/eventos.service";
 import toast from "react-hot-toast";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 function AdmEventos() {
   const [events, setEvents] = useState([]);
   const { usuario, role, photo } = useOutletContext();
+  const [cargando, setCargando] = useState(true);
 
   //Solamente si es administrador muestra los eventos
   useEffect(() => {
@@ -32,7 +34,9 @@ function AdmEventos() {
       setEvents(eventosModificados);
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);
-    }
+    } finally {
+  setCargando(false);
+}
   };
 
   // //Actualiza los eventos
@@ -70,6 +74,7 @@ function AdmEventos() {
 
   return (
     <>
+    <DataGuard cargando={cargando}>
       <article className="admEventos">
         <h1>Administracion de Eventos</h1>
         <hr />
@@ -96,6 +101,7 @@ function AdmEventos() {
           ))}
         </ul>
       </article>
+      </DataGuard>
     </>
   );
 }

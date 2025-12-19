@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import NavProfile from "../../components/Profile/NavProfile/NavProfile";
 import { getUserNick } from "../../services/usuarios.service";
 import { Outlet } from "react-router-dom";
+import DataGuard from "../../components/DataGuards.jsx";
 
 import styles from "./Profile.module.css";
 
 export default function ProfileLayout() {
   const { user, logout, isAuthenticated } = useAuth0();
   const [usuarioData, setusuarioData] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
   //Traigo los datos del cliente cuando se renderiza el componente
   useEffect(() => {
@@ -22,6 +24,8 @@ export default function ProfileLayout() {
         setusuarioData(response.data.usuario);
       } catch (error) {
         console.error("Error al recuperar los datos del usuario:", error);
+      } finally {
+        setCargando(false);
       }
     };
 
@@ -33,17 +37,21 @@ export default function ProfileLayout() {
   const role = useUserRole(usuarioData);
 
   return (
-    <main className={styles.profile}>
-      {usuarioData && role ? (
-        <>
-          <NavProfile usuario={usuarioData} role={role} />
+    <DataGuard cargando={cargando}>
+      <main className={styles.profile}>
+        {usuarioData && role ? (
+          <>
+            <NavProfile usuario={usuarioData} role={role} />
 
-          {/*TODAS LAS PÁGINAS INTERNAS RECIBEN ESTOS DATOS */}
-          <Outlet context={{ usuario: usuarioData, role, photo:user?.picture }} />
-        </>
-      ) : (
-        <p>Cargando...</p>
-      )}
-    </main>
+            {/*TODAS LAS PÁGINAS INTERNAS RECIBEN ESTOS DATOS */}
+            <Outlet
+              context={{ usuario: usuarioData, role, photo: user?.picture }}
+            />
+          </>
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </main>
+    </DataGuard>
   );
 }

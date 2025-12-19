@@ -15,10 +15,12 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 const ProductMetricas = () => {
   const [reporte, setReporte] = useState(null);
   const { usuario, role, photo } = useOutletContext();
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const fetchReporte = async () => {
@@ -27,7 +29,9 @@ const ProductMetricas = () => {
         setReporte(response.data);
       } catch (error) {
         console.error("Error al obtener el reporte de productora");
-      }
+      } finally {
+  setCargando(false);
+}
     };
 
     fetchReporte();
@@ -51,6 +55,7 @@ const ProductMetricas = () => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
+    <DataGuard cargando={cargando}>
     <section className="reporteProductora">
       <h1>Mis Metricas</h1>
       <hr />
@@ -142,6 +147,7 @@ const ProductMetricas = () => {
         </ResponsiveContainer>
       </section>
     </section>
+    </DataGuard>
   );
 };
 

@@ -5,10 +5,12 @@ import { deleteBeneficio, getBeneficiosByProductora } from "../../../../services
 import "./ProductBeneficios.css";
 import BeneficioProductView from "../../../../components/Beneficios/BeneficioProductView/BeneficioProductView";
 import toast from "react-hot-toast";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 function ProductBeneficios() {
   const [beneficios, setBeneficios] = useState([]);
   const { usuario, role, photo } = useOutletContext();
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const fetchBeneficios = async () => {
@@ -22,7 +24,9 @@ function ProductBeneficios() {
         console.error(
           "Error al obtener la lista de beneficios de la productora"
         );
-      }
+      } finally {
+  setCargando(false);
+}
     };
 
     fetchBeneficios();
@@ -56,6 +60,7 @@ function ProductBeneficios() {
 
   return (
     <>
+    <DataGuard cargando={cargando}>
       <article className="productBeneficios">
         <h1>Beneficios</h1>
         <hr />
@@ -76,6 +81,7 @@ function ProductBeneficios() {
         Crear Beneficio
         </Link>
       </article>
+      </DataGuard>
     </>
   );
 }

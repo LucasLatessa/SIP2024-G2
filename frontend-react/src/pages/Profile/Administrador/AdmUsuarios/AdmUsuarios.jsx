@@ -3,10 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import "./AdmUsuarios.css";
 import { getAllUsers, updateRole } from "../../../../services/usuarios.service";
 import toast from "react-hot-toast";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 function AdmUsuarios() {
   const [users, setUsers] = useState([]);
   const { usuario, role, photo } = useOutletContext();
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -15,7 +17,9 @@ function AdmUsuarios() {
         setUsers(response.data);
       } catch (error) {
         console.error("Error al obtener la lista de usuarios:", error);
-      }
+      } finally {
+      setCargando(false);
+    }
     };
 
     fetchUsers();
@@ -57,6 +61,7 @@ function AdmUsuarios() {
 
   return (
     <>
+    <DataGuard cargando={cargando}>
       <article className="admUsuarios">
         <h1>Administracion de Usuarios</h1>
         <hr />
@@ -77,6 +82,7 @@ function AdmUsuarios() {
           ))}
         </ul>
       </article>
+      </DataGuard>
     </>
   );
 }

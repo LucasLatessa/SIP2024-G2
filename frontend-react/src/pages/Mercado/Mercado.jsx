@@ -6,10 +6,12 @@ import { EventTicket } from "../../components/Event/EventTicket/EventTicket";
 
 import "./Mercado.css";
 import { MercadoFiltro } from "../../components/Filtros/MercadoFiltro";
+import DataGuard from "../../components/DataGuards.jsx";
 
 export const Mercado = ({}) => {
   const [publicaciones, setPublicaciones] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   //Traigo todas las publicaciones
   useEffect(() => {
@@ -37,7 +39,10 @@ export const Mercado = ({}) => {
         setFilteredTickets(publicacionesConInfoCompleta);
       } catch (error) {
         console.error("Error al cargar las publicaciones:", error);
-      }
+      }  finally {
+      setCargando(false);
+    }
+      
     }
     cargarPublicaciones();
   }, []);
@@ -47,6 +52,7 @@ export const Mercado = ({}) => {
   }, [filteredTickets]);
 
   return (
+    <DataGuard cargando={cargando}>
     <main className="mercado">
       <MercadoFiltro tickets={publicaciones} setFilteredTickets={setFilteredTickets}/>
       <section className="listMercado">
@@ -63,5 +69,6 @@ export const Mercado = ({}) => {
         ))}
       </section>
     </main>
+    </DataGuard>
   );
 };

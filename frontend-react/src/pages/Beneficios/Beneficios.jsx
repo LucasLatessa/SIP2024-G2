@@ -6,11 +6,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getUserNick } from "../../services/usuarios.service";
 
 import styles from "./Beneficios.module.css";
+import DataGuard from "../../components/DataGuards.jsx";
 
 export default function Beneficios() {
   const [usuario, setUsuario] = useState(null);
   const { user, isAuthenticated } = useAuth0();
   const [beneficios, setBeneficios] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     async function getUsuario() {
@@ -20,6 +22,8 @@ export default function Beneficios() {
           setUsuario(res.data.usuario);
         } catch (error) {
           console.error("Error al obtener el usuario:", error);
+        } finally {
+          setCargando(false);
         }
       }
     }
@@ -48,22 +52,24 @@ export default function Beneficios() {
   }, [beneficios]);
 
   return (
-    <main>
-      <section className={styles.listBeneficios}>
-        {beneficios?.map((beneficio) => (
-          <BeneficioCard
-            id={beneficio.id_beneficio}
-            key={beneficio.id_beneficio}
-            nombre={beneficio.nombre}
-            foto={beneficio.imagen}
-            descripcion={beneficio.descripcion}
-            porcentajeDescuento={beneficio.porcentajeDescuento}
-            codigoDescuento={beneficio.codigoDescuento}
-            usado={beneficio.usado}
-            nombreEvento={beneficio.evento}
-          />
-        ))}
-      </section>
-    </main>
+    <DataGuard cargando={cargando}>
+      <main>
+        <section className={styles.listBeneficios}>
+          {beneficios?.map((beneficio) => (
+            <BeneficioCard
+              id={beneficio.id_beneficio}
+              key={beneficio.id_beneficio}
+              nombre={beneficio.nombre}
+              foto={beneficio.imagen}
+              descripcion={beneficio.descripcion}
+              porcentajeDescuento={beneficio.porcentajeDescuento}
+              codigoDescuento={beneficio.codigoDescuento}
+              usado={beneficio.usado}
+              nombreEvento={beneficio.evento}
+            />
+          ))}
+        </section>
+      </main>
+    </DataGuard>
   );
 }

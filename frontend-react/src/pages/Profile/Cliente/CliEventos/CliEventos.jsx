@@ -5,10 +5,12 @@ import { getLugar } from "../../../../services/lugar.service";
 import { useOutletContext } from "react-router-dom";
 import EventTicketUser from "../../../../components/Event/EventTicketUser/EventTicketUser";
 import "./CliEventos.css";
+import DataGuard from "../../../../components/DataGuards.jsx";
 
 function CliEventos() {
   const [tickets, setTickets] = useState([]);
   const { usuario, role, photo } = useOutletContext();
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const cargarTickets = async () => {
@@ -36,6 +38,8 @@ function CliEventos() {
         setTickets(ticketsConInfoCompleta);
       } catch (error) {
         console.error("Error al cargar los tickets:", error);
+      } finally {
+        setCargando(false);
       }
     };
 
@@ -43,7 +47,7 @@ function CliEventos() {
   }, [role]);
 
   const eliminarTicketDeLista = (idParaBorrar) => {
-    setTickets((prevTickets) => 
+    setTickets((prevTickets) =>
       prevTickets.filter((t) => t.id_ticket !== idParaBorrar)
     );
   };
@@ -54,28 +58,30 @@ function CliEventos() {
 
   return (
     <>
-      <article className="cliEventos">
-        <h1>Mis eventos</h1>
-        <hr />
-        <section className="allListaEventos">
-          {tickets?.map((ticket, index) => (
-            <EventTicketUser
-              key={index}
-              id_ticket={ticket.id_ticket}
-              nombre={ticket.eventoNombre}
-              foto={ticket.foto}
-              tipo_ticket={ticket.tipo_ticket}
-              precio={ticket.precio}
-              fecha={ticket.eventoFecha}
-              hora={ticket.eventoHora}
-              qr={ticket.qr}
-              lugar={ticket.eventoLugarNombre}
-              usada={ticket.usada}
-              onTicketAction={eliminarTicketDeLista}
-            />
-          ))}
-        </section>
-      </article>
+      <DataGuard cargando={cargando}>
+        <article className="cliEventos">
+          <h1>Mis eventos</h1>
+          <hr />
+          <section className="allListaEventos">
+            {tickets?.map((ticket, index) => (
+              <EventTicketUser
+                key={index}
+                id_ticket={ticket.id_ticket}
+                nombre={ticket.eventoNombre}
+                foto={ticket.foto}
+                tipo_ticket={ticket.tipo_ticket}
+                precio={ticket.precio}
+                fecha={ticket.eventoFecha}
+                hora={ticket.eventoHora}
+                qr={ticket.qr}
+                lugar={ticket.eventoLugarNombre}
+                usada={ticket.usada}
+                onTicketAction={eliminarTicketDeLista}
+              />
+            ))}
+          </section>
+        </article>
+      </DataGuard>
     </>
   );
 }
