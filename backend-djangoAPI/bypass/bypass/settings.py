@@ -167,6 +167,13 @@ CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
   "https://unlucoin.info",
   "https://www.unlucoin.info",
+  "http://localhost:8000",  # Añade el host local si lo necesitas
+  "https://localhost:8000",  # Añade el host local si lo necesitas
+  "http://localhost:80",  # Añade el host local si lo necesitas
+  "https://localhost:80",  # Añade el host local si lo necesitas
+  "http://localhost:5173",
+  "https://localhost:5173",
+  f"https://{NGROK_URL}",
   # Esto permite que lea la variable CLIENT_ORIGIN_URL si la definiste en el YAML
   os.environ.get("CLIENT_ORIGIN_URL", "https://unlucoin.info"),
 ]

@@ -18,6 +18,7 @@ const EventTicketUser = ({
   qr,
   lugar,
   usada,
+  publicada,
   onTicketAction
 }) => {
   const [modalType, setModalType] = useState(null); // modalType: "qr" | "transferir" | "vender" | null
@@ -38,7 +39,7 @@ const EventTicketUser = ({
 
   return (
     <>
-      <article className={`ticket ${usada ? "usado" : "no-usado"}`}>
+      <article className={`ticket ${usada ? "usado" : "no-usado"} ${publicada ? "publicado" : ""}`}>
         <h2>{nombre}</h2>
         <img src={foto} alt="Imagen del evento" />
         <p className="precio"> ${precio} </p>

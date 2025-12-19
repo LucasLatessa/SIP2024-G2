@@ -38,6 +38,7 @@ class Evento(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     imagen = models.ImageField(upload_to="eventos",blank=True, null=True)
     productora = models.ForeignKey(Productora, models.DO_NOTHING, db_column='nickname',blank=True, null=True)
+    revalorizacion = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
@@ -52,8 +53,9 @@ class Evento(models.Model):
             self.estado = estado_agotado
         super(Evento, self).save(*args, **kwargs)
         # Revaloriza tickets según la demanda y temporalidad
-        self.revalorizar_ticket()
-        self.revalorizar_por_temporalidad()
+        if (self.revalorizacion):
+          self.revalorizar_ticket()
+          self.revalorizar_por_temporalidad()
 
     #EVENTO DE REVALORIZACION POR DISPONIBILIDAD
     def revalorizar_ticket(self):

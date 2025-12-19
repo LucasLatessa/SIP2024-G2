@@ -35,7 +35,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": "https://youtube.com",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{ngrok_url}/{url}",
+            "notification_url": f"https://{ngrok_url}/api/{url}",
             #"marketplace": 614744135521445,
             #"marketplace_fee": 1,
         }
@@ -59,7 +59,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": "https://youtube.com",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{ngrok_url}/{url}",
+            "notification_url": f"https://{ngrok_url}/api/{url}",
         }
 
 

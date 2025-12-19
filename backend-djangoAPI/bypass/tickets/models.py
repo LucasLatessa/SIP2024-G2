@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
+from django.utils import timezone
 # Create your models here.
 
 
@@ -33,6 +34,7 @@ class Ticket(models.Model):
     )
     qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
     usada = models.BooleanField(default=False)
+    historial_propietarios = models.JSONField(default=list, blank=True)
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
     #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
     # PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
@@ -58,6 +60,12 @@ class Ticket(models.Model):
 
                 ticket = Ticket.objects.get(id_Ticket=ticket_id)
                 nuevo_propietario = Cliente.objects.get(nickname=propietario)
+                transferencia = {
+                    "dueño": nuevo_propietario.nickname,
+                    "fecha": timezone.now().isoformat(),  # Fecha ISO para registro
+                    "motivo": tipo
+                }
+                ticket.historial_propietarios.append(transferencia)
 
                 # Asigno el propietario
                 ticket.propietario = nuevo_propietario

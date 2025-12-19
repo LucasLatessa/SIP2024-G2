@@ -27,6 +27,7 @@ function CliEventos() {
               tipo_ticket: ticket.tipo_ticket,
               qr: ticket.qr,
               usada: ticket.usada,
+              publicada: ticket.en_publicacion,
               foto: eventoRes.data.imagen,
               eventoNombre: eventoRes.data.nombre,
               eventoFecha: eventoRes.data.fecha,
@@ -36,6 +37,7 @@ function CliEventos() {
           })
         );
         setTickets(ticketsConInfoCompleta);
+        console.log(ticketsConInfoCompleta);
       } catch (error) {
         console.error("Error al cargar los tickets:", error);
       } finally {
@@ -76,6 +78,7 @@ function CliEventos() {
                 qr={ticket.qr}
                 lugar={ticket.eventoLugarNombre}
                 usada={ticket.usada}
+                publicada={ticket.publicada}
                 onTicketAction={eliminarTicketDeLista}
               />
             ))}

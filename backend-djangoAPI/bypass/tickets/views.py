@@ -20,6 +20,7 @@ from datetime import datetime
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 from utils.mercadopago import preferencia, entregartoken
 import sys
+from django.db.models import Exists, OuterRef
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -64,8 +65,18 @@ def get_all_publication(request,l):
 
 
 def get_tickets_by_cliente(request, cliente_id):
+    
+    # Buscamos si existe una Publicacion asociada a este ticket Y que tenga publica=True
+    publicacion_activa = Publicacion.objects.filter(
+        ticket=OuterRef('pk'), # 'pk' hace referencia al ID del Ticket en la consulta principal
+        publica=True
+    )
+
     # Filtra los tickets pertenecientes al cliente especificado
-    tickets = Ticket.objects.filter(propietario_id=cliente_id)
+    # .annotate() crea un campo virtual temporal llamado 'es_publicado' en cada objeto ticket
+    tickets = Ticket.objects.filter(propietario_id=cliente_id).annotate(
+        es_publicado=Exists(publicacion_activa)
+    )
 
     # Convierte los tickets a un formato JSON
     ticket_data = [
@@ -75,8 +86,10 @@ def get_tickets_by_cliente(request, cliente_id):
             "evento": ticket.evento.id_Evento if ticket.evento else None,
             "tipo_ticket": ticket.tipo_ticket.tipo if ticket.tipo_ticket else None,
             "qr": request.build_absolute_uri(ticket.qr.url) if ticket.qr else None,
-            "usada": ticket.usada
-        }  # Construye una URL absoluta para el campo QR
+            "usada": ticket.usada,
+            # Aquí agregamos el nuevo campo basado en la anotación
+            "en_publicacion": ticket.es_publicado 
+        }
         for ticket in tickets
     ]
 
@@ -123,7 +136,7 @@ def entregarTicketTpublicacion(request):
         nick_name = data["additional_info"]["items"][0]["description"]
         ticket_publi_id_split = ticket_publi_id.split(",")
 
-        Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publi")
+        Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publicacion")
         Publicacion.modificarPublicado(ticket_publi_id_split[1])
         return JsonResponse({"cliente": "cliente_data"})
     
@@ -242,9 +255,7 @@ def transferirTicket(request):
     body = json.loads(request.body)
     id_ticket = body.get("id_ticket")
     nuevoPropietario = body.get("nuevoPropietario")
-    tipo = body.get("tipo")
     print(id_ticket)
     print(nuevoPropietario)
-    print(tipo)
-    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario, tipo)  
+    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario, 'regalo')
     return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
