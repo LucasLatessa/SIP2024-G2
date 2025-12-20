@@ -70,3 +70,9 @@ export const integrarOAuth = (vendedor_id, tipo) => tickets_cliAPI.post("mp/Oaut
   vendedor_id: vendedor_id,
   tipo: tipo
 })
+
+// export const setConcurrenciaTicket = (id,user) => tickets_cliAPI.post("setConcurrenciaTicket", {
+//   id: id,
+//   user: user,
+//   timestamp: (Date.now() + 600000)
+// })

@@ -9,6 +9,7 @@ from usuarios.models import Cliente
 from PIL import Image, ImageOps
 from datetime import date
 from django.utils import timezone
+
 # Create your models here.
 
 
@@ -24,7 +25,11 @@ class Ticket(models.Model):
     id_Ticket = models.AutoField(primary_key=True)
     precioInicial = models.IntegerField(blank=True, null=True)
     evento = models.ForeignKey(
-        "eventos.Evento", models.DO_NOTHING,db_column="evento",null=True,blank=True,
+        "eventos.Evento",
+        models.DO_NOTHING,
+        db_column="evento",
+        null=True,
+        blank=True,
     )
     propietario = models.ForeignKey(
         Cliente, on_delete=models.CASCADE, blank=True, null=True, default=None
@@ -35,13 +40,19 @@ class Ticket(models.Model):
     qr = models.ImageField(upload_to="qr_tickets", blank=True, null=True)
     usada = models.BooleanField(default=False)
     historial_propietarios = models.JSONField(default=list, blank=True)
+
+    # CONCURRENCIA
+    cliente_reserva = models.ForeignKey(Cliente,on_delete=models.SET_NULL,null=True,blank=True,related_name="tickets_en_reserva",)
+    reserva_timestamp = models.CharField(max_length=30, null=True, blank=True)
+
+
     #    precios = models.ForeignKey(Precio, models.DO_NOTHING, db_column='precio', blank=True, null=True)
     #    publicaciones=models.ForeignKey(Publicacion, models.DO_NOTHING, db_column='publicacion', blank=True, null=True)
     # PUBLICACION Y PRECIO ARRAY DE ESAS CLASES(abajo)
 
     def save(self, *args, **kwargs):
         # Cada vez que hay update
-        #super().save(*args, **kwargs)
+        # super().save(*args, **kwargs)
         self.generar_qr()
         super().save(*args, **kwargs)
 
@@ -63,7 +74,7 @@ class Ticket(models.Model):
                 transferencia = {
                     "dueño": nuevo_propietario.nickname,
                     "fecha": timezone.now().isoformat(),  # Fecha ISO para registro
-                    "motivo": tipo
+                    "motivo": tipo,
                 }
                 ticket.historial_propietarios.append(transferencia)
 
@@ -156,7 +167,7 @@ class Precio(models.Model):
 class Publicacion(models.Model):
     id_Publicacion = models.AutoField(primary_key=True)
     precio = models.FloatField()
-    fecha = models.DateField(default=date.today, blank=True, null=True) 
+    fecha = models.DateField(default=date.today, blank=True, null=True)
     publica = models.BooleanField(default=True)
     ticket = models.ForeignKey(
         Ticket, models.DO_NOTHING, db_column="ticket", blank=True, null=True
@@ -164,7 +175,6 @@ class Publicacion(models.Model):
 
     def __str__(self):
         return "Publicacion " + str(self.id_Publicacion)
-
 
     def modificarPublicado(publi_id):
         try:
@@ -174,6 +184,7 @@ class Publicacion(models.Model):
             publicacion.save()
         except:
             print("No se pudo eliminar publicacion")
+
 
 # class TipoEntrada(models.Model):
 

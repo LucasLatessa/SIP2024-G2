@@ -14,6 +14,8 @@ export default function ProfileLayout() {
   const { user, logout, isAuthenticated } = useAuth0();
   const [usuarioData, setusuarioData] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [loadingCliente, setLoadingCliente] = useState(true);
+  const navigate = useNavigate();
 
   //Traigo los datos del cliente cuando se renderiza el componente
   useEffect(() => {
@@ -22,8 +24,14 @@ export default function ProfileLayout() {
         const response = await getUserNick(user.nickname);
         console.log(response.data);
         setusuarioData(response.data.usuario);
+        setLoadingCliente(false);
       } catch (error) {
-        console.error("Error al recuperar los datos del usuario:", error);
+        if (error.response && error.response.status === 404) {
+          navigate("/terminos-condiciones");
+        } else {
+          console.error("Error al recuperar los datos del usuario:", error);
+          setLoadingCliente(false);
+        }
       } finally {
         setCargando(false);
       }
@@ -32,7 +40,7 @@ export default function ProfileLayout() {
     if (isAuthenticated) {
       fetchUserData();
     }
-  }, [isAuthenticated, user?.nickname]);
+  }, [isAuthenticated, user?.nickname, navigate]);
 
   const role = useUserRole(usuarioData);
 

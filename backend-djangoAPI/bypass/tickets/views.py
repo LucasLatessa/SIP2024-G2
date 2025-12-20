@@ -1,5 +1,7 @@
 import os
+import time
 from urllib.parse import urlencode
+from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest
 from rest_framework import viewsets
@@ -23,6 +25,7 @@ from utils.mercadopago import entregartokenPayment, preferencia
 import sys
 from django.db.models import Exists, OuterRef
 from django.utils.crypto import get_random_string
+from datetime import datetime, timezone
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -145,13 +148,13 @@ def entregarTicketTpublicacion(request):
     vendedor_id = request.GET.get("vendedor_id")
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
-    if (merchant_order != "merchant_order" and payment_id != None):
-        
+    if merchant_order != "merchant_order" and payment_id != None:
+
         usuario = Usuario.objects.get(user_id=vendedor_id)
         data = entregartokenPayment(payment_id, "vendedor", usuario.Access_Token)
         ticket_publi_id = data["additional_info"]["items"][0]["id"]
         ticket_publi_id_split = ticket_publi_id.split(",")
-        
+
         nick_name = data["additional_info"]["items"][0]["description"]
 
         Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publicacion")
@@ -205,21 +208,56 @@ def get_tickets_by_evento_min_max(request, evento_id):
     return JsonResponse({"precios": precios_data})
 
 
+def ticket_reserva_datetime(ticket):
+    if (ticket.reserva_timestamp is None):
+        ticket.reserva_timestamp = "1"
+
+    return datetime.fromtimestamp(int(ticket.reserva_timestamp) / 1000, tz=timezone.utc)
+
+
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
     evento_id = request.GET.get("evento_id")
     quantity = request.GET.get("quantity")
     tipo_ticket = request.GET.get("tipo_ticket")
+
     contador = 0
     ticket_id_list = []
+
     tickets_evento = Ticket.objects.filter(evento=evento_id)
+
+    # Concurrencia
+    now = datetime.now(timezone.utc)
+    print(now)
+
     ticket_id = None
     for ticket in tickets_evento:
-        if (ticket.propietario is None) and (ticket.tipo_ticket.tipo == tipo_ticket):
-            ticket_id = ticket.id_Ticket
-            if contador < int(quantity):
-                contador += 1
-                ticket_id_list.append(ticket_id)
+        if contador == quantity:
+            break
+        #print(ticket_reserva_datetime(ticket))
+
+        if ticket.propietario is not None:
+            continue
+
+        if ticket.tipo_ticket.tipo != tipo_ticket:
+            continue
+        
+        # Si tiene reserva vigente, no usarlo
+        if ticket.reserva_timestamp:
+            reserva_dt = datetime.fromtimestamp(
+                int(ticket.reserva_timestamp) / 1000,
+                tz=timezone.utc
+            )
+            if reserva_dt >= now:
+                continue
+
+        #  Ticket válido: se reserva por 10 minutos
+        contador += 1
+        ticket_id_list.append(ticket.id_Ticket)
+
+        # now + 10 minutos en ms
+        ticket.reserva_timestamp = str(int(time.time() * 1000) + 600000)
+        ticket.save(update_fields=["reserva_timestamp"])
 
     return JsonResponse({"ticket_id_list": ticket_id_list})
 
@@ -240,7 +278,7 @@ def prueba_mercadopago(request):
         data_unit_description,
         "tickets/entregar",
         "",
-        ""
+        "",
     )
     return JsonResponse({"id": respuesta})
 
@@ -413,3 +451,19 @@ def mp_oauth_authorize_url(request) -> str:
     return JsonResponse(
         {"url": "https://auth.mercadopago.com/authorization?" + urlencode(params)}
     )
+
+
+@api_view(["POST"])
+def set_concurrencia_ticket(request):
+    body = json.loads(request.body)
+    id = body.get("id")
+    user = body.get("user")
+    timestamp = body.get("timestamp")
+    # print("id", id)
+    # print("user", user)
+    # print("timestamp", timestamp)
+    ticket = Ticket.objects.get(id_Ticket=id)
+    ticket.cliente_reserva = Cliente.objects.get(nickname=user)
+    ticket.reserva_timestamp = str(timestamp)
+    ticket.save(update_fields=["cliente_reserva", "reserva_timestamp"])
+    return JsonResponse({"ok": True})

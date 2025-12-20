@@ -230,7 +230,10 @@ export default function EventDetail() {
                     (loading ? (
                       <div className={styles.loading}>Cargando...</div>
                     ) : preferenceId ? (
-                      <Wallet initialization={{ preferenceId }} />
+                      <>
+                        <p className={styles.advertencia}>Tiene 10 minutos para realizar la compra</p>
+                        <Wallet initialization={{ preferenceId }} />
+                      </>
                     ) : (
                       <div className={styles.errorWallet}>
                         No se pudo cargar la billetera

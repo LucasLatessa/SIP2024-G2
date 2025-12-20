@@ -1,0 +1,53 @@
+.container-terms{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--fuente-primaria);
+  padding: 2rem;
+}
+
+.title_terms{
+  font-size: 2rem;
+  font-weight: bolder;
+  padding: 2rem;
+}
+
+.terms{
+
+}
+
+.terms p{
+  padding: 0.5rem 0;
+}
+
+.terms p strong{
+  padding: 1rem 0;
+  font-weight: bold;
+}
+
+.terms p strong br{
+  padding: 1rem 0;
+}
+
+.aceptar{
+  font-size: 1.2rem;
+  padding: 1rem 0;
+}
+
+.rol{
+  font-size: 1.2rem;
+  padding: 1rem 0;
+}
+
+.rol legend{
+  font-weight: bolder;
+}
+
+.crearCuenta{
+  padding: 1.2rem;
+  background-color: var(--color-letras-terceario);
+  color: var(--color-claro);
+  font-family: var(--fuente-primaria);
+  font-size: 1.2rem;
+}

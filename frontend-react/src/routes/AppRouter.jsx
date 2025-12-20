@@ -35,6 +35,7 @@ import CrearBeneficio from "../pages/Profile/Productora/CrearBeneficio/CrearBene
 import MercadoDetail from "../pages/MercadoDetail/MercadoDetail";
 import ValidarEntrada from "../pages/Profile/Productora/ValidarEntrada/ValidarEntrada";
 import ReporteEvento from "../pages/Reportes/ReporteEvento/ReporteEvento";
+import TermCond from "../pages/TermCond/TermCond";
 
 export default function AppRouter() {
   return (
@@ -49,6 +50,7 @@ export default function AppRouter() {
         <Route path="/mercado/:id" element={<MercadoDetail />} />
         <Route path="/beneficios" element={<Beneficios />} />
         <Route path="/crear-beneficio" element={<CrearBeneficio />} />
+        <Route path="/terminos-condiciones" element={<TermCond/>}/>
 
         {/* Perfil */}
         <Route path="/perfil" element={<ProfileLayout />}>
