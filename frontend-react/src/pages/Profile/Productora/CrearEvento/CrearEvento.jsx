@@ -207,6 +207,7 @@ const CrearEvento = () => {
                 />
               </label>
             </div>
+            <p>Nota: Se cobra una comision del 15% por ticket</p>
           </div>
           <input
             className="buttonCrearEvento"

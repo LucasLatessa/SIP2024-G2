@@ -17,6 +17,11 @@ class Usuario(models.Model):
     creacion = models.DateTimeField(blank=True, null=True,auto_now_add=True) 
     Public_Key = models.TextField(blank=True, null=True)
     Access_Token = models.TextField(blank=True, null=True)  
+    mp_state = models.CharField(max_length=64, null=True, blank=True, unique=True)
+    mp_access_token = models.TextField(null=True, blank=True)
+    mp_refresh_token = models.TextField(null=True, blank=True)
+    mp_expires_at = models.DateTimeField(null=True, blank=True)
+    mp_user_id = models.BigIntegerField(null=True, blank=True)
     rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='CLIENTE')
     
     def __str__(self):

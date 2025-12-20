@@ -6,8 +6,9 @@ import {
   updateProductora,
 } from "../../../../services/usuarios.service";
 import styles from "./AccountInfo.module.css";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import toast from "react-hot-toast";
+import { integrarOAuth } from "../../../../services/tickets.service";
 
 export default function AccountInfo() {
   const { logout } = useAuth0();
@@ -71,6 +72,25 @@ export default function AccountInfo() {
       console.error("Error:", error);
     }
   };
+
+  // const handleMP = async () => {
+  //   try {
+  //     const response =  await toast.promise(integrarOAuth(usuario.user_id,"cliente"), {
+  //       loading: "Integrando Mercado pago...",
+  //       success: "Integrando Mercado pago...",
+  //       error: "Error al integrar.",
+  //     })
+
+  //     console.log(response)
+  //     const link = response.data.url || response;
+  //     if (link) {
+  //       window.location.href = link;
+  //     }
+
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // }
 
   const handleLogout = () => {
     toast.success("Cerrando sesión...", {
@@ -141,7 +161,13 @@ export default function AccountInfo() {
       <button onClick={handleUpdateProfile} className={styles.saveChanges}>
         Guardar cambios
       </button>
-      <button
+      {/* <button
+        className={styles.mp}
+        onClick={handleMP}
+      >
+        Mercado pago
+      </button> */}
+            <button
         className={styles.logOut}
         onClick={handleLogout}
       >

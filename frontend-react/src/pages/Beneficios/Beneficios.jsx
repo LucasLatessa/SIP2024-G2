@@ -51,6 +51,10 @@ export default function Beneficios() {
     console.log(beneficios);
   }, [beneficios]);
 
+  if (!isAuthenticated) {
+    return (<p>Yiene que estar logeado para ver los beneficios</p>)
+  }
+
   return (
     <DataGuard cargando={cargando}>
       <main>

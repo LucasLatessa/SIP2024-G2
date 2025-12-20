@@ -65,3 +65,8 @@ export const pruebaMercadoPago = (
     unit_price: precioEntrada,
     description: nickname,
   });
+
+export const integrarOAuth = (vendedor_id, tipo) => tickets_cliAPI.post("mp/Oauth/integrar", {
+  vendedor_id: vendedor_id,
+  tipo: tipo
+})

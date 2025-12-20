@@ -24,7 +24,7 @@ export const VenderTicketModal = ({ ticket, onClose }) => {
   // traer usuario y calcular costos
   useEffect(() => {
     if (precio) {
-      const costo = precio * 0.15;
+      const costo = precio * 0.02;
       const ganancia = precio - costo;
       setCostos({ precio, costo, ganancia });
     } else {

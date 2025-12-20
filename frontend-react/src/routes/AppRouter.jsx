@@ -23,7 +23,7 @@ import CliMercadoPago from "../pages/Profile/Cliente/CliMercadoPago/CliMercadoPa
 /* Perfil Productora */
 import ProductBeneficios from "../pages/Profile/Productora/ProductBeneficios/ProductBeneficios";
 import ProductEventos from "../pages/Profile/Productora/ProductEventos/ProductEventos";
-import ProductMetricas from "../pages/Profile/Productora/ProductMetricas/ProductMetricas";
+import ProductMetricas from "../pages/Reportes/ReporteProductora/ReporteProductora";
 
 /* Perfil Productora */
 import AdmEventos from "../pages/Profile/Administrador/AdmEventos/AdmEventos";
@@ -87,6 +87,14 @@ export default function AppRouter() {
           <Route
             path="/perfil/admin/productoras"
             element={<AdmProductoras />}
+          />
+          <Route
+            path="/perfil/admin/productoras/reporte/:id"
+            element={<ProductMetricas />}
+          />
+          <Route
+            path="/perfil/admin/eventos/reporte/:id"
+            element={<ReporteEvento />}
           />
         </Route>
 

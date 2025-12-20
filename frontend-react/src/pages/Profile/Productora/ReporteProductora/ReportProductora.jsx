@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "./ProductMetricas.css";
-import { getProduReport } from "../../../../services/usuarios.service";
+import "./ReportProductora.css";
+import { getProduReport } from "../../../services/usuarios.service.js";
 import { useParams } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import {
@@ -17,9 +17,9 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import DataGuard from "../../../../components/DataGuards.jsx";
+import DataGuard from "../../../components/DataGuards.jsx";
 
-const ProductMetricas = () => {
+const ReportProductora = () => {
   const [reporte, setReporte] = useState(null);
   const { usuario, role, photo } = useOutletContext();
   const [cargando, setCargando] = useState(true);

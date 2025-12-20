@@ -1,6 +1,7 @@
 import os
+from urllib.parse import urlencode
 from django.shortcuts import render
-from django.http import JsonResponse, HttpRequest
+from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest
 from rest_framework import viewsets
 from .serializer import (
     TicketSerializer,
@@ -9,18 +10,19 @@ from .serializer import (
     TipoTicketSerializer,
 )
 from .models import Ticket, Publicacion, Precio, TipoTickets
-from usuarios.models import Usuario
+from usuarios.models import Cliente, Productora, Usuario
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 import mercadopago
 import json
 from dotenv import load_dotenv
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from utils.authorization import RequestToken, authorized, can, getRequestToken
 from utils.mercadopago import preferencia, entregartoken
 import sys
 from django.db.models import Exists, OuterRef
+from django.utils.crypto import get_random_string
 
 
 class TicketView(viewsets.ModelViewSet):
@@ -259,3 +261,122 @@ def transferirTicket(request):
     print(nuevoPropietario)
     Ticket.modificarPropietario(str(id_ticket), nuevoPropietario, 'regalo')
     return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
+
+# Integracion prueba_mercadopago
+@csrf_exempt
+@api_view(["GET"])
+def OauthCallback(request):
+    # MP vuelve por GET: /callback?code=...&state=...
+    code = request.GET.get("code")
+    mp_state = request.GET.get("mp_state")
+    error = request.GET.get("error")
+    error_desc = request.GET.get("error_description")
+
+    if error:
+        return HttpResponseBadRequest(f"MP OAuth error: {error} - {error_desc}")
+
+    if not code or not mp_state:
+        return HttpResponseBadRequest("Missing code/state in query params")
+
+    # 1) Buscar dueño del state por prefijo
+    owner = None
+    owner_type = None
+
+    if mp_state.startswith("p_"):
+        owner = Productora.objects.filter(mp_state=mp_state).first()
+        owner_type = "productora"
+    elif mp_state.startswith("c_"):
+        owner = Cliente.objects.filter(mp_state=mp_state).first()
+        owner_type = "cliente"
+    else:
+        return HttpResponseBadRequest("Invalid state prefix")
+
+    if not owner:
+        return HttpResponseBadRequest("Invalid or expired state")
+
+    # 2) Intercambiar code por tokens
+    # IMPORTANTE: redirect_uri debe ser EXACTAMENTE igual al que usaste al crear la authorize_url
+    redirect_uri = f"https://{os.environ.get('NGROK_URL')}/api/mp/oauth/callback"
+    # Si NGROK_URL ya viene con https://, usa:
+    # redirect_uri = f"{os.environ.get('NGROK_URL').rstrip('/')}/api/mp/oauth/callback"
+
+    payload = {
+        "client_id": os.environ.get("CLIENT_ID"),
+        "client_secret": os.environ.get("CLIENT_SECRET"),
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": redirect_uri,
+    }
+
+    r = requests.post("https://api.mercadopago.com/oauth/token", data=payload, timeout=30)
+    if r.status_code != 200:
+        return HttpResponseBadRequest(f"Token exchange failed: {r.text}")
+
+    data = r.json()
+
+    access_token = data["access_token"]
+    refresh_token = data["refresh_token"]
+    expires_in = int(data.get("expires_in", 0))
+    expires_at = timezone.now() + timedelta(seconds=expires_in) if expires_in else None
+    mp_user_id = data.get("user_id") or data.get("collector_id")
+
+    # 3) Guardar tokens en el dueño
+    owner.mp_access_token = access_token
+    owner.mp_refresh_token = refresh_token
+    owner.mp_expires_at = expires_at
+    owner.mp_user_id = mp_user_id
+
+    # 4) Invalidar state (evita replay)
+    owner.state = None
+
+    owner.save(update_fields=[
+        "mp_access_token",
+        "mp_refresh_token",
+        "mp_expires_at",
+        "mp_user_id",
+        "mp_state",
+    ])
+
+    return JsonResponse({
+        "ok": True,
+        "type": owner_type,
+        "owner_id": owner.pk,
+        "mp_user_id": mp_user_id
+    })
+
+ngrok_url = os.environ.get("NGROK_URL")
+
+@api_view(["POST"])
+def mp_oauth_authorize_url(request) -> str:
+    body = json.loads(request.body)
+    vendedor_id= body.get("vendedor_id")
+    tipo= body.get("tipo")
+    mp_state = get_random_string(32)
+
+    if tipo == "cliente":
+        obj = Cliente.objects.get(pk=vendedor_id)
+        state = 'c_' + mp_state
+        obj.mp_state = mp_state
+        # opcional recomendado:
+        # obj.state_created_at = timezone.now()
+        # obj.state_used_at = None
+        obj.save(update_fields=["mp_state"])
+    elif tipo == "productora":
+        obj = Productora.objects.get(pk=vendedor_id)
+        mp_state = 'p_' + mp_state
+        obj.mp_state = mp_state
+        # opcional recomendado:
+        # obj.state_created_at = timezone.now()
+        # obj.state_used_at = None
+        obj.save(update_fields=["mp_state"])
+    else:
+        raise ValueError("tipo debe ser 'cliente' o 'productora'")
+
+    params = {
+        "client_id": os.environ.get("CLIENT_ID"),
+        "response_type": "code",
+        "redirect_uri": f"https://{ngrok_url}/api/mp/Oauth/callback",  
+        "mp_state": mp_state,
+    }
+    return JsonResponse({ 'url': "https://auth.mercadopago.com/authorization?" + urlencode(params)})
+

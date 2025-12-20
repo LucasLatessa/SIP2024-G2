@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import "./AdmEventos.css";
 import {
   getAllEventos,
@@ -35,8 +35,8 @@ function AdmEventos() {
     } catch (error) {
       console.error("Error al obtener la lista de eventos:", error);
     } finally {
-  setCargando(false);
-}
+      setCargando(false);
+    }
   };
 
   // //Actualiza los eventos
@@ -52,7 +52,6 @@ function AdmEventos() {
   // };
 
   const handleStateChange = async (id_event, newState) => {
-
     const procesoDeActualizacion = async () => {
       await updateState(id_event, newState);
       await fetchEvents(); // Esperamos a que recargue la lista
@@ -74,33 +73,39 @@ function AdmEventos() {
 
   return (
     <>
-    <DataGuard cargando={cargando}>
-      <article className="admEventos">
-        <h1>Administracion de Eventos</h1>
-        <hr />
-        <ul className="allListaEventosAdm">
-          {events.map((event) => (
-            <li className="eventoAdm" key={event.id_Evento}>
-              <h3>{event.nombre}</h3>
+      <DataGuard cargando={cargando}>
+        <article className="admEventos">
+          <h1>Administracion de Eventos</h1>
+          <hr />
+          <ul className="allListaEventosAdm">
+            {events.map((event) => (
+              <li className="eventoAdm" key={event.id_Evento}>
+                <h3>{event.nombre}</h3>
 
-              <img
-                src={event.imagen}
-                alt={`Imagen del evento ${event.nombre}`}
-                className="imgEventoAdm"
-              />
+                <img
+                  src={event.imagen}
+                  alt={`Imagen del evento ${event.nombre}`}
+                  className="imgEventoAdm"
+                />
 
-              <select
-                value={event.estado}
-                onChange={(e) => handleEventStateChange(event.id_Evento, e)} //Siempre que cambia se actualiza
-              >
-                <option value="PENDIENTE">PENDIENTE</option>
-                <option value="CANCELADO">CANCELADO</option>
-                <option value="APROBADO">APROBADO</option>
-              </select>
-            </li>
-          ))}
-        </ul>
-      </article>
+                <select
+                  value={event.estado}
+                  onChange={(e) => handleEventStateChange(event.id_Evento, e)} //Siempre que cambia se actualiza
+                >
+                  <option value="PENDIENTE">PENDIENTE</option>
+                  <option value="CANCELADO">CANCELADO</option>
+                  <option value="APROBADO">APROBADO</option>
+                </select>
+                <Link
+                  className="verReporteAdmin"
+                  to={`reporte/${event.id_Evento}`}
+                >
+                  Ver Reporte
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </article>
       </DataGuard>
     </>
   );

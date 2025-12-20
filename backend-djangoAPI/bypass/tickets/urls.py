@@ -22,5 +22,7 @@ urlpatterns = [
     path('Publicacion/crear', views.crearPublicacion, name='crear_publicacion'),
     path('Ticket/transferir', views.transferirTicket, name='transferirTicket'),
     path('Publicacion/comprarPublicacion', views.comprarPublicacion, name='comprarPublicacion'),
-    path('Publicacion/entregarTicketTpublicacion', views.entregarTicketTpublicacion, name ='entregarTicketTpublicacion')
+    path('Publicacion/entregarTicketTpublicacion', views.entregarTicketTpublicacion, name ='entregarTicketTpublicacion'),
+    path('mp/Oauth/callback', views.OauthCallback, name='Oauth'),
+    path('mp/Oauth/integrar', views.mp_oauth_authorize_url, name='Oauth')
 ]
