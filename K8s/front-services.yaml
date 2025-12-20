@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: frontend-bypass
-          image: josuegaticaodato/frontend-bypass:v5
+          image: josuegaticaodato/frontend-bypass:v12
           imagePullPolicy: Always
           ports:
             - containerPort: 80

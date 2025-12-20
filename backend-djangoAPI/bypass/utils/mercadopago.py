@@ -30,12 +30,12 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 },
             ],
             "back_urls": {
-                "success": "https://youtube.com",
-                "failure": "https://youtube.com",
-                "pending": "https://youtube.com",
+                "success": "https://unlucoin.info/perfil/mis-eventos",
+                "failure": "https://unlucoin.info/perfil/mis-eventos",
+                "pending": "https://unlucoin.info/perfil/mis-eventos",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{ngrok_url}/api/{url}?vendedor_id={usuario}",
+            "notification_url": f"https://unlucoin.info/api/{url}?vendedor_id={usuario}",
             #"marketplace": 614744135521445,
             #"marketplace_fee": 1,
         }
@@ -54,12 +54,12 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 },
             ],
             "back_urls": {
-                "success": "https://youtube.com",
-                "failure": "https://youtube.com",
-                "pending": "https://youtube.com",
+                "success": "https://unlucoin.info/perfil/mis-eventos",
+                "failure": "https://unlucoin.info/perfil/mis-eventos",
+                "pending": "https://unlucoin.info/perfil/mis-eventos",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{ngrok_url}/api/{url}",
+            "notification_url": f"https://unlucoin.info/api/{url}",
         }
 
 

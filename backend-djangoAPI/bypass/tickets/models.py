@@ -81,13 +81,14 @@ class Ticket(models.Model):
                 # Asigno el propietario
                 ticket.propietario = nuevo_propietario
                 ticket.save()
+                print("tipo",tipo)
+                print("ticketevento",ticket.evento)
 
                 # Si es tipo "evento", descuento un ticket disponible del evento asociado
                 if tipo == "evento" and ticket.evento:
                     evento = ticket.evento
-                    evento.cantTickets -= 1
                     # Usamos save del modelo, no Evento.guardar(...)
-                    evento.save(update_fields=["cantTickets"])
+                    evento.save()
 
         except Exception as e:
             print(e)
@@ -154,6 +155,7 @@ class Ticket(models.Model):
 
 class Precio(models.Model):
     id_Precio = models.AutoField(primary_key=True)
+    razon = models.TextField(blank=True, null=True)
     precio = models.FloatField()
     fechaInicial = models.DateTimeField(blank=True, null=True)
     ticket = models.ForeignKey(

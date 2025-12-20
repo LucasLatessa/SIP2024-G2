@@ -1,5 +1,7 @@
 import os
 import time
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 from urllib.parse import urlencode
 from django.utils import timezone
 from django.shortcuts import render
@@ -218,7 +220,7 @@ def ticket_reserva_datetime(ticket):
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
     evento_id = request.GET.get("evento_id")
-    quantity = request.GET.get("quantity")
+    quantity = int(request.GET.get("quantity"))
     tipo_ticket = request.GET.get("tipo_ticket")
 
     contador = 0
@@ -264,6 +266,8 @@ def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResp
 
 @csrf_exempt
 @api_view(["POST"])
+@authentication_classes([]) # Desactiva la autenticación para esta vista
+@permission_classes([AllowAny]) # Permite el acceso público
 def prueba_mercadopago(request):
     body = json.loads(request.body)
     data_quantity = body.get("quantity")
