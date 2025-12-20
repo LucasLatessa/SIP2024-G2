@@ -51,6 +51,9 @@ class Evento(models.Model):
         return Ticket.objects.filter(evento=self, propietario__isnull=True).count()
     
     def save(self, *args, **kwargs):
+        if not self.pk and self.estado is None:
+          self.estado = EstadoEvento.objects.get(estado='PENDIENTE')
+          print("self.estado", self.estado)
         super().save(*args, **kwargs)
 
         disponibles = self.cant_tickets_disponibles()
@@ -131,12 +134,14 @@ class Evento(models.Model):
                 ticket.save()
 
 #Trigger para asignar estado Pendiente al evento cuando se crea
-@receiver(post_save, sender=Evento)
-def asignar_estado_pendiente(sender, instance, created, **kwargs):
-    if created:
-        estado_pendiente = EstadoEvento.objects.get(estado='PENDIENTE')
-        instance.estado = estado_pendiente
-        instance.save(update_fields=["estado"])
+# @receiver(post_save, sender=Evento)
+# def asignar_estado_pendiente(sender, instance, created, **kwargs):
+#     print(instance.estado)
+#     if (created and instance.estado is None) :
+#         print("dentro if",instance.estado)
+#         estado_pendiente = EstadoEvento.objects.get(estado='PENDIENTE')
+#         instance.estado = estado_pendiente
+#         instance.save(update_fields=["estado"])
 
 #Trigger para desvincular relaciones
 # @receiver(pre_delete, sender=Evento)

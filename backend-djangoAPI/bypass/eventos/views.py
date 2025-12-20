@@ -88,7 +88,6 @@ def crear_evento(request):
                     "cantidadEntradas" + tipo_ticket.tipo, ""
                 )
                 precioEntrada = request.data.get("precio" + tipo_ticket.tipo, "")
-                revalorizacion = request.data.get("revalorizacion", "")
                 
                 print(
                     f"Tipo: {tipo_ticket.tipo}, Cantidad: {cantEntradas}, Precio: {precioEntrada}"
@@ -96,7 +95,7 @@ def crear_evento(request):
 
                 if (cantEntradas and precioEntrada):  # Asegúrate de que estos valores existen y son válidos
                     # Creacio de las entradas del evento, segun el tipo
-                    crearTicketConTipo(int(cantEntradas), tipo_ticket, serializer.instance, precioEntrada, revalorizacion)
+                    crearTicketConTipo(int(cantEntradas), tipo_ticket, serializer.instance, precioEntrada)
 
             return JsonResponse({"mensaje": "Evento creado con éxito!"}, status=201)
         else:
@@ -108,9 +107,9 @@ def crear_evento(request):
 
 
 # Funcion que crea tickets dada la cantidad el tipo
-def crearTicketConTipo(cantidad, tipo, evento, precio, revalorizacion = True):
+def crearTicketConTipo(cantidad, tipo, evento, precio):
     for _ in range(cantidad):
-        Ticket.objects.create(evento=evento, precioInicial=precio, tipo_ticket=tipo, revalorizacion = revalorizacion)
+        Ticket.objects.create(evento=evento, precioInicial=precio, tipo_ticket=tipo)
 
 
 # Verificar si el usuario autenticado tiene permisos de Administrador
