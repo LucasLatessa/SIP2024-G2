@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 import requests
 from datetime import datetime, timedelta, timezone
 from utils.authorization import RequestToken, authorized, can, getRequestToken
-from utils.mercadopago import preferencia, entregartoken
+from utils.mercadopago import entregartokenPayment, preferencia
 import sys
 from django.db.models import Exists, OuterRef
 from django.utils.crypto import get_random_string
@@ -45,7 +45,7 @@ class TipoTicketView(viewsets.ModelViewSet):
     queryset = TipoTickets.objects.all()
 
 
-def get_all_publication(request,l):
+def get_all_publication(request, l):
     # Filtra las publicaciones que estén marcadas como publicas
     publications = Publicacion.objects.filter(publica=True)
 
@@ -67,11 +67,13 @@ def get_all_publication(request,l):
 
 
 def get_tickets_by_cliente(request, cliente_id):
-    
+
     # Buscamos si existe una Publicacion asociada a este ticket Y que tenga publica=True
     publicacion_activa = Publicacion.objects.filter(
-        ticket=OuterRef('pk'), # 'pk' hace referencia al ID del Ticket en la consulta principal
-        publica=True
+        ticket=OuterRef(
+            "pk"
+        ),  # 'pk' hace referencia al ID del Ticket en la consulta principal
+        publica=True,
     )
 
     # Filtra los tickets pertenecientes al cliente especificado
@@ -90,7 +92,7 @@ def get_tickets_by_cliente(request, cliente_id):
             "qr": request.build_absolute_uri(ticket.qr.url) if ticket.qr else None,
             "usada": ticket.usada,
             # Aquí agregamos el nuevo campo basado en la anotación
-            "en_publicacion": ticket.es_publicado 
+            "en_publicacion": ticket.es_publicado,
         }
         for ticket in tickets
     ]
@@ -98,52 +100,67 @@ def get_tickets_by_cliente(request, cliente_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 
+
 @api_view(["POST"])
 def crearPublicacion(request):
     publicacion = json.loads(request.body)
     ticketRequest = publicacion.get("ticket")
     precioRequest = publicacion.get("precio")
-    ticket = Ticket.objects.get(id_Ticket = ticketRequest)
-    publicado = Publicacion.objects.filter(ticket = ticket, publica = True)
-    if (not publicado):
+    ticket = Ticket.objects.get(id_Ticket=ticketRequest)
+    publicado = Publicacion.objects.filter(ticket=ticket, publica=True)
+    if not publicado:
         Publicacion.objects.create(ticket=ticket, precio=precioRequest)
-        return JsonResponse(
-            {"mensaje": "Publicacion creada con éxito"}, status=200
-        )
+        return JsonResponse({"mensaje": "Publicacion creada con éxito"}, status=200)
     else:
         return JsonResponse({"error": "Publicacion existente"}, status=404)
+
 
 @api_view(["POST"])
 def comprarPublicacion(request):
     body = json.loads(request.body)
-    data_ticket_publi_id= body.get("ticket_publi_id")
-    data_unit_price= body.get("unit_price")
-    data_description= body.get("description")
-    data_vendedor_nickname= body.get("vendedor_nickname")
+    data_ticket_publi_id = body.get("ticket_publi_id")
+    data_unit_price = body.get("unit_price")
+    data_description = body.get("description")
+    data_vendedor_nickname = body.get("vendedor_nickname")
     data_ticket_publi_id.append(-1)
 
-    access_token = Usuario.objects.get(nickname=data_vendedor_nickname).Access_Token
+    usuario = Usuario.objects.get(nickname=data_vendedor_nickname)
+    access_token = usuario.Access_Token
+    print("ComprarPublicacion - print usuario", usuario.user_id)
 
-    respuesta= preferencia(1,data_ticket_publi_id,data_unit_price,data_description,"tickets/Publicacion/entregarTicketTpublicacion", access_token)
-    return JsonResponse({"id":respuesta})
+    respuesta = preferencia(
+        1,
+        data_ticket_publi_id,
+        data_unit_price,
+        data_description,
+        "tickets/Publicacion/entregarTicketTpublicacion",
+        usuario.user_id,
+        access_token,
+    )
+    return JsonResponse({"id": respuesta})
+
 
 @api_view(["POST"])
 def entregarTicketTpublicacion(request):
+    vendedor_id = request.GET.get("vendedor_id")
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
     if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "vendedor")
-            
+        
+        usuario = Usuario.objects.get(user_id=vendedor_id)
+        data = entregartokenPayment(payment_id, "vendedor", usuario.Access_Token)
         ticket_publi_id = data["additional_info"]["items"][0]["id"]
-        nick_name = data["additional_info"]["items"][0]["description"]
         ticket_publi_id_split = ticket_publi_id.split(",")
+        
+        nick_name = data["additional_info"]["items"][0]["description"]
 
         Ticket.modificarPropietario(ticket_publi_id_split[0], nick_name, "publicacion")
         Publicacion.modificarPublicado(ticket_publi_id_split[1])
         return JsonResponse({"cliente": "cliente_data"})
-    
+
     else:
         return JsonResponse({"cliente": None})
+
 
 # Funcion para obtener todos los tickets de un evento
 # @authorized
@@ -164,32 +181,29 @@ def get_tickets_by_evento(request, evento_id):
     # Devuelve los tickets como una respuesta JSON
     return JsonResponse({"tickets": ticket_data})
 
+
 def get_tickets_by_evento_min_max(request, evento_id):
-# Obtengo todos los tickets de ese evento
-    tickets = Ticket.objects.filter(evento_id=evento_id,usada=False)
+    # Obtengo todos los tickets de ese evento
+    tickets = Ticket.objects.filter(evento_id=evento_id, usada=False)
 
     valorMax = 10000000000
     min = valorMax
     max = 0
-    for ticket_no_usados in  tickets:
+    for ticket_no_usados in tickets:
         if ticket_no_usados.precioInicial >= max:
             max = ticket_no_usados.precioInicial
-        elif  ticket_no_usados.precioInicial <= min:
+        elif ticket_no_usados.precioInicial <= min:
             min = ticket_no_usados.precioInicial
 
     if valorMax == min:
         min = 0
 
-    # Creo el JSON  
-    precios_data = [
-        {
-            "precioMaximo": max,
-            "precioMinimo": min
-        }
-    ]
+    # Creo el JSON
+    precios_data = [{"precioMaximo": max, "precioMinimo": min}]
 
     # Devuelve los tickets como una respuesta JSON
-    return JsonResponse({"precios":precios_data})
+    return JsonResponse({"precios": precios_data})
+
 
 @authorized
 def obtener_ticket_evento(request: HttpRequest, token: RequestToken) -> JsonResponse:
@@ -219,8 +233,16 @@ def prueba_mercadopago(request):
     data_unit_price = body.get("unit_price")
     data_unit_description = body.get("description")
 
-    respuesta= preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, "tickets/entregar", "")
-    return JsonResponse({"id":respuesta})
+    respuesta = preferencia(
+        data_quantity,
+        data_ticket_id_list,
+        data_unit_price,
+        data_unit_description,
+        "tickets/entregar",
+        "",
+        ""
+    )
+    return JsonResponse({"id": respuesta})
 
 
 @csrf_exempt
@@ -228,11 +250,15 @@ def prueba_mercadopago(request):
 def entregarToken(request):
     payment_id = request.query_params.get("data.id")
     merchant_order = request.query_params.get("topic")
-    if (merchant_order != "merchant_order" and payment_id != None):
-        data = entregartoken(payment_id, "evento")    
-        Ticket.modificarPropietario(data["additional_info"]["items"][0]["id"], data["additional_info"]["items"][0]["description"], "evento")
+    if merchant_order != "merchant_order" and payment_id != None:
+        data = entregartokenPayment(payment_id, "evento", "")
+        Ticket.modificarPropietario(
+            data["additional_info"]["items"][0]["id"],
+            data["additional_info"]["items"][0]["description"],
+            "evento",
+        )
         return JsonResponse({"cliente": "cliente_data"})
-    
+
     else:
         return JsonResponse({"cliente": None})
 
@@ -245,12 +271,14 @@ def obtener_precio_entrada(request):
     precio = Ticket.obtener_ticket_precio(tipo_ticket, evento)
     return JsonResponse({"precio_ticket": precio})
 
+
 @api_view(["PUT"])
 def cambiar_estado_ticket(request, id_Ticket):
     ticket = Ticket.objects.get(id_Ticket=id_Ticket)
     ticket.usada = True
     ticket.save()
     return JsonResponse({"mensaje": "Cambio de estado a usado!"}, status=200)
+
 
 @api_view(["PUT"])
 def transferirTicket(request):
@@ -259,8 +287,9 @@ def transferirTicket(request):
     nuevoPropietario = body.get("nuevoPropietario")
     print(id_ticket)
     print(nuevoPropietario)
-    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario, 'regalo')
+    Ticket.modificarPropietario(str(id_ticket), nuevoPropietario, "regalo")
     return JsonResponse({"mensaje": "Ticket transferido con exito!"}, status=200)
+
 
 # Integracion prueba_mercadopago
 @csrf_exempt
@@ -308,7 +337,9 @@ def OauthCallback(request):
         "redirect_uri": redirect_uri,
     }
 
-    r = requests.post("https://api.mercadopago.com/oauth/token", data=payload, timeout=30)
+    r = requests.post(
+        "https://api.mercadopago.com/oauth/token", data=payload, timeout=30
+    )
     if r.status_code != 200:
         return HttpResponseBadRequest(f"Token exchange failed: {r.text}")
 
@@ -329,33 +360,34 @@ def OauthCallback(request):
     # 4) Invalidar state (evita replay)
     owner.state = None
 
-    owner.save(update_fields=[
-        "mp_access_token",
-        "mp_refresh_token",
-        "mp_expires_at",
-        "mp_user_id",
-        "mp_state",
-    ])
+    owner.save(
+        update_fields=[
+            "mp_access_token",
+            "mp_refresh_token",
+            "mp_expires_at",
+            "mp_user_id",
+            "mp_state",
+        ]
+    )
 
-    return JsonResponse({
-        "ok": True,
-        "type": owner_type,
-        "owner_id": owner.pk,
-        "mp_user_id": mp_user_id
-    })
+    return JsonResponse(
+        {"ok": True, "type": owner_type, "owner_id": owner.pk, "mp_user_id": mp_user_id}
+    )
+
 
 ngrok_url = os.environ.get("NGROK_URL")
+
 
 @api_view(["POST"])
 def mp_oauth_authorize_url(request) -> str:
     body = json.loads(request.body)
-    vendedor_id= body.get("vendedor_id")
-    tipo= body.get("tipo")
+    vendedor_id = body.get("vendedor_id")
+    tipo = body.get("tipo")
     mp_state = get_random_string(32)
 
     if tipo == "cliente":
         obj = Cliente.objects.get(pk=vendedor_id)
-        state = 'c_' + mp_state
+        state = "c_" + mp_state
         obj.mp_state = mp_state
         # opcional recomendado:
         # obj.state_created_at = timezone.now()
@@ -363,7 +395,7 @@ def mp_oauth_authorize_url(request) -> str:
         obj.save(update_fields=["mp_state"])
     elif tipo == "productora":
         obj = Productora.objects.get(pk=vendedor_id)
-        mp_state = 'p_' + mp_state
+        mp_state = "p_" + mp_state
         obj.mp_state = mp_state
         # opcional recomendado:
         # obj.state_created_at = timezone.now()
@@ -375,8 +407,9 @@ def mp_oauth_authorize_url(request) -> str:
     params = {
         "client_id": os.environ.get("CLIENT_ID"),
         "response_type": "code",
-        "redirect_uri": f"https://{ngrok_url}/api/mp/Oauth/callback",  
+        "redirect_uri": f"https://{ngrok_url}/api/mp/Oauth/callback",
         "mp_state": mp_state,
     }
-    return JsonResponse({ 'url': "https://auth.mercadopago.com/authorization?" + urlencode(params)})
-
+    return JsonResponse(
+        {"url": "https://auth.mercadopago.com/authorization?" + urlencode(params)}
+    )

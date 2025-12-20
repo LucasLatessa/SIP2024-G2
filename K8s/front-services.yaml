@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-vite
+  name: frontend-bypass
   labels:
-    app: frontend-vite
+    app: frontend-bypass
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-vite
+      app: frontend-bypass
   template:
     metadata:
       labels:
-        app: frontend-vite
+        app: frontend-bypass
     spec:
       tolerations:
       - key: "instance_type"
@@ -21,8 +21,8 @@ spec:
         effect: "NoSchedule"
 
       containers:
-        - name: frontend-vite
-          image: josuegaticaodato/frontend-vite:v4
+        - name: frontend-bypass
+          image: josuegaticaodato/frontend-bypass:v5
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -44,10 +44,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-vite-service
+  name: frontend-bypass-service
 spec:
   selector:
-    app: frontend-vite
+    app: frontend-bypass
   ports:
     - protocol: TCP
       port: 80

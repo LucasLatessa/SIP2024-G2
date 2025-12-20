@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import json
 import requests
 
-def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, url, token):
+def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_description, url, usuario, token):
     sdk = mercadopago.SDK(
         "APP_USR-614744135521445-050414-8d57f6a838fd306373c2724accac5802-1793151899"
     )
@@ -35,7 +35,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
                 "pending": "https://youtube.com",
             },
             "auto_return": "approved",
-            "notification_url": f"https://{ngrok_url}/api/{url}",
+            "notification_url": f"https://{ngrok_url}/api/{url}?vendedor_id={usuario}",
             #"marketplace": 614744135521445,
             #"marketplace_fee": 1,
         }
@@ -72,7 +72,7 @@ def preferencia(data_quantity, data_ticket_id_list, data_unit_price, data_unit_d
         return None
 
 
-def entregartoken(payment_id, evento):
+def entregartokenPayment(payment_id, evento,access_token):
     solicitud = f"https://api.mercadopago.com/v1/payments/{payment_id}"
     if evento == "evento" :
         headers = {
@@ -80,7 +80,7 @@ def entregartoken(payment_id, evento):
             } 
     else: 
         headers = {
-                "Authorization": "Bearer APP_USR-1598373692127396-061423-e44ea2d6679a1d18eb3811f21f243ce0-1796663413"                
+                "Authorization": "Bearer " + access_token               
             }    
     response = requests.get(solicitud, headers=headers)
     data = response.json()
