@@ -118,7 +118,7 @@ article.ticket button:hover,
   align-items: center;
   font-size: 4rem;
   font-weight: bold;
-  background-color: rgba(255, 0, 0, 0.5); /* Filtro rojo semitransparente */
+  background-color: rgba(8, 0, 255, 0.5); /* Filtro rojo semitransparente */
   border-radius: 5px;
 }
 

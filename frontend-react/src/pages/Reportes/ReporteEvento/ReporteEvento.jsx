@@ -26,6 +26,7 @@ const ReporteEvento = () => {
     const fetchReporte = async () => {
       try {
         const response = await getEventReport(id);
+        console.log(response.data)
         setReporte(response.data);
       } catch (error) {
         setError(true);
